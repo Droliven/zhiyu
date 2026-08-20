@@ -1,0 +1,403 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="World Models、HOI、3D/4D 与因果推理文献库"
+    />
+    <meta name="color-scheme" content="light" />
+    <title>知域 · 研究知识库</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png" />
+    <link rel="stylesheet" href="assets/styles.css" />
+    <script>
+      window.MathJax = {
+        tex: {
+          inlineMath: [["\\(", "\\)"], ["$", "$"]],
+          displayMath: [["\\[", "\\]"], ["$$", "$$"]],
+        },
+        options: { skipHtmlTags: ["script", "noscript", "style", "textarea", "pre", "code"] },
+      };
+    </script>
+    <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+    <script defer src="assets/app.js"></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="header-inner">
+        <div class="brand-block">
+          <img class="brand-icon" src="assets/site-icon.png" alt="" width="58" height="58" />
+          <div class="brand-copy">
+            <span class="brand-kicker">Research knowledge atlas</span>
+            <h1>知域</h1>
+            <span class="brand-tagline">探索 · 阅读 · 共建</span>
+          </div>
+        </div>
+        <div class="library-stats" aria-label="文献库统计">
+          <div><strong id="paper-total">—</strong><span>论文</span></div>
+          <div><strong id="report-total">—</strong><span>专题报告</span></div>
+          <div><strong id="tag-total">—</strong><span>类别</span></div>
+        </div>
+      </div>
+      <nav class="view-tabs" aria-label="主要视图">
+        <button class="view-tab is-active" type="button" data-view="readme">README · 开始</button>
+        <button class="view-tab" type="button" data-view="papers">文献图书馆</button>
+        <button class="view-tab" type="button" data-view="reports">专题报告厅</button>
+        <button class="view-tab" type="button" data-view="maintenance">数据维护</button>
+      </nav>
+    </header>
+
+    <main>
+      <section class="view" id="papers-view" aria-labelledby="papers-heading" hidden>
+        <h2 class="sr-only" id="papers-heading">文献图书馆</h2>
+        <div class="filter-band">
+          <div class="filter-row primary-filters">
+            <label class="search-field">
+              <span class="sr-only">检索论文</span>
+              <input id="search-input" type="search" placeholder="检索标题、作者、Insight、ID…" autocomplete="off" />
+            </label>
+            <label class="select-field">
+              <span>排序</span>
+              <select id="sort-select">
+                <option value="newest">发表时间：新 → 旧</option>
+                <option value="oldest">发表时间：旧 → 新</option>
+                <option value="title-asc">标题：A → Z</option>
+                <option value="title-desc">标题：Z → A</option>
+                <option value="updated">最近更新</option>
+              </select>
+            </label>
+            <label class="select-field">
+              <span>展示</span>
+              <select id="group-select">
+                <option value="none">连续卡片</option>
+                <option value="tag">按类别分组</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="tag-tools">
+            <div class="mode-control" role="group" aria-label="标签组合方式">
+              <button class="mode-button is-active" type="button" data-tag-mode="all">同时满足</button>
+              <button class="mode-button" type="button" data-tag-mode="any">任一匹配</button>
+            </div>
+            <button class="text-button" id="clear-tags" type="button">清除标签</button>
+            <label class="check-control">
+              <input id="show-hidden" type="checkbox" />
+              <span>显示已隐藏</span>
+            </label>
+          </div>
+          <div class="tag-list" id="tag-list" aria-label="论文类别标签"></div>
+        </div>
+
+        <div class="results-heading">
+          <p><strong id="result-count">0</strong> 篇结果</p>
+          <p id="active-filter-summary">全部论文</p>
+        </div>
+        <div id="paper-results" class="paper-grid" aria-live="polite">
+          <div class="empty-state">
+            <strong>正在加载文献库</strong>
+            <span>正在读取论文与专题报告数据。</span>
+          </div>
+        </div>
+        <div class="empty-state" id="paper-empty" hidden>
+          <strong>没有匹配的论文</strong>
+          <span>调整检索词或标签组合。</span>
+        </div>
+      </section>
+
+      <section class="view" id="reports-view" aria-labelledby="reports-heading" hidden>
+        <div class="section-heading">
+          <div>
+            <span class="section-kicker">Synthesis &amp; trends</span>
+            <h2 id="reports-heading">专题报告厅</h2>
+          </div>
+          <p>跨论文的路线梳理、证据审计与研究趋势。</p>
+        </div>
+        <div id="report-list" class="report-list"></div>
+      </section>
+
+      <section class="view" id="maintenance-view" aria-labelledby="maintenance-heading" hidden>
+        <div class="section-heading">
+          <div>
+            <span class="section-kicker">Repository state</span>
+            <h2 id="maintenance-heading">数据维护</h2>
+          </div>
+          <div class="maintenance-actions">
+            <a class="button secondary" href="data/papers.json" download>导出论文数据</a>
+            <button class="button primary" id="export-overrides" type="button">导出本地修改</button>
+          </div>
+        </div>
+
+        <div class="maintenance-metrics" id="maintenance-metrics"></div>
+        <div class="maintenance-columns">
+          <section class="maintenance-section" aria-labelledby="sources-title">
+            <h3 id="sources-title">已收录报告</h3>
+            <div id="source-list" class="source-list"></div>
+          </section>
+          <section class="maintenance-section" aria-labelledby="local-title">
+            <h3 id="local-title">本地修改</h3>
+            <div id="local-change-list" class="local-change-list"></div>
+          </section>
+        </div>
+      </section>
+
+      <section class="view is-active" id="readme-view" aria-labelledby="readme-heading">
+        <div class="readme-layout">
+          <header class="readme-intro">
+            <span class="readme-label">团队维护入口 · Start here</span>
+            <h2 id="readme-heading">阅读资源，也共同维护资源</h2>
+            <p>知域是一个独立的静态研究知识库。网页负责检索与阅读，Markdown 和 JSON 负责持久化，Git commit 是团队共享修改的唯一正式入口。</p>
+            <div class="readme-actions">
+              <button class="button primary" type="button" data-switch-view="papers">进入文献图书馆</button>
+              <button class="button secondary" type="button" data-switch-view="reports">进入专题报告厅</button>
+              <a class="button secondary" href="#readme-collaboration">用 AI 更新资源</a>
+            </div>
+          </header>
+
+          <nav class="readme-index" aria-label="README 目录">
+            <a href="#readme-preview"><strong>01</strong><span>本地预览</span></a>
+            <a href="#readme-workflow"><strong>02</strong><span>贡献修改</span></a>
+            <a href="#readme-collaboration"><strong>03</strong><span>AI 提示词</span></a>
+            <a href="#readme-boundary"><strong>04</strong><span>数据边界</span></a>
+          </nav>
+
+          <section class="readme-topics" aria-labelledby="readme-topics-heading">
+            <div>
+              <span class="section-kicker">Collection map</span>
+              <h3 id="readme-topics-heading">馆藏主题</h3>
+              <p>字号和颜色只反映相对收录数量，不代表质量或推荐等级。点击主题可直接筛选文献。</p>
+            </div>
+            <div>
+              <div class="topic-cloud" id="readme-tag-cloud" aria-label="馆藏主题词云"></div>
+              <div class="topic-legend" aria-label="词云图例">
+                <span><i class="legend-low"></i>灰色 · 收录较少</span>
+                <span><i class="legend-medium"></i>青绿色 · 收录较多</span>
+                <span><i class="legend-high"></i>深色 · 收录最多</span>
+              </div>
+            </div>
+          </section>
+
+          <section class="readme-section readme-preview" aria-labelledby="readme-preview">
+            <div class="readme-section-heading">
+              <span>Terminal · read only</span>
+              <h3 id="readme-preview">在本地启动只读预览</h3>
+            </div>
+            <p>克隆仓库后，在仓库根目录启动静态 HTTP 服务。该命令只读取项目文件，不会安装依赖、修改论文数据或产生 Git commit。</p>
+            <div class="terminal-block">
+              <div class="terminal-heading"><span>你在终端执行</span><strong>启动与停止</strong></div>
+              <pre><code># 替换为你在本机克隆知域仓库的实际路径
+cd /path/to/zhiyu
+
+# 看到提示才说明目录正确
+test -f index.html &amp;&amp; test -d scripts &amp;&amp; echo "已进入知域仓库根目录"
+python3 -m http.server 8080
+
+# 浏览器打开 http://localhost:8080/
+# 预览结束后在终端按 Ctrl+C 停止服务</code></pre>
+            </div>
+            <p class="readme-notice"><strong>不要双击 index.html。</strong> 地址栏以 <code>file://</code> 开头时，浏览器会阻止页面读取 JSON 和 Markdown；正确地址应以 <code>http://localhost:8080/</code> 开头。</p>
+          </section>
+
+          <section class="readme-section readme-workflow flow-section" data-flow-step="1" aria-labelledby="readme-workflow">
+            <div class="readme-section-heading">
+              <span>你在终端执行</span>
+              <h3 id="readme-workflow">同步仓库并创建工作分支</h3>
+            </div>
+            <p>每次更新从独立分支开始。这样 AI 产生的修改与主分支隔离，也方便团队通过 Pull Request 审阅。</p>
+            <div class="terminal-block">
+              <div class="terminal-heading"><span>Terminal · Step 1</span><strong>同步并建分支</strong></div>
+              <pre><code># 每次打开新终端，都先进入知域仓库根目录
+cd /path/to/zhiyu
+test -f index.html &amp;&amp; test -d scripts &amp;&amp; echo "已进入知域仓库根目录"
+
+# 若团队默认分支是 master，请把下面的 main 改为 master
+git switch main
+git pull --ff-only
+# 将 [topic] 和 [date] 替换为实际内容，例如 papers/hoi-2026-08-20
+git switch -c papers/[topic]-[date]</code></pre>
+            </div>
+            <p class="flow-next">完成后继续第 2 步，在下面选择一种 AI 任务。</p>
+          </section>
+
+          <section class="readme-section" aria-labelledby="readme-boundary">
+            <div class="readme-section-heading"><span>Important</span><h3 id="readme-boundary">网页操作不等于修改资源</h3></div>
+            <p>页面中的搜索、排序、标签筛选和视图切换只改变当前页面如何展示资源，不会改写论文、报告或仓库文件。刷新或切换筛选条件后，原始资源仍保持不变。</p>
+            <div class="readme-table-wrap">
+              <table class="readme-table">
+                <thead><tr><th>操作</th><th>实际发生的事情</th><th>是否修改仓库</th></tr></thead>
+                <tbody>
+                  <tr><td>搜索、排序、标签筛选</td><td>临时改变当前页面上的结果集合与顺序</td><td>否</td></tr>
+                  <tr><td>隐藏论文</td><td>将论文 ID 保存到当前浏览器的本地存储</td><td>否</td></tr>
+                  <tr><td>保存评论</td><td>将评论保存到当前浏览器的本地存储</td><td>否</td></tr>
+                  <tr><td>导出本地修改</td><td>下载一份 JSON 文件，供维护者审阅和提交</td><td>否</td></tr>
+                  <tr><td>打开论文、代码或项目链接</td><td>访问第三方网站提供的公开资源</td><td>否</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="readme-section" aria-labelledby="readme-storage">
+            <div class="readme-section-heading"><span>Browser state</span><h3 id="readme-storage">本地状态与隐私</h3></div>
+            <p>隐藏状态和评论保存在浏览器的 <code>localStorage</code> 中，只对当前浏览器配置可见，不会上传到 GitHub，也不会在设备之间同步。清除站点数据、使用隐私模式或更换浏览器后，这些状态可能消失。</p>
+            <p>如果希望把修改永久纳入文献库，需要在“数据维护”中导出修改，由仓库维护者把内容合并到 <code>data/paper_overrides.json</code> 并提交到 Git。</p>
+          </section>
+
+          <section class="readme-section" aria-labelledby="readme-content">
+            <div class="readme-section-heading"><span>Evidence</span><h3 id="readme-content">内容与外部资源</h3></div>
+            <p>本站展示的是研究资料的整理结果，不替代论文原文。论文元数据、摘要、阅读判断和专题报告可能存在遗漏或过时信息，关键结论应回到原论文和官方项目页核验。</p>
+            <p>外部论文、代码、模型和项目链接由各自网站维护，其可用性、许可协议、隐私政策与内容准确性不受本站控制。</p>
+          </section>
+
+          <section class="readme-section readme-prompts flow-section" data-flow-step="2" aria-labelledby="readme-collaboration">
+            <div class="readme-section-heading"><span>复制给 AI，不在终端运行</span><h3 id="readme-collaboration">选择任务并让 AI 修改项目</h3></div>
+            <p>选择一种任务，替换方括号中的内容，然后把整段提示词发给能够联网并访问本地仓库的 AI 编程助手。AI 会直接修改当前分支中的文件并运行校验。</p>
+            <p>三套提示词都要求 AI 停在未提交状态：不得执行 <code>git commit</code>、<code>git push</code> 或创建 Pull Request。</p>
+
+            <article class="prompt-block">
+              <div class="prompt-heading">
+                <div><span>方式一</span><h4>让 AI 直接检索论文</h4></div>
+                <button class="button secondary" type="button" data-copy-prompt="prompt-search">复制提示词</button>
+              </div>
+              <pre><code id="prompt-search">你正在维护当前独立的“知域”研究知识库。请围绕“[研究主题]”检索并新增论文，检索范围为“[时间范围，例如过去三个月]”，预计收录 [数量] 篇。请完整执行，不要只给建议。
+
+如果用户还没有提供研究主题、时间范围或期望数量，请先逐项询问用户；得到明确回答后再开始检索，不要自行猜测。
+
+开始前：
+1. 先确认当前工作目录是知域仓库根目录，其中必须包含 index.html、data、content 和 scripts；如果不是，请停止并让用户提供正确的仓库路径。然后阅读 README.md 和 CONTRIBUTING.md，遵守其中的证据、格式和维护要求。
+2. 检查 git status 和现有 content/reports、data/papers.json，保留工作区中不是你产生的修改，不得覆盖或回退他人内容。
+3. 先按 arXiv ID、DOI 和规范化标题检查重复；同一工作的预印本、会议版和期刊版应合并判断，避免重复收录。
+
+检索与核验：
+1. 可以从 arXiv、Google Scholar、Hugging Face Papers Daily、papers.cool 等获取线索，但必须优先核对原论文、正式出版页、官方项目页和官方代码仓库。
+2. 尽可能阅读论文正文，不能只根据标题或摘要编造。若只能访问摘要或二手资料，明确标记信息范围和置信度。
+3. 每篇论文记录标题、作者、年份与发表状态、arXiv/DOI、论文/项目/代码/数据/模型/AlphaXiv 链接、类别标签、核心 Insight、Pipeline 的输入/过程/输出、实验与证据、代码数据开放情况、局限与失败案例。
+4. 严格区分作者主张、实验实际支持的结论和你的分析。核对数据集、指标、baseline、公平性、消融、统计波动、计算成本和数据泄漏风险。
+5. 配图只有在来源和图号可核验时才加入，并记录论文名、图号和来源链接；不要为凑数添加图片。
+
+写入与校验：
+1. 在仓库根目录新建 content/reports/[YYYY-MM-DD_topic_slug].md。在开头写“**报告标签**：[标签1, 标签2]”；使用一个一级标题；每篇论文使用“## 1. 论文标题”形式的连续编号二级标题，并设置“作者”“年份与发表”“核心内容与 Insight”“Pipeline”“实验与证据”“代码与数据”“局限、失败案例与开放问题”等清晰小节。
+2. 在仓库根目录运行：
+   python3 scripts/ingest_reports.py
+   python3 scripts/enrich_arxiv.py
+   python3 scripts/validate_data.py
+   python3 scripts/check_asset_budget.py
+3. 检查生成的数据和 git diff，确认没有重复记录、无效链接、意外删除或无关改动。若 arXiv 网络补全暂时失败，说明情况，但仍完成其余校验。
+4. 不要执行 git add、git commit 或 git push；保留修改供用户审阅。
+
+最后报告：检索日期、检索范围、纳入/排除数量、关键新增论文、修改文件、校验结果、建议的 commit message，以及仍需人工核验的问题。</code></pre>
+            </article>
+
+            <article class="prompt-block">
+              <div class="prompt-heading">
+                <div><span>方式二</span><h4>提供论文列表，让 AI 细化整理</h4></div>
+                <button class="button secondary" type="button" data-copy-prompt="prompt-list">复制提示词</button>
+              </div>
+              <pre><code id="prompt-list">你正在维护当前独立的“知域”研究知识库。我会提供一份论文列表，请逐篇核验、阅读、细化整理并持久化到仓库。请完整执行，不要只输出聊天摘要。
+
+如果用户还没有在提示词末尾提供论文列表，请先让用户粘贴论文标题、arXiv 链接、DOI 或项目页；收到至少一条可识别线索后再开始，不要自行猜测列表。
+
+先确认当前工作目录是知域仓库根目录，其中必须包含 index.html、data、content 和 scripts；如果不是，请停止并让用户提供正确的仓库路径。然后阅读 README.md 和 CONTRIBUTING.md。检查 git status，保留所有不属于你的现有修改。检查 data/papers.json，并按 arXiv ID、DOI、规范化标题识别重复和同一论文的不同版本；已有记录应补充或关联来源，不要创建重复条目。
+
+对列表中的每篇论文：
+1. 优先访问原论文、正式出版页、官方项目页和官方代码仓库，核对准确标题、完整作者、年份、发表状态、arXiv ID、DOI 及可靠链接。
+2. 尽可能阅读正文，整理类别标签、核心 Insight、Pipeline 输入/过程/输出、实验设置与结果、证据真正支持的结论、代码与数据开放情况、局限和失败案例。
+3. 明确区分作者声称、实验事实和阅读者推断；无法全文核验的字段要标注“仅据摘要/待核验”，不得猜测。
+4. 只在图片来源、论文名称和图号都可核验时加入代表图。
+
+将结果写入仓库根目录的 content/reports/[YYYY-MM-DD_curated_papers].md：在开头写“**报告标签**：[标签1, 标签2]”；使用一个一级标题，每篇论文使用“## 1. 论文标题”形式的连续编号二级标题，并包含“作者”“年份与发表”“核心内容与 Insight”“Pipeline”“实验与证据”“代码与数据”“局限、失败案例与开放问题”等小节。
+
+然后在仓库根目录运行：
+python3 scripts/ingest_reports.py
+python3 scripts/enrich_arxiv.py
+python3 scripts/validate_data.py
+python3 scripts/check_asset_budget.py
+
+检查 git diff，确保没有意外删除、重复记录或无关改动。不要执行 git add、git commit 或 git push；保留修改供用户审阅。最后给出已收录、合并到已有记录、排除、待核验的论文清单，校验结果和建议的 commit message。
+
+论文列表：
+[在这里粘贴标题、arXiv 链接、DOI、项目页或任意已有线索]</code></pre>
+            </article>
+
+            <article class="prompt-block">
+              <div class="prompt-heading">
+                <div><span>方式三</span><h4>专题检索与综述报告</h4></div>
+                <button class="button secondary" type="button" data-copy-prompt="prompt-survey">复制提示词</button>
+              </div>
+              <pre><code id="prompt-survey">你正在维护当前独立的“知域”研究知识库。请针对“[专题或研究问题]”完成一次可核验的专题检索与研究脉络梳理，同时把论文元信息和完整专题报告持久化到仓库。时间范围为“[时间范围]”，重点回答“[希望回答的核心问题]”。
+
+如果用户还没有提供专题、时间范围或希望回答的核心问题，请先逐项询问用户；得到明确回答后再开始研究，不要自行设定范围。
+
+先确认当前工作目录是知域仓库根目录，其中必须包含 index.html、data、content 和 scripts；如果不是，请停止并让用户提供正确的仓库路径。然后阅读 README.md 和 CONTRIBUTING.md；检查 git status、既有专题报告和 data/papers.json，保留他人修改并做好去重。
+
+研究要求：
+1. 制定检索词、纳入标准和排除标准，记录检索日期。线索来源可以广泛，但关键事实必须回到论文原文、正式出版页和官方项目核验。
+2. 选择能够覆盖奠基工作、关键技术分支、代表性方法、最新进展和反例/负结果的论文，不要只罗列近期论文。
+3. 对每篇论文记录完整元信息、可靠链接、标签、Insight、Pipeline、实验与证据、开放情况、局限。明确全文已读、仅摘要可见或二手线索的证据等级。
+4. 报告应进一步比较问题定义、输入输出、表示方式、训练信号、数据集、指标、计算成本和适用边界；总结一致结论、争议、证据缺口、发展趋势，以及可能影响选题 novelty 的工作。
+5. 不得把相关性写成因果性，不得把作者主张写成已被实验充分证明的事实。
+
+将报告写入仓库根目录的 content/reports/[YYYY-MM-DD_topic_survey].md。在开头写“**报告标签**：[标签1, 标签2]”；使用一个一级标题；先写分类比较、研究脉络、证据审计、开放问题和选题建议，再写论文条目。单篇论文条目统一使用“## 1. 论文标题”形式的连续编号二级标题并放在报告末尾，确保导入器能够准确识别边界。
+
+然后在仓库根目录运行：
+python3 scripts/ingest_reports.py
+python3 scripts/enrich_arxiv.py
+python3 scripts/validate_data.py
+python3 scripts/check_asset_budget.py
+
+检查网站数据与 git diff，确保去重正确、报告可在“专题报告”中打开、没有意外删除或无关改动。不要执行 git add、git commit 或 git push；保留修改供用户审阅。最后报告检索策略、纳入与排除情况、主要结论、变更文件、校验结果、建议的 commit message 和待人工复核项。</code></pre>
+            </article>
+            <p class="flow-next">AI 完成并报告校验结果后，继续第 3 步审阅文件。</p>
+          </section>
+
+          <section class="readme-section readme-submit flow-section" data-flow-step="3" aria-labelledby="readme-submit">
+            <div class="readme-section-heading"><span>你回到终端执行</span><h3 id="readme-submit">审阅、提交并创建 Pull Request</h3></div>
+            <p>先阅读 AI 的结果，再逐项检查实际文件差异。只有确认内容正确后才暂存和提交。</p>
+            <div class="terminal-block">
+              <div class="terminal-heading"><span>Terminal · Step 3</span><strong>审阅并提交</strong></div>
+              <pre><code># 如果换过终端窗口，先重新进入知域仓库根目录
+cd /path/to/zhiyu
+test -f index.html &amp;&amp; test -d scripts &amp;&amp; echo "已进入知域仓库根目录"
+
+git status --short
+git diff
+
+# 确认内容后，只暂存本次相关文件
+# 把所有方括号占位符替换为 AI 实际生成的文件名和主题
+git add content/reports/[new-report].md \
+  data/papers.json data/reports.json
+git commit -m "papers: add [topic] update"
+git push -u origin HEAD
+
+# 最后在 GitHub 创建 Pull Request</code></pre>
+            </div>
+            <p class="readme-notice">如果 AI 新增了可靠配图，也要审阅并暂存对应的 <code>content/images/...</code>。不要使用 <code>git add .</code>，避免把其他人的本地修改或无关文件一起提交。</p>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <dialog class="detail-dialog" id="paper-dialog">
+      <div class="dialog-shell">
+        <header class="dialog-header">
+          <span class="dialog-kicker" id="paper-dialog-id"></span>
+          <button class="icon-button" type="button" data-close-dialog aria-label="关闭详情" title="关闭">×</button>
+        </header>
+        <article id="paper-dialog-content" class="paper-detail"></article>
+      </div>
+    </dialog>
+
+    <dialog class="report-dialog" id="report-dialog">
+      <div class="dialog-shell report-shell">
+        <header class="dialog-header">
+          <span class="dialog-kicker">专题报告厅</span>
+          <button class="icon-button" type="button" data-close-report aria-label="关闭报告" title="关闭">×</button>
+        </header>
+        <article id="report-dialog-content" class="report-article"></article>
+      </div>
+    </dialog>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </body>
+</html>

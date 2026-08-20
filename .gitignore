@@ -1,0 +1,54 @@
+# Operating systems
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+Desktop.ini
+
+# Editors and local workspace settings
+.idea/
+.vscode/
+.cursor/
+*.swp
+*.swo
+*~
+
+# Python bytecode, environments, and tool caches
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+
+# Logs, temporary files, and interrupted downloads
+*.log
+*.tmp
+*.temp
+*.bak
+*.part
+*.download
+.cache/
+tmp/
+
+# Optional local build output; GitHub Pages publishes the source tree
+_site/
+dist/
+.jekyll-cache/
+.sass-cache/
+
+# Browser-exported overrides must be reviewed and moved into data/ explicitly
+/paper_overrides.json

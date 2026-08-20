@@ -1,0 +1,166 @@
+[
+  {
+    "id": "report-90041fa2f9",
+    "title": "交互世界模型与人体/手物交互生成论文梳理",
+    "date": "2026-08-20",
+    "tags": [
+      "交互世界模型",
+      "HOI"
+    ],
+    "summary": "说明：每篇均基于原论文 arXiv / 项目页整理。代表图优先选论文中的方法总览图或最能说明问题设定的图；若本地 Markdown 预览器屏蔽远程图片，请点击对应论文链接或图片链接查看。",
+    "paper_ids": [
+      "arxiv-2505-16602",
+      "arxiv-2506-24086",
+      "arxiv-2507-01737",
+      "arxiv-2511-02225",
+      "arxiv-2512-17907",
+      "arxiv-2602-06035",
+      "arxiv-2602-09600",
+      "arxiv-2602-09638",
+      "arxiv-2603-13375",
+      "arxiv-2603-20169"
+    ],
+    "path": "content/reports/paper_reading_summary.md",
+    "source_file": "paper_reading_summary.md"
+  },
+  {
+    "id": "report-ce5d8128c6",
+    "title": "世界模型的因果建模与反事实推理：论文梳理与证据审计",
+    "date": "2026-08-20",
+    "tags": [
+      "因果世界模型",
+      "反事实推理",
+      "对象中心"
+    ],
+    "summary": "总判断： 这组论文中的“因果”至少有三种不同含义，不能混写： 1. 强因果： 明确变量、结构因果模型、干预语义、可识别性或反事实； 2. 中等强度： 通过对象遮挡、机制不变性、奖励祖先等归纳偏置学习稳定依赖，但不恢复完整 SCM； 3. 弱因果/时间因果： action-conditioned prediction、单向 attention 或“预测未来”，不等于 do(·) 或反事实识别。",
+    "paper_ids": [
+      "arxiv-2401-12497",
+      "arxiv-2402-10877",
+      "arxiv-2410-19923",
+      "arxiv-2511-14262",
+      "arxiv-2601-21998",
+      "arxiv-2602-10098",
+      "arxiv-2602-11389",
+      "arxiv-2604-19683",
+      "arxiv-2608-13456"
+    ],
+    "path": "content/reports/world_model_causality_counterfactual_survey_2026-08-20.md",
+    "source_file": "world_model_causality_counterfactual_survey_2026-08-20.md"
+  },
+  {
+    "id": "report-e81e6bd3a1",
+    "title": "World Action Model / Predictive Representation 论文梳理",
+    "date": "2026-08-20",
+    "tags": [
+      "World Action Model",
+      "机器人学习",
+      "预测表征"
+    ],
+    "summary": "说明：本文按“标题、发表情况、链接、核心概括 / Insight、Pipeline、实验概括、代表图”的标准整理。内容依据原论文 arXiv / CVF 页面和论文 HTML 图表信息重写。图片使用论文 HTML 中的原图链接；若 Markdown 预览器不显示远程图片，可点击论文链接查看。",
+    "paper_ids": [
+      "arxiv-2603-08254",
+      "arxiv-2606-03188",
+      "arxiv-2606-05645",
+      "arxiv-2606-10040",
+      "arxiv-2607-05468",
+      "arxiv-2607-13960",
+      "arxiv-2608-01397",
+      "arxiv-2608-02990",
+      "arxiv-2608-04996",
+      "arxiv-2608-07619",
+      "arxiv-2608-08558",
+      "arxiv-2608-09298",
+      "arxiv-2608-09771"
+    ],
+    "path": "content/reports/wam_paper_reading_summary.md",
+    "source_file": "wam_paper_reading_summary.md"
+  },
+  {
+    "id": "report-6fa37648ba",
+    "title": "因果世界模型：代表工作、技术脉络与因果边界",
+    "date": "2026-08-19",
+    "tags": [
+      "因果世界模型",
+      "反事实推理"
+    ],
+    "summary": "核心判断： 当前所谓 Causal World Model 实际横跨三种不同层级：正式因果结构学习、通过训练目标注入因果归纳偏置，以及仅具有时间因果顺序的生成式世界模型。三者不能混用。",
+    "paper_ids": [
+      "arxiv-2401-12497",
+      "arxiv-2402-10877",
+      "arxiv-2410-19923",
+      "arxiv-2511-14262",
+      "arxiv-2601-21998",
+      "arxiv-2602-11389",
+      "arxiv-2608-13456"
+    ],
+    "path": "content/reports/causal_world_models_2026_survey.md",
+    "source_file": "causal_world_models_2026_survey.md"
+  },
+  {
+    "id": "report-554de78a93",
+    "title": "因果世界模型（Causal World Models）最新代表工作梳理",
+    "date": "2026-08-19",
+    "tags": [
+      "因果世界模型",
+      "反事实推理"
+    ],
+    "summary": "本报告聚焦“world model + causality / intervention / counterfactual reasoning”，优先选择近年正式发表或较高质量的新预印本。 检索线索来自 arXiv、会议官网及作者公开页面；最终技术判断以 原论文、会议论文页、官方代码仓库 为准。 特别注意：近年来很多论文使用 “causal” 一词，但其含义并不相同。本报告严格区分： 1. 正式因果学习 / intervention / identifiability ； 2. causal inductive bias / counterfactual-like predictive learning ； 3. object dependency / causality-aware attention ；…",
+    "paper_ids": [
+      "arxiv-2401-12497",
+      "arxiv-2402-10877",
+      "arxiv-2410-19923",
+      "arxiv-2511-14262",
+      "arxiv-2601-21998",
+      "arxiv-2602-11389",
+      "arxiv-2608-13456"
+    ],
+    "path": "content/reports/causal_world_models_2026_survey.original.md",
+    "source_file": "causal_world_models_2026_survey.original.md"
+  },
+  {
+    "id": "report-1818b05f33",
+    "title": "3D/4D 几何一致性视频生成论文梳理：GeoFlow / VGGRPO / World-R1",
+    "date": "2026-08-18",
+    "tags": [
+      "几何一致性",
+      "视频生成",
+      "3D/4D"
+    ],
+    "summary": "检索与整理日期：2026-08-18 阅读范围：arXiv 摘要页、arXiv HTML 正文/附录中的方法与实验部分、项目页/代码页。 主题定位：这 3 篇并不是 hand-object interaction 专文，而是 通用 text-to-video / video generation 的 3D/4D 几何一致性后训练与奖励设计 。它们对 HOI world model 的价值主要在于：几何奖励、4D latent reward、3D foundation model critic、camera consistency、failure diagnosis。",
+    "paper_ids": [
+      "arxiv-2603-26599",
+      "arxiv-2604-24764",
+      "arxiv-2605-18365"
+    ],
+    "path": "content/reports/geometric_consistency_video_generation_report.md",
+    "source_file": "geometric_consistency_video_generation_report.md"
+  },
+  {
+    "id": "report-0ad44831eb",
+    "title": "Hand-Object Interaction World Model：2D 视频结合 3D/4D 的最新工作梳理",
+    "date": "2026-08-15",
+    "tags": [
+      "HOI",
+      "3D/4D",
+      "第一视角"
+    ],
+    "summary": "检索日期：2026-08-15 关注方向：egocentric hand-object interaction world model，尤其是 2D 视频生成 + 3D/4D 几何、手部动作、相机运动、物体状态、接触动力学 的结合。 说明：很多最新工作标题里都写 world model / egocentric interaction，但实际 3D/4D grounding 强度差异很大。因此本文先做分级，再逐篇介绍。",
+    "paper_ids": [
+      "arxiv-2505-16602",
+      "arxiv-2512-01677",
+      "arxiv-2512-13644",
+      "arxiv-2512-17907",
+      "arxiv-2601-01050",
+      "arxiv-2602-09600",
+      "arxiv-2602-09638",
+      "arxiv-2603-08254",
+      "arxiv-2603-13615",
+      "arxiv-2604-01001",
+      "arxiv-2604-10836",
+      "arxiv-2607-02075",
+      "paper-3cc64741b1"
+    ],
+    "path": "content/reports/hoi_world_model_3d4d_report.md",
+    "source_file": "hoi_world_model_3d4d_report.md"
+  }
+]
