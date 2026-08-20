@@ -74,4 +74,12 @@ python3 scripts/check_asset_budget.py
 
 ## GitHub Pages
 
-独立仓库的 Pages workflow 应校验数据并将仓库根目录 `.` 作为 Pages artifact 发布。在 GitHub 仓库的 **Settings → Pages → Source** 选择 **GitHub Actions** 即可。
+独立仓库的 Pages workflow 会校验数据并将仓库根目录 `.` 作为 Pages artifact 发布。第一次运行 workflow 前，仓库管理员必须完成一次启用：
+
+1. 打开 GitHub 仓库的 **Settings → Pages**。
+2. 在 **Build and deployment** 下，将 **Source** 设为 **GitHub Actions**。
+3. 回到 **Actions → Deploy Zhiyu**，点击 **Re-run all jobs**，或在 workflow 页面手动运行。
+
+如果 `actions/configure-pages` 报 `Get Pages site failed` 和 `404 Not Found`，说明 GitHub 尚未为该仓库创建 Pages site，通常就是上面的 Source 尚未设置。Node 20 deprecation 信息只是 GitHub Runner 将旧 Action 自动运行在 Node 24 上的迁移提示，不是本次部署失败原因；不要设置 `ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true` 回退到 Node 20。
+
+不建议直接给 `configure-pages` 添加 `enablement: true`：该选项不能使用默认 `GITHUB_TOKEN` 自动启用站点，需要额外的 Personal Access Token 或 GitHub App 管理权限。团队仓库采用一次性 UI 启用更简单，也更安全。
