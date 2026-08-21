@@ -52,3 +52,5 @@ dist/
 
 # Browser-exported overrides must be reviewed and moved into data/ explicitly
 /paper_overrides.json
+
+test*

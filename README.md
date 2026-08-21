@@ -1,6 +1,6 @@
 # 知域
 
-知域是一个可独立部署到 GitHub Pages 的纯静态研究知识库。当前数据由 7 份 Markdown 论文报告合并生成，包含 43 篇去重后的论文与完整专题报告阅读视图。
+知域是一个可独立部署到 GitHub Pages 的纯静态研究知识库。当前数据由 Markdown 论文报告合并生成，包含去重后的论文条目与完整专题报告阅读视图。
 
 本项目按独立 Git 仓库设计。下文所有路径和命令都相对于仓库根目录，不依赖其他项目或外部 `sys_docs`。
 
@@ -33,7 +33,9 @@ python3 scripts/validate_data.py
 2. DOI；
 3. 规范化标题（忽略大小写、标点和空格）。
 
-已存在的评论、删除标记和人工字段不会被导入器覆盖。新报告必须遵循 [CONTRIBUTING.md](CONTRIBUTING.md) 中的检索、证据和标题层级规则，并在每篇论文段落中保留 Insight、Pipeline、实验、开放情况与局限等小节。
+已存在的评论、删除标记和人工字段不会被导入器覆盖。**只有源报告文件内容变化时，才会更新该报告里已有论文的正文、配图和标签**；未改动的报告重跑导入不会刷新 `updated_at`，也不需要再手工还原 `papers.json`。新报告必须遵循 [CONTRIBUTING.md](CONTRIBUTING.md) 中的检索、证据和标题层级规则。代表图必须使用可直接打开的图片文件链接，不要只贴论文 HTML 页。`enrich_arxiv.py` 只补全空标题和 arXiv 元数据，不会覆盖已经写好的题名。
+
+每篇新入库论文应写清 **当前挑战、研究动机、技术方案、实验结果、总结讨论**，并保留代码与数据、局限要点。导入器同时识别旧报告里的 Insight / Pipeline / 实验与证据 / 局限：新字段是可选的，不会要求旧论文补齐，也不会覆盖已有评论或更完整的历史正文。
 
 ## 团队贡献
 
@@ -58,7 +60,7 @@ python3 scripts/validate_data.py
 
 ## 数据文件
 
-- `data/papers.json`：合并后的论文记录；稳定 ID 优先使用 `arxiv-YYMM-NNNNN`。
+- `data/papers.json`：合并后的论文记录；稳定 ID 优先使用 `arxiv-YYMM-NNNNN`。新报告可额外写入 `challenges`、`motivation`、`technical_approach`、`discussion`；缺省时前端仍使用 `insight`、`pipeline`、`experiments`、`limitations`。
 - `data/reports.json`：专题报告索引及其关联论文 ID。
 - `data/paper_overrides.json`：人工评论、隐藏标记及字段修订。
 - `content/reports/`：可直接阅读的原始 Markdown 报告。

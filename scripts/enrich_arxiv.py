@@ -63,9 +63,11 @@ def main() -> None:
         if not item:
             continue
         before = json.dumps(paper, ensure_ascii=False, sort_keys=True)
-        if item["title"]:
-            paper["title"] = item["title"]
-        if not paper.get("authors") or len(item["authors"]) > len(paper["authors"]):
+        incoming_title = str(item["title"] or "").strip()
+        current_title = str(paper.get("title") or "").strip()
+        if incoming_title and not current_title:
+            paper["title"] = incoming_title
+        if not paper.get("authors") or len(item["authors"]) > len(paper.get("authors") or []):
             paper["authors"] = item["authors"]
         paper["arxiv"] = {
             "published": item["published"],

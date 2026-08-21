@@ -1,5 +1,23 @@
 [
   {
+    "id": "report-365c2cc93b",
+    "title": "Galaxea G0.5 与 FlowWAM：自回归 VLA 与光流动作表征整理",
+    "date": "2026-08-21",
+    "tags": [
+      "VLA",
+      "World Action Model",
+      "机器人学习"
+    ],
+    "summary": "两篇工作同属机器人控制，但接口不同：G0.5 让 VLM 在同一自回归流中同时生成推理与动作 token；FlowWAM 把光流视频当作 WAM 的统一动作表征，同时服务策略解码与动作条件世界建模。二者都不是结构因果或反事实识别工作。",
+    "paper_ids": [
+      "arxiv-2607-13017",
+      "arxiv-2608-11739"
+    ],
+    "path": "content/reports/2026-08-21_curated_papers.md",
+    "source_file": "2026-08-21_curated_papers.md",
+    "content_sha1": "42a3fb430514d62a3b5b9e3919345ccac4b6c851"
+  },
+  {
     "id": "report-90041fa2f9",
     "title": "交互世界模型与人体/手物交互生成论文梳理",
     "date": "2026-08-20",
@@ -21,7 +39,8 @@
       "arxiv-2603-20169"
     ],
     "path": "content/reports/paper_reading_summary.md",
-    "source_file": "paper_reading_summary.md"
+    "source_file": "paper_reading_summary.md",
+    "content_sha1": "5903ca99a76af0b55ef49476d7996f41e0c8f504"
   },
   {
     "id": "report-ce5d8128c6",
@@ -45,7 +64,8 @@
       "arxiv-2608-13456"
     ],
     "path": "content/reports/world_model_causality_counterfactual_survey_2026-08-20.md",
-    "source_file": "world_model_causality_counterfactual_survey_2026-08-20.md"
+    "source_file": "world_model_causality_counterfactual_survey_2026-08-20.md",
+    "content_sha1": "ad1d89e80653dec38f247a787d8b2a3d046fdedc"
   },
   {
     "id": "report-e81e6bd3a1",
@@ -73,7 +93,8 @@
       "arxiv-2608-09771"
     ],
     "path": "content/reports/wam_paper_reading_summary.md",
-    "source_file": "wam_paper_reading_summary.md"
+    "source_file": "wam_paper_reading_summary.md",
+    "content_sha1": "e6ee971e746b05bfbae39c4a6ab59cd2c6a55489"
   },
   {
     "id": "report-6fa37648ba",
@@ -94,7 +115,8 @@
       "arxiv-2608-13456"
     ],
     "path": "content/reports/causal_world_models_2026_survey.md",
-    "source_file": "causal_world_models_2026_survey.md"
+    "source_file": "causal_world_models_2026_survey.md",
+    "content_sha1": "f2f6e054fa9ca5c1463f02e4c5536f2a3e5ebac9"
   },
   {
     "id": "report-554de78a93",
@@ -115,7 +137,8 @@
       "arxiv-2608-13456"
     ],
     "path": "content/reports/causal_world_models_2026_survey.original.md",
-    "source_file": "causal_world_models_2026_survey.original.md"
+    "source_file": "causal_world_models_2026_survey.original.md",
+    "content_sha1": "caea8e84f2dbc432ca83bf04b63dcad20be65370"
   },
   {
     "id": "report-1818b05f33",
@@ -133,7 +156,8 @@
       "arxiv-2605-18365"
     ],
     "path": "content/reports/geometric_consistency_video_generation_report.md",
-    "source_file": "geometric_consistency_video_generation_report.md"
+    "source_file": "geometric_consistency_video_generation_report.md",
+    "content_sha1": "13a7e23f3180bb005918ba783a6538bdb0c3fb01"
   },
   {
     "id": "report-0ad44831eb",
@@ -161,6 +185,7 @@
       "paper-3cc64741b1"
     ],
     "path": "content/reports/hoi_world_model_3d4d_report.md",
-    "source_file": "hoi_world_model_3d4d_report.md"
+    "source_file": "hoi_world_model_3d4d_report.md",
+    "content_sha1": "d0dad4382601ba65767942be343c5863fd113db5"
   }
 ]
