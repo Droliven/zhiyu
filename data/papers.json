@@ -1071,8 +1071,13 @@
       "alphaxiv": "https://alphaxiv.org/abs/2607.13017"
     },
     "tags": [
+      "cross-embodiment",
+      "embodied AI",
+      "geometry action",
+      "visual action",
       "VLA",
       "World Action Model",
+      "world model",
       "机器人学习"
     ],
     "figure": {
@@ -1096,7 +1101,8 @@
     "limitations": "- 腕部视角没有 robot-only flow 监督，拼图里用常量占位。\n- RoboTwin flow 目标去掉了物体/背景运动，接触后的 object response 不在动作表征里。\n- WorldArena 消融 split 与官方远程评测不一致，不能把 65.23 与主表 63.71 混比。\n- Hanging Mug 等任务成功率仍低；真机每任务仅 10 trial。\n- 光流是像素位移，不是可干预因果变量；RAFT 误差会进入训练目标。\n- 未来工作承认尚未做 internet-scale 无动作预训练和更长时域 flow planning。",
     "comments": "",
     "source_reports": [
-      "report-365c2cc93b"
+      "report-365c2cc93b",
+      "report-a77d9a7ad6"
     ],
     "deleted": false,
     "updated_at": "2026-08-21",
@@ -2175,9 +2181,14 @@
       "alphaxiv": "https://alphaxiv.org/abs/2607.19343"
     },
     "tags": [
+      "cross-embodiment",
+      "embodied AI",
+      "geometry action",
       "JEPA",
+      "visual action",
       "VLA",
       "World Action Model",
+      "world model",
       "反事实推理",
       "机器人学习",
       "预测表征"
@@ -2189,7 +2200,7 @@
       "paper_title": "Masked Visual Actions for Unified World Modeling",
       "source_url": "https://arxiv.org/html/2607.19343v1/teaser.png"
     },
-    "summary": "核心做法是把动作表示成视频中任意实体的部分可见时空轨迹：露出机器人的运动，模型补全物体和场景响应，得到正向动力学；露出物体的期望运动，同一模型补全机器人行为，得到逆向动作合成。主动与被动不再对应两套架构，而是对同一交互先验提出不同 masked-video 查询。",
+    "summary": "核心做法是把动作表示成视频中任意实体的部分可见时空轨迹：露出机器人运动，模型补全物体与场景响应；露出期望物体运动，同一模型补全机器人行为。主动与被动不再是两套架构，而是对同一交互先验的不同 masked-video 查询。它与 FlowWAM 一起构成本专题最直接的两个端点：显式 flow field 与实体 masked trajectory。",
     "insight": "核心 Insight：**把动作写成视频里任意实体的部分可见时空轨迹。露出机器人，模型预测场景响应（正向）；露出物体期望运动，同一模型补出机器人行为（逆向）。主动/被动不是两套架构，而是对同一交互先验的不同查询。**\n\n这改变的是控制接口：条件是与输出空间对齐的 masked video，用 concatenation 注入 Wan-Fun-Control，而不是另开动作通道。训练只用主动机器人实体的 mask，逆向查询零样本泛化。与本知识库 **直接相关于视频世界模型 / WAM 的动作表征**；与 FlowWAM 的光流视频动作、FACT 的数值动作块是同一谱系上的不同点。作者在讨论里自己写明学的是交互相关而非因果关系。\n\n注意：库中已有 **Mask World Model: Predicting What Matters for Robust Robot Policy Learning**，是另一篇工作（预测语义 mask 当输出），标题相近但不是本文。",
     "pipeline": {
       "input": "参考帧 I 0、masked 条件视频 Modot V（未露出区域填均匀灰）、文本 prompt。正向时 M 为机器人轨迹；逆向时为物体/期望运动。",
@@ -2203,6 +2214,7 @@
     "limitations": "- 作者原文：模型学的是物体交互的 **相关** 而非因果，因果仍是开放问题。\n- 能力与时延受基座 14B 视频模型限制；没有改骨干表达能力。\n- 分割路径可能从遮挡泄漏原视频动态；渲染路径需要相机标定，且默认只渲染机器人。\n- 视频内评测对成功有正偏差；不能当作无偏仿真器。\n- 规划排序依赖闭源 VLM；自定义夹爪/未见双臂上稀疏条件失败，说明泛化来自 mask 接口而非任意可视化。\n- 逆向仍需要单独 IDM 才能落地关节指令；视频本身不是可执行策略。",
     "comments": "",
     "source_reports": [
+      "report-a77d9a7ad6",
       "report-af906c7fa2"
     ],
     "deleted": false,
