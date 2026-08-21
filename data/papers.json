@@ -49,6 +49,132 @@
     "year": 2026
   },
   {
+    "id": "arxiv-2605-15141",
+    "title": "Causal Forcing++: Scalable Few-Step Autoregressive Diffusion Distillation for Real-Time Interactive Video Generation",
+    "authors": [
+      "Min Zhao",
+      "Hongzhou Zhu",
+      "Kaiwen Zheng",
+      "Zihan Zhou",
+      "Bokai Yan",
+      "Xinyuan Li",
+      "Xiao Yang",
+      "Chongxuan Li",
+      "Jun Zhu"
+    ],
+    "year": 2026,
+    "publication": "2026，arXiv preprint（v3 HTML）。Min Zhao 与 Hongzhou Zhu 共同一作；通讯 Jun Zhu。清华 / 生数 / 人大。arXiv:2605.15141。尚无 DOI / 正式出版页。",
+    "arxiv_id": "2605.15141",
+    "doi": "",
+    "links": {
+      "paper": "https://arxiv.org/abs/2605.15141",
+      "code": "https://github.com/thu-ml/Causal-Forcing",
+      "alphaxiv": "https://alphaxiv.org/abs/2605.15141"
+    },
+    "tags": [
+      "交互世界模型",
+      "因果推理",
+      "自回归扩散",
+      "视频生成"
+    ],
+    "figure": {
+      "url": "https://arxiv.org/html/2605.15141v3/overall.png",
+      "alt": "Causal Forcing++ Fig. 1: causal CD replacing causal ODE initialization",
+      "label": "Causal Forcing++，Fig. 1，相对 Self Forcing / Causal Forcing 的正确性、效率与延迟对比。来源：Fig. 1 原图 PNG",
+      "paper_title": "Causal Forcing++: Scalable Few-Step Autoregressive Diffusion Distillation for Real-Time Interactive Video Generation",
+      "source_url": "https://arxiv.org/html/2605.15141v3/overall.png"
+    },
+    "summary": "核心 Insight： 因果 ODE 与因果 CD 学的是同一个 AR 条件 flow map / consistency function；CD 用相邻时间步的一次在线 teacher ODE 步代替整条离线轨迹。 局部配对的逐步间隙更小，因而更好优化。Stage 1 / Stage 3 沿用 Causal Forcing，只换 Stage 2。",
+    "insight": "核心 Insight：**因果 ODE 与因果 CD 学的是同一个 AR 条件 flow map / consistency function；CD 用相邻时间步的一次在线 teacher ODE 步代替整条离线轨迹。** 局部配对的逐步间隙更小，因而更好优化。Stage 1 / Stage 3 沿用 Causal Forcing，只换 Stage 2。\n\n与本知识库课题 **直接相关**：第 3.3 节把同一配方蒸到相机位姿条件生成器，明确对标 Genie 3 式交互世界模型；完整工程化交给 minWM。动作条件变体仍是 chunk-wise 4-step，frame-wise 2-step 留作未来工作。",
+    "pipeline": {
+      "input": "文本；Wan2.1-1.3B；480×832、81 帧； frame-wise AR。Stage 1–2 用含 OpenVid 采样的 80K 视频；Stage 3 用 VidProM。",
+      "process": "Stage 1 TF AR 扩散 20K 步。Stage 2 因果 CD：平方距离、48 个离散时间步、Euler，5K 步；学生 G theta(x t^i,x gt^<i,t)=x t^i-t ,v theta(cdot)。Stage 3 不对称 DMD 1K 步；batch 64。少于 4 步时采用 ASD 技巧：第一帧仍 4 步，后续 20 个 latent 帧用 1 或 2 步——因此文中 1/2/4-step 的首帧延迟相同。动作世界模型：WorldPlay 标注相机 → PRoPE 注入双向 Wan → 再走 CF++。",
+      "output": "流式帧。效率在 单卡 A800、不含 VAE 上测：2-step 14.1 FPS / 0.27 s；1-step 20.7 FPS / 0.27 s；4-step 8.69 FPS / 0.27 s。与 Self Forcing / Causal Forcing 的 H100+VAE 测速不可直接比。",
+      "details": "- **输入：** 文本；Wan2.1-1.3B；480×832、81 帧；**frame-wise** AR。Stage 1–2 用含 OpenVid 采样的 80K 视频；Stage 3 用 VidProM。\n- **过程：** Stage 1 TF AR 扩散 20K 步。Stage 2 因果 CD：平方距离、48 个离散时间步、Euler，5K 步；学生 \\(G_\\theta(x_t^i,x_{\\mathrm{gt}}^{<i},t)=x_t^i-t\\,v_\\theta(\\cdot)\\)。Stage 3 不对称 DMD 1K 步；batch 64。少于 4 步时采用 ASD 技巧：第一帧仍 4 步，后续 20 个 latent 帧用 1 或 2 步——因此文中 1/2/4-step 的首帧延迟相同。动作世界模型：WorldPlay 标注相机 → PRoPE 注入双向 Wan → 再走 CF++。\n- **输出：** 流式帧。效率在 **单卡 A800、不含 VAE** 上测：2-step 14.1 FPS / 0.27 s；1-step 20.7 FPS / 0.27 s；4-step 8.69 FPS / 0.27 s。与 Self Forcing / Causal Forcing 的 H100+VAE 测速不可直接比。\n\n与最近 baseline 的实质差异：相对 Causal Forcing，Stage 2 从离线因果 ODE 换成在线因果 CD；相对 Self Forcing，初始化教师是 AR 而非双向。APT2 同样用过 TF-CD，但走 GAN、无双向 DMD teacher、无时序 KV cache。"
+    },
+    "experiments": "**作者主张：** frame-wise 2-step 在 VBench Total / Quality / VisionReward 上超过 SOTA 的 chunk-wise 4-step Causal Forcing，首帧延迟降 50%，Stage 2 成本约 \\(4\\times\\)。\n\n实验实际支持：\n\n- **主表（相对先前 chunk-wise 4-step 方法）：** CF++ 2-step Total/Quality/Semantic **84.14 / 84.89 / 81.13**，Dynamic 64，VisionReward 6.661，Instruct 51。Causal Forcing 84.04 / 84.59 / 81.84 / 68 / 6.326 / 56。4-step CF++ Quality 84.94、VisionReward 6.798、Dynamic 71，但 Semantic 80.75、Instruct 47，并非全面领先。1-step Total 83.35，Instruct 38。\n- **“超过 CF 0.1 / 0.3 / 0.335”：** 2-step vs CF 的 Total 84.14−84.04、Quality 84.89−84.59、VisionReward 6.661−6.326。Semantic 与 Instruct 并未全面超过 CF。\n- **消融（frame-wise，Stage 2 成本含 ODE 数据制作）：** 2-step 下因果 CD 84.14 / 6.661 / 51，2900 GPU·h、0 额外存储；因果 ODE 83.77 / 6.224 / 46，11600 GPU·h、1900 GiB；SF ODE 79.44、Dynamic 0；多步 AR init Dynamic 8；因果 DMD init VisionReward 6.108。1-step 下多步 AR init Instruct −14、Dynamic 0。\n- **动作条件：** Fig. 4 定性展示前进/俯仰；无 VBench 或控制误差表。\n\n**证据未支持：** 1-step 已达到 4-step 质量；CF++ 在所有轴上严格支配 Causal Forcing；A800 无 VAE 的 0.27 s 等于 H100 端到端延迟；动作世界模型已实时。",
+    "evidence_notes": "",
+    "code_data_status": "- **代码：** 并入 [thu-ml/Causal-Forcing](https://github.com/thu-ml/Causal-Forcing)；世界模型栈见 [shengshu-ai/minWM](https://github.com/shengshu-ai/minWM)。\n- **数据：** Stage 1–2 的 80K 含 OpenVid；ODE 对照需额外轨迹存储。动作数据经 WorldPlay 生成。\n- **测速口径：** 文中反复强调与 SF/CF 论文的 H100 口径不同。",
+    "limitations": "- 1-step 语义与指令跟随仍明显弱于 2-step。\n- ASD 技巧使“1-step 模型”的第一帧其实仍是 4-step。\n- 动作世界模型只有定性图，未推到 frame-wise 2-step。\n- 因果 DMD 初始化不适合 AR rollout，作者认为与 reverse KL 有关，但未做因果消融。\n- 效率数字不含 VAE，真实交互延迟会被解码拖累。\n- 与 APT2 仍无公平数字对照。\n\n---",
+    "comments": "",
+    "source_reports": [
+      "report-c7ced2c92d"
+    ],
+    "deleted": false,
+    "updated_at": "2026-08-21",
+    "challenges": "Causal Forcing 在 chunk-wise 4-step 已能打，但交互仍受 **块粒度过粗** 和 **每块 4 步延迟** 限制。本文把设定推到 **frame-wise × 1–2 采样步**，并指出这时 Stage 2 初始化成为瓶颈：\n\n- Self Forcing 式双向 ODE：目标与 AR 学生不对齐，在 frame-wise 低步数下 DMD 后会崩（消融里 Dynamic Degree 可到 0）。\n- 直接用多步 AR 当初始化：没有 few-step 能力，1-step 时动态/指令跟随接近崩溃。\n- Causal Forcing 的因果 ODE：目标正确，但每条样本要跑完整 PF-ODE（文中例 48 步）并离线存盘；80K 视频规模约 11,600 A800 GPU·h + 1,900 GiB。\n\n作者还检查了因果 DMD 当 Stage 2：早期帧更锐，但 reverse KL 的 mode-seeking 在历史漂移后把质量质量迅速推进低质量区，暴露偏差比因果 CD 更重。这是作者的机制假说，配有 Fig. 5 示意，不是因果识别实验。",
+    "motivation": "核心 Insight：**因果 ODE 与因果 CD 学的是同一个 AR 条件 flow map / consistency function；CD 用相邻时间步的一次在线 teacher ODE 步代替整条离线轨迹。** 局部配对的逐步间隙更小，因而更好优化。Stage 1 / Stage 3 沿用 Causal Forcing，只换 Stage 2。\n\n与本知识库课题 **直接相关**：第 3.3 节把同一配方蒸到相机位姿条件生成器，明确对标 Genie 3 式交互世界模型；完整工程化交给 minWM。动作条件变体仍是 chunk-wise 4-step，frame-wise 2-step 留作未来工作。",
+    "technical_approach": "- **输入：** 文本；Wan2.1-1.3B；480×832、81 帧；**frame-wise** AR。Stage 1–2 用含 OpenVid 采样的 80K 视频；Stage 3 用 VidProM。\n- **过程：** Stage 1 TF AR 扩散 20K 步。Stage 2 因果 CD：平方距离、48 个离散时间步、Euler，5K 步；学生 \\(G_\\theta(x_t^i,x_{\\mathrm{gt}}^{<i},t)=x_t^i-t\\,v_\\theta(\\cdot)\\)。Stage 3 不对称 DMD 1K 步；batch 64。少于 4 步时采用 ASD 技巧：第一帧仍 4 步，后续 20 个 latent 帧用 1 或 2 步——因此文中 1/2/4-step 的首帧延迟相同。动作世界模型：WorldPlay 标注相机 → PRoPE 注入双向 Wan → 再走 CF++。\n- **输出：** 流式帧。效率在 **单卡 A800、不含 VAE** 上测：2-step 14.1 FPS / 0.27 s；1-step 20.7 FPS / 0.27 s；4-step 8.69 FPS / 0.27 s。与 Self Forcing / Causal Forcing 的 H100+VAE 测速不可直接比。\n\n与最近 baseline 的实质差异：相对 Causal Forcing，Stage 2 从离线因果 ODE 换成在线因果 CD；相对 Self Forcing，初始化教师是 AR 而非双向。APT2 同样用过 TF-CD，但走 GAN、无双向 DMD teacher、无时序 KV cache。",
+    "discussion": "Causal Forcing++ 把“正确的 AR flow map”从昂贵离线轨迹改成可扩展的局部 consistency。frame-wise 2-step 的 Total/Quality/VisionReward 支持这一替换；Instruct 和部分动态轴上 4-step Causal Forcing 仍有优势。适用边界是 Wan-1.3B 级 T2V 蒸馏，外加一个尚未量化的相机控制演示。阅读判断：这是工程可扩展性论文，理论等价依赖于 CD 误差 \\(\\mathcal{O}((\\Delta t)^p)\\) 的标准界；不要把 VisionReward +0.335 写成交互世界模型已闭环。失败案例见消融可视化：错误初始化会出现糊、场景崩、物体漂移。",
+    "arxiv": {
+      "published": "2026-05-14T17:46:36Z",
+      "revised_at": "2026-06-01T14:27:49Z",
+      "primary_category": "cs.CV"
+    }
+  },
+  {
+    "id": "arxiv-2602-02214",
+    "title": "Causal Forcing: Autoregressive Diffusion Distillation Done Right for High-Quality Real-Time Interactive Video Generation",
+    "authors": [
+      "Hongzhou Zhu",
+      "Min Zhao",
+      "Guande He",
+      "Hang Su",
+      "Chongxuan Li",
+      "Jun Zhu"
+    ],
+    "year": 2026,
+    "publication": "2026，arXiv preprint（v2/v5 HTML 与摘要一致；cs.LG/cs.CV 线索见 arXiv）。Hongzhou Zhu 与 Min Zhao 共同一作；通讯 Jun Zhu（dcszj@tsinghua.edu.cn）。清华 / 生数 / UT Austin / 人大。尚无 DOI / 正式出版页。arXiv:2602.02214。",
+    "arxiv_id": "2602.02214",
+    "doi": "",
+    "links": {
+      "paper": "https://arxiv.org/abs/2602.02214",
+      "project": "https://thu-ml.github.io/CausalForcing.github.io/",
+      "code": "https://github.com/thu-ml/Causal-Forcing",
+      "alphaxiv": "https://alphaxiv.org/abs/2602.02214"
+    },
+    "tags": [
+      "交互世界模型",
+      "因果推理",
+      "自回归扩散",
+      "视频生成"
+    ],
+    "figure": {
+      "url": "https://arxiv.org/html/2602.02214v5/Fig3.png",
+      "alt": "Causal Forcing Fig. 3: frame-level injectivity vs bidirectional ODE pairs",
+      "label": "Causal Forcing，Fig. 3，ODE 初始化需要帧级单射，以及 Self Forcing 用双向 teacher 监督 AR 学生为何违规。来源：Fig. 3 原图 PNG",
+      "paper_title": "Causal Forcing: Autoregressive Diffusion Distillation Done Right for High-Quality Real-Time Interactive Video Generation",
+      "source_url": "https://arxiv.org/html/2602.02214v5/Fig3.png"
+    },
+    "summary": "核心 Insight： few-step AR 学生的 ODE 教师必须自己也是 AR，其 PF-ODE 才天然满足帧级单射。 三阶段因此变成：TF 训多步 AR teacher → 用该 teacher 采因果 ODE 轨迹做学生初始化 → 再走 Self Forcing 同款不对称 DMD（双向 real/fake score + 学生自 rollout）。这改变的是初始化目标，不是 DMD 损失本身。",
+    "insight": "核心 Insight：**few-step AR 学生的 ODE 教师必须自己也是 AR，其 PF-ODE 才天然满足帧级单射。** 三阶段因此变成：TF 训多步 AR teacher → 用该 teacher 采因果 ODE 轨迹做学生初始化 → 再走 Self Forcing 同款不对称 DMD（双向 real/fake score + 学生自 rollout）。这改变的是初始化目标，不是 DMD 损失本身。\n\n与本知识库课题 **直接相关于交互视频世界模型接口，间接相关于因果**。标题里的 Causal 指时序因果注意力与因果 ODE，不是结构因果。Causal Forcing++ / minWM 把它当成可插拔 Stage 2。",
+    "pipeline": {
+      "input": "文本；骨干 Wan2.1-T2V-1.3B，81 帧、832× 480，chunk-wise（3 latent 帧）。",
+      "process": "Stage 1：在双向模型合成的 3K 集 mathcalD Bi 上 TF 训 AR 扩散 2K 步。Stage 2：用该 AR teacher 在 GT 历史上对当前帧解 PF-ODE，存 3K 条 mathcalD Causal，对学生做 1K 步回归。Stage 3：与 Self Forcing 相同的 asymmetric DMD，VidProM，750 步。作者强调 ODE+DMD 总步数与 Self Forcing 同预算。附录还给出因果 CD，作为 ODE 的替代初始化，质量仍低于 score distillation。",
+      "output": "4-step chunk-wise 流式视频；吞吐/延迟与 Self Forcing 相同（文中 17.0 FPS / 0.69 s，H100）。",
+      "details": "- **输入：** 文本；骨干 Wan2.1-T2V-1.3B，81 帧、\\(832\\times 480\\)，chunk-wise（3 latent 帧）。\n- **过程：** Stage 1：在双向模型合成的 3K 集 \\(\\mathcal{D}_{\\text{Bi}}\\) 上 TF 训 AR 扩散 2K 步。Stage 2：用该 AR teacher 在 GT 历史上对当前帧解 PF-ODE，存 3K 条 \\(\\mathcal{D}_{\\text{Causal}}\\)，对学生做 1K 步回归。Stage 3：与 Self Forcing 相同的 asymmetric DMD，VidProM，750 步。作者强调 ODE+DMD 总步数与 Self Forcing 同预算。附录还给出因果 CD，作为 ODE 的替代初始化，质量仍低于 score distillation。\n- **输出：** 4-step chunk-wise 流式视频；吞吐/延迟与 Self Forcing 相同（文中 17.0 FPS / 0.69 s，H100）。\n\n与最近 baseline 的实质差异：相对 Self Forcing，只换 ODE teacher（AR vs 双向）；相对 APT2（GAN + TF-CD、无时序 KV cache），本文留在不对称 DMD + KV cache 路线。作者声明 APT2 未开源故不比数字。"
+    },
+    "experiments": "**作者主张：** 同训练预算、同推理成本下全面超过 Self Forcing；相对 SF 提升 Dynamic Degree 19.3%、VisionReward 8.7%、Instruction Following 16.7%。\n\n实验实际支持：\n\n- **主表：** Causal Forcing Total/Quality/Semantic = **84.04 / 84.59 / 81.84**；Dynamic Degree **68**，VisionReward **6.326**，Instruct **56**，用户排序 1.64（越小越好）。Self Forcing 83.74 / 84.48 / 80.77 / 57 / 5.820 / 48 / 2.87。CausVid 81.33 / 83.98 / 70.72 / 62 / 5.741 / 12。Wan2.1-1.3B 83.37 / 84.30 / 79.65 / 61 / 5.275 / 42，但 0.78 FPS / 103 s。MAGI-1-4.5B 在此表上 78.88 total、0.19 FPS / 282 s。\n- **评测拆分：** VBench 总体；VisionReward / Instruct / Dynamic Degree 用作者另编的 100 条高运动 prompt（补充材料），并 ×100。用户研究 10 人 × 10 prompt 排序。这些子集不是 VBench 官方 split。\n- **消融：** TF 3.343 VisionReward vs DF 1.583。Causal ODE+DMD vs SF ODE+DMD：chunk-wise VisionReward 6.326 vs 3.330，Dynamic 68 vs 24；frame-wise Dynamic 64 vs 2，VisionReward 6.204 vs 1.951。因果 CD 相对不对称 CD 有提升，但仍弱于 DMD。\n- **百分比：** 19.3% 来自 (68−57)/57；8.7% 来自 (6.326−5.820)/5.820；16.7% 来自 (56−48)/48。这是作者定义的相对提升，不是 VBench Total 的 19%。\n\n**证据未支持：** DMD 阶段被证明“不能”缩小架构差距（只是该对照下没缩小）；帧级非单射在所有双向 DiT 上必然成立（引理依赖“对其余帧非几乎处处常数”的假设，作者用注意力图文献作为经验理由）；长视频外推已被作者自己排除，需 LongLive 等正交方法。",
+    "evidence_notes": "",
+    "code_data_status": "- **代码：** [thu-ml/Causal-Forcing](https://github.com/thu-ml/Causal-Forcing)，同时承接 Causal Forcing++。\n- **数据：** \\(\\mathcal{D}_{\\text{Bi}}\\) / \\(\\mathcal{D}_{\\text{Causal}}\\) 为内部合成轨迹；DMD 用 VidProM。完整复现依赖 Wan 权重与这些合成对。\n- **许可：** 以仓库 LICENSE 为准，本次未逐文件核验。",
+    "limitations": "- 训练长度 5 s，外推需 LongLive / Rolling Forcing / Infinity-RoPE 等，本文不解决。\n- Dynamic Degree / VisionReward 用自建 100 prompt，与 VBench 官方运动轴不是同一分布。\n- 用户研究仅 10×10，排序均值不能当大规模主观结论。\n- 因果 CD 仍是 vanilla LCM，作者承认弱于 score distillation。\n- ODE 轨迹存储/生成成本高，直接催生 Causal Forcing++。\n- 与 APT2 无数字对照，架构不同不能外推胜负。\n\n---",
+    "comments": "",
+    "source_reports": [
+      "report-c7ced2c92d"
+    ],
+    "deleted": false,
+    "updated_at": "2026-08-21",
+    "challenges": "领域长期问题仍是把双向基础模型蒸成实时 AR 学生。本文针对的缺口是 **ODE 初始化的理论对象错了**，而不是再调 DMD。\n\n- **作者用对照隔离问题：** 即使把 AR 学生初始化成已经 few-step 的双向 DMD 模型（采样步差距消失、只剩架构差距），后续 DMD 仍明显弱于标准双向 DMD。结论：架构差距必须在 ODE 阶段补，DMD 补不上。\n- **帧级单射：** ODE 回归要求噪声样本对应唯一干净样本。双向 PF-ODE 只在整段视频上单射；AR 学生按帧生成，同一噪声帧在不同未来上下文下可对应多个干净帧。MSE 最优解退化成条件期望，表现为糊。Lemma 3.2 / Prop. 3.3 给出形式化陈述；经验支撑是 Fig. 3c 的糊视频，不是对真实物理因果的证明。\n- **TF vs DF：** 作者主张 AR 扩散训练应用 teacher forcing。Prop. 3.4 说 DF 在干净前缀条件下不跟随数据分布；Fig. 4 显示 DF 更易崩溃，其更高 Dynamic Degree 被作者读成病态运动而非更好动态。",
+    "motivation": "核心 Insight：**few-step AR 学生的 ODE 教师必须自己也是 AR，其 PF-ODE 才天然满足帧级单射。** 三阶段因此变成：TF 训多步 AR teacher → 用该 teacher 采因果 ODE 轨迹做学生初始化 → 再走 Self Forcing 同款不对称 DMD（双向 real/fake score + 学生自 rollout）。这改变的是初始化目标，不是 DMD 损失本身。\n\n与本知识库课题 **直接相关于交互视频世界模型接口，间接相关于因果**。标题里的 Causal 指时序因果注意力与因果 ODE，不是结构因果。Causal Forcing++ / minWM 把它当成可插拔 Stage 2。",
+    "technical_approach": "- **输入：** 文本；骨干 Wan2.1-T2V-1.3B，81 帧、\\(832\\times 480\\)，chunk-wise（3 latent 帧）。\n- **过程：** Stage 1：在双向模型合成的 3K 集 \\(\\mathcal{D}_{\\text{Bi}}\\) 上 TF 训 AR 扩散 2K 步。Stage 2：用该 AR teacher 在 GT 历史上对当前帧解 PF-ODE，存 3K 条 \\(\\mathcal{D}_{\\text{Causal}}\\)，对学生做 1K 步回归。Stage 3：与 Self Forcing 相同的 asymmetric DMD，VidProM，750 步。作者强调 ODE+DMD 总步数与 Self Forcing 同预算。附录还给出因果 CD，作为 ODE 的替代初始化，质量仍低于 score distillation。\n- **输出：** 4-step chunk-wise 流式视频；吞吐/延迟与 Self Forcing 相同（文中 17.0 FPS / 0.69 s，H100）。\n\n与最近 baseline 的实质差异：相对 Self Forcing，只换 ODE teacher（AR vs 双向）；相对 APT2（GAN + TF-CD、无时序 KV cache），本文留在不对称 DMD + KV cache 路线。作者声明 APT2 未开源故不比数字。",
+    "discussion": "Causal Forcing 把 Self Forcing 的失败从“DMD 匹配错分布”推进到“ODE 回归对象不单射”。在 Wan-1.3B、同预算设定下，运动与 VisionReward 的增益与消融同向。适用边界仍是 5 s 注意力窗口的 T2V 蒸馏。作者明确：直接外推会长于训练长度会出训练–推理差。阅读判断：理论部分是关于 PF-ODE 回归良定性，不要写成发现了世界的因果结构；引用 19.3% 时必须标明是 100-prompt Dynamic Degree，不是 VBench Total。",
+    "arxiv": {
+      "published": "2026-02-02T15:19:22Z",
+      "revised_at": "2026-06-01T14:32:37Z",
+      "primary_category": "cs.CV"
+    }
+  },
+  {
     "arxiv": {
       "published": "2026-01-29T17:07:43Z",
       "revised_at": "2026-03-22T15:37:40Z",
@@ -791,6 +917,70 @@
     "year": 2026
   },
   {
+    "id": "arxiv-2608-10232",
+    "title": "FACT: Failure-Aware Causal Training for World-Action Models",
+    "authors": [
+      "Quanquan Peng",
+      "Yutong Liang",
+      "Rui Yan",
+      "Nicklas Hansen",
+      "Xiaolong Wang"
+    ],
+    "year": 2026,
+    "publication": "2026，arXiv preprint（v1，cs.RO，2026-08-10）。尚无 DOI / 正式出版页。arXiv 论文许可为 CC BY-NC-ND 4.0；代码仓库声明 Apache-2.0。",
+    "arxiv_id": "2608.10232",
+    "doi": "",
+    "links": {
+      "paper": "https://arxiv.org/abs/2608.10232",
+      "project": "https://fact-wam.github.io/",
+      "code": "https://github.com/Bariona/FACT",
+      "model": "https://huggingface.co/Bariona/fact-wam",
+      "alphaxiv": "https://alphaxiv.org/abs/2608.10232"
+    },
+    "tags": [
+      "JEPA",
+      "VLA",
+      "World Action Model",
+      "因果推理",
+      "机器人学习",
+      "预测表征"
+    ],
+    "figure": {
+      "url": "https://arxiv.org/html/2608.10232v1/x2.png",
+      "alt": "FACT Fig. 2: action-then-imagine causal diffusion transformer",
+      "label": "FACT，Fig. 2，共享因果扩散 Transformer：动作、value 与未来视频同骨干，value/未来视频只看干净动作槽 G。来源：Fig. 2 原图 PNG",
+      "paper_title": "FACT: Failure-Aware Causal Training for World-Action Models",
+      "source_url": "https://arxiv.org/html/2608.10232v1/x2.png"
+    },
+    "summary": "核心 Insight： 先生成动作，再在干净已执行动作上预测未来视频与任务进度；失败 rollout 只监督观察到的失败未来和被压低的进度，不进入动作模仿损失。",
+    "insight": "核心 Insight：**先生成动作，再在干净已执行动作上预测未来视频与任务进度；失败 rollout 只监督观察到的失败未来和被压低的进度，不进入动作模仿损失。**\n\n方法选择因此改变了三个接口：\n\n1. **顺序接口：** token 序为 prefix \\(P\\) → 噪声动作 \\(A\\) → 干净 GT 动作 \\(G\\) → value \\(V\\) → 未来视频 \\(I\\)；世界分支只看 \\(G\\)，\\(A\\) 看不到 \\(G\\)。\n2. **训练信号：** 成功演示监督 \\(\\mathcal{L}_a+\\mathcal{L}_v+\\mathcal{L}_I\\)；失败窗口把 \\(\\mathcal{L}_a\\) mask 掉。\n3. **推理接口：** Stage 1 只解动作即可部署；可选 Stage 2 用 value 对 \\(N\\) 个候选打分。部署不必生成视频。\n\n与本知识库课题 **直接相关**：它明确站在 WAM 谱系上，对照 video-first / future-as-condition 设计，并在 RoboTwin 与真机双臂上同时测策略成功率和失败条件下的未来幻觉。它建模的是动作条件后果，**不是**结构因果。可与已入库的 FlowWAM、LingBot-VA、Causal World Modeling for Robot Control 对照阅读。",
+    "pipeline": {
+      "input": "语言指令 ℓ；多视角 RGB（主视 + 左右腕）与本体感觉 s t 打包成 prefix；训练时还有动作块 a t:t+H（H=48）、未来视频窗口（当前帧加四个偏移 [0,H/4,H/2,3H/4,H]）以及归一化进度目标。",
+      "process": "从 WAN2.2-5B / Wan2.2-TI2V-5B 初始化共享视频 DiT；每个 block 的 FFN 后接轻量 action adapter。三模态共用 flow-matching 去噪损失，w a=20，w v=w I=1。进度目标在成功轨迹上为 p t+H=t/T（均匀进度奖励）；失败轨迹再减去 lambda fail=1 的失败指示并 clip 到 [0,1]。失败数据来自先在成功数据上训练的策略 rollout，并标注失败 onset。推理默认 20 步 flow-Euler；动作-only 路径缓存 prefix KV。可选 N 候选并行 Stage 1，再 Stage 2 取 argmax k V theta(o t,ℓ,a^(k))。",
+      "output": "默认可执行动作块；需要时再输出动作条件进度值与未来视频。主策略评估走动作-only，不在测试时生成视频。",
+      "details": "- **输入：** 语言指令 \\(\\ell\\)；多视角 RGB（主视 + 左右腕）与本体感觉 \\(s_t\\) 打包成 prefix；训练时还有动作块 \\(a_{t:t+H}\\)（\\(H=48\\)）、未来视频窗口（当前帧加四个偏移 \\([0,H/4,H/2,3H/4,H]\\)）以及归一化进度目标。\n- **过程：** 从 WAN2.2-5B / Wan2.2-TI2V-5B 初始化共享视频 DiT；每个 block 的 FFN 后接轻量 action adapter。三模态共用 flow-matching 去噪损失，\\(w_a=20\\)，\\(w_v=w_I=1\\)。进度目标在成功轨迹上为 \\(p_{t+H}=t/T\\)（均匀进度奖励）；失败轨迹再减去 \\(\\lambda_{\\mathrm{fail}}=1\\) 的失败指示并 clip 到 \\([0,1]\\)。失败数据来自先在成功数据上训练的策略 rollout，并标注失败 onset。推理默认 20 步 flow-Euler；动作-only 路径缓存 prefix KV。可选 \\(N\\) 候选并行 Stage 1，再 Stage 2 取 \\(\\arg\\max_k V_\\theta(o_t,\\ell,a^{(k)})\\)。\n- **输出：** 默认可执行动作块；需要时再输出动作条件进度值与未来视频。主策略评估走动作-only，不在测试时生成视频。\n\n与最近 baseline 的实质差异：相对 Motus / video-first WAM，FACT 先出动作、部署可跳过视频；相对把未来当动作条件的 WAM，未来与 value 条件在干净动作而非噪声动作上；相对直接把失败当 BC 数据，失败只进世界分支。作者强调共享骨干让未来/value 损失能回到动作通路，而不是 MoT 里隔离的 world expert。"
+    },
+    "experiments": "**作者主张：** 失败感知的动作条件后果学习提高策略成功、降低坏动作下的成功偏向幻觉，并且 value 头可选用作候选排序。\n\n实验实际支持（数字均来自原文表格/正文）：\n\n- **RoboTwin 2.0（50 任务；Clean 每任务 50 条、Randomized 每任务 500 条合训；每任务 100 trial；另加约 1.3K rollout 失败）：** 无视频共训 81.8% 平均成功 → 视频共训 85.6%（Clean 86.3 / Rand. 84.9）→ 再加失败 87.5%（88.4 / 86.6）。Motus 87.8%，Gigaworld-Policy 86.0%，\\(\\pi_{0.5}\\) 79.8%。附录按任务表上 Hanging Mug 即便加失败仍只有 36/49；Turn Switch 加失败后 Clean 从 66 降到 61。这些数字与同日入库的 FlowWAM / G0.5 **不是同一套训练脚本**，不宜直接排成 SOTA 竞赛。\n- **延迟（RTX PRO 6000）：** 动作-only FACT w/ failure **380 ms**，Motus 1220 ms（作者称约 \\(3\\times\\) 更快），\\(\\pi_{0.5}\\) 47 ms。速度优势相对 video-first WAM，不是相对纯 VLA。\n- **真机（双 YAM 臂，主视 D435 + 两腕 D405；seen 五任务，cube 类 200 条专家演示、其余 50 条，cube 任务约 30 条失败；每格 20 trial）：** seen 平均 Cosmos 25、\\(\\pi_0\\) 48、Motus 64、FACT 82、FACT+failure 89、再加 \\(N=4\\) scoring 92；\\(\\pi_{0.5}\\) 88。unseen（改颜色/形状/指令）FACT 67 → +failure 77 → +scoring 82；\\(\\pi_{0.5}\\) 85。作者写明 \\(\\pi_{0.5}\\) 有大规模机器人预训练而 FACT 没有。所有表内 baseline 都在同一批成功演示上 fine-tune。\n- **消融（真机 seen）：** 去掉因果 mask（无失败、且去掉干净 \\(G\\) 槽）77%；失败动作仍算模仿损失 **63%**；去掉视频共训 58%；**只用 scoring、不训失败** 79%（低于无 scoring 的 82%）。这支持“value 头必须先见过失败后果才有用”，不是“多采样总能涨点”。\n- **幻觉诊断（512 个 held-out 窗口，成功/失败各半，20 步去噪）：** 失败窗口 PSNR 19.51→25.92，SSIM 0.7461→0.8290；成功窗口几乎不变（PSNR 26.12 vs 26.08）。Fig. 5 定性显示同一坏动作下，成功-only 模型仍想象抓住，失败共训预测真实失败。\n- **失败比例：** 三个 RoboTwin clean 任务上 \\(p\\in\\{0,50,100\\}\\%\\) 失败混合，平均成功 32.7%→57.3%；\\(p=100\\%\\) 时失败约占训练集 45%。这是子集探针，不是 50 任务主表。\n- **\\(N\\) sweep：** 长时程抓取上 \\(N=1\\to 4\\) 完成度明显上升，更大 \\(N\\) 的增益相对延迟变小；真机 optional scoring 取 \\(N=4\\)。\n\n**证据未支持：** 结构因果或 \\(do(\\cdot)\\) 识别；失败数据在所有任务上都单调有益（Turn Switch 反例）；FACT 在无预训练条件下击败 \\(\\pi_{0.5}\\) 的真机 unseen；value 头是独立 critic。",
+    "evidence_notes": "",
+    "code_data_status": "- **代码：** [Bariona/FACT](https://github.com/Bariona/FACT) 含 RoboTwin 数据准备、训练、推理与闭环评估；Apache-2.0。\n- **权重：** Hugging Face `Bariona/fact-wam` 为 RoboTwin checkpoint（从 Wan2.2-TI2V-5B fine-tune），含 `norm_stats_delta.json`；另有 Spaces 演示。\n- **数据：** 仓库脚本下载 `Bariona/robotwin-v2`；真机失败 rollout 与完整专家语料未作为可复现公开包核验。WAN 骨干与 T5 指令嵌入是外部依赖。\n- **许可冲突需分开写：** 代码 Apache-2.0，arXiv 论文页为 CC BY-NC-ND 4.0。",
+    "limitations": "- Hanging Mug、Turn Switch 等任务上失败共训增益很小或为负；失败数据不是万灵药。\n- 进度目标用均匀 \\(t/T\\)，失败再减常数，不是学习到的稠密成功检测器。\n- Best-of-\\(N\\) 用额外 Stage 2 换可靠性；主文策略数字多数仍是单样本。\n- 真机每格 20 trial；unseen 仍低于有大规模预训练的 \\(\\pi_{0.5}\\)。\n- “causal”是动作→未来的时间箭头与注意力掩码，没有因果图、干预识别或反事实 benchmark。\n- 作者自己把在线 rollout、DAgger 式修正、以及用更好进度估计器替换 value 头列为未来工作。\n\n---",
+    "comments": "",
+    "source_reports": [
+      "report-af906c7fa2"
+    ],
+    "deleted": false,
+    "updated_at": "2026-08-21",
+    "challenges": "领域长期问题是：WAM 想用未来预测给动作生成提供物理先验，但训练数据几乎全是成功演示。本文针对的缺口是**失败后果无法进入世界分支，而不只是“再加一个视频头”**。\n\n- **作者明确指出的失败模式：** 一类 WAM（DreamZero 等）先想象未来视频再用 IDM 解码动作，控制必须等视频去完噪。另一类（BagelVLA、Fast-WAM、Gigaworld-Policy 等）把预测帧/latent 当作动作条件，未来目标仍是专家成功轨迹。测试时坏动作仍可配上成功偏向的未来。\n- **数据接口缺口：** 失败 rollout 若当模仿目标会污染策略；若直接丢掉，世界模型就没有理由预测坏动作的后果。关键不是“再收集更多成功数据”，而是**失败轨迹能监督后果、不能变成坏示范**。\n- **评测缺口：** 既有 WAM 很少把 success-biased future hallucination 当作可量化诊断；value 头若只在专家流形上校准，会对差动作给出过于乐观的进度分。\n\n这些是训练信号与因果顺序缺口。作者所说的 causal 是 **action-then-imagine 的时间顺序与 teacher-forced 动作条件**，不是 SCM、\\(do(\\cdot)\\) 或反事实识别。",
+    "motivation": "核心 Insight：**先生成动作，再在干净已执行动作上预测未来视频与任务进度；失败 rollout 只监督观察到的失败未来和被压低的进度，不进入动作模仿损失。**\n\n方法选择因此改变了三个接口：\n\n1. **顺序接口：** token 序为 prefix \\(P\\) → 噪声动作 \\(A\\) → 干净 GT 动作 \\(G\\) → value \\(V\\) → 未来视频 \\(I\\)；世界分支只看 \\(G\\)，\\(A\\) 看不到 \\(G\\)。\n2. **训练信号：** 成功演示监督 \\(\\mathcal{L}_a+\\mathcal{L}_v+\\mathcal{L}_I\\)；失败窗口把 \\(\\mathcal{L}_a\\) mask 掉。\n3. **推理接口：** Stage 1 只解动作即可部署；可选 Stage 2 用 value 对 \\(N\\) 个候选打分。部署不必生成视频。\n\n与本知识库课题 **直接相关**：它明确站在 WAM 谱系上，对照 video-first / future-as-condition 设计，并在 RoboTwin 与真机双臂上同时测策略成功率和失败条件下的未来幻觉。它建模的是动作条件后果，**不是**结构因果。可与已入库的 FlowWAM、LingBot-VA、Causal World Modeling for Robot Control 对照阅读。",
+    "technical_approach": "- **输入：** 语言指令 \\(\\ell\\)；多视角 RGB（主视 + 左右腕）与本体感觉 \\(s_t\\) 打包成 prefix；训练时还有动作块 \\(a_{t:t+H}\\)（\\(H=48\\)）、未来视频窗口（当前帧加四个偏移 \\([0,H/4,H/2,3H/4,H]\\)）以及归一化进度目标。\n- **过程：** 从 WAN2.2-5B / Wan2.2-TI2V-5B 初始化共享视频 DiT；每个 block 的 FFN 后接轻量 action adapter。三模态共用 flow-matching 去噪损失，\\(w_a=20\\)，\\(w_v=w_I=1\\)。进度目标在成功轨迹上为 \\(p_{t+H}=t/T\\)（均匀进度奖励）；失败轨迹再减去 \\(\\lambda_{\\mathrm{fail}}=1\\) 的失败指示并 clip 到 \\([0,1]\\)。失败数据来自先在成功数据上训练的策略 rollout，并标注失败 onset。推理默认 20 步 flow-Euler；动作-only 路径缓存 prefix KV。可选 \\(N\\) 候选并行 Stage 1，再 Stage 2 取 \\(\\arg\\max_k V_\\theta(o_t,\\ell,a^{(k)})\\)。\n- **输出：** 默认可执行动作块；需要时再输出动作条件进度值与未来视频。主策略评估走动作-only，不在测试时生成视频。\n\n与最近 baseline 的实质差异：相对 Motus / video-first WAM，FACT 先出动作、部署可跳过视频；相对把未来当动作条件的 WAM，未来与 value 条件在干净动作而非噪声动作上；相对直接把失败当 BC 数据，失败只进世界分支。作者强调共享骨干让未来/value 损失能回到动作通路，而不是 MoT 里隔离的 world expert。",
+    "discussion": "FACT 把 WAM 的一个具体接口写清楚了：未来预测应当条件在**已执行动作**上，失败才是后果监督而不是坏 BC。RoboTwin 上它接近 Motus 且部署更快；真机 seen 上失败共训和可选 scoring 的增益与“失败当模仿目标会掉点”的消融方向一致；PSNR/SSIM 支持成功偏向幻觉被减轻。适用边界是短中程操作式 WAM，不是形式因果、也不是互联网级无动作预训练。阅读判断：若课题关心 WAM 如何用负样本，这篇比再堆一个 RGB 头更直接；引用时不要把 teacher-forced 动作条件写成因果识别，也不要把 380 ms vs Motus 1220 ms 写成已经赶上 \\(\\pi_{0.5}\\) 的 47 ms。",
+    "arxiv": {
+      "published": "2026-08-10T21:10:46Z",
+      "revised_at": "2026-08-10T21:10:46Z",
+      "primary_category": "cs.RO"
+    }
+  },
+  {
     "id": "arxiv-2607-13017",
     "title": "FlowWAM: Optical Flow as a Unified Action Representation for World Action Models",
     "authors": [
@@ -944,6 +1134,73 @@
       "published": "2026-08-12T07:26:47Z",
       "revised_at": "2026-08-12T07:26:47Z",
       "primary_category": "cs.RO"
+    }
+  },
+  {
+    "id": "arxiv-2608-15651",
+    "title": "Gaussian-JEPA: Joint-Embedding Predictive Learning for 3D Gaussian Splats",
+    "authors": [
+      "Bin Ren",
+      "Qi Ma",
+      "Yue Li",
+      "Zongyan Han",
+      "Yidi Li",
+      "Yuqian Fu",
+      "Rao Muhammad Anwer",
+      "Theo Gevers",
+      "Fahad Shahbaz Khan",
+      "Salman Khan"
+    ],
+    "year": 2026,
+    "publication": "2026，arXiv preprint（v1，cs.CV，2026-08-16）。尚无 DOI / 正式出版页。",
+    "arxiv_id": "2608.15651",
+    "doi": "",
+    "links": {
+      "paper": "https://arxiv.org/abs/2608.15651",
+      "project": "https://amazingren.github.io/Gaussian-JEPA",
+      "code": "https://github.com/Amazingren/Gaussian-JEPA",
+      "alphaxiv": "https://alphaxiv.org/abs/2608.15651"
+    },
+    "tags": [
+      "3D/4D",
+      "JEPA",
+      "World Action Model",
+      "机器人学习",
+      "预测表征"
+    ],
+    "figure": {
+      "url": "https://arxiv.org/html/2608.15651v1/framework.png",
+      "alt": "Gaussian-JEPA Fig. 2: multi-scale latent prediction on Gaussian tokens",
+      "label": "Gaussian-JEPA，Fig. 2，1K Gaussian → 64 token，共享 context 预测多尺度目标块。来源：Fig. 2 原图 PNG",
+      "paper_title": "Gaussian-JEPA: Joint-Embedding Predictive Learning for 3D Gaussian Splats",
+      "source_url": "https://arxiv.org/html/2608.15651v1/framework.png"
+    },
+    "summary": "核心 Insight： 对物体级 Gaussian 资产做 JEPA——用可见 context 预测被挡住的多尺度 token 块表征，而不是重建某一次采样的 14 维属性。",
+    "insight": "核心 Insight：**对物体级 Gaussian 资产做 JEPA——用可见 context 预测被挡住的多尺度 token 块表征，而不是重建某一次采样的 14 维属性。**\n\n这改变的是自监督目标：online encoder 只看 context；共享 EMA encoder 看完整 token 场再按块索引取目标；两个互补投影（名为 geo/app，但是对全部属性特征的学习视图，不是手工拆通道）加 VISReg 式 feature-space grounding。与本知识库 **间接相关**：它是 3DGS 表征学习，不输出动作、不做 rollout、不评机器人。可借鉴点是“预测潜空间而非重建观察实现”，以及重采样一致性这种对随机观察更敏感的评测，而不是只报分类。",
+    "pipeline": {
+      "input": "物体级 3DGS 资产 mathcalX=[C,O,S,R,SH]inmathbbR^N× 14；每次迭代先缓冲再无放回抽 p=1024 个 primitive。Centroid FPS 出 n=64 组、每组 KNN k=32，PointNet 式 tokenizer 得 D=384 token。",
+      "process": "默认目标日程 s=[11,9,7,5]（32 个 target token + 32 个 context）。Online encoder 编码 context 一次；每个目标块由共享 EMA encoder 处理全场后索引。Predictor 用目标中心位置查询、不看目标 token 内容。mathcalL pred 为两路 SmoothL1；mathcalL ground 为两路 VISReg 加跨协方差惩罚；lambda=0.1。无输入空间解码器，损失不含 centroid/opacity/scale/rotation/SH。",
+      "output": "预训练后的 Gaussian token 特征，供冻结检索、补全解码器、部件分割与分类微调。不是视频或控制指令。",
+      "details": "- **输入：** 物体级 3DGS 资产 \\(\\mathcal{X}=[C,O,S,R,\\mathrm{SH}]\\in\\mathbb{R}^{N\\times 14}\\)；每次迭代先缓冲再无放回抽 \\(p=1024\\) 个 primitive。Centroid FPS 出 \\(n=64\\) 组、每组 KNN \\(k=32\\)，PointNet 式 tokenizer 得 \\(D=384\\) token。\n- **过程：** 默认目标日程 \\(\\mathbf{s}=[11,9,7,5]\\)（32 个 target token + 32 个 context）。Online encoder 编码 context 一次；每个目标块由共享 EMA encoder 处理全场后索引。Predictor 用目标中心位置查询、不看目标 token 内容。\\(\\mathcal{L}_{\\mathrm{pred}}\\) 为两路 SmoothL1；\\(\\mathcal{L}_{\\mathrm{ground}}\\) 为两路 VISReg 加跨协方差惩罚；\\(\\lambda=0.1\\)。无输入空间解码器，损失不含 centroid/opacity/scale/rotation/SH。\n- **输出：** 预训练后的 Gaussian token 特征，供冻结检索、补全解码器、部件分割与分类微调。不是视频或控制指令。\n\n与最近 baseline 的实质差异：相对 Gaussian-MAE，监督在 stop-gradient 潜空间而非原始属性；相对 Point-JEPA / 3D-JEPA，token 含 14 维 Gaussian 属性且目标块尺度异构。分类/分割里的点云数字来自文献原协议，作者已用 † 标明，不是同输入重跑。"
+    },
+    "experiments": "**作者主张：** 相对匹配的 Gaussian-MAE 预训练，潜空间预测在重采样一致性、部分观察检索和可渲染补全上更强，语义迁移有竞争力。\n\n实验实际支持：\n\n- **数据划分：** ShapeNet55-GS 预训练 51,934 / 测试 520（Gaussian-MAE 资产）；ModelNet10 3,991/908、ModelNet40 9,842/2,467，**ModelNet 物体不进预训练**；ShapeNet-Part 用官方划分。Objaverse 只用于补充 PCA 图，不进训练或主表。\n- **重采样一致性（ModelNet40-GS 全部 2,467 测试物体，五次独立 1K 采样，1 gallery + 4 query = 9,868）：** 相对 drift 0.3400→**0.2594**（相对降 23.7%），96.2% 物体上 drift 更低；R@1 92.95 vs 93.00（几乎持平），R@5 98.89→99.36。\n- **部分观察检索（缺组 0–85%）：** 55% 缺失时 R@1/R@5/R@10 = 39.82/65.28/75.95 vs MAE 的 19.80/39.02/49.14（+20.02 / +26.26 / +26.81）。30% 缺失时 R@1 仍高 10.56 点。\n- **ShapeNet55-GS 补全（半空间 crop 的 512 Gaussian → 预测独立 1K 完整采样；冻结 encoder + 相同解码器，三颗 decoder seed）：** CD 0.0732→0.0678（−7.4%），F1% 6.62→7.42；seed-0、50% 可见度渲染 PSNR 16.03→17.24、SSIM 0.7148→0.7469。\n- **ShapeNet-Part：** class/instance mIoU 84.5 / 86.1，相对 Gaussian-MAE +0.3 / +0.1。点云 Point-JEPA 文献数字为 83.9 / 85.8，协议不同。\n- **ModelNet 分类（相对 Gaussian-MAE）：** Full FT MN10/40 94.94/92.63（+0.78 / +0.09）；线性探针 93.72/90.47（+0.22 / +1.50）；MLP-3 探针 MN40 +2.55 至 90.27。冻结骨干上的 MN40 差距大于全微调。\n- **消融：** 单目标空间 93.06 LP / 90.85 R@1；双空间+特征 grounding 93.50 / 93.23；双空间若改回属性重建，R@1 掉到 88.18。\\(M=6\\) 最高 LP（93.83）但 R@1 降到 91.89；选 \\(M=4\\) 是折中。过大尺度差 \\(\\delta=2\\) 两指标都降。Centroid+covariance 的 R@1（94.14）高于全属性（93.23），全属性 LP 更高——外观有助于语义、不一律提高重采样稳定。\n\n**证据未支持：** 场景级/动态 3DGS；机器人转移；相对点云 SOTA 的严格公平超越（输入与协议不同）；分类全微调上的 MN40 +0.09 具有实际意义。",
+    "evidence_notes": "",
+    "code_data_status": "- **代码：** [Amazingren/Gaussian-JEPA](https://github.com/Amazingren/Gaussian-JEPA) 含预训练、分类、部件分割、补全与文档；许可证 **CC BY-SA 4.0**（不是 Apache）。\n- **数据：** 依赖 Gaussian-MAE 发布的 ShapeNet/ModelNet Gaussian 资产；完整复现需这些外部资产与作者预处理（centroid 单位球、opacity/scale/SH 规范化等）。\n- **权重：** README 指向下游结果文档；本次未逐一核验预训练 checkpoint 是否已全部上传。",
+    "limitations": "- 仅物体级资产；作者自己把场景扩展留作后续。\n- 编码器固定 1K primitive，无法直接吃完整密集资产。\n- 分类全微调在 MN40 上与 MAE 几乎持平，主增益在冻结/部分观察设定。\n- geo/app 是学习视图，消融说明外观通道甚至可能损害重采样 R@1。\n- 与点云方法的表不是同输入协议。\n- 无控制、无时间、无动作；不能当作 JEPA world model 引用。\n\n---",
+    "comments": "",
+    "source_reports": [
+      "report-af906c7fa2"
+    ],
+    "deleted": false,
+    "updated_at": "2026-08-21",
+    "challenges": "领域长期问题是：3DGS 正在成为可学习的原生 3D 输入，但实用编码器只能吃固定数量的 primitive。本文针对的是 **同一物体在固定预算重采样下观察实现不一致，以及 MAE 把监督绑在某一次采样的原始属性上**，不是机器人控制或视频世界模型。\n\n- **接口缺口：** 资产可能有数万 Gaussian，编码器预算 1K；独立重采样得到不同 primitive 集合。这不是设计好的语义增强，而是密集资产与固定预算编码器之间的观察噪声。\n- **现有 SSL 失败模式：** Gaussian-MAE 用输入空间解码器重建被 mask 组的 centroid/属性，目标绑死在当次采样；对比学习的不变性取决于所选视角/增强，且不显式监督缺失空间内容。\n- **Gaussian token 特有困难：** 每个 token 耦合几何、各向异性支撑、可见度与外观；缺失区域空间尺度不一；潜空间目标必须在不做属性重建时仍有信息。",
+    "motivation": "核心 Insight：**对物体级 Gaussian 资产做 JEPA——用可见 context 预测被挡住的多尺度 token 块表征，而不是重建某一次采样的 14 维属性。**\n\n这改变的是自监督目标：online encoder 只看 context；共享 EMA encoder 看完整 token 场再按块索引取目标；两个互补投影（名为 geo/app，但是对全部属性特征的学习视图，不是手工拆通道）加 VISReg 式 feature-space grounding。与本知识库 **间接相关**：它是 3DGS 表征学习，不输出动作、不做 rollout、不评机器人。可借鉴点是“预测潜空间而非重建观察实现”，以及重采样一致性这种对随机观察更敏感的评测，而不是只报分类。",
+    "technical_approach": "- **输入：** 物体级 3DGS 资产 \\(\\mathcal{X}=[C,O,S,R,\\mathrm{SH}]\\in\\mathbb{R}^{N\\times 14}\\)；每次迭代先缓冲再无放回抽 \\(p=1024\\) 个 primitive。Centroid FPS 出 \\(n=64\\) 组、每组 KNN \\(k=32\\)，PointNet 式 tokenizer 得 \\(D=384\\) token。\n- **过程：** 默认目标日程 \\(\\mathbf{s}=[11,9,7,5]\\)（32 个 target token + 32 个 context）。Online encoder 编码 context 一次；每个目标块由共享 EMA encoder 处理全场后索引。Predictor 用目标中心位置查询、不看目标 token 内容。\\(\\mathcal{L}_{\\mathrm{pred}}\\) 为两路 SmoothL1；\\(\\mathcal{L}_{\\mathrm{ground}}\\) 为两路 VISReg 加跨协方差惩罚；\\(\\lambda=0.1\\)。无输入空间解码器，损失不含 centroid/opacity/scale/rotation/SH。\n- **输出：** 预训练后的 Gaussian token 特征，供冻结检索、补全解码器、部件分割与分类微调。不是视频或控制指令。\n\n与最近 baseline 的实质差异：相对 Gaussian-MAE，监督在 stop-gradient 潜空间而非原始属性；相对 Point-JEPA / 3D-JEPA，token 含 14 维 Gaussian 属性且目标块尺度异构。分类/分割里的点云数字来自文献原协议，作者已用 † 标明，不是同输入重跑。",
+    "discussion": "Gaussian-JEPA 把 3DGS SSL 的问题从“重建这次采样的属性”改成“预测被挡住块的表征”。重采样 drift、部分观察检索和冻结补全是比 MN40 全微调 +0.09 更贴题的证据。适用边界是物体级、静态 Gaussian 资产；不是 WAM，也不是场景理解基础模型。阅读判断：若课题做 3D/4D 观察噪声下的表征，这篇有方法对照价值；不要把它写成世界模型，也不要把 geo/app 两个投影名理解成已经解耦几何与外观。",
+    "arxiv": {
+      "published": "2026-08-16T09:43:50Z",
+      "revised_at": "2026-08-16T09:43:50Z",
+      "primary_category": "cs.CV"
     }
   },
   {
@@ -1502,6 +1759,77 @@
     "year": 2026
   },
   {
+    "id": "arxiv-2608-06799",
+    "title": "Is Forward Prediction Enough? Physical State Grounding for JEPA World Models",
+    "authors": [
+      "Haodong Yan",
+      "Jiaguan Zhu",
+      "Mingyuan Jia",
+      "Ruiqing Yin",
+      "Junjie He",
+      "Zhide Zhong",
+      "Junfeng Li",
+      "Jinxuan Lu",
+      "Hengtao Li",
+      "Tianran Zhang",
+      "Jiayi Chen",
+      "Wenxuan Song",
+      "Wen Chen",
+      "Yuxiang Gao",
+      "Haoang Li"
+    ],
+    "year": 2026,
+    "publication": "2026，arXiv preprint（v1，cs.RO，2026-08-07）。尚无 DOI / 正式出版页。",
+    "arxiv_id": "2608.06799",
+    "doi": "",
+    "links": {
+      "paper": "https://arxiv.org/abs/2608.06799",
+      "project": "https://haodong-yan.github.io/psg-jepa-project-page/",
+      "code": "https://github.com/Haodong-Yan/PSG-JEPA",
+      "alphaxiv": "https://alphaxiv.org/abs/2608.06799"
+    },
+    "tags": [
+      "JEPA",
+      "World Action Model",
+      "机器人学习",
+      "预测表征"
+    ],
+    "figure": {
+      "url": "https://arxiv.org/html/2608.06799v1/teaser.png",
+      "alt": "PSG-JEPA Fig. 1: physical state grounding beyond forward prediction",
+      "label": "PSG-JEPA，Fig. 1，前向预测 JEPA 的本体可识别性缺口，以及训练期-only 的 state / transition grounding。来源：Fig. 1 原图 PNG",
+      "paper_title": "Is Forward Prediction Enough? Physical State Grounding for JEPA World Models",
+      "source_url": "https://arxiv.org/html/2608.06799v1/teaser.png"
+    },
+    "summary": "核心 Insight： 在保留 LeWM 的 encoder–predictor 与 SIGReg 的前提下，用训练期-only 的两个头把单个 latent 接到本体感觉、把多 horizon 端点对接到净关节角变化；推理丢掉这两个头，架构和算力不变。",
+    "insight": "核心 Insight：**在保留 LeWM 的 encoder–predictor 与 SIGReg 的前提下，用训练期-only 的两个头把单个 latent 接到本体感觉、把多 horizon 端点对接到净关节角变化；推理丢掉这两个头，架构和算力不变。**\n\n这改变的是训练信号，不是推理接口：编码器输入仍只有图像，本体量只作 grounding 目标或探针标签。作者用 \\(\\Delta q_{t,k}=q_{t+k}-q_t\\) 替代动作序列，因为净变化由端点唯一确定且维度固定。与本知识库 **直接相关于潜空间世界模型 / JEPA**，与视频 WAM 是相邻对照。可借鉴点是：前向预测不足以保证控制相关量可读；应用层不要把这里的 identifiability 写成因果可识别。",
+    "pipeline": {
+      "input": "图像观测窗口 T=C+1=4（C=3 帧上下文）、对应动作；训练期另有对齐的本体感觉 s t（关节角、夹爪、末端位姿）及其关节分量 q t。编码器和预测器 从不把本体当作输入 。",
+      "process": "共享编码器 z t+i=E phi(o t+i)；因果动作条件预测器 teacher-forced 一步预测，mathcalL fwd 为 MSE；保留 LeWM 的 SIGReg，lambda reg=0.09。状态头 H s(z)to s；转移头 H Delta(z t+i,z t+i+k)toDelta q，对 kin 1,2,3 各 horizon 等权，避免短程对占优。总损失 mathcalL PSG=mathcalL JEPA+lambda g(mathcalL static+mathcalL dynamic)，lambda g=0.1，全 benchmark 固定。训练后丢掉 H s,H Delta。",
+      "output": "推理期与 LeWM 相同：图像 → 规划用 latent，以及可选的动作条件未来 latent。Grounding 头不参与部署。",
+      "details": "- **输入：** 图像观测窗口 \\(T=C+1=4\\)（\\(C=3\\) 帧上下文）、对应动作；训练期另有对齐的本体感觉 \\(s_t\\)（关节角、夹爪、末端位姿）及其关节分量 \\(q_t\\)。编码器和预测器 **从不把本体当作输入**。\n- **过程：** 共享编码器 \\(z_{t+i}=E_\\phi(o_{t+i})\\)；因果动作条件预测器 teacher-forced 一步预测，\\(\\mathcal{L}_{\\mathrm{fwd}}\\) 为 MSE；保留 LeWM 的 SIGReg，\\(\\lambda_{\\mathrm{reg}}=0.09\\)。状态头 \\(H_s(z)\\to s\\)；转移头 \\(H_\\Delta(z_{t+i},z_{t+i+k})\\to\\Delta q\\)，对 \\(k\\in\\{1,2,3\\}\\) 各 horizon 等权，避免短程对占优。总损失 \\(\\mathcal{L}_{\\mathrm{PSG}}=\\mathcal{L}_{\\mathrm{JEPA}}+\\lambda_g(\\mathcal{L}_{\\mathrm{static}}+\\mathcal{L}_{\\mathrm{dynamic}})\\)，\\(\\lambda_g=0.1\\)，全 benchmark 固定。训练后丢掉 \\(H_s,H_\\Delta\\)。\n- **输出：** 推理期与 LeWM 相同：图像 → 规划用 latent，以及可选的动作条件未来 latent。Grounding 头不参与部署。\n\n与最近 baseline 的实质差异：相对 DINO-WM / V-JEPA 2-AC，编码器可被前向损失和 grounding 共同塑造；相对 LeWM，只多训练期目标；相对自构的 LeWMActionIDM，监督的是净关节变化而非动作。官方代码在 OGBench-Cube 上提供训练与 GC-IDM 规划；LIBERO-Goal 有独立目录与 checkpoint；OGBench-Scene 仓库标注 coming soon。"
+    },
+    "experiments": "**作者主张：** 物理 grounding 同时提高潜空间可识别性、冻结 latent 上的目标条件规划、以及仿真/真机策略，且推理无额外模块。\n\n实验实际支持：\n\n- **探针（OGBench-Cube，episode-level train/test，线性 ridge / 浅 MLP，Pearson \\(r\\)）：** 单 latent 上 EE-yaw：LeWM 0.08/0.08，DINOv2 0.51/0.50，LeWMActionIDM 0.11/0.10，PSG-JEPA **0.94/0.98**；JointPos 从 LeWM 的 0.71/0.69 到 0.83/0.81。成对探针 GripVel：LeWM 0.44/0.47 → PSG-JEPA 0.69/0.76；Action 与 LeWMActionIDM 持平（0.80/0.86 vs 0.80/0.84）。这支持“状态从单 latent 读、变化从配对读”，不是因果边恢复。\n- **冻结 latent + 同一 GC-IDM（三层 MLP，512 hidden，AdaLN-Zero；200 个 goal；3 planner seeds）：** OGBench-Cube 全数据、5 epoch：PSG-JEPA **95.0±0.7** vs LeWM 80.7±1.9；100 epoch 仍 98.7 vs 89.7。25% 数据、100 epoch：93.2 vs 83.5。OGBench-Scene 全数据 5 epoch：83.5 vs 76.2。作者另称 Cube 上 5% 数据、100 epoch 规划成功 84.5%，LeWM 大约需要五倍数据才追上（Fig. 3；主表未列该格）。Planner 训练预算与表征质量耦合，不是同一 world-model rollout planner。\n- **开环 latent 预测（512 段，无 teacher forcing）：** Cube 上 5 步 MSE 0.0093→0.0046，30 步 0.1488→0.0485（约 −67%）；Scene 30 步 0.1608→0.0982（约 −39%）。Grounding 没有牺牲递归预测。\n- **LIBERO-Goal 策略（10 任务，OFT 头宽 1024、四层、两帧输入、8 步 action chunk，30 epoch，3 seeds×每任务 50 rollout）：** PSG-JEPA **85.3±3.9** vs LeWM 77.7±0.5、LeWMActionIDM 82.6±2.2、DINOv2 80.1±5.3。编码器与头联合微调，不是冻结表征。\n- **真机（AgileX 双臂 Mobile ALOHA 设计，前视+两腕 RGB；每任务 100 条遥操作，50 trial）：** Place-to-Bread 84 vs 62，Place-to-Plate 74 vs 58，Pour-Water 80 vs 60，平均 **79.3 vs 60.0**。只对照 LeWM，没有 DINOv2 / IDM 真机表。\n- **消融：** 去掉 transition 时规划 SR@5ep 95.0→81.3；去掉 state 时状态探针均值 0.94→0.69；只留相邻或只留端点 horizon 时 LIBERO 约 81.2–81.5，完整模型 85.3。各分量都有贡献；规划对 transition 更敏感，探针对象对 state 更敏感。\n\n**证据未支持：** 物体状态/接触力学可识别； grounding 在无本体日志的互联网视频上可做；“identifiability”等于因果可识别。",
+    "evidence_notes": "",
+    "code_data_status": "- **代码：** [Haodong-Yan/PSG-JEPA](https://github.com/Haodong-Yan/PSG-JEPA) 覆盖 OGBench-Cube 训练、GC-IDM 规划评估、LIBERO-Goal 策略；GitHub 未声明 SPDX 许可证（本次 API 返回 `license: None`）。OGBench-Scene 标注尚未放出。\n- **数据 / 权重：** 训练用 LeWM 发布的 `cube_single_expert` 像素 `.h5`（Hugging Face `quentinll/lewm` collection），不是 OGBench 官方 state 文件；作者警告跨 GPU 重渲染会与论文数字不一致。LIBERO 目录含已发布 checkpoint 与评估日志（本次未逐文件核验完整性）。\n- **依赖：** `stable-worldmodel`、LeWM 模块与 Nguyen et al. 的 GC-IDM 评估代码。",
+    "limitations": "- Grounding 目标是机器人本体，不是物体位姿、接触或场景图；探针缺口针对 EE-yaw 等本体量。\n- 真机只对比 LeWM，50 trial / 任务，没有 IDM / DINOv2 真机对照。\n- LIBERO 是联合微调编码器，不能把 85.3% 全部归因于冻结表征。\n- 仓库与论文范围不完全对齐：Scene 代码未发布；许可证未核到 SPDX。\n- 无本体日志的人类视频/跨本体设定未验证。\n- 作者未提供形式 identifiability 证明；证据是探针可恢复性与下游成功。\n\n---",
+    "comments": "",
+    "source_reports": [
+      "report-af906c7fa2"
+    ],
+    "deleted": false,
+    "updated_at": "2026-08-21",
+    "challenges": "领域长期问题是：控制用世界模型需要与动作相关的状态表征，而像素级视频重建会保留对规划无用的外观细节。本文针对的是 **端到端 JEPA 潜空间在前向预测目标下的机器人中心可识别性缺口**，不是“JEPA 会 collapse”这一更早的正则问题。\n\n- **作者用探针刻画的失败模式：** 在 OGBench-Cube 上冻结 LeWM 表征，单 latent 线性/MLP 探针几乎读不出末端 yaw（\\(r\\le 0.08\\)）；成对探针只能部分恢复关节/夹爪速度。DINOv2 预训练也只把 yaw 推到约 0.50。作者称之为 robot-centric identifiability gap：**探针可恢复性**，不是因果识别意义下的 identifiability。\n- **过强假设：** 仅靠 \\(\\hat{z}_{t+1}=F(z_t,a_t)\\) 可预测，并不保证 \\(z_t\\) 暴露本体感觉、也不保证 \\((z_t,z_{t+k})\\) 暴露净关节变化。下游 planner / policy 只得自己从任务监督里补视觉–动作对齐。\n- **与 IDM 辅助目标的缺口：** 用 \\((z_t,z_{t+1})\\mapsto a_t\\) 当正则，动作序列随 horizon 变长，且同一端点变化可对应多种动作，物理转移目标不适定。\n\nLeWM 已有 SIGReg 反 collapse；本文认为 **非 collapse ≠ 物理状态可读**。",
+    "motivation": "核心 Insight：**在保留 LeWM 的 encoder–predictor 与 SIGReg 的前提下，用训练期-only 的两个头把单个 latent 接到本体感觉、把多 horizon 端点对接到净关节角变化；推理丢掉这两个头，架构和算力不变。**\n\n这改变的是训练信号，不是推理接口：编码器输入仍只有图像，本体量只作 grounding 目标或探针标签。作者用 \\(\\Delta q_{t,k}=q_{t+k}-q_t\\) 替代动作序列，因为净变化由端点唯一确定且维度固定。与本知识库 **直接相关于潜空间世界模型 / JEPA**，与视频 WAM 是相邻对照。可借鉴点是：前向预测不足以保证控制相关量可读；应用层不要把这里的 identifiability 写成因果可识别。",
+    "technical_approach": "- **输入：** 图像观测窗口 \\(T=C+1=4\\)（\\(C=3\\) 帧上下文）、对应动作；训练期另有对齐的本体感觉 \\(s_t\\)（关节角、夹爪、末端位姿）及其关节分量 \\(q_t\\)。编码器和预测器 **从不把本体当作输入**。\n- **过程：** 共享编码器 \\(z_{t+i}=E_\\phi(o_{t+i})\\)；因果动作条件预测器 teacher-forced 一步预测，\\(\\mathcal{L}_{\\mathrm{fwd}}\\) 为 MSE；保留 LeWM 的 SIGReg，\\(\\lambda_{\\mathrm{reg}}=0.09\\)。状态头 \\(H_s(z)\\to s\\)；转移头 \\(H_\\Delta(z_{t+i},z_{t+i+k})\\to\\Delta q\\)，对 \\(k\\in\\{1,2,3\\}\\) 各 horizon 等权，避免短程对占优。总损失 \\(\\mathcal{L}_{\\mathrm{PSG}}=\\mathcal{L}_{\\mathrm{JEPA}}+\\lambda_g(\\mathcal{L}_{\\mathrm{static}}+\\mathcal{L}_{\\mathrm{dynamic}})\\)，\\(\\lambda_g=0.1\\)，全 benchmark 固定。训练后丢掉 \\(H_s,H_\\Delta\\)。\n- **输出：** 推理期与 LeWM 相同：图像 → 规划用 latent，以及可选的动作条件未来 latent。Grounding 头不参与部署。\n\n与最近 baseline 的实质差异：相对 DINO-WM / V-JEPA 2-AC，编码器可被前向损失和 grounding 共同塑造；相对 LeWM，只多训练期目标；相对自构的 LeWMActionIDM，监督的是净关节变化而非动作。官方代码在 OGBench-Cube 上提供训练与 GC-IDM 规划；LIBERO-Goal 有独立目录与 checkpoint；OGBench-Scene 仓库标注 coming soon。",
+    "discussion": "PSG-JEPA 把“JEPA 世界模型够不够”收束成一句可检验的话：前向可预测并不保证本体状态和状态变化能从规划 latent 读出。探针、低预算 GC-IDM 和 LIBERO/真机策略支持这一诊断和补丁。适用边界是有本体日志的操作式潜空间 WM；物体、接触和视觉干扰不在 grounding 目标里。阅读判断：适合作为 LeWM / DINO-WM 的对照，以及“训练期特权状态能否塑造视觉 latent”的证据；不要把 yaw 探针 \\(r=0.98\\) 写成世界状态已被识别，也不要把 GC-IDM 成功写成模型预测控制已经闭环物理一致。",
+    "arxiv": {
+      "published": "2026-08-07T04:44:16Z",
+      "revised_at": "2026-08-07T04:44:16Z",
+      "primary_category": "cs.RO"
+    }
+  },
+  {
     "arxiv": {
       "published": "2026-07-06T07:10:22Z",
       "revised_at": "2026-07-06T07:10:22Z",
@@ -1619,6 +1947,145 @@
     "title": "Mask World Model: Predicting What Matters for Robust Robot Policy Learning",
     "updated_at": "2026-08-20",
     "year": 2026
+  },
+  {
+    "id": "arxiv-2607-19343",
+    "title": "Masked Visual Actions for Unified World Modeling",
+    "authors": [
+      "Hadi Alzayer",
+      "Wenlong Huang",
+      "Haonan Chen",
+      "Christopher Luey",
+      "Lvmin Zhang",
+      "Maneesh Agrawala",
+      "Gordon Wetzstein",
+      "Li Fei-Fei",
+      "Yilun Du",
+      "Jiajun Wu",
+      "Jia-Bin Huang"
+    ],
+    "year": 2026,
+    "publication": "2026，arXiv preprint（v1，cs.CV，2026-07-21）。尚无 DOI / 正式出版页。",
+    "arxiv_id": "2607.19343",
+    "doi": "",
+    "links": {
+      "paper": "https://arxiv.org/abs/2607.19343",
+      "project": "https://masked-visual-actions.github.io/",
+      "code": "https://github.com/HadiZayer/masked-visual-actions",
+      "model": "https://huggingface.co/HadiZayer/masked-visual-actions",
+      "alphaxiv": "https://alphaxiv.org/abs/2607.19343"
+    },
+    "tags": [
+      "JEPA",
+      "VLA",
+      "World Action Model",
+      "反事实推理",
+      "机器人学习",
+      "预测表征"
+    ],
+    "figure": {
+      "url": "https://arxiv.org/html/2607.19343v1/teaser.png",
+      "alt": "Masked Visual Actions Fig. 1: forward and inverse queries via masked trajectories",
+      "label": "Masked Visual Actions，Fig. 1，同一 checkpoint：遮罩机器人轨迹做正向动力学，遮罩物体运动做逆向合成。来源：Fig. 1 原图 PNG",
+      "paper_title": "Masked Visual Actions for Unified World Modeling",
+      "source_url": "https://arxiv.org/html/2607.19343v1/teaser.png"
+    },
+    "summary": "核心 Insight： 把动作写成视频里任意实体的部分可见时空轨迹。露出机器人，模型预测场景响应（正向）；露出物体期望运动，同一模型补出机器人行为（逆向）。主动/被动不是两套架构，而是对同一交互先验的不同查询。",
+    "insight": "核心 Insight：**把动作写成视频里任意实体的部分可见时空轨迹。露出机器人，模型预测场景响应（正向）；露出物体期望运动，同一模型补出机器人行为（逆向）。主动/被动不是两套架构，而是对同一交互先验的不同查询。**\n\n这改变的是控制接口：条件是与输出空间对齐的 masked video，用 concatenation 注入 Wan-Fun-Control，而不是另开动作通道。训练只用主动机器人实体的 mask，逆向查询零样本泛化。与本知识库 **直接相关于视频世界模型 / WAM 的动作表征**；与 FlowWAM 的光流视频动作、FACT 的数值动作块是同一谱系上的不同点。作者在讨论里自己写明学的是交互相关而非因果关系。\n\n注意：库中已有 **Mask World Model: Predicting What Matters for Robust Robot Policy Learning**，是另一篇工作（预测语义 mask 当输出），标题相近但不是本文。",
+    "pipeline": {
+      "input": "参考帧 I 0、masked 条件视频 Modot V（未露出区域填均匀灰）、文本 prompt。正向时 M 为机器人轨迹；逆向时为物体/期望运动。",
+      "process": "骨干 Wan-Fun-Control 2.2 14B（双 expert MoE，高低噪 DiT 在 timestep 0.358 分界）。条件经同一 VAE 编码后与视频 latent 拼接。LoRA rank 256，batch 4，8×H200，约 10,000 step / 4 天。数据约 15 小时 ，混合 DROID 与 RoboCasa 的成功和失败轨迹。两条互补构造：(1) SAM 类分割“A robotic arm”，无需标定，但测试难提供精确 mask，且遮挡可能泄漏原视频动态；(2) 按机器人状态渲染 URDF（DROID 标定 refinement 跟随 PointWorld；RoboCasa 只渲染半透明机器人、夹爪标红）。推理期任意动作可渲染成 control video。",
+      "output": "完整 RGB 视频。正向：场景对机器人运动的响应；逆向：与给定物体运动一致的机器人运动，再经单独训练的 IDM 变成可执行关节/末端指令。规划时对 Diffusion Policy 的 N 条候选在想象中 rollout，用 Gemini 3.1 Pro 按任务成功、交互保真、物理真实排序。",
+      "details": "- **输入：** 参考帧 \\(I_0\\)、masked 条件视频 \\(M\\odot V\\)（未露出区域填均匀灰）、文本 prompt。正向时 \\(M\\) 为机器人轨迹；逆向时为物体/期望运动。\n- **过程：** 骨干 Wan-Fun-Control 2.2 14B（双 expert MoE，高低噪 DiT 在 timestep 0.358 分界）。条件经同一 VAE 编码后与视频 latent 拼接。LoRA rank 256，batch 4，8×H200，约 10,000 step / 4 天。数据约 **15 小时**，混合 DROID 与 RoboCasa 的成功和失败轨迹。两条互补构造：(1) SAM 类分割“A robotic arm”，无需标定，但测试难提供精确 mask，且遮挡可能泄漏原视频动态；(2) 按机器人状态渲染 URDF（DROID 标定 refinement 跟随 PointWorld；RoboCasa 只渲染半透明机器人、夹爪标红）。推理期任意动作可渲染成 control video。\n- **输出：** 完整 RGB 视频。正向：场景对机器人运动的响应；逆向：与给定物体运动一致的机器人运动，再经单独训练的 IDM 变成可执行关节/末端指令。规划时对 Diffusion Policy 的 \\(N\\) 条候选在想象中 rollout，用 Gemini 3.1 Pro 按任务成功、交互保真、物理真实排序。\n\n与最近 baseline 的实质差异：相对 Ctrl-World，条件是像素轨迹而非原始动作向量；相对 Wan-Move，条件是实体 mask 而非 GT tracks；相对 skeleton/EE 可视化，条件稠密且与像素对齐。GitHub 明确：**没有改视频模型或训练器**，只是 DiffSynth-Studio 上的 LoRA 薄层；URDF 渲染工具标注 coming soon。"
+    },
+    "experiments": "**作者主张：** 约 15 小时 masked 微调后，单 checkpoint 在多样场景和多本体上有高视觉保真与可控性，并可用于策略评估、基于模型的规划和逆向动作提取。\n\n实验实际支持：\n\n- **可控生成（LPIPS↓ / SSIM↑ / PSNR↑）：** DROID 上 Masked Visual Actions 0.0945 / 0.887 / 23.74，Ctrl-World 0.362 / 0.708 / 18.15，Wan-Move（GT tracks）0.534 / 0.562 / 12.99，纯 I2V 0.521 / 0.548 / 12.42。BEHAVIOR（训练未见的 R1-Pro 双臂）0.123 / 0.843 / 22.90 vs Ctrl-World 0.196 / 0.837 / 18.39。**重要公平性注释：** 作者脚注写明 Ctrl-World 在全部 DROID 上训练，因此见过文中 held-out 场景；本方法没有。BEHAVIOR 上 Ctrl-World 的 SSIM 已接近，差距主要在 LPIPS/PSNR 与定性是否塌缩。\n- **条件消融：** DROID 域内 EE vis / skeleton / masked 接近（PSNR 22.64 / 22.74 / 23.74）。自定义夹爪真机：0.183 / 0.169 / **0.148** LPIPS。BEHAVIOR：0.171 / 0.162 / **0.123**。稀疏条件会幻觉出训练集机器人或扭曲双臂。\n- **规划（RoboCasa，每任务 10 场景，Diffusion Policy 候选，\\(N=10\\)，Gemini 3.1 Pro 评判）：** Fig. 8 显示多样任务成功率相对直接执行上升，且随评估样本数增加。这是 test-time scaling / Best-of-N，评判器是闭源 VLM，不是学习到的 value 头。作者把“同一初值下想象不同动作”称作 counterfactuals，**实验是相关排序，不是因果识别**。\n- **策略评估：** 开环 Diffusion Policy，每场景 10 条；视频模型内成功率与 GT 环境相关系数 **\\(r=0.982\\)**。作者同时写明视频模型对任务进度有正偏差（想象成功率系统性更高）。真机四任务各 20 条演示，按 rubric 的进度分布接近真机，同样有正偏差。\n- **逆向动作提取（RoboCasa CoffeeServeMug；视频模型未见该任务；IDM 与 DP/ACT/SmolVLA 都用 100 条演示；20 trial）：** 作者报告本方法 **90%**，高于所列模仿学习 baseline（具体 baseline 数字在 Fig. 11，HTML 未转成可复制表；此处不编造）。正向-only 训练即可零样本转逆向。\n\n**证据未支持：** 学到了接触因果；闭源 VLM judge 无偏；15 小时数据可任意扩展到新本体而不要渲染标定；视频模型成功率可替代真机评测（存在正偏差）。",
+    "evidence_notes": "",
+    "code_data_status": "- **代码：** [HadiZayer/masked-visual-actions](https://github.com/HadiZayer/masked-visual-actions) 为 DiffSynth-Studio 上的推理脚本与 LoRA 训练配方；Apache-2.0。URDF control video 渲染工具尚未发布。\n- **权重：** Hugging Face `HadiZayer/masked-visual-actions`（high/low noise 两套 LoRA）。基座是 ModelScope `PAI/Wan2.2-Fun-A14B-Control`。\n- **数据：** DROID + RoboCasa；论文称将释放数据，GitHub 目前需要用户自备 CSV（`prompt, reference_image, video, control_video`）。完整 15 小时 masked 语料是否已全部上传待核验。\n- **评测依赖：** 规划用 Gemini 3.1 Pro，闭源且不可完全复现。",
+    "limitations": "- 作者原文：模型学的是物体交互的 **相关** 而非因果，因果仍是开放问题。\n- 能力与时延受基座 14B 视频模型限制；没有改骨干表达能力。\n- 分割路径可能从遮挡泄漏原视频动态；渲染路径需要相机标定，且默认只渲染机器人。\n- 视频内评测对成功有正偏差；不能当作无偏仿真器。\n- 规划排序依赖闭源 VLM；自定义夹爪/未见双臂上稀疏条件失败，说明泛化来自 mask 接口而非任意可视化。\n- 逆向仍需要单独 IDM 才能落地关节指令；视频本身不是可执行策略。",
+    "comments": "",
+    "source_reports": [
+      "report-af906c7fa2"
+    ],
+    "deleted": false,
+    "updated_at": "2026-08-21",
+    "challenges": "领域长期问题是：大规模视频模型学到了运动、接触和形变先验，但多数仍是被动观察者。本文针对的缺口是 **如何把动作告诉视频模型——既要落在它预训练的像素空间里，又要对物理操作有用**。\n\n- **现有条件信号的失败模式：** 文本过于欠定；tracks / 力 / 关键点稀疏；关节或末端位姿 embodiment-specific，且与视频先验不对齐。Ctrl-World 等在训练域内跟动作准，换未见本体就塌成静止或损坏视频。\n- **稀疏可视化的失败模式：** 同一骨干上训 skeleton 或 end-effector vis，在 DROID 域内与 masked actions 接近；换自定义夹爪会把机器人“改回”训练集外观，BEHAVIOR 双臂上则扭曲本体。\n- **统一接口缺口：** UVA / UWM / X-WAM 等在模态通道上做 masking，动作仍是低维向量，正向/逆向切换不迁移跨本体。已有像素条件（BridgeV2W、Action Images、Mask2IV）几乎只把机器人当主动实体、只跑正向。\n\n作者强调：缺的不是更大的视频骨干，而是 **与预训练视觉空间对齐的动作表征**。",
+    "motivation": "核心 Insight：**把动作写成视频里任意实体的部分可见时空轨迹。露出机器人，模型预测场景响应（正向）；露出物体期望运动，同一模型补出机器人行为（逆向）。主动/被动不是两套架构，而是对同一交互先验的不同查询。**\n\n这改变的是控制接口：条件是与输出空间对齐的 masked video，用 concatenation 注入 Wan-Fun-Control，而不是另开动作通道。训练只用主动机器人实体的 mask，逆向查询零样本泛化。与本知识库 **直接相关于视频世界模型 / WAM 的动作表征**；与 FlowWAM 的光流视频动作、FACT 的数值动作块是同一谱系上的不同点。作者在讨论里自己写明学的是交互相关而非因果关系。\n\n注意：库中已有 **Mask World Model: Predicting What Matters for Robust Robot Policy Learning**，是另一篇工作（预测语义 mask 当输出），标题相近但不是本文。",
+    "technical_approach": "- **输入：** 参考帧 \\(I_0\\)、masked 条件视频 \\(M\\odot V\\)（未露出区域填均匀灰）、文本 prompt。正向时 \\(M\\) 为机器人轨迹；逆向时为物体/期望运动。\n- **过程：** 骨干 Wan-Fun-Control 2.2 14B（双 expert MoE，高低噪 DiT 在 timestep 0.358 分界）。条件经同一 VAE 编码后与视频 latent 拼接。LoRA rank 256，batch 4，8×H200，约 10,000 step / 4 天。数据约 **15 小时**，混合 DROID 与 RoboCasa 的成功和失败轨迹。两条互补构造：(1) SAM 类分割“A robotic arm”，无需标定，但测试难提供精确 mask，且遮挡可能泄漏原视频动态；(2) 按机器人状态渲染 URDF（DROID 标定 refinement 跟随 PointWorld；RoboCasa 只渲染半透明机器人、夹爪标红）。推理期任意动作可渲染成 control video。\n- **输出：** 完整 RGB 视频。正向：场景对机器人运动的响应；逆向：与给定物体运动一致的机器人运动，再经单独训练的 IDM 变成可执行关节/末端指令。规划时对 Diffusion Policy 的 \\(N\\) 条候选在想象中 rollout，用 Gemini 3.1 Pro 按任务成功、交互保真、物理真实排序。\n\n与最近 baseline 的实质差异：相对 Ctrl-World，条件是像素轨迹而非原始动作向量；相对 Wan-Move，条件是实体 mask 而非 GT tracks；相对 skeleton/EE 可视化，条件稠密且与像素对齐。GitHub 明确：**没有改视频模型或训练器**，只是 DiffSynth-Studio 上的 LoRA 薄层；URDF 渲染工具标注 coming soon。",
+    "discussion": "Masked Visual Actions 把“视频世界模型如何接收动作”收束成像素空间的遮罩轨迹，并用同一 checkpoint 切换正向模拟与逆向合成。DROID/BEHAVIOR 的保真度表、自定义夹爪/双臂塌缩对照、以及 \\(r=0.982\\) 的策略评估相关，支持“稠密像素对齐条件比稀疏骨架或原始动作向量更可迁移”。适用边界是需要渲染或分割出实体轨迹的操作视频；延迟受 14B 视频骨干限制。阅读判断：若课题关心 WAM 动作该长成什么样，这篇与 FlowWAM 是一对互补对照（光流视频 vs 实体 mask）；不要把想象 rollout 写成反事实识别，也不要把 Ctrl-World 的 DROID 数字当成同等数据设置下的失败。",
+    "arxiv": {
+      "published": "2026-07-21T17:59:11Z",
+      "revised_at": "2026-07-21T17:59:11Z",
+      "primary_category": "cs.CV"
+    }
+  },
+  {
+    "id": "arxiv-2605-30263",
+    "title": "minWM: A Full-Stack Open-Source Framework for Real-Time Interactive Video World Models",
+    "authors": [
+      "Min Zhao",
+      "Hongzhou Zhu",
+      "Bokai Yan",
+      "Zihan Zhou",
+      "Yimin Chen",
+      "Wenqiang Sun",
+      "Kaiwen Zheng",
+      "Guande He",
+      "Xiao Yang",
+      "Chongxuan Li",
+      "Fan Bao",
+      "Jun Zhu"
+    ],
+    "year": 2026,
+    "publication": "2026，arXiv preprint。arXiv:2605.30263。Min Zhao 为项目负责人；Hongzhou Zhu、Bokai Yan、Zihan Zhou、Yimin Chen 共同一作；Fan Bao / Jun Zhu 为顾问。生数 / 清华 / 人大 / HKUST / UT Austin。尚无 DOI / 正式出版页。",
+    "arxiv_id": "2605.30263",
+    "doi": "",
+    "links": {
+      "paper": "https://arxiv.org/abs/2605.30263",
+      "code": "https://github.com/shengshu-ai/minWM",
+      "model": "https://arxiv.org/html/2605.30263v1/paper_pipeline.png",
+      "alphaxiv": "https://alphaxiv.org/abs/2605.30263"
+    },
+    "tags": [
+      "3D/4D",
+      "交互世界模型",
+      "因果推理",
+      "自回归扩散",
+      "视频生成"
+    ],
+    "figure": {
+      "url": "https://arxiv.org/html/2605.30263v1/paper_pipeline.png",
+      "alt": "minWM Fig. 1: full-stack conversion from bidirectional T2V to camera-controllable few-step AR world models",
+      "label": "minWM，Fig. 1，从 T2V/TI2V 基础模型到相机可控 few-step AR 世界模型的全栈流程。来源：Fig. 1 原图 PNG",
+      "paper_title": "minWM: A Full-Stack Open-Source Framework for Real-Time Interactive Video World Models",
+      "source_url": "https://arxiv.org/html/2605.30263v1/paper_pipeline.png"
+    },
+    "summary": "核心 Insight： 先把双向基础模型微调成相机可控（PRoPE 把相对投影变换写进注意力），再把 CF/CF++ 的三阶段全部换成带相机条件的版本。 改变的是控制接口与可复现性，不是新的生成损失。与本知识库课题 直接相关 ：这是开源实时视频世界模型配方，动作目前主要是相机轨迹，不是关节/操作 WAM，也不是反事实。",
+    "insight": "核心 Insight：**先把双向基础模型微调成相机可控（PRoPE 把相对投影变换写进注意力），再把 CF/CF++ 的三阶段全部换成带相机条件的版本。** 改变的是控制接口与可复现性，不是新的生成损失。与本知识库课题 **直接相关**：这是开源实时视频世界模型配方，动作目前主要是相机轨迹，不是关节/操作 WAM，也不是反事实。",
+    "pipeline": {
+      "input": "文本，以及每帧相机内参 K i 与 world-to-camera T i^cw；可选图像（TI2V）。输出设定 480×832、77 帧，AR chunk = 4 latent 帧，蒸馏 4 步。",
+      "process": "PRoPE 构造 4× 4 提升投影矩阵，按 GTA 形式注入自注意力，使 token 对依赖相对位姿。然后 Stage 1 TF AR、Stage 2 因果 ODE 或因果 CD、Stage 3 不对称 DMD；student / s real / s fake 自 rollout 都吃同一相机条件。HY1.5：batch 32、lr 1× 10^-5，双向 8K → AR 4K → Stage2 1.5K → DMD 500（8K 权重作 Stage 3 score，Stage 1 从 5K 初始化）。Wan2.1：lr 2× 10^-6，双向 5K → 4K → 2K → 200。",
+      "output": "相机可控的 few-step AR 视频。A800、不含 VAE 的首帧延迟：HY1.5 few-step AR 3.446 s （相对多步双向 771 s，约 224×）；Wan2.1 few-step AR 1.137 s （相对 269 s，约 237×）。",
+      "details": "- **输入：** 文本，以及每帧相机内参 \\(K_i\\) 与 world-to-camera \\(T_i^{cw}\\)；可选图像（TI2V）。输出设定 480×832、77 帧，AR chunk = 4 latent 帧，蒸馏 4 步。\n- **过程：** PRoPE 构造 \\(4\\times 4\\) 提升投影矩阵，按 GTA 形式注入自注意力，使 token 对依赖相对位姿。然后 Stage 1 TF AR、Stage 2 因果 ODE 或因果 CD、Stage 3 不对称 DMD；student / \\(s_{\\text{real}}\\) / \\(s_{\\text{fake}}\\) 自 rollout 都吃同一相机条件。HY1.5：batch 32、lr \\(1\\times 10^{-5}\\)，双向 8K → AR 4K → Stage2 1.5K → DMD 500（8K 权重作 Stage 3 score，Stage 1 从 5K 初始化）。Wan2.1：lr \\(2\\times 10^{-6}\\)，双向 5K → 4K → 2K → 200。\n- **输出：** 相机可控的 few-step AR 视频。A800、不含 VAE 的首帧延迟：HY1.5 few-step AR **3.446 s**（相对多步双向 771 s，约 \\(224\\times\\)）；Wan2.1 few-step AR **1.137 s**（相对 269 s，约 \\(237\\times\\)）。\n\n与最近 baseline 的实质差异：相对 Causal Forcing++ 论文里的定性相机 demo，这里给出两条骨干的可运行脚本、分阶段 checkpoint 和数据消融；相对 HY-WorldPlay，强调可迁移而非从零宣称新 SOTA 质量。"
+    },
+    "experiments": "**作者主张：** 全栈可复现；few-step AR 大幅降低首帧延迟且保住相机可控。\n\n实验实际支持：\n\n- **延迟表：** 见上。多步 AR 已有约 9.4–9.5× 加速，few-step 再降一个数量级。这是架构（先出首帧）+ 蒸馏的共同结果，不是单点算法奇迹。\n- **定性：** Fig. 2 显示蒸馏后仍能切换相机动作。\n- **数据消融：** 当前设定下 SpatialVid 的感知估计位姿 **未能** 学到可靠相机控制（过滤后仍差）。DL3DV 重建再按指定轨迹渲染，或 OpenVid 图像 + WorldPlay 生成轨迹，可以学会。作者把前者失败解释为位姿噪声假说，并写明 **不能** 据此断言 SpatialVid 不适合该任务。\n- **步数（HY1.5）：** 1–2K 步基本不可控；约 5K 开始有响应但不稳；8K 较强。\n- **Batch（Wan2.1）：** <4 经常学不会；8 改善但不稳；16 可跑通且可控性高。主实验 batch 32。\n\n**无的实验：** 没有 VBench / VisionReward / 轨迹误差表；没有与 Genie 3、WorldPlay、Matrix-Game 的公平质量对比；没有非相机动作。禁止把延迟加速写成质量 SOTA。",
+    "evidence_notes": "",
+    "code_data_status": "- **代码：** [shengshu-ai/minWM](https://github.com/shengshu-ai/minWM)，README 称 full-stack tutorial 而非单一模型；含脚本、checkpoint、文档、推理。GitHub 记技术报告于 2026-05-29 发布。\n- **开源数据策略：** OpenVid 等图像 + WorldPlay 生成带指定轨迹的视频。论文内部还用过 DL3DV 渲染。\n- **许可 / 权重完整性：** 以仓库为准，本次未逐文件核验所有 stage 的权重是否齐全。",
+    "limitations": "- 没有标准视频质量榜，无法与 CF++ T2V 数字横比世界模型质量。\n- SpatialVid 失败只是当前设定的负结果。\n- 控制信号目前主要是相机；作者把 pose 等列为未来。\n- 延迟不含 VAE；HY1.5 的 3.4 s 首帧对“实时游戏”仍偏慢。\n- chunk=4 latent、4-step，未展示 CF++ 的 frame-wise 2-step 世界模型。\n- 依赖 WorldPlay 生成轨迹时，教师模型偏差会进入“GT”。",
+    "comments": "",
+    "source_reports": [
+      "report-c7ced2c92d"
+    ],
+    "deleted": false,
+    "updated_at": "2026-08-21",
+    "challenges": "作者认为缺的不是又一篇蒸馏论文，而是 **可复现的全栈**：数据、可控微调、AR 训练、少步蒸馏、流式推理散落在不同仓库。交互世界模型还要求因果 rollout、相机（或其它动作）可控、延迟够低。\n\n本文针对的工程缺口：\n\n- 把 Wan2.1-T2V-1.3B（交叉注意力条件）和 HY1.5-TI2V-8B（MMDiT）两条异构骨干接到同一配方。\n- 也可把已有世界模型（HY-WorldPlay）迁到新数据/新延迟。\n- 需要可操作的训练经验：轨迹质量、可控性步数、最小 batch。\n\n它 **没有** 提出新的蒸馏理论，明确复用 Causal Forcing / Causal Forcing++。",
+    "motivation": "核心 Insight：**先把双向基础模型微调成相机可控（PRoPE 把相对投影变换写进注意力），再把 CF/CF++ 的三阶段全部换成带相机条件的版本。** 改变的是控制接口与可复现性，不是新的生成损失。与本知识库课题 **直接相关**：这是开源实时视频世界模型配方，动作目前主要是相机轨迹，不是关节/操作 WAM，也不是反事实。",
+    "technical_approach": "- **输入：** 文本，以及每帧相机内参 \\(K_i\\) 与 world-to-camera \\(T_i^{cw}\\)；可选图像（TI2V）。输出设定 480×832、77 帧，AR chunk = 4 latent 帧，蒸馏 4 步。\n- **过程：** PRoPE 构造 \\(4\\times 4\\) 提升投影矩阵，按 GTA 形式注入自注意力，使 token 对依赖相对位姿。然后 Stage 1 TF AR、Stage 2 因果 ODE 或因果 CD、Stage 3 不对称 DMD；student / \\(s_{\\text{real}}\\) / \\(s_{\\text{fake}}\\) 自 rollout 都吃同一相机条件。HY1.5：batch 32、lr \\(1\\times 10^{-5}\\)，双向 8K → AR 4K → Stage2 1.5K → DMD 500（8K 权重作 Stage 3 score，Stage 1 从 5K 初始化）。Wan2.1：lr \\(2\\times 10^{-6}\\)，双向 5K → 4K → 2K → 200。\n- **输出：** 相机可控的 few-step AR 视频。A800、不含 VAE 的首帧延迟：HY1.5 few-step AR **3.446 s**（相对多步双向 771 s，约 \\(224\\times\\)）；Wan2.1 few-step AR **1.137 s**（相对 269 s，约 \\(237\\times\\)）。\n\n与最近 baseline 的实质差异：相对 Causal Forcing++ 论文里的定性相机 demo，这里给出两条骨干的可运行脚本、分阶段 checkpoint 和数据消融；相对 HY-WorldPlay，强调可迁移而非从零宣称新 SOTA 质量。",
+    "discussion": "minWM 是 Causal Forcing 谱系的工程收口：异构骨干、分阶段权重、以及“估计位姿不够、GT 或生成 GT 才够”的训练经验。它证明配方可以接到世界模型控制，而不是证明学到了物理因果。适用边界是相机轨迹控制的实时视频世界模型原型。失败案例被作者写进消融：SpatialVid、过小 batch、过少微调步。阅读判断：若课题要复现 Genie 3 风格的开源相机世界模型，应优先跟这个仓库；若课题要操作 WAM 或反事实，它只提供流式生成后端，不提供动作语义。",
+    "arxiv": {
+      "published": "2026-05-28T17:27:03Z",
+      "revised_at": "2026-05-28T17:27:03Z",
+      "primary_category": "cs.CV"
+    }
   },
   {
     "arxiv": {
@@ -2307,6 +2774,72 @@
     "year": 2026
   },
   {
+    "id": "arxiv-2412-07772",
+    "title": "From Slow Bidirectional to Fast Autoregressive Video Diffusion Models",
+    "authors": [
+      "Tianwei Yin",
+      "Qiang Zhang",
+      "Richard Zhang",
+      "William T. Freeman",
+      "Frédo Durand",
+      "Eli Shechtman",
+      "Xun Huang"
+    ],
+    "year": 2025,
+    "publication": "2025，CVPR 2025（ Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition ，pp. 22963–22974）。Tianwei Yin 与 Qiang Zhang 为共同一作，通讯 tianweiy@mit.edu。预印本 arXiv:2412.07772（v4，cs.CV）。arXiv DOI：10.48550/arXiv.2412.07772。IEEE Xplore 正式 DOI 本次未单独打开核验。模型通称 CausVid 。",
+    "arxiv_id": "2412.07772",
+    "doi": "",
+    "links": {
+      "paper": "https://arxiv.org/abs/2412.07772",
+      "publication": "https://openaccess.thecvf.com/content/CVPR2025/html/Yin_From_Slow_Bidirectional_to_Fast_Autoregressive_Video_Diffusion_Models_CVPR_2025_paper.html",
+      "project": "https://causvid.github.io/",
+      "code": "https://github.com/tianweiy/CausVid",
+      "model": "https://huggingface.co/tianweiy/CausVid",
+      "alphaxiv": "https://alphaxiv.org/abs/2412.07772"
+    },
+    "tags": [
+      "3D/4D",
+      "交互世界模型",
+      "因果推理",
+      "自回归扩散",
+      "视频生成"
+    ],
+    "figure": {
+      "url": "https://arxiv.org/html/2412.07772v4/teaser_final.png",
+      "alt": "CausVid Fig. 1: bidirectional vs few-step causal streaming generation",
+      "label": "CausVid，Fig. 1，双向 50-step 与 4-step 因果流式生成的延迟对比。来源：Fig. 1 原图 PNG",
+      "paper_title": "From Slow Bidirectional to Fast Autoregressive Video Diffusion Models",
+      "source_url": "https://arxiv.org/html/2412.07772v4/teaser_final.png"
+    },
+    "summary": "核心 Insight： 不对称蒸馏——用双向 teacher 的分布匹配监督因果学生，而不是先把 teacher 也改成因果再蒸馏。 DMD 在分布层匹配，允许 teacher/student 架构不同；ODE 轨迹初始化用来稳住后续 DMD。这改变的是注意力接口（block-wise causal）和训练信号（分布匹配而非逐步 denoising），不是再训一个更强的双向生成器。",
+    "insight": "核心 Insight：**不对称蒸馏——用双向 teacher 的分布匹配监督因果学生，而不是先把 teacher 也改成因果再蒸馏。** DMD 在分布层匹配，允许 teacher/student 架构不同；ODE 轨迹初始化用来稳住后续 DMD。这改变的是注意力接口（block-wise causal）和训练信号（分布匹配而非逐步 denoising），不是再训一个更强的双向生成器。\n\n与本知识库课题 **间接相关**：它是后续 Self Forcing / Causal Forcing 的起点，也把交互视频、游戏渲染、机器人视频奖励列为应用方向，但本文本身不做动作条件世界模型，也不做 \\(do(\\cdot)\\)。可借鉴点是：因果注意力 + KV cache + few-step 蒸馏这一工程接口。",
+    "pipeline": {
+      "input": "文本 prompt；可选首帧图像或流式视频块。潜空间由 3D VAE 把 16 像素帧压成 5 个 latent 帧。训练分辨率 352× 640、12 FPS、约 10 s。",
+      "process": "学生与 teacher 同构，但块内双向、块间因果。先用 bidirectional teacher 生成约 1000 条 ODE 轨迹，对学生做 3000 iter 回归初始化；再用 asymmetric DMD（双向 s data 监督因果 G phi，在线训 s gen）6000 iter。推理每块 4 步，时间步 [999,748,502,247]，用 KV cache；推理时不再需要训练用的 block-causal mask。全流程约 2 天 × 64 H100。数据约 40 万内部有版权单镜头视频 + 图像，按 CogVideoX 配方过滤。",
+      "output": "流式视频帧。文中测得首帧延迟 1.3 s、之后约 9.4 FPS（H100，10 s / 120 帧 / 640× 352）。零样本支持 I2V、流式 V2V（SDEdit 式对块加 t 1 噪声再一步去噪）、动态换 prompt。",
+      "details": "- **输入：** 文本 prompt；可选首帧图像或流式视频块。潜空间由 3D VAE 把 16 像素帧压成 5 个 latent 帧。训练分辨率 \\(352\\times 640\\)、12 FPS、约 10 s。\n- **过程：** 学生与 teacher 同构，但块内双向、块间因果。先用 bidirectional teacher 生成约 1000 条 ODE 轨迹，对学生做 3000 iter 回归初始化；再用 asymmetric DMD（双向 \\(s_{\\text{data}}\\) 监督因果 \\(G_\\phi\\)，在线训 \\(s_{\\text{gen}}\\)）6000 iter。推理每块 4 步，时间步 \\([999,748,502,247]\\)，用 KV cache；推理时不再需要训练用的 block-causal mask。全流程约 2 天 × 64 H100。数据约 40 万内部有版权单镜头视频 + 图像，按 CogVideoX 配方过滤。\n- **输出：** 流式视频帧。文中测得首帧延迟 1.3 s、之后约 9.4 FPS（H100，10 s / 120 帧 / \\(640\\times 352\\)）。零样本支持 I2V、流式 V2V（SDEdit 式对块加 \\(t_1\\) 噪声再一步去噪）、动态换 prompt。\n\n与最近 baseline 的实质差异：相对 CogVideoX / MovieGen，生成是因果流式而非整段双向；相对把因果 teacher 再蒸馏的朴素路线，teacher 保持双向。作者自己的消融显示：many-step 因果微调会把误差累积传下去；双向 teacher + ODE init 才是最终配置。"
+    },
+    "experiments": "**作者主张：** 这是首个质量上能与双向扩散竞争的自回归视频生成方法；VBench-Long total 84.27 超过当时所有官方评测模型；相对同规模 CogVideoX 延迟降约 \\(160\\times\\)、吞吐升约 \\(16\\times\\)。\n\n实验实际支持（数字均来自原文表格/正文）：\n\n- **短视频（MovieGen 前 128 prompt，长度尽量贴近 10 s）：** Temporal / Frame / Text = **94.7 / 64.4 / 30.1**，高于 CogVideoX-5B、OpenSORA、Pyramid Flow、MovieGen。\n- **约 30 s 长视频：** Temporal / Frame / Text = **94.9 / 63.4 / 28.9**；成像质量随时间曲线显示因果 teacher 会崩，不对称 DMD 学生能撑住。\n- **效率（H100，10 s / 120 帧）：** CausVid 1.3 s / 9.4 FPS vs CogVideoX-5B 208.6 s / 0.6 FPS、双向 teacher 219.2 s / 0.6 FPS。\n- **消融：** 双向 many-step 94.6/62.7/29.6；因果 many-step 92.4/60.1/28.5；ODE init + 因果 teacher 的 4-step 学生 91.9/61.7/28.2；最终 ODE init + 双向 teacher **94.7/64.4/30.1**。无 ODE init 的双向 teacher 4-step 为 93.4/60.6/29.4。\n- **I2V（VBench-I2V 设定，无额外训练）：** 92.0 / 65.0 / 28.9，高于 CogVideoX-5B 与 Pyramid Flow。\n- **流式 V2V：** 相对 StreamV2V，在 60 条 ≥16 帧的 DAVIS 视频上 Temporal/Frame/Text 为 93.2/61.7/27.7 vs 92.5/59.3/26.9。\n- **附录 VBench-Long（946 prompt，16 指标）：** Total **84.27**，Quality 85.65，Semantic 78.75；Dynamic Degree 92.69。这是完整榜，不是主表 128-prompt 子集。\n- **用户研究：** MovieGenBench 前 29 prompt × 3 评分者；相对 MovieGen / CogVideoX / Pyramid Flow 偏好 >50%。固定 seed=0。\n\n**证据未支持：** 无限长视频无质量下降；DMD 保持 teacher 多样性；该内部 teacher 的数字可直接与后来 Wan2.1-1.3B 上的 CausVid 重实现横比（分辨率、骨干都不同）。",
+    "evidence_notes": "",
+    "code_data_status": "- **代码：** [tianweiy/CausVid](https://github.com/tianweiy/CausVid)，README 标明 CVPR 2025。\n- **权重：** Hugging Face `tianweiy/CausVid`。\n- **数据：** 约 40 万内部有版权视频，完整预训练语料不能公开复现。后续 Self Forcing 比较用的是官方 Wan-1.3B 重实现，不是这篇内部 teacher 的原权重。",
+    "limitations": "- 14 分钟示例已有轻微过曝；作者承认极端长视频质量仍降。\n- 首帧延迟被 5-latent-frame VAE 卡住，要再降一个数量级需 frame-wise VAE。\n- reverse KL / DMD 降低输出多样性。\n- 学生帧质量可超过双向 teacher，但 temporal flickering 与多样性更差。\n- 主表 128-prompt 与附录全量 VBench-Long 不可混引。\n- 训练数据不公开，原始 CausVid 与 Wan 重实现不可直接比分数。\n\n---",
+    "comments": "",
+    "source_reports": [
+      "report-c7ced2c92d"
+    ],
+    "deleted": false,
+    "updated_at": "2026-08-21",
+    "challenges": "领域长期问题是：高质量视频扩散依赖双向注意力，单帧生成必须看到未来，延迟与显存随帧数二次增长，无法做流式交互。本文针对的具体缺口是：**如何把已经训好的双向 DiT 变成可 KV cache 的少步因果生成器，同时不把误差累积原样传给学生。**\n\n- **作者明确指出的失败模式：** 双向 DiT 生成 128 帧需整段算完才能看第一帧（文中 teacher 约 219 s）；朴素 AR 视频模型虽降低首帧等待，但仍远达不到交互帧率，且逐步累积误差。\n- **蒸馏缺口：** 当时视频蒸馏几乎都把非因果 teacher 蒸成非因果学生，且多针对 <2 s 短片。把因果 teacher 再蒸成 few-step 学生会继承更弱 teacher 和其误差累积。\n- **评测缺口：** 主表短视频用 MovieGen 前 128 个 prompt 的 VBench 三轴，不是完整 VBench；完整 946-prompt VBench-Long 放在附录。不要把 94.7 的 Temporal Quality 和 84.27 的 Total Score 混成同一套数字。",
+    "motivation": "核心 Insight：**不对称蒸馏——用双向 teacher 的分布匹配监督因果学生，而不是先把 teacher 也改成因果再蒸馏。** DMD 在分布层匹配，允许 teacher/student 架构不同；ODE 轨迹初始化用来稳住后续 DMD。这改变的是注意力接口（block-wise causal）和训练信号（分布匹配而非逐步 denoising），不是再训一个更强的双向生成器。\n\n与本知识库课题 **间接相关**：它是后续 Self Forcing / Causal Forcing 的起点，也把交互视频、游戏渲染、机器人视频奖励列为应用方向，但本文本身不做动作条件世界模型，也不做 \\(do(\\cdot)\\)。可借鉴点是：因果注意力 + KV cache + few-step 蒸馏这一工程接口。",
+    "technical_approach": "- **输入：** 文本 prompt；可选首帧图像或流式视频块。潜空间由 3D VAE 把 16 像素帧压成 5 个 latent 帧。训练分辨率 \\(352\\times 640\\)、12 FPS、约 10 s。\n- **过程：** 学生与 teacher 同构，但块内双向、块间因果。先用 bidirectional teacher 生成约 1000 条 ODE 轨迹，对学生做 3000 iter 回归初始化；再用 asymmetric DMD（双向 \\(s_{\\text{data}}\\) 监督因果 \\(G_\\phi\\)，在线训 \\(s_{\\text{gen}}\\)）6000 iter。推理每块 4 步，时间步 \\([999,748,502,247]\\)，用 KV cache；推理时不再需要训练用的 block-causal mask。全流程约 2 天 × 64 H100。数据约 40 万内部有版权单镜头视频 + 图像，按 CogVideoX 配方过滤。\n- **输出：** 流式视频帧。文中测得首帧延迟 1.3 s、之后约 9.4 FPS（H100，10 s / 120 帧 / \\(640\\times 352\\)）。零样本支持 I2V、流式 V2V（SDEdit 式对块加 \\(t_1\\) 噪声再一步去噪）、动态换 prompt。\n\n与最近 baseline 的实质差异：相对 CogVideoX / MovieGen，生成是因果流式而非整段双向；相对把因果 teacher 再蒸馏的朴素路线，teacher 保持双向。作者自己的消融显示：many-step 因果微调会把误差累积传下去；双向 teacher + ODE init 才是最终配置。",
+    "discussion": "CausVid 把“双向质量 vs 因果流式”收成一套可复现配方：block-causal DiT、ODE 初始化、不对称 DMD、KV cache。CVPR 版与后续 Wan 重实现不是同一套权重，引用时要写清骨干。适用边界是文本/图像条件的流式视频，不是动作条件世界模型。失败与开放问题包括：超长视频仍会过曝/退化；VAE 必须凑满 5 个 latent 帧才出像素，限制首帧延迟；反向 KL 会压多样性。阅读判断：适合作为 AR 视频蒸馏谱系的起点；不要把 84.27 写成击败了所有闭源系统，也不要把“causal student”写成因果世界模型。",
+    "arxiv": {
+      "published": "2024-12-10T18:59:50Z",
+      "revised_at": "2025-09-23T21:08:03Z",
+      "primary_category": "cs.CV"
+    }
+  },
+  {
     "arxiv": {
       "published": "2025-07-02T14:13:48Z",
       "revised_at": "2025-10-17T21:23:28Z",
@@ -2472,6 +3005,171 @@
     "year": 2025
   },
   {
+    "id": "arxiv-2509-22622",
+    "title": "LongLive: Real-time Interactive Long Video Generation",
+    "authors": [
+      "Shuai Yang",
+      "Wei Huang",
+      "Ruihang Chu",
+      "Yicheng Xiao",
+      "Yuyang Zhao",
+      "Xianbang Wang",
+      "Muyang Li",
+      "Enze Xie",
+      "Yingcong Chen",
+      "Yao Lu",
+      "Song Han",
+      "Yukang Chen"
+    ],
+    "year": 2025,
+    "publication": "2025，arXiv preprint（cs.CV）。arXiv:2509.22622。单位 NVIDIA / MIT / HKUST(GZ) / HKU / THU。尚无 DOI / 正式出版页。arXiv DOI：10.48550/arXiv.2509.22622。",
+    "arxiv_id": "2509.22622",
+    "doi": "",
+    "links": {
+      "paper": "https://arxiv.org/abs/2509.22622",
+      "project": "https://hanlab.mit.edu/projects/longlive",
+      "code": "https://github.com/NVlabs/LongLive",
+      "model": "https://huggingface.co/Efficient-Large-Model/LongLive-1.3B",
+      "alphaxiv": "https://alphaxiv.org/abs/2509.22622"
+    },
+    "tags": [
+      "3D/4D",
+      "VLA",
+      "交互世界模型",
+      "因果推理",
+      "自回归扩散",
+      "视频生成"
+    ],
+    "figure": {
+      "url": "https://arxiv.org/html/2509.22622v1/figures/method.png",
+      "alt": "LongLive Fig. 2: short-window attention, frame sink, and KV-recache",
+      "label": "LongLive，Fig. 2，短窗注意力 + frame sink，以及 prompt 切换时的 KV-recache。来源：Fig. 2 原图 PNG",
+      "paper_title": "LongLive: Real-time Interactive Long Video Generation",
+      "source_url": "https://arxiv.org/html/2509.22622v1/figures/method.png"
+    },
+    "summary": "核心 Insight： 在 Self Forcing 式因果 few-step 模型上，用 KV-recache 在切换点用“已生成帧 + 新 prompt”重算 cache；用 streaming long tuning 按 5 s 片段滚动监督（train-long–test-long）；短窗 + 把第一 chunk 当永久 frame sink。 作者发现 sink 只有在长滚动崩坏被 streaming tuning 治住之后才有效。这改变的是 cache 与训练时间窗，不是生成器骨干。",
+    "insight": "核心 Insight：**在 Self Forcing 式因果 few-step 模型上，用 KV-recache 在切换点用“已生成帧 + 新 prompt”重算 cache；用 streaming long tuning 按 5 s 片段滚动监督（train-long–test-long）；短窗 + 把第一 chunk 当永久 frame sink。** 作者发现 sink 只有在长滚动崩坏被 streaming tuning 治住之后才有效。这改变的是 cache 与训练时间窗，不是生成器骨干。\n\n与本知识库课题 **间接相关**：Causal Forcing 文中把它列为正交的长视频适配；它支持流式换 prompt，但没有相机/动作条件。可借鉴点是交互时“状态该怎么刷新”。",
+    "pipeline": {
+      "input": "顺序文本 prompt；骨干 Wan2.1-T2V-1.3B，先 Self Forcing DMD 改成因果 few-step，并打开短窗与 frame sink。",
+      "process": "Streaming long tuning：每步只生成并 DMD 监督下一段 5 s，历史 KV detach；序列最长 60 s，每 batch 恰好一次 prompt 切换（5–55 s 均匀采样）。切换时 recache 一次，teacher（Wan-14B）也看新 prompt。短窗约 9 latent 帧，sink 为第一 chunk 的 3 latent 帧。LoRA rank 256（约 27% 参数，350M）。64×H100 约 12 小时，合计约 32 GPU-day。也实现了线性注意力骨干 SANA-Video。",
+      "output": "流式长视频；H100 上 20.7 FPS；单卡最长演示 240 s。INT8 PTQ 后模型 1.4 GB，5090 上 16.4 FPS。",
+      "details": "- **输入：** 顺序文本 prompt；骨干 Wan2.1-T2V-1.3B，先 Self Forcing DMD 改成因果 few-step，并打开短窗与 frame sink。\n- **过程：** Streaming long tuning：每步只生成并 DMD 监督下一段 5 s，历史 KV detach；序列最长 60 s，每 batch 恰好一次 prompt 切换（5–55 s 均匀采样）。切换时 recache 一次，teacher（Wan-14B）也看新 prompt。短窗约 9 latent 帧，sink 为第一 chunk 的 3 latent 帧。LoRA rank 256（约 27% 参数，350M）。64×H100 约 12 小时，合计约 32 GPU-day。也实现了线性注意力骨干 SANA-Video。\n- **输出：** 流式长视频；H100 上 20.7 FPS；单卡最长演示 240 s。INT8 PTQ 后模型 1.4 GB，5090 上 16.4 FPS。\n\n与最近 baseline 的实质差异：相对 Self Forcing，训练看到自己的长程脏上下文，并且专门训切换；相对 MAGI-1 的手动调 KV 窗换 prompt，recache 是一次前向重写。SkyReels-V2 不能比实时。"
+    },
+    "experiments": "**作者主张：** 短片质量不掉、长片与交互长片领先，同时最快。\n\n实验实际支持：\n\n- **短片 VBench：** Total/Quality/Semantic **84.87 / 86.97 / 76.47**，20.7 FPS。Quality 高于 Self Forcing chunk-wise（85.07），Semantic **低于** SF 的 81.28。速度得益于短窗。\n- **单 prompt 30 s VBench-Long：** Total **83.52** vs Self-Forcing 81.59、FramePack 81.95、SkyReels-V2 75.29；吞吐 20.7 vs 17.0 / 0.92 / 0.49。FramePack 是 I2V，需先合成首帧。\n- **交互 60 s（自建 160 条，每条 6×10 s prompt）：** Quality 84.38 vs SF 82.46、SkyReels 80.49。分段 CLIP 在 0–10 s 到 50–60 s 上全程高于两对照（末段 24.32 vs SF 23.19）。这不是官方 VBench 交互协议。\n- **KV-recache 消融（10 s、5 s 切换）：** recache 的 Background/Subject/CLIP = 94.81 / 94.04 / 27.87；清 cache 92.75 / 89.59 / 28.95（语义略高但一致性差）；留 cache 94.77 / 93.69 / 25.92（跟不住新 prompt）。\n- **窗与 sink：** 一致性随窗长上升，约 24 帧饱和；9 local + 3 sink 接近 21 帧窗的一致性，端到端时间 −28%、峰值显存 −17%（H100）。\n- **LoRA：** rank 256 的 30 s Total 83.12，接近全量微调 83.52；rank 32 仅 81.08。\n- **INT8：** VBench Total 84.31 vs BF16 84.87。\n- **用户研究：** 48 题 × 26 有效问卷，四维二选一；正文未给胜率表，细节在附录。\n\n**证据未支持：** Semantic 全面超过 Self Forcing；240 s 有完整 VBench；质量上限超过 Wan 基座（作者在局限中明确否定）。",
+    "evidence_notes": "",
+    "code_data_status": "- **代码：** [NVlabs/LongLive](https://github.com/NVlabs/LongLive)，含训练与推理。\n- **权重：** Hugging Face `Efficient-Large-Model/LongLive-1.3B`。\n- **数据：** 无额外真实视频；prompt 来自 VidProM + Qwen2-72B 写下一镜。作者强调未引入新的外部视频集。",
+    "limitations": "- 自监督微调不能修正基座系统性偏差；短片段质量很难超过 teacher。\n- 训练每条长序列只插一次切换，推理多段切换是外推。\n- 交互评测是自建 160 条，CLIP 不等于人类叙事连贯。\n- 短片 Semantic 低于 Self Forcing，存在长程特化的代价。\n- 240 s 主要是展示，缺少与 60 s 同协议的完整表。\n- 依赖 Wan 与 14B teacher，完整蒸馏链仍重。\n\n---",
+    "comments": "",
+    "source_reports": [
+      "report-c7ced2c92d"
+    ],
+    "deleted": false,
+    "updated_at": "2026-08-21",
+    "challenges": "CausVid / Self Forcing 能实时短片，但 **分钟级 + 中途换 prompt** 会同时碰到效率与一致性：\n\n- 双向 / Diffusion-Forcing：SkyReels-V2 生成 60 s 约 50 分钟（H100），因为不能 KV cache。\n- 因果 AR 多用 train-short–test-long，自生成历史越来越脏，长视频漂移。\n- 换 prompt 时：清空 KV 则跳变；保留 KV 则新 prompt 不生效或滞后——旧 prompt 已通过交叉注意力写进 cache。\n- 短窗注意力能加速，但丢掉远距线索；先前工作认为 attention sink 挡不住视频长滚动崩坏。\n\n本文针对的是 **交互式长视频的训练–推理对齐与 cache 刷新接口**，不是新的蒸馏理论。",
+    "motivation": "核心 Insight：**在 Self Forcing 式因果 few-step 模型上，用 KV-recache 在切换点用“已生成帧 + 新 prompt”重算 cache；用 streaming long tuning 按 5 s 片段滚动监督（train-long–test-long）；短窗 + 把第一 chunk 当永久 frame sink。** 作者发现 sink 只有在长滚动崩坏被 streaming tuning 治住之后才有效。这改变的是 cache 与训练时间窗，不是生成器骨干。\n\n与本知识库课题 **间接相关**：Causal Forcing 文中把它列为正交的长视频适配；它支持流式换 prompt，但没有相机/动作条件。可借鉴点是交互时“状态该怎么刷新”。",
+    "technical_approach": "- **输入：** 顺序文本 prompt；骨干 Wan2.1-T2V-1.3B，先 Self Forcing DMD 改成因果 few-step，并打开短窗与 frame sink。\n- **过程：** Streaming long tuning：每步只生成并 DMD 监督下一段 5 s，历史 KV detach；序列最长 60 s，每 batch 恰好一次 prompt 切换（5–55 s 均匀采样）。切换时 recache 一次，teacher（Wan-14B）也看新 prompt。短窗约 9 latent 帧，sink 为第一 chunk 的 3 latent 帧。LoRA rank 256（约 27% 参数，350M）。64×H100 约 12 小时，合计约 32 GPU-day。也实现了线性注意力骨干 SANA-Video。\n- **输出：** 流式长视频；H100 上 20.7 FPS；单卡最长演示 240 s。INT8 PTQ 后模型 1.4 GB，5090 上 16.4 FPS。\n\n与最近 baseline 的实质差异：相对 Self Forcing，训练看到自己的长程脏上下文，并且专门训切换；相对 MAGI-1 的手动调 KV 窗换 prompt，recache 是一次前向重写。SkyReels-V2 不能比实时。",
+    "discussion": "LongLive 把实时 AR 视频从 5 s 推到可交互的分钟级：recache 处理提示词切换，streaming tuning 处理自生成历史，sink 让短窗不丢身份。短片 Semantic 下降、长片/交互上升，符合“为长程与切换做了特化”的阅读。适用边界是文本交互长视频，不是动作世界模型。失败来自基座上限和无真实长视频监督。阅读判断：适合作为 CausVid 谱系的长程插件；不要把 20.7 FPS 写成已含复杂 3D 控制。",
+    "arxiv": {
+      "published": "2025-09-26T17:48:24Z",
+      "revised_at": "2025-10-13T22:41:26Z",
+      "primary_category": "cs.CV"
+    }
+  },
+  {
+    "id": "arxiv-2505-13211",
+    "title": "MAGI-1: Autoregressive Video Generation at Scale",
+    "authors": [
+      "Sand.AI",
+      "Hansi Teng",
+      "Hongyu Jia",
+      "Lei Sun",
+      "Lingzhi Li",
+      "Maolin Li",
+      "Mingqiu Tang",
+      "Shuai Han",
+      "Tianning Zhang",
+      "W. Q. Zhang",
+      "Weifeng Luo",
+      "Xiaoyang Kang",
+      "Yuchen Sun",
+      "Yue Cao",
+      "Yunpeng Huang",
+      "Yutong Lin",
+      "Yuxin Fang",
+      "Zewei Tao",
+      "Zheng Zhang",
+      "Zhongshu Wang",
+      "Zixun Liu",
+      "Dai Shi",
+      "Guoli Su",
+      "Hanwen Sun",
+      "Hong Pan",
+      "Jie Wang",
+      "Jiexin Sheng",
+      "Min Cui",
+      "Min Hu",
+      "Ming Yan",
+      "Shucheng Yin",
+      "Siran Zhang",
+      "Tingting Liu",
+      "Xianping Yin",
+      "Xiaoyu Yang",
+      "Xin Song",
+      "Xuan Hu",
+      "Yankai Zhang",
+      "Yuqiao Li"
+    ],
+    "year": 2025,
+    "publication": "2025，arXiv preprint（v1，cs.CV）。arXiv:2505.13211。arXiv DOI：10.48550/arXiv.2505.13211。作者列表以 GitHub README / arXiv bibtex 为准；HTML 页未逐人展开署名。尚无会议/期刊版本。",
+    "arxiv_id": "2505.13211",
+    "doi": "",
+    "links": {
+      "paper": "https://arxiv.org/abs/2505.13211",
+      "code": "https://github.com/SandAI-org/MAGI-1",
+      "alphaxiv": "https://alphaxiv.org/abs/2505.13211"
+    },
+    "tags": [
+      "交互世界模型",
+      "因果推理",
+      "自回归扩散",
+      "视频生成"
+    ],
+    "figure": {
+      "url": "https://arxiv.org/html/2505.13211v1/algorithm_v4.png",
+      "alt": "MAGI-1 Fig. 1: chunk-wise autoregressive denoising with block-causal attention",
+      "label": "MAGI-1，Fig. 1，24 帧 chunk 的流水线自回归去噪与 block-causal mask。来源：Fig. 1 原图 PNG",
+      "paper_title": "MAGI-1: Autoregressive Video Generation at Scale",
+      "source_url": "https://arxiv.org/html/2505.13211v1/algorithm_v4.png"
+    },
+    "summary": "核心 Insight： 以固定 24 帧（1 s @ 24 FPS）为自回归单元，块内双向、块间因果，噪声时间步沿时间单调递增；T2V / I2V / 续写只是干净块比例不同。 块尚未完全干净就可以启动下一块，最多四块流水线并行。蒸馏走 shortcut model（可 8/16/32/64 步），不是 CausVid 系 DMD。",
+    "insight": "核心 Insight：**以固定 24 帧（1 s @ 24 FPS）为自回归单元，块内双向、块间因果，噪声时间步沿时间单调递增；T2V / I2V / 续写只是干净块比例不同。** 块尚未完全干净就可以启动下一块，最多四块流水线并行。蒸馏走 shortcut model（可 8/16/32/64 步），不是 CausVid 系 DMD。\n\n与本知识库课题 **直接相关于“视频世界模型”这一自称，间接相关于交互控制**。它提供 chunk-wise 换 prompt、续写和物理基准上的 V2V 优势，但开源权重在后续蒸馏论文的 T2V 实时对比中偏慢。作者把 Physics-IQ 优势部分归因于“自回归促进因果推理”；这是机制解释，实验只证明 V2V 续写分数更高，不能当成因果识别。",
+    "pipeline": {
+      "input": "文本（T5）；可选首帧或前缀视频。Transformer VAE：空间 8×、时间 4× 压缩，潜空间 16 维。",
+      "process": "Flow matching；块因果注意力 + 并行空间–时间自注意力与文本交叉注意力 + GQA + QK-Norm + FFN sandwich LN；24B 用 SwiGLU 与 Softcap 调制。4.5B / 24B 三阶段分辨率爬升（4.5B：360p→480p→720p，最长 16 s）。干净块最多加 5% 噪声、不接文本、损失只加在噪声块上。推理用双权重 CFG：w prev=1.5、w text=7.5，长于约 5 s 时再按 t 细调，否则饱和。用户 prompt 用 MLLM 增强。蒸馏为 shortcut，最小 s=1/64 并含 CFG 蒸馏。",
+      "output": "流式视频块；峰值算力/显存与总时长无关。产品页提供在线生成。",
+      "details": "- **输入：** 文本（T5）；可选首帧或前缀视频。Transformer VAE：空间 8×、时间 4× 压缩，潜空间 16 维。\n- **过程：** Flow matching；块因果注意力 + 并行空间–时间自注意力与文本交叉注意力 + GQA + QK-Norm + FFN sandwich LN；24B 用 SwiGLU 与 Softcap 调制。4.5B / 24B 三阶段分辨率爬升（4.5B：360p→480p→720p，最长 16 s）。干净块最多加 5% 噪声、不接文本、损失只加在噪声块上。推理用双权重 CFG：\\(w_{\\text{prev}}=1.5\\)、\\(w_{\\text{text}}=7.5\\)，长于约 5 s 时再按 \\(t\\) 细调，否则饱和。用户 prompt 用 MLLM 增强。蒸馏为 shortcut，最小 \\(s=1/64\\) 并含 CFG 蒸馏。\n- **输出：** 流式视频块；峰值算力/显存与总时长无关。产品页提供在线生成。\n\n与最近 baseline 的实质差异：相对 Sora 类整段双向，生成是因果流水线；相对 CausVid/Self Forcing，这是从零训的大规模 AR 扩散 + shortcut，而不是把 Wan 蒸成 4-step。后续蒸馏论文把它当慢 AR 基线是因为它默认多步。"
+    },
+    "experiments": "**作者主张：** I2V 上运动与语义强，Physics-IQ 上 V2V 大幅领先；24B 证明可扩展。\n\n实验实际支持：\n\n- **VAE（H800，169 条 25 帧 256² 视频）：** PSNR 36.55，解码 12.28 ms，参数 614M；解码快于 OpenSoraPlan / CogVideoX / Hunyuan / StepVideo / Wan2.1 表内实现。\n- **VBench-I2V（4 s、24 FPS、16:9）：** Magi-1 2× decoder Total **89.28**，Quality 82.44，I2V Score 96.12，Dynamic Degree **68.21**；1× decoder Total 88.88。作者称当时 leaderboard 第一。对比模型分数来自 leaderboard 汇编，不是全部同代码重跑。\n- **内部 I2V 人评（100 对，双盲 Win/Tie/Lose）：** 总体优于开源 Wan-2.1 与 HunyuanVideo、Hailuo i2v-01，略弱于 Kling1.6 HD；指令跟随与运动较好，视觉质量仍落后头部闭源。长度按对手裁成 5–6 s。Fig. 16 为条形比例，正文未给精确百分比表。\n- **Physics-IQ：** Magi-1 V2V **56.02** vs VideoPoet V2V 29.50；Magi-1 I2V **30.23** 仍高于表中其他 I2V。V2V 看前 3 s（96 帧 @24 FPS）预测后 5 s。作者展示失败：碰撞后球的停止、火柴点燃气球、撕裂后碎片运动等次级效应不对，但常给出另一套看起来合理的运动。\n- **定性：** \\(w_{\\text{prev}}=1.0\\) 时块间错位；过大则静帧。I2V 续写会丢历史速度（笔旋转、遮挡后重现）。\n\n**证据未支持：** T2V 实时 SOTA（Self Forcing 表 4.5B 为 0.19 FPS / 282 s、Total 79.18）；物理直觉等于理解物理定律；开源 4.5B 与论文 24B 评测可互换。",
+    "evidence_notes": "",
+    "code_data_status": "- **代码 / 权重：** [SandAI-org/MAGI-1](https://github.com/SandAI-org/MAGI-1)；分布式注意力 [SandAI-org/MagiAttention](https://github.com/SandAI-org/MagiAttention)。\n- **产品：** [sand.ai](https://sand.ai)。\n- **数据：** 多阶段内部策展 + MLLM 过滤/caption；训练语料不随仓库完整公开。",
+    "limitations": "- 开源对照里 4.5B 多步 AR 延迟远高于蒸馏 1.3B 模型。\n- 视觉质量在内部人评中仍落后 Kling1.6 HD。\n- Physics-IQ 次级碰撞、燃烧、撕裂碎片失败；“合理替代”不是正确物理。\n- 长视频必须细调 guidance，否则饱和/棋盘。\n- 干净块不接文本，续写时用户文本如何注入需看实现。\n- 24B、4M token 的训练基础设施无法从开源推理仓库复现。\n\n---",
+    "comments": "",
+    "source_reports": [
+      "report-c7ced2c92d"
+    ],
+    "deleted": false,
+    "updated_at": "2026-08-21",
+    "challenges": "领域长期问题是：大规模视频扩散几乎都在整段上做统一噪声的双向去噪，丢掉时间因果，难以流式、也难以把 T2V / I2V / 续写统一进同一预训练。本文针对的是 **可扩展的 chunk-wise AR 扩散世界模型**，不是 few-step DMD。\n\n- **架构缺口：** 卷积 VAE 在现代 GPU 上慢；标准注意力核难以高效做块因果；超长上下文（文称最多 4M token）需要新的分布式注意力。\n- **任务分裂：** 双向模型通常预训练只做 T2V，I2V 要另改结构或微调。\n- **推理缺口：** 块与块之间错位、长视频饱和/棋盘伪影、用户短 prompt 与训练长 caption 不匹配。\n- **评测立场：** 作者认为产品形态更接近 I2V，因此主客观评测偏 I2V，而不是 T2V 榜。Self Forcing 表里 MAGI-1-4.5B 的 T2V VBench 并不高，两套评测目标不同。",
+    "motivation": "核心 Insight：**以固定 24 帧（1 s @ 24 FPS）为自回归单元，块内双向、块间因果，噪声时间步沿时间单调递增；T2V / I2V / 续写只是干净块比例不同。** 块尚未完全干净就可以启动下一块，最多四块流水线并行。蒸馏走 shortcut model（可 8/16/32/64 步），不是 CausVid 系 DMD。\n\n与本知识库课题 **直接相关于“视频世界模型”这一自称，间接相关于交互控制**。它提供 chunk-wise 换 prompt、续写和物理基准上的 V2V 优势，但开源权重在后续蒸馏论文的 T2V 实时对比中偏慢。作者把 Physics-IQ 优势部分归因于“自回归促进因果推理”；这是机制解释，实验只证明 V2V 续写分数更高，不能当成因果识别。",
+    "technical_approach": "- **输入：** 文本（T5）；可选首帧或前缀视频。Transformer VAE：空间 8×、时间 4× 压缩，潜空间 16 维。\n- **过程：** Flow matching；块因果注意力 + 并行空间–时间自注意力与文本交叉注意力 + GQA + QK-Norm + FFN sandwich LN；24B 用 SwiGLU 与 Softcap 调制。4.5B / 24B 三阶段分辨率爬升（4.5B：360p→480p→720p，最长 16 s）。干净块最多加 5% 噪声、不接文本、损失只加在噪声块上。推理用双权重 CFG：\\(w_{\\text{prev}}=1.5\\)、\\(w_{\\text{text}}=7.5\\)，长于约 5 s 时再按 \\(t\\) 细调，否则饱和。用户 prompt 用 MLLM 增强。蒸馏为 shortcut，最小 \\(s=1/64\\) 并含 CFG 蒸馏。\n- **输出：** 流式视频块；峰值算力/显存与总时长无关。产品页提供在线生成。\n\n与最近 baseline 的实质差异：相对 Sora 类整段双向，生成是因果流水线；相对 CausVid/Self Forcing，这是从零训的大规模 AR 扩散 + shortcut，而不是把 Wan 蒸成 4-step。后续蒸馏论文把它当慢 AR 基线是因为它默认多步。",
+    "discussion": "MAGI-1 说明：不靠 DMD，单靠大规模 chunk-wise AR 扩散也可以做流式世界模型，并在 I2V 与 V2V 物理续写上拿出硬数字。它与 CausVid 谱系是互补基座：一个提供可蒸馏的开源 1.3B 双向教师（Wan），一个提供原生 AR 的大模型。适用边界是块级（1 s）交互粒度，不是帧级实时。阅读判断：Physics-IQ 的 V2V vs I2V 落差支持“历史运动很重要”，不要写成自回归算法已被证明捕捉因果。开源仓库目前主打推理与权重，完整训练栈/数据不能从论文外完全复现。",
+    "arxiv": {
+      "published": "2025-05-19T14:58:50Z",
+      "revised_at": "2025-05-19T14:58:50Z",
+      "primary_category": "cs.CV"
+    }
+  },
+  {
     "arxiv": {
       "published": "2025-05-22T12:37:47Z",
       "revised_at": "2025-05-22T12:37:47Z",
@@ -2635,6 +3333,67 @@
     "arxiv": {
       "published": "2025-05-25T02:48:43Z",
       "revised_at": "2025-12-21T08:11:53Z",
+      "primary_category": "cs.CV"
+    }
+  },
+  {
+    "id": "arxiv-2506-08009",
+    "title": "Self Forcing: Bridging the Train-Test Gap in Autoregressive Video Diffusion",
+    "authors": [
+      "Xun Huang",
+      "Zhengqi Li",
+      "Guande He",
+      "Mingyuan Zhou",
+      "Eli Shechtman"
+    ],
+    "year": 2025,
+    "publication": "2025，NeurIPS 2025 Spotlight（官方会议页标注 Spotlight Poster）。预印本 arXiv:2506.08009（v2）。Adobe Research + UT Austin。通讯 xuhuang@adobe.com。尚无单独核验的会议 DOI；arXiv DOI：10.48550/arXiv.2506.08009。",
+    "arxiv_id": "2506.08009",
+    "doi": "",
+    "links": {
+      "paper": "https://arxiv.org/abs/2506.08009",
+      "project": "https://self-forcing.github.io/",
+      "code": "https://github.com/guandeh17/Self-Forcing",
+      "alphaxiv": "https://alphaxiv.org/abs/2506.08009"
+    },
+    "tags": [
+      "交互世界模型",
+      "因果推理",
+      "自回归扩散",
+      "视频生成"
+    ],
+    "figure": {
+      "url": "https://arxiv.org/html/2506.08009v2/overview.png",
+      "alt": "Self Forcing Fig. 1: teacher forcing vs diffusion forcing vs self-rollout training",
+      "label": "Self Forcing，Fig. 1，Teacher Forcing / Diffusion Forcing / Self Forcing 三种训练范式。来源：Fig. 1 原图 PNG",
+      "paper_title": "Self Forcing: Bridging the Train-Test Gap in Autoregressive Video Diffusion",
+      "source_url": "https://arxiv.org/html/2506.08009v2/overview.png"
+    },
+    "summary": "核心 Insight： 训练时按推理配方自 rollout（带 KV cache），再对整段生成视频做 holisitic 分布匹配。 这样 DMD / SiD / GAN 匹配的是真正的 p theta(x^1:N)，而不是 DF 的训练替代分布。梯度截断到每帧最后一步、随机采样中间步 s，并把 KV 从梯度图拆掉，使顺序 unroll 在 post-training 阶段可承受。",
+    "insight": "核心 Insight：**训练时按推理配方自 rollout（带 KV cache），再对整段生成视频做 holisitic 分布匹配。** 这样 DMD / SiD / GAN 匹配的是真正的 \\(p_\\theta(x^{1:N})\\)，而不是 DF 的训练替代分布。梯度截断到每帧最后一步、随机采样中间步 \\(s\\)，并把 KV 从梯度图拆掉，使顺序 unroll 在 post-training 阶段可承受。\n\n与本知识库课题 **间接相关但接口关键**：它把交互视频、游戏、世界模拟列为延迟以毫秒计的目标，训练配方被 Causal Forcing / LongLive / minWM 直接继承。它优化的是生成分布对齐，不是动作条件或物理干预。",
+    "pipeline": {
+      "input": "文本 prompt（VidProM 过滤 + Qwen2.5-7B 扩写）。骨干 Wan2.1-T2V-1.3B，5 s、16 FPS、832× 480。",
+      "process": "先按 CausVid 协议用 16k 条 ODE 对做因果初始化。然后 Self Forcing：对每一帧从噪声逐步去噪，条件是自己已生成的 KV；只在随机步 s 打开梯度，其余步 stop-grad；KV 不回传。损失可选 DMD（real score 用 Wan-14B）、SiD 或 R3GAN。实现 chunk-wise（3 latent 帧/块）与 frame-wise 两种。长视频用固定长度 rolling KV，训练时禁止最后一块看见第一块，以模拟 cache 里不再有 image latent 的外推条件。DMD 约 1.5 h × 64 H100。",
+      "output": "流式视频。chunk-wise 4-step：17.0 FPS、0.69 s 延迟（H100）；frame-wise：8.9 FPS、0.45 s。",
+      "details": "- **输入：** 文本 prompt（VidProM 过滤 + Qwen2.5-7B 扩写）。骨干 Wan2.1-T2V-1.3B，5 s、16 FPS、\\(832\\times 480\\)。\n- **过程：** 先按 CausVid 协议用 16k 条 ODE 对做因果初始化。然后 Self Forcing：对每一帧从噪声逐步去噪，条件是自己已生成的 KV；只在随机步 \\(s\\) 打开梯度，其余步 stop-grad；KV 不回传。损失可选 DMD（real score 用 Wan-14B）、SiD 或 R3GAN。实现 chunk-wise（3 latent 帧/块）与 frame-wise 两种。长视频用固定长度 rolling KV，训练时禁止最后一块看见第一块，以模拟 cache 里不再有 image latent 的外推条件。DMD 约 1.5 h × 64 H100。\n- **输出：** 流式视频。chunk-wise 4-step：17.0 FPS、0.69 s 延迟（H100）；frame-wise：8.9 FPS、0.45 s。\n\n与最近 baseline 的实质差异：相对 CausVid，DMD 的样本来自自 rollout 而非 DF；相对 TF/DF+DMD，上下文来自 \\(p_\\theta\\) 而非 \\(p_{\\text{data}}\\)。作者强调动机是纠暴露偏差，不只是减步数，因此 consistency distillation 这类只缩短步数的方法不适用。"
+    },
+    "experiments": "**作者主张：** 在相近参数量上同时拿到最高 VBench 与实时吞吐，用户偏好超过初始化用的双向 Wan2.1。\n\n实验实际支持：\n\n- **主表（官方 CausVid Wan-1.3B 重实现对照）：** chunk-wise Self Forcing VBench Total/Quality/Semantic = **84.31 / 85.07 / 81.28**，17.0 FPS / 0.69 s；Wan2.1 84.26 / 85.30 / 80.09 但 0.78 FPS / 103 s；CausVid 重实现 81.20 / 84.05 / 69.80。frame-wise 84.26 / 85.25 / 80.30，8.9 FPS / 0.45 s。\n- **消融：** chunk-wise 上 SF-DMD 84.31 高于 DF+DMD 82.76、TF+DMD 82.32、many-step TF 83.58。frame-wise 差距更大：SF-DMD 84.26 vs DF 77.24 / TF 80.34。SiD / GAN 略低于 DMD 但仍高于 TF/DF 蒸馏。\n- **Rolling KV：** 滑窗重算 KV 生成 10 s 仅 4.6 FPS；训练时挡住首块后 rolling cache 16.1 FPS 且减轻闪烁。\n- **用户研究：** MovieGenBench 全部 1003 prompt，每条 1 名用户二选一；SF 优于含 Wan2.1 在内的对照。这是偏好而非绝对质量标尺。\n- **训练成本：** 与 TF/DF 单步耗时接近；同墙钟下 VBench 更高。作者把它归因于 SF 用 FlashAttention-3 全注意力，而 TF/DF 要 FlexAttention 因果 mask。\n\n**证据未支持：** 训练上下文之外的任意长视频不退化；gradient truncation 不影响长程依赖；项目页“单卡 4090 实时”与文中 H100 测速不是同一套数字，引用时要写硬件。",
+    "evidence_notes": "",
+    "code_data_status": "- **代码：** [guandeh17/Self-Forcing](https://github.com/guandeh17/Self-Forcing)，基于 Wan2.1 与 CausVid 开源实现。\n- **DMD/SiD：** 作者称可无视频数据，只靠预训练扩散模型；GAN 变体用 14B 模型生成的 70k 视频。\n- **Prompt：** VidProM 过滤后约 25 万条再 LLM 扩写；VBench 评测同样扩写。完整原始视频预训练语料仍依赖 Wan。",
+    "limitations": "- 超出训练上下文的长视频仍可见质量下降。\n- 每帧只回传最后一步、KV 切断梯度，长程信用分配受限。\n- 朴素 rolling KV 若不在训练中挡住首块，会因 image latent 统计不匹配而闪烁。\n- frame-wise 比 chunk-wise 动态更强、时序一致性更弱（附录雷达图）。\n- reverse KL 仍可能压多样性；GAN 需要大 batch（768）。\n- 开源实现与 Adobe 内部实验设置若有差异，需以仓库 README 为准。\n\n---",
+    "comments": "",
+    "source_reports": [
+      "report-c7ced2c92d"
+    ],
+    "deleted": false,
+    "updated_at": "2026-08-21",
+    "challenges": "领域长期问题仍是暴露偏差：训练时看 ground-truth 上下文，推理时必须吃自己的错。本文针对的不是“再做一个更快的 CausVid”，而是 **CausVid 的 DMD 匹配了错误分布**。\n\n- **作者对 CausVid 的具体批评：** CausVid 用 Diffusion Forcing 生成训练输出，再拿 DMD 去对齐真实视频分布；但 DF 输出并不来自推理时的自回归分布，因此 DMD 在匹配错误对象。\n- **TF / DF 的共同失败：** 两者都能并行训练整段视频，却都在 GT 或噪声上下文上做帧级去噪；推理时上下文是自己生成的干净帧，误差随 AR 步数放大，表现为过饱和、过锐化。\n- **效率缺口：** 真·实时需要吞吐高于播放帧率 **且** 首帧延迟低于感知阈值；只报 FPS 不够。\n- **长视频 KV：** 双向 DF 不能 cache；已有因果实现每次滑窗重算重叠 KV。朴素 rolling cache 会因第一帧统计特性不同而闪烁。",
+    "motivation": "核心 Insight：**训练时按推理配方自 rollout（带 KV cache），再对整段生成视频做 holisitic 分布匹配。** 这样 DMD / SiD / GAN 匹配的是真正的 \\(p_\\theta(x^{1:N})\\)，而不是 DF 的训练替代分布。梯度截断到每帧最后一步、随机采样中间步 \\(s\\)，并把 KV 从梯度图拆掉，使顺序 unroll 在 post-training 阶段可承受。\n\n与本知识库课题 **间接相关但接口关键**：它把交互视频、游戏、世界模拟列为延迟以毫秒计的目标，训练配方被 Causal Forcing / LongLive / minWM 直接继承。它优化的是生成分布对齐，不是动作条件或物理干预。",
+    "technical_approach": "- **输入：** 文本 prompt（VidProM 过滤 + Qwen2.5-7B 扩写）。骨干 Wan2.1-T2V-1.3B，5 s、16 FPS、\\(832\\times 480\\)。\n- **过程：** 先按 CausVid 协议用 16k 条 ODE 对做因果初始化。然后 Self Forcing：对每一帧从噪声逐步去噪，条件是自己已生成的 KV；只在随机步 \\(s\\) 打开梯度，其余步 stop-grad；KV 不回传。损失可选 DMD（real score 用 Wan-14B）、SiD 或 R3GAN。实现 chunk-wise（3 latent 帧/块）与 frame-wise 两种。长视频用固定长度 rolling KV，训练时禁止最后一块看见第一块，以模拟 cache 里不再有 image latent 的外推条件。DMD 约 1.5 h × 64 H100。\n- **输出：** 流式视频。chunk-wise 4-step：17.0 FPS、0.69 s 延迟（H100）；frame-wise：8.9 FPS、0.45 s。\n\n与最近 baseline 的实质差异：相对 CausVid，DMD 的样本来自自 rollout 而非 DF；相对 TF/DF+DMD，上下文来自 \\(p_\\theta\\) 而非 \\(p_{\\text{data}}\\)。作者强调动机是纠暴露偏差，不只是减步数，因此 consistency distillation 这类只缩短步数的方法不适用。",
+    "discussion": "Self Forcing 把 CausVid 的不对称 DMD 补上了缺失的一环：匹配对象必须是推理分布。Wan-1.3B 上的对照支持这一诊断，尤其是 frame-wise 设定下 TF/DF 崩而 SF 不崩。适用边界是 5 s 级训练上下文上的 T2V 流式生成。失败案例是外推显著长于训练长度时质量仍掉；作者也承认截断梯度可能伤长程依赖。阅读判断：后续 Causal Forcing 接受其 DMD 阶段、只改 ODE 初始化，说明这篇的 self-rollout 已被当作标准；不要把 VBench 84.31 写成已经解决世界模拟，也不要把“holistic matching”写成因果识别。",
+    "arxiv": {
+      "published": "2025-06-09T17:59:55Z",
+      "revised_at": "2025-11-10T04:36:27Z",
       "primary_category": "cs.CV"
     }
   },
