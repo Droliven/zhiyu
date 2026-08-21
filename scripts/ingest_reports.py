@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
-"""Build the static paper library data from Markdown reading reports."""
+"""Build the static paper library data from Markdown reading reports.
+
+New reports use 当前挑战 / 研究动机 / 技术方案 / 实验结果 / 总结讨论.
+Legacy Insight / Pipeline / 实验与证据 / 局限 headings remain valid and are
+mapped onto the same JSON fields so old and new papers can coexist.
+"""
 
 from __future__ import annotations
 
@@ -104,10 +109,28 @@ def normalized_title(title: str) -> str:
     return re.sub(r"[^a-z0-9]+", "", title.casefold())
 
 
+IMAGE_URL_RE = re.compile(r"\.(?:png|jpe?g|gif|webp|svg)(?:\?|#|$)", re.I)
+PLACEHOLDER_TAG = "未分类"
+
+
+def looks_like_image_url(url: str) -> bool:
+    return bool(url) and bool(IMAGE_URL_RE.search(url))
+
+
+def unwrap_math(match: re.Match[str]) -> str:
+    inner = match.group(1)
+    inner = inner.replace(r"\times", "×").replace(r"\ell", "ℓ")
+    inner = re.sub(r"\\(?:mathrm|text|mathbf|mathit)\{([^}]*)\}", r"\1", inner)
+    inner = re.sub(r"\\([a-zA-Z]+)", r"\1", inner)
+    return inner.replace("{", "").replace("}", "")
+
+
 def plain_text(markdown: str) -> str:
     text = re.sub(r"```.*?```", " ", markdown, flags=re.S)
     text = re.sub(r"!\[([^]]*)\]\([^)]*\)", r"\1", text)
     text = re.sub(r"\[([^]]+)\]\([^)]*\)", r"\1", text)
+    text = re.sub(r"\\\((.+?)\\\)", unwrap_math, text)
+    text = re.sub(r"\$([^$]+)\$", unwrap_math, text)
     text = re.sub(r"[#>*_`|\\]", " ", text)
     return re.sub(r"\s+", " ", text).strip()
 
@@ -128,15 +151,44 @@ def field_value(section: str, labels: tuple[str, ...]) -> str:
 
 
 def major_marker(line: str) -> str | None:
-    value = re.sub(r"^#{1,5}\s+", "", line.strip())
-    value = value.strip("* ")
+    """Return a section key only for heading-like lines, not body sentences."""
+    raw = line.strip()
+    heading = re.match(r"^(#{1,5})\s+(.+)$", raw)
+    bold_only = re.match(r"^(?:-\s*)?\*\*(.+?)\*\*\s*$", raw)
+    if heading:
+        value = heading.group(2)
+    elif bold_only:
+        value = bold_only.group(1)
+        if len(value) > 40 or "。" in value:
+            return None
+    else:
+        return None
+    value = value.strip("* ").strip("：:")
     lowered = value.casefold()
-    if "核心概括" in value or lowered == "insight" or lowered.startswith("insight "):
+    if value.startswith("当前挑战") or "问题与挑战" in value or lowered.startswith("challenge"):
+        return "challenges"
+    if value.startswith("研究动机") or lowered.startswith("motivation"):
+        return "motivation"
+    if (
+        "核心概括" in value
+        or "核心内容" in value
+        or lowered == "insight"
+        or lowered.startswith("insight")
+    ):
         return "insight"
+    if "技术方案" in value or "technical approach" in lowered:
+        return "technical_approach"
     if lowered.startswith("pipeline") or value.startswith("流程"):
         return "pipeline"
-    if value.startswith("实验") or "实验与证据" in value or lowered.startswith("experiments"):
+    if (
+        value in {"实验", "实验结果", "实验概括"}
+        or "实验与证据" in value
+        or lowered in {"experiments", "experiment"}
+        or lowered.startswith("experiments ")
+    ):
         return "experiments"
+    if "总结讨论" in value or value.startswith("讨论") or lowered.startswith("discussion"):
+        return "discussion"
     if "开放情况与局限" in value:
         return "open_and_limits"
     if "代码与数据" in value or "代码/数据" in value:
@@ -166,6 +218,13 @@ def extract_segments(section: str) -> dict[str, str]:
     if "open_and_limits" in segments:
         segments.setdefault("code_data", segments["open_and_limits"])
         segments.setdefault("limitations", segments["open_and_limits"])
+    # New narrative headings fill the legacy fields so older pages keep working.
+    if segments.get("technical_approach"):
+        segments.setdefault("pipeline", segments["technical_approach"])
+    if segments.get("motivation"):
+        segments.setdefault("insight", segments["motivation"])
+    if segments.get("discussion"):
+        segments.setdefault("limitations", segments["discussion"])
     return segments
 
 
@@ -179,7 +238,7 @@ def extract_pipeline(markdown: str) -> dict[str, str]:
     for key, labels in label_map.items():
         for label in labels:
             match = re.search(
-                rf"(?mi)^\s*(?:-\s*|\d+\.\s*)?\*\*{re.escape(label)}\*\*[：:]?\s*(.+)$",
+                rf"(?mi)^\s*(?:-\s*|\d+\.\s*)?\*\*{re.escape(label)}(?:[：:])?\*\*[：:]?\s*(.+)$",
                 markdown,
             )
             if match:
@@ -266,16 +325,28 @@ def infer_tags(title: str, section: str, base_tags: list[str]) -> list[str]:
     return sorted(tags, key=str.casefold)
 
 
-def extract_figure(section: str, title: str) -> dict[str, str] | None:
+def absolutize_figure_url(url: str, arxiv_id: str = "") -> str:
+    url = url.strip()
+    if url.startswith("http://") or url.startswith("https://"):
+        return url
+    if url.startswith("causal_world_models_assets/") or url.startswith("../images/"):
+        return "content/images/" + Path(url).name
+    if arxiv_id and re.match(rf"{re.escape(arxiv_id)}v?\d*/.+", url):
+        return "https://arxiv.org/html/" + url
+    return url
+
+
+def extract_figure(section: str, title: str, arxiv_id: str = "") -> dict[str, str] | None:
     image = re.search(r"!\[([^]]*)\]\(([^)]+)\)", section)
     if not image:
         return None
     alt, url = image.groups()
-    if url.startswith("causal_world_models_assets/") or url.startswith("../images/"):
-        url = "content/images/" + Path(url).name
+    url = absolutize_figure_url(url, arxiv_id)
     label = field_value(section, ("代表图",))
     source_match = re.search(r"来源[：:]\s*\[([^]]+)\]\((https?://[^)]+)\)", section)
     source_url = source_match.group(2) if source_match else ""
+    if source_url and not looks_like_image_url(source_url) and looks_like_image_url(url):
+        source_url = url
     if not source_url and url.startswith("http"):
         source_url = url
     return {
@@ -348,9 +419,9 @@ def parse_paper(title: str, section: str, profile: dict[str, Any], report_id: st
         "arxiv_id": arxiv_id,
         "doi": doi,
         "links": links,
-        "tags": infer_tags(title, section, profile["tags"]),
-        "figure": extract_figure(section, title),
-        "summary": first_paragraph(insight or section),
+        "tags": merge_tags(infer_tags(title, section, profile["tags"])),
+        "figure": extract_figure(section, title, arxiv_id),
+        "summary": first_paragraph(insight or segments.get("challenges", "") or section),
         "insight": insight,
         "pipeline": extract_pipeline(pipeline_markdown),
         "experiments": segments.get("experiments", ""),
@@ -362,6 +433,10 @@ def parse_paper(title: str, section: str, profile: dict[str, Any], report_id: st
         "deleted": False,
         "updated_at": str(date.today()),
     }
+    for key in ("challenges", "motivation", "technical_approach", "discussion"):
+        value = segments.get(key, "")
+        if value:
+            record[key] = value
     return record
 
 
@@ -382,33 +457,130 @@ def prefer_text(old: str, new: str) -> str:
     return new if len(new) > len(old) * 1.2 else old
 
 
-def merge_records(old: dict[str, Any], new: dict[str, Any]) -> dict[str, Any]:
+def merge_tags(*groups: list[str]) -> list[str]:
+    tags = {tag for group in groups for tag in (group or []) if tag}
+    if tags - {PLACEHOLDER_TAG}:
+        tags.discard(PLACEHOLDER_TAG)
+    return sorted(tags, key=str.casefold)
+
+
+def figure_quality(figure: dict[str, str] | None) -> int:
+    if not figure or not figure.get("url"):
+        return 0
+    url = figure["url"]
+    score = 1
+    if looks_like_image_url(url):
+        score += 3
+    elif url.startswith("http"):
+        score += 1
+    elif (ROOT / url).exists():
+        score += 3
+    source = figure.get("source_url") or ""
+    if looks_like_image_url(source):
+        score += 2
+    elif source:
+        score += 1
+    if figure.get("alt") or figure.get("label"):
+        score += 1
+    return score
+
+
+def prefer_figure(old: dict[str, str] | None, new: dict[str, str] | None) -> dict[str, str] | None:
+    if not old:
+        return new
+    if not new:
+        return old
+    if figure_quality(new) > figure_quality(old):
+        return new
+    if (old.get("url") == new.get("url")) and looks_like_image_url(new.get("source_url") or "") and not looks_like_image_url(
+        old.get("source_url") or ""
+    ):
+        merged = dict(old)
+        merged["source_url"] = new["source_url"]
+        for key in ("alt", "label"):
+            if new.get(key):
+                merged[key] = new[key]
+        return merged
+    return old
+
+
+def prefer_figure(old: dict[str, str] | None, new: dict[str, str] | None) -> dict[str, str] | None:
+    if not old:
+        return new
+    if not new:
+        return old
+    return new if figure_quality(new) > figure_quality(old) else old
+
+
+def stamp_fingerprint(record: dict[str, Any]) -> str:
+    payload = {key: value for key, value in record.items() if key != "updated_at"}
+    if isinstance(payload.get("tags"), list):
+        payload["tags"] = sorted(payload["tags"], key=str.casefold)
+    if isinstance(payload.get("source_reports"), list):
+        payload["source_reports"] = sorted(set(payload["source_reports"]))
+    return json.dumps(payload, ensure_ascii=False, sort_keys=True)
+
+
+LEGACY_TEXT_FIELDS = (
+    "summary",
+    "insight",
+    "experiments",
+    "evidence_notes",
+    "code_data_status",
+    "limitations",
+)
+OPTIONAL_NARRATIVE_FIELDS = (
+    "challenges",
+    "motivation",
+    "technical_approach",
+    "discussion",
+)
+
+
+def merge_records(
+    old: dict[str, Any],
+    new: dict[str, Any],
+    allow_text_replace: bool = True,
+) -> dict[str, Any]:
     merged = dict(old)
-    for key in ("summary", "insight", "experiments", "evidence_notes", "code_data_status", "limitations"):
-        merged[key] = prefer_text(old.get(key, ""), new.get(key, ""))
+    if allow_text_replace:
+        for key in LEGACY_TEXT_FIELDS:
+            merged[key] = prefer_text(old.get(key, ""), new.get(key, ""))
+        for key in OPTIONAL_NARRATIVE_FIELDS:
+            value = prefer_text(old.get(key, ""), new.get(key, ""))
+            if value:
+                merged[key] = value
+            elif key in old:
+                merged[key] = old.get(key, "")
+        old_pipeline = old.get("pipeline", {})
+        new_pipeline = new.get("pipeline", {})
+        merged["pipeline"] = {
+            key: prefer_text(old_pipeline.get(key, ""), new_pipeline.get(key, ""))
+            for key in ("input", "process", "output", "details")
+        }
+        merged["figure"] = prefer_figure(old.get("figure"), new.get("figure"))
+        merged["tags"] = merge_tags(old.get("tags", []), new.get("tags", []))
+        if len(new.get("authors", [])) > len(merged.get("authors", [])):
+            merged["authors"] = new["authors"]
+    else:
+        # Unchanged reports must not backfill or rewrite historical fields.
+        pass
     for key in ("authors", "year", "publication", "arxiv_id", "doi"):
         if not merged.get(key) and new.get(key):
             merged[key] = new[key]
-    if len(new.get("authors", [])) > len(merged.get("authors", [])):
-        merged["authors"] = new["authors"]
-    merged["links"] = {**new.get("links", {}), **old.get("links", {})}
-    merged["tags"] = sorted(set(old.get("tags", [])) | set(new.get("tags", [])), key=str.casefold)
-    merged["source_reports"] = sorted(set(old.get("source_reports", [])) | set(new.get("source_reports", [])))
-    old_pipeline = old.get("pipeline", {})
-    new_pipeline = new.get("pipeline", {})
-    merged["pipeline"] = {
-        key: prefer_text(old_pipeline.get(key, ""), new_pipeline.get(key, ""))
-        for key in ("input", "process", "output", "details")
-    }
-    old_figure = old.get("figure")
-    new_figure = new.get("figure")
-    if not old_figure or (new_figure and not new_figure["url"].startswith("http")):
-        merged["figure"] = new_figure
-    for key in ("comments", "deleted"):
+    old_links = dict(old.get("links") or {})
+    new_links = dict(new.get("links") or {})
+    merged["links"] = {**new_links, **old_links} if allow_text_replace else old_links
+    old_sources = list(old.get("source_reports") or [])
+    combined_sources = set(old_sources) | set(new.get("source_reports") or [])
+    merged["source_reports"] = sorted(combined_sources) if combined_sources != set(old_sources) else old_sources
+    for key in ("comments", "deleted", "arxiv"):
         if key in old:
             merged[key] = old[key]
-    if merged != old:
+    if stamp_fingerprint(merged) != stamp_fingerprint(old):
         merged["updated_at"] = str(date.today())
+    else:
+        merged["updated_at"] = old.get("updated_at", str(date.today()))
     return merged
 
 
@@ -423,7 +595,7 @@ def report_summary(text: str) -> str:
 def report_profile(path: Path, text: str) -> dict[str, Any]:
     profile = dict(PROFILES.get(path.name, {"level": 2, "tags": []}))
     tag_match = re.search(
-        r"(?mi)^\s*(?:-\s*)?\*\*报告标签\*\*[：:]\s*(.+?)\s*$", text[:2000]
+        r"(?mi)^\s*(?:-\s*)?\*\*报告标签(?:[：:])?\*\*[：:]?\s*(.+?)\s*$", text[:2000]
     )
     if tag_match:
         declared = [
@@ -433,7 +605,7 @@ def report_profile(path: Path, text: str) -> dict[str, Any]:
         ]
         profile["tags"] = sorted(set(profile.get("tags", [])) | set(declared), key=str.casefold)
     if not profile.get("tags"):
-        profile["tags"] = ["未分类"]
+        profile["tags"] = [PLACEHOLDER_TAG]
     return profile
 
 
@@ -445,6 +617,11 @@ def build() -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
         for key in identity_keys(paper):
             key_to_index[key] = index
 
+    existing_reports = {
+        item.get("source_file"): item
+        for item in read_json(REPORTS_PATH, [])
+        if item.get("source_file")
+    }
     reports: list[dict[str, Any]] = []
     for path in sorted(REPORT_DIR.glob("*.md")):
         text = path.read_text(encoding="utf-8")
@@ -454,6 +631,15 @@ def build() -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
         report_id = "report-" + hashlib.sha1(path.name.encode("utf-8")).hexdigest()[:10]
         report_paper_ids: list[str] = []
 
+        digest = hashlib.sha1(text.encode("utf-8")).hexdigest()
+        previous = existing_reports.get(path.name, {})
+        if path.name not in existing_reports:
+            allow_text_replace = True
+        elif previous.get("content_sha1"):
+            allow_text_replace = previous["content_sha1"] != digest
+        else:
+            allow_text_replace = False
+
         for paper_title, section in split_paper_sections(text, profile["level"]):
             candidate = parse_paper(paper_title, section, profile, report_id)
             if not candidate:
@@ -461,7 +647,9 @@ def build() -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
             matches = [key_to_index[key] for key in identity_keys(candidate) if key in key_to_index]
             if matches:
                 index = matches[0]
-                papers[index] = merge_records(papers[index], candidate)
+                papers[index] = merge_records(
+                    papers[index], candidate, allow_text_replace=allow_text_replace
+                )
             else:
                 index = len(papers)
                 papers.append(candidate)
@@ -474,12 +662,13 @@ def build() -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
             {
                 "id": report_id,
                 "title": report_title,
-                "date": date_match.group() if date_match else str(date.today()),
+                "date": date_match.group() if date_match else previous.get("date") or str(date.today()),
                 "tags": profile["tags"],
                 "summary": report_summary(text),
                 "paper_ids": sorted(set(report_paper_ids)),
                 "path": f"content/reports/{path.name}",
                 "source_file": path.name,
+                "content_sha1": digest,
             }
         )
 

@@ -303,7 +303,12 @@ function filteredPapers() {
         (paper.tags || []).join(" "),
         paper.summary,
         paper.insight,
+        paper.challenges,
+        paper.motivation,
+        paper.technical_approach,
         paper.experiments,
+        paper.discussion,
+        paper.limitations,
         commentFor(paper),
       ]
         .join(" ")
@@ -350,6 +355,23 @@ function renderPapers() {
   } else {
     elements.paperResults.innerHTML = papers.map(renderPaperCard).join("");
   }
+  bindBrokenFigures(elements.paperResults);
+}
+
+function cardFigure(paper) {
+  if (!paper.figure?.url) return "";
+  return `<figure class="card-figure">
+      <img src="${escapeAttr(paper.figure.url)}" alt="${escapeAttr(paper.figure.alt || paper.title)}" loading="lazy" />
+    </figure>`;
+}
+
+function bindBrokenFigures(root) {
+  if (!root) return;
+  root.querySelectorAll("img").forEach((img) => {
+    if (img.dataset.boundError) return;
+    img.dataset.boundError = "1";
+    img.addEventListener("error", () => img.closest("figure")?.classList.add("is-broken"));
+  });
 }
 
 function primaryGroup(paper) {
@@ -379,8 +401,9 @@ function renderPaperCard(paper) {
       <h3>${escapeHtml(paper.title)}</h3>
       <p class="authors">${escapeHtml(authors || "作者待补充")}</p>
       <p class="publication">${escapeHtml(paper.publication || "发表状态待核验")}</p>
+      ${cardFigure(paper)}
       <div class="card-tags">${(paper.tags || []).slice(0, 5).map((tag) => `<span class="paper-tag">${escapeHtml(tag)}</span>`).join("")}</div>
-      <p class="insight-preview"><strong>Insight.</strong> ${escapeHtml(paper.summary || "当前报告未提供摘要。")}</p>
+      ${renderCardNarrative(paper)}
       <div class="card-actions">
         <div class="card-link-row">${links}</div>
         <div class="card-command-row">
@@ -389,6 +412,45 @@ function renderPaperCard(paper) {
         </div>
       </div>
     </article>`;
+}
+
+function previewText(markdown, limit = 88) {
+  const text = String(markdown || "")
+    .replace(/```[\s\S]*?```/g, " ")
+    .replace(/!\[[^\]]*]\([^)]*\)/g, " ")
+    .replace(/\[([^\]]*)]\([^)]*\)/g, "$1")
+    .replace(/[#>*_`|\\]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+  return text.length <= limit ? text : `${text.slice(0, limit - 1).trim()}…`;
+}
+
+function sameNarrative(left, right) {
+  const a = String(left || "").replace(/\s+/g, " ").trim();
+  const b = String(right || "").replace(/\s+/g, " ").trim();
+  return Boolean(a) && a === b;
+}
+
+function renderCardNarrative(paper) {
+  const structured = Boolean(
+    paper.challenges || paper.motivation || paper.technical_approach || paper.discussion,
+  );
+  if (!structured) {
+    return `<p class="insight-preview"><strong>Insight.</strong> ${escapeHtml(paper.summary || "当前报告未提供摘要。")}</p>`;
+  }
+  const rows = [
+    ["挑战", paper.challenges],
+    ["动机", paper.motivation || paper.insight],
+    ["方法", paper.technical_approach || paper.pipeline?.details || paper.pipeline?.process],
+    ["实验", paper.experiments],
+    ["讨论", paper.discussion || paper.limitations],
+  ].filter(([, value]) => value);
+  return `<dl class="card-narrative">${rows
+    .map(
+      ([label, value]) =>
+        `<div><dt>${escapeHtml(label)}</dt><dd>${escapeHtml(previewText(value))}</dd></div>`,
+    )
+    .join("")}</dl>`;
 }
 
 function renderReports() {
@@ -413,7 +475,7 @@ function renderReports() {
 
 function renderMaintenance() {
   const missingAuthors = state.papers.filter((paper) => !(paper.authors || []).length).length;
-  const missingLimits = state.papers.filter((paper) => !paper.limitations).length;
+  const missingLimits = state.papers.filter((paper) => !paper.limitations && !paper.discussion).length;
   const localCount = state.hidden.size + Object.keys(state.comments).length;
   const withFigures = state.papers.filter((paper) => paper.figure).length;
   const metrics = [
@@ -473,11 +535,7 @@ function openPaper(id) {
   if (!elements.paperDialog.open) elements.paperDialog.showModal();
   typesetMath(elements.paperDialogContent);
   setHash(`paper=${encodeURIComponent(id)}`);
-
-  const figure = elements.paperDialogContent.querySelector(".detail-figure img");
-  if (figure) {
-    figure.addEventListener("error", () => figure.closest(".detail-figure").classList.add("is-broken"));
-  }
+  bindBrokenFigures(elements.paperDialogContent);
   elements.paperDialogContent.querySelector("[data-save-comment]").addEventListener("click", () => {
     const textarea = elements.paperDialogContent.querySelector("#paper-comment");
     saveComment(id, textarea.value.trim());
@@ -495,6 +553,7 @@ function renderPaperDetail(paper) {
         <figcaption>
           ${escapeHtml(paper.figure.paper_title || paper.title)} · ${escapeHtml(paper.figure.label || "代表图")}
           ${paper.figure.source_url ? ` · <a href="${escapeAttr(paper.figure.source_url)}" target="_blank" rel="noreferrer">来源</a>` : ""}
+          ${/^https?:\/\//.test(paper.figure.url || "") ? ` · <a href="${escapeAttr(paper.figure.url)}" target="_blank" rel="noreferrer">原图</a>` : ""}
         </figcaption>
       </figure>`
     : "";
@@ -514,6 +573,10 @@ function renderPaperDetail(paper) {
       ([label, value]) => `<div class="pipeline-step"><span>${label}</span><strong>${escapeHtml(value || "待补充核验")}</strong></div>`,
     )
     .join("");
+  const methodTitle = paper.technical_approach ? "技术方案" : "Pipeline";
+  const methodBody = paper.technical_approach || pipeline.details;
+  const hideInsight = paper.motivation && sameNarrative(paper.insight, paper.motivation);
+  const hideLimits = paper.discussion && sameNarrative(paper.limitations, paper.discussion);
   return `
     <h1>${escapeHtml(paper.title)}</h1>
     <div class="detail-meta">
@@ -526,16 +589,19 @@ function renderPaperDetail(paper) {
     <div class="card-tags">${(paper.tags || []).map((tag) => `<span class="paper-tag">${escapeHtml(tag)}</span>`).join("")}</div>
     <div class="detail-links">${links}</div>
     ${figure}
-    ${detailSection("核心内容与 Insight", paper.insight || paper.summary)}
+    ${optionalDetailSection("当前挑战", paper.challenges)}
+    ${optionalDetailSection("研究动机", paper.motivation)}
+    ${hideInsight ? "" : detailSection("核心内容与 Insight", paper.insight || paper.summary)}
     <section class="detail-section">
-      <h2>Pipeline</h2>
+      <h2>${escapeHtml(methodTitle)}</h2>
       <div class="pipeline-strip">${pipelineStrip}</div>
-      ${pipeline.details ? renderMarkdown(pipeline.details) : missingField()}
+      ${methodBody ? renderMarkdown(methodBody) : missingField()}
     </section>
-    ${detailSection("实验与证据", paper.experiments)}
+    ${detailSection("实验结果", paper.experiments)}
+    ${optionalDetailSection("总结讨论", paper.discussion)}
     ${paper.evidence_notes ? detailSection("主张、证据与阅读判断", paper.evidence_notes) : ""}
     ${detailSection("代码与数据开放情况", paper.code_data_status)}
-    ${detailSection("局限、失败案例与开放问题", paper.limitations)}
+    ${hideLimits ? "" : detailSection("局限、失败案例与开放问题", paper.limitations)}
     <section class="detail-section">
       <h2>读者 Comments</h2>
       <textarea class="comment-box" id="paper-comment" placeholder="记录你的判断、疑问或复现备注…">${escapeHtml(commentFor(paper))}</textarea>
@@ -544,6 +610,10 @@ function renderPaperDetail(paper) {
         <button class="button primary" type="button" data-save-comment>保存评论</button>
       </div>
     </section>`;
+}
+
+function optionalDetailSection(title, markdown) {
+  return markdown ? detailSection(title, markdown) : "";
 }
 
 function detailSection(title, markdown) {
@@ -649,11 +719,11 @@ function qualityScore(paper) {
     paper.publication,
     paper.links?.paper || paper.links?.publication,
     (paper.tags || []).length,
-    paper.insight || paper.summary,
-    paper.pipeline?.details,
+    paper.insight || paper.summary || paper.motivation || paper.challenges,
+    paper.pipeline?.details || paper.technical_approach,
     paper.experiments,
     paper.code_data_status,
-    paper.limitations,
+    paper.limitations || paper.discussion,
   ];
   return checks.filter(Boolean).length;
 }

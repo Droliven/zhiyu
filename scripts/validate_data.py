@@ -44,6 +44,12 @@ def main() -> None:
             figure_path = ROOT / figure["url"]
             if not figure_path.exists():
                 errors.append(f"{paper['id']}: missing local figure {figure['url']}")
+        elif figure:
+            url = figure.get("url", "")
+            if url.startswith("http") and not re.search(
+                r"\.(?:png|jpe?g|gif|webp|svg)(?:\?|#|$)", url, flags=re.I
+            ):
+                errors.append(f"{paper['id']}: figure.url is not a direct image file: {url}")
 
     for report in reports:
         report_path = ROOT / report["path"]

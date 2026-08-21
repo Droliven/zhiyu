@@ -482,6 +482,24 @@ main {
   margin-top: 2px;
 }
 
+.card-figure {
+  margin: 12px 0 0;
+  border: 1px solid var(--line);
+  background: #f8f9f7;
+}
+
+.card-figure img {
+  display: block;
+  width: 100%;
+  max-height: 148px;
+  object-fit: contain;
+  background: #fff;
+}
+
+.card-figure.is-broken {
+  display: none;
+}
+
 .card-tags {
   display: flex;
   flex-wrap: wrap;
@@ -515,6 +533,38 @@ main {
 
 .insight-preview strong {
   color: var(--ink);
+}
+
+.card-narrative {
+  display: grid;
+  gap: 7px;
+  margin: 0;
+}
+
+.card-narrative > div {
+  display: grid;
+  grid-template-columns: 2.4em minmax(0, 1fr);
+  gap: 8px;
+  align-items: start;
+}
+
+.card-narrative dt {
+  margin: 0;
+  color: var(--ink);
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: 0.02em;
+}
+
+.card-narrative dd {
+  display: -webkit-box;
+  margin: 0;
+  overflow: hidden;
+  color: #38433f;
+  font-size: 12.5px;
+  line-height: 1.45;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
 .card-actions {
