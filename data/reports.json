@@ -23,6 +23,36 @@
     "content_sha1": "6528087c986e3562cfdce4df3d4975d7246b6d01"
   },
   {
+    "id": "report-a77d9a7ad6",
+    "title": "Visual Action / Geometry Action：以视觉与几何形式统一跨本体动作",
+    "date": "2026-08-21",
+    "tags": [
+      "cross-embodiment",
+      "embodied AI",
+      "geometry action",
+      "visual action",
+      "world model"
+    ],
+    "summary": "报告标签 ：visual action, geometry action, world model, cross-embodiment, embodied AI",
+    "paper_ids": [
+      "arxiv-2507-13340",
+      "arxiv-2508-13104",
+      "arxiv-2511-01177",
+      "arxiv-2511-21690",
+      "arxiv-2512-13030",
+      "arxiv-2605-06192",
+      "arxiv-2606-03943",
+      "arxiv-2606-04463",
+      "arxiv-2606-09813",
+      "arxiv-2606-13769",
+      "arxiv-2607-22535",
+      "arxiv-2608-06332"
+    ],
+    "path": "content/reports/2026-08-21_visual_geometry_action.md",
+    "source_file": "2026-08-21_visual_geometry_action.md",
+    "content_sha1": "71063016e492217e909397fdd68ee7781a8133a1"
+  },
+  {
     "id": "report-365c2cc93b",
     "title": "Galaxea G0.5 与 FlowWAM：自回归 VLA 与光流动作表征整理",
     "date": "2026-08-21",
