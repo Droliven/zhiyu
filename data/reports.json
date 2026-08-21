@@ -23,6 +23,25 @@
     "content_sha1": "6528087c986e3562cfdce4df3d4975d7246b6d01"
   },
   {
+    "id": "report-77695ff321",
+    "title": "World Tracing：像素对齐的生成式多层几何",
+    "date": "2026-08-21",
+    "tags": [
+      "3D/4D",
+      "动态几何",
+      "单目三维重建",
+      "扩散模型",
+      "生成式几何"
+    ],
+    "summary": "阅读总判断：World Tracing 的核心贡献不是把单目深度估计再做大，而是把“可见表面重建”和“遮挡后几何生成”统一为输入像素射线上的有序多层相机坐标点。公开实验支持它在作者设定的对象、场景与短动态片段上兼顾像素对齐和几何完整性；但 best-of-8 选样、内部场景测试集、合成深度剥离监督和固定六层表示限制了结论外推。",
+    "paper_ids": [
+      "arxiv-2606-13652"
+    ],
+    "path": "content/reports/2026-08-21_curated_papers_world_tracing.md",
+    "source_file": "2026-08-21_curated_papers_world_tracing.md",
+    "content_sha1": "944f021685ada74ae6ed747d7079e2d8e2f27c5c"
+  },
+  {
     "id": "report-a77d9a7ad6",
     "title": "Visual Action / Geometry Action：以视觉与几何形式统一跨本体动作",
     "date": "2026-08-21",
