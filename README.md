@@ -39,7 +39,7 @@ python3 scripts/validate_data.py
 
 ## 团队贡献
 
-用户先 `cd` 到包含 `index.html`、`data/`、`content/` 和 `scripts/` 的知域仓库根目录，在终端同步主分支并创建工作分支，再把站内 README 提供的提示词交给 AI。AI 负责检索、编辑、重建数据和运行校验，但停在未提交状态。用户检查 `git diff` 后，亲自选择文件、创建 commit、push 分支并发起 Pull Request。
+用户先 `cd` 到包含 `index.html`、`data/`、`content/` 和 `scripts/` 的知域仓库根目录，在终端同步主分支并创建工作分支，再把站内 README 提供的提示词交给 AI。`git switch -c papers/[topic]-[date]` 只用于新建分支；若提示 `already exists`，未合入的分支去掉 `-c` 直接切换，已合入过的分支名则换一个新名字再创建。AI 负责检索、编辑、重建数据和运行校验，但停在未提交状态。用户检查 `git diff` 后，亲自选择文件、创建 commit、push 分支并发起 Pull Request。
 
 不要让 AI 自动执行 `git add`、`git commit` 或 `git push`，也不要使用 `git add .` 将未审阅的工作区内容一起提交。
 

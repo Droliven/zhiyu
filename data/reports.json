@@ -1,5 +1,28 @@
 [
   {
+    "id": "report-c7ced2c92d",
+    "title": "自回归交互视频：从 CausVid 到 Causal Forcing++ 与 minWM",
+    "date": "2026-08-21",
+    "tags": [
+      "交互世界模型",
+      "自回归扩散",
+      "视频生成"
+    ],
+    "summary": "这是一条从双向视频扩散走向实时交互的技术链： CausVid 把双向 teacher 不对称蒸馏成因果 4-step 学生； Self Forcing 指出 DMD 必须在自 rollout 分布上匹配，否则训练输出不是推理分布； Causal Forcing 再指出 ODE 初始化必须满足帧级单射，因此应用 AR teacher 而不是双向 teacher； Causal Forcing++ 用因果 consistency distillation 替代昂贵的因果 ODE 轨迹，把设定推到 frame-wise 1–2 step； minWM 把这条蒸馏配方做成可复现的相机可控世界模型全栈。 MAGI-1 是同谱系的大规模 chunk-wise AR 世界模型（非 few-step DMD 主线）； Lon…",
+    "paper_ids": [
+      "arxiv-2412-07772",
+      "arxiv-2505-13211",
+      "arxiv-2506-08009",
+      "arxiv-2509-22622",
+      "arxiv-2602-02214",
+      "arxiv-2605-15141",
+      "arxiv-2605-30263"
+    ],
+    "path": "content/reports/2026-08-21_ar_interactive_video.md",
+    "source_file": "2026-08-21_ar_interactive_video.md",
+    "content_sha1": "6528087c986e3562cfdce4df3d4975d7246b6d01"
+  },
+  {
     "id": "report-365c2cc93b",
     "title": "Galaxea G0.5 与 FlowWAM：自回归 VLA 与光流动作表征整理",
     "date": "2026-08-21",
@@ -16,6 +39,27 @@
     "path": "content/reports/2026-08-21_curated_papers.md",
     "source_file": "2026-08-21_curated_papers.md",
     "content_sha1": "42a3fb430514d62a3b5b9e3919345ccac4b6c851"
+  },
+  {
+    "id": "report-af906c7fa2",
+    "title": "FACT、PSG-JEPA、Gaussian-JEPA 与 Masked Visual Actions：失败条件世界模型与 JEPA 表征整理",
+    "date": "2026-08-21",
+    "tags": [
+      "JEPA",
+      "World Action Model",
+      "机器人学习",
+      "预测表征"
+    ],
+    "summary": "四篇共享“世界模型 / 预测表征”语境，但接口不同。FACT 是动作先于想象的因果顺序 WAM，用失败 rollout 监督后果而非模仿失败动作。PSG-JEPA 在端到端 JEPA 潜空间上补本体感觉与关节变化 grounding。Gaussian-JEPA 把 JEPA 接到物体级 3D Gaussian 资产，不做控制。Masked Visual Actions 用像素空间遮罩轨迹作为视频模型的统一动作接口。FACT / Masked Visual Actions 的“causal / counterfactual”主要是动作条件预测与想象 rollout， 不是 结构因果识别。Gaussian-JEPA 与本课题为间接相关。",
+    "paper_ids": [
+      "arxiv-2607-19343",
+      "arxiv-2608-06799",
+      "arxiv-2608-10232",
+      "arxiv-2608-15651"
+    ],
+    "path": "content/reports/2026-08-21_curated_papers_jepa.md",
+    "source_file": "2026-08-21_curated_papers_jepa.md",
+    "content_sha1": "5cb4d5b2c208378c98ae7537f269057f97aacc51"
   },
   {
     "id": "report-90041fa2f9",

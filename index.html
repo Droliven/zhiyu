@@ -216,6 +216,9 @@ test -f index.html &amp;&amp; test -d scripts &amp;&amp; echo "已进入知域�
 git switch main
 git pull --ff-only
 # 将 [topic] 和 [date] 替换为实际内容，例如 papers/hoi-2026-08-20
+# -c 表示新建分支。若提示 already exists：
+#   尚未合入 main 时，去掉 -c 继续用同一条分支：git switch papers/[topic]-[date]
+#   已经合入过（或远程仍留着旧分支）时，换一个新名字再创建，例如 papers/hoi-2026-08-20-2
 git switch -c papers/[topic]-[date]</code></pre>
             </div>
             <p class="flow-next">完成后继续第 2 步，在下面选择一种 AI 任务。</p>
