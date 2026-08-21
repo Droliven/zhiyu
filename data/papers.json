@@ -952,7 +952,7 @@
       "paper_title": "FACT: Failure-Aware Causal Training for World-Action Models",
       "source_url": "https://arxiv.org/html/2608.10232v1/x2.png"
     },
-    "summary": "核心 Insight： 先生成动作，再在干净已执行动作上预测未来视频与任务进度；失败 rollout 只监督观察到的失败未来和被压低的进度，不进入动作模仿损失。",
+    "summary": "FACT 的核心判断是： 动作必须先于想象；世界分支必须回答“这个动作会怎样”，而不是替动作提供一个成功偏向的未来。 因此 token 顺序被写成 prefix P → 噪声动作 A → 干净 GT 动作 G → value V → 未来视频 I。动作分支看不到 G，而 value 与视频只条件在干净动作上。",
     "insight": "核心 Insight：**先生成动作，再在干净已执行动作上预测未来视频与任务进度；失败 rollout 只监督观察到的失败未来和被压低的进度，不进入动作模仿损失。**\n\n方法选择因此改变了三个接口：\n\n1. **顺序接口：** token 序为 prefix \\(P\\) → 噪声动作 \\(A\\) → 干净 GT 动作 \\(G\\) → value \\(V\\) → 未来视频 \\(I\\)；世界分支只看 \\(G\\)，\\(A\\) 看不到 \\(G\\)。\n2. **训练信号：** 成功演示监督 \\(\\mathcal{L}_a+\\mathcal{L}_v+\\mathcal{L}_I\\)；失败窗口把 \\(\\mathcal{L}_a\\) mask 掉。\n3. **推理接口：** Stage 1 只解动作即可部署；可选 Stage 2 用 value 对 \\(N\\) 个候选打分。部署不必生成视频。\n\n与本知识库课题 **直接相关**：它明确站在 WAM 谱系上，对照 video-first / future-as-condition 设计，并在 RoboTwin 与真机双臂上同时测策略成功率和失败条件下的未来幻觉。它建模的是动作条件后果，**不是**结构因果。可与已入库的 FlowWAM、LingBot-VA、Causal World Modeling for Robot Control 对照阅读。",
     "pipeline": {
       "input": "语言指令 ℓ；多视角 RGB（主视 + 左右腕）与本体感觉 s t 打包成 prefix；训练时还有动作块 a t:t+H（H=48）、未来视频窗口（当前帧加四个偏移 [0,H/4,H/2,3H/4,H]）以及归一化进度目标。",
@@ -1175,7 +1175,7 @@
       "paper_title": "Gaussian-JEPA: Joint-Embedding Predictive Learning for 3D Gaussian Splats",
       "source_url": "https://arxiv.org/html/2608.15651v1/framework.png"
     },
-    "summary": "核心 Insight： 对物体级 Gaussian 资产做 JEPA——用可见 context 预测被挡住的多尺度 token 块表征，而不是重建某一次采样的 14 维属性。",
+    "summary": "方法把监督对象从“这次采样的 14 维属性”改成“完整物体中被遮挡多尺度块的潜在表征”。Online encoder 只看 context；共享 EMA encoder 看完整 token 场，再按块索引提供目标。两个名为 geo/app 的互补投影与 VISReg 式 feature-space grounding 提供额外约束，但它们是对全部属性特征学出的视图，不是手工拆开的几何/外观通道。",
     "insight": "核心 Insight：**对物体级 Gaussian 资产做 JEPA——用可见 context 预测被挡住的多尺度 token 块表征，而不是重建某一次采样的 14 维属性。**\n\n这改变的是自监督目标：online encoder 只看 context；共享 EMA encoder 看完整 token 场再按块索引取目标；两个互补投影（名为 geo/app，但是对全部属性特征的学习视图，不是手工拆通道）加 VISReg 式 feature-space grounding。与本知识库 **间接相关**：它是 3DGS 表征学习，不输出动作、不做 rollout、不评机器人。可借鉴点是“预测潜空间而非重建观察实现”，以及重采样一致性这种对随机观察更敏感的评测，而不是只报分类。",
     "pipeline": {
       "input": "物体级 3DGS 资产 mathcalX=[C,O,S,R,SH]inmathbbR^N× 14；每次迭代先缓冲再无放回抽 p=1024 个 primitive。Centroid FPS 出 n=64 组、每组 KNN k=32，PointNet 式 tokenizer 得 D=384 token。",
@@ -1822,7 +1822,7 @@
     "challenges": "领域长期问题是：控制用世界模型需要与动作相关的状态表征，而像素级视频重建会保留对规划无用的外观细节。本文针对的是 **端到端 JEPA 潜空间在前向预测目标下的机器人中心可识别性缺口**，不是“JEPA 会 collapse”这一更早的正则问题。\n\n- **作者用探针刻画的失败模式：** 在 OGBench-Cube 上冻结 LeWM 表征，单 latent 线性/MLP 探针几乎读不出末端 yaw（\\(r\\le 0.08\\)）；成对探针只能部分恢复关节/夹爪速度。DINOv2 预训练也只把 yaw 推到约 0.50。作者称之为 robot-centric identifiability gap：**探针可恢复性**，不是因果识别意义下的 identifiability。\n- **过强假设：** 仅靠 \\(\\hat{z}_{t+1}=F(z_t,a_t)\\) 可预测，并不保证 \\(z_t\\) 暴露本体感觉、也不保证 \\((z_t,z_{t+k})\\) 暴露净关节变化。下游 planner / policy 只得自己从任务监督里补视觉–动作对齐。\n- **与 IDM 辅助目标的缺口：** 用 \\((z_t,z_{t+1})\\mapsto a_t\\) 当正则，动作序列随 horizon 变长，且同一端点变化可对应多种动作，物理转移目标不适定。\n\nLeWM 已有 SIGReg 反 collapse；本文认为 **非 collapse ≠ 物理状态可读**。",
     "motivation": "核心 Insight：**在保留 LeWM 的 encoder–predictor 与 SIGReg 的前提下，用训练期-only 的两个头把单个 latent 接到本体感觉、把多 horizon 端点对接到净关节角变化；推理丢掉这两个头，架构和算力不变。**\n\n这改变的是训练信号，不是推理接口：编码器输入仍只有图像，本体量只作 grounding 目标或探针标签。作者用 \\(\\Delta q_{t,k}=q_{t+k}-q_t\\) 替代动作序列，因为净变化由端点唯一确定且维度固定。与本知识库 **直接相关于潜空间世界模型 / JEPA**，与视频 WAM 是相邻对照。可借鉴点是：前向预测不足以保证控制相关量可读；应用层不要把这里的 identifiability 写成因果可识别。",
     "technical_approach": "- **输入：** 图像观测窗口 \\(T=C+1=4\\)（\\(C=3\\) 帧上下文）、对应动作；训练期另有对齐的本体感觉 \\(s_t\\)（关节角、夹爪、末端位姿）及其关节分量 \\(q_t\\)。编码器和预测器 **从不把本体当作输入**。\n- **过程：** 共享编码器 \\(z_{t+i}=E_\\phi(o_{t+i})\\)；因果动作条件预测器 teacher-forced 一步预测，\\(\\mathcal{L}_{\\mathrm{fwd}}\\) 为 MSE；保留 LeWM 的 SIGReg，\\(\\lambda_{\\mathrm{reg}}=0.09\\)。状态头 \\(H_s(z)\\to s\\)；转移头 \\(H_\\Delta(z_{t+i},z_{t+i+k})\\to\\Delta q\\)，对 \\(k\\in\\{1,2,3\\}\\) 各 horizon 等权，避免短程对占优。总损失 \\(\\mathcal{L}_{\\mathrm{PSG}}=\\mathcal{L}_{\\mathrm{JEPA}}+\\lambda_g(\\mathcal{L}_{\\mathrm{static}}+\\mathcal{L}_{\\mathrm{dynamic}})\\)，\\(\\lambda_g=0.1\\)，全 benchmark 固定。训练后丢掉 \\(H_s,H_\\Delta\\)。\n- **输出：** 推理期与 LeWM 相同：图像 → 规划用 latent，以及可选的动作条件未来 latent。Grounding 头不参与部署。\n\n与最近 baseline 的实质差异：相对 DINO-WM / V-JEPA 2-AC，编码器可被前向损失和 grounding 共同塑造；相对 LeWM，只多训练期目标；相对自构的 LeWMActionIDM，监督的是净关节变化而非动作。官方代码在 OGBench-Cube 上提供训练与 GC-IDM 规划；LIBERO-Goal 有独立目录与 checkpoint；OGBench-Scene 仓库标注 coming soon。",
-    "discussion": "PSG-JEPA 把“JEPA 世界模型够不够”收束成一句可检验的话：前向可预测并不保证本体状态和状态变化能从规划 latent 读出。探针、低预算 GC-IDM 和 LIBERO/真机策略支持这一诊断和补丁。适用边界是有本体日志的操作式潜空间 WM；物体、接触和视觉干扰不在 grounding 目标里。阅读判断：适合作为 LeWM / DINO-WM 的对照，以及“训练期特权状态能否塑造视觉 latent”的证据；不要把 yaw 探针 \\(r=0.98\\) 写成世界状态已被识别，也不要把 GC-IDM 成功写成模型预测控制已经闭环物理一致。",
+    "discussion": "PSG-JEPA 将“JEPA 世界模型是否足够”变成了一个可检验问题：本体状态与状态变化能否从规划 latent 中低成本读出？yaw 探针最高 \\(r=0.98\\)、低预算 GC-IDM、递归 latent 预测以及 LIBERO/真机策略给出了方向一致的答案，说明训练期 grounding 不只是让探针数字更好，也改善了后续使用表征的样本效率。\n\n更广泛的研究启示是：设计世界模型目标时，应把“下游需要读出什么”前置，而不是期待前向预测自动保留所有控制变量。边界同样明确：监督只覆盖有本体日志的操作数据，物体、接触和视觉干扰没有进入 grounding 目标；GC-IDM 成功不等于模型预测控制已获得闭环物理一致性，\\(r=0.98\\) 也不等于完整世界状态已被识别。",
     "arxiv": {
       "published": "2026-08-07T04:44:16Z",
       "revised_at": "2026-08-07T04:44:16Z",
@@ -1990,7 +1990,7 @@
       "paper_title": "Masked Visual Actions for Unified World Modeling",
       "source_url": "https://arxiv.org/html/2607.19343v1/teaser.png"
     },
-    "summary": "核心 Insight： 把动作写成视频里任意实体的部分可见时空轨迹。露出机器人，模型预测场景响应（正向）；露出物体期望运动，同一模型补出机器人行为（逆向）。主动/被动不是两套架构，而是对同一交互先验的不同查询。",
+    "summary": "核心做法是把动作表示成视频中任意实体的部分可见时空轨迹：露出机器人的运动，模型补全物体和场景响应，得到正向动力学；露出物体的期望运动，同一模型补全机器人行为，得到逆向动作合成。主动与被动不再对应两套架构，而是对同一交互先验提出不同 masked-video 查询。",
     "insight": "核心 Insight：**把动作写成视频里任意实体的部分可见时空轨迹。露出机器人，模型预测场景响应（正向）；露出物体期望运动，同一模型补出机器人行为（逆向）。主动/被动不是两套架构，而是对同一交互先验的不同查询。**\n\n这改变的是控制接口：条件是与输出空间对齐的 masked video，用 concatenation 注入 Wan-Fun-Control，而不是另开动作通道。训练只用主动机器人实体的 mask，逆向查询零样本泛化。与本知识库 **直接相关于视频世界模型 / WAM 的动作表征**；与 FlowWAM 的光流视频动作、FACT 的数值动作块是同一谱系上的不同点。作者在讨论里自己写明学的是交互相关而非因果关系。\n\n注意：库中已有 **Mask World Model: Predicting What Matters for Robust Robot Policy Learning**，是另一篇工作（预测语义 mask 当输出），标题相近但不是本文。",
     "pipeline": {
       "input": "参考帧 I 0、masked 条件视频 Modot V（未露出区域填均匀灰）、文本 prompt。正向时 M 为机器人轨迹；逆向时为物体/期望运动。",
@@ -2011,7 +2011,7 @@
     "challenges": "领域长期问题是：大规模视频模型学到了运动、接触和形变先验，但多数仍是被动观察者。本文针对的缺口是 **如何把动作告诉视频模型——既要落在它预训练的像素空间里，又要对物理操作有用**。\n\n- **现有条件信号的失败模式：** 文本过于欠定；tracks / 力 / 关键点稀疏；关节或末端位姿 embodiment-specific，且与视频先验不对齐。Ctrl-World 等在训练域内跟动作准，换未见本体就塌成静止或损坏视频。\n- **稀疏可视化的失败模式：** 同一骨干上训 skeleton 或 end-effector vis，在 DROID 域内与 masked actions 接近；换自定义夹爪会把机器人“改回”训练集外观，BEHAVIOR 双臂上则扭曲本体。\n- **统一接口缺口：** UVA / UWM / X-WAM 等在模态通道上做 masking，动作仍是低维向量，正向/逆向切换不迁移跨本体。已有像素条件（BridgeV2W、Action Images、Mask2IV）几乎只把机器人当主动实体、只跑正向。\n\n作者强调：缺的不是更大的视频骨干，而是 **与预训练视觉空间对齐的动作表征**。",
     "motivation": "核心 Insight：**把动作写成视频里任意实体的部分可见时空轨迹。露出机器人，模型预测场景响应（正向）；露出物体期望运动，同一模型补出机器人行为（逆向）。主动/被动不是两套架构，而是对同一交互先验的不同查询。**\n\n这改变的是控制接口：条件是与输出空间对齐的 masked video，用 concatenation 注入 Wan-Fun-Control，而不是另开动作通道。训练只用主动机器人实体的 mask，逆向查询零样本泛化。与本知识库 **直接相关于视频世界模型 / WAM 的动作表征**；与 FlowWAM 的光流视频动作、FACT 的数值动作块是同一谱系上的不同点。作者在讨论里自己写明学的是交互相关而非因果关系。\n\n注意：库中已有 **Mask World Model: Predicting What Matters for Robust Robot Policy Learning**，是另一篇工作（预测语义 mask 当输出），标题相近但不是本文。",
     "technical_approach": "- **输入：** 参考帧 \\(I_0\\)、masked 条件视频 \\(M\\odot V\\)（未露出区域填均匀灰）、文本 prompt。正向时 \\(M\\) 为机器人轨迹；逆向时为物体/期望运动。\n- **过程：** 骨干 Wan-Fun-Control 2.2 14B（双 expert MoE，高低噪 DiT 在 timestep 0.358 分界）。条件经同一 VAE 编码后与视频 latent 拼接。LoRA rank 256，batch 4，8×H200，约 10,000 step / 4 天。数据约 **15 小时**，混合 DROID 与 RoboCasa 的成功和失败轨迹。两条互补构造：(1) SAM 类分割“A robotic arm”，无需标定，但测试难提供精确 mask，且遮挡可能泄漏原视频动态；(2) 按机器人状态渲染 URDF（DROID 标定 refinement 跟随 PointWorld；RoboCasa 只渲染半透明机器人、夹爪标红）。推理期任意动作可渲染成 control video。\n- **输出：** 完整 RGB 视频。正向：场景对机器人运动的响应；逆向：与给定物体运动一致的机器人运动，再经单独训练的 IDM 变成可执行关节/末端指令。规划时对 Diffusion Policy 的 \\(N\\) 条候选在想象中 rollout，用 Gemini 3.1 Pro 按任务成功、交互保真、物理真实排序。\n\n与最近 baseline 的实质差异：相对 Ctrl-World，条件是像素轨迹而非原始动作向量；相对 Wan-Move，条件是实体 mask 而非 GT tracks；相对 skeleton/EE 可视化，条件稠密且与像素对齐。GitHub 明确：**没有改视频模型或训练器**，只是 DiffSynth-Studio 上的 LoRA 薄层；URDF 渲染工具标注 coming soon。",
-    "discussion": "Masked Visual Actions 把“视频世界模型如何接收动作”收束成像素空间的遮罩轨迹，并用同一 checkpoint 切换正向模拟与逆向合成。DROID/BEHAVIOR 的保真度表、自定义夹爪/双臂塌缩对照、以及 \\(r=0.982\\) 的策略评估相关，支持“稠密像素对齐条件比稀疏骨架或原始动作向量更可迁移”。适用边界是需要渲染或分割出实体轨迹的操作视频；延迟受 14B 视频骨干限制。阅读判断：若课题关心 WAM 动作该长成什么样，这篇与 FlowWAM 是一对互补对照（光流视频 vs 实体 mask）；不要把想象 rollout 写成反事实识别，也不要把 Ctrl-World 的 DROID 数字当成同等数据设置下的失败。",
+    "discussion": "Masked Visual Actions 将“视频世界模型如何接收动作”具体化为像素空间中的遮罩轨迹，并用同一 checkpoint 完成正向模拟与逆向合成。DROID/BEHAVIOR 保真度、自定义夹爪与双臂上的稀疏条件失败，以及策略评估相关 \\(r=0.982\\)，共同支持“稠密、像素对齐的条件更容易跨本体迁移”。与此同时，成功率正偏差和闭源 VLM 排序器提醒我们：生成保真并不自动等于可靠规划。\n\n对后续研究最有价值的问题是：动作接口能否写成基座模型原生理解的模态，同时保留执行精度。本文给出了实体 mask 这一端点，FlowWAM 的光流视频是另一端点；二者都值得与 FACT 的数值动作块比较。适用边界是能够渲染或分割实体轨迹的操作视频，且延迟受 14B 骨干限制。想象 rollout 不能写成反事实识别，Ctrl-World 的 DROID 结果也不是同等训练数据下的严格失败对照。",
     "arxiv": {
       "published": "2026-07-21T17:59:11Z",
       "revised_at": "2026-07-21T17:59:11Z",

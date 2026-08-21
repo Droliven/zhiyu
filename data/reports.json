@@ -50,7 +50,7 @@
       "机器人学习",
       "预测表征"
     ],
-    "summary": "四篇共享“世界模型 / 预测表征”语境，但接口不同。FACT 是动作先于想象的因果顺序 WAM，用失败 rollout 监督后果而非模仿失败动作。PSG-JEPA 在端到端 JEPA 潜空间上补本体感觉与关节变化 grounding。Gaussian-JEPA 把 JEPA 接到物体级 3D Gaussian 资产，不做控制。Masked Visual Actions 用像素空间遮罩轨迹作为视频模型的统一动作接口。FACT / Masked Visual Actions 的“causal / counterfactual”主要是动作条件预测与想象 rollout， 不是 结构因果识别。Gaussian-JEPA 与本课题为间接相关。",
+    "summary": "贯穿四篇的核心问题：预测模型究竟缺少哪一个接口，才会“能预测，却未必能服务于行动”？ 四篇给出的答案分别落在数据、表征、观察和动作四层：FACT 缺的是“失败动作—真实后果”的监督接口；PSG-JEPA 缺的是视觉 latent 与机器人本体状态/变化之间的 grounding；Gaussian-JEPA 缺的是跨 3D Gaussian 随机重采样仍稳定的学习目标；Masked Visual Actions 缺的是视频模型能够直接理解、且可跨本体迁移的动作表达。 阅读地图： 先读 FACT，看负样本如何只教“后果”而不教坏动作；再读 PSG-JEPA，看训练期特权状态如何让预测 latent 暴露控制相关变量；随后以 Gaussian-JEPA 作为边界清楚的 3D 表征对照，理解“预测潜空间而非重建一次观…",
     "paper_ids": [
       "arxiv-2607-19343",
       "arxiv-2608-06799",
@@ -59,7 +59,7 @@
     ],
     "path": "content/reports/2026-08-21_curated_papers_jepa.md",
     "source_file": "2026-08-21_curated_papers_jepa.md",
-    "content_sha1": "5cb4d5b2c208378c98ae7537f269057f97aacc51"
+    "content_sha1": "e35b22db357ab171c6ae490a41eebde34e35b93b"
   },
   {
     "id": "report-90041fa2f9",
