@@ -69,6 +69,9 @@ Stage-2 权重已公开；未核验到官方代码仓库或整理后的六层混
 **arXiv / DOI：** 2507.13340；10.48550/arXiv.2507.13340  
 **类别标签：** optical flow, embodiment-agnostic action, world model, policy steering  
 **可靠入口：** [arXiv](https://arxiv.org/abs/2507.13340)｜[项目](https://yiqiwang8177.github.io/LatentPolicySteering/)｜[AlphaXiv](https://www.alphaxiv.org/abs/2507.13340)
+**代表图：** Latent Policy Steering，Fig. 1，光流世界模型预训练与候选策略 steering。来源：[Fig. 1 原图](https://arxiv.org/html/2507.13340v1/x1.png)
+
+![Latent Policy Steering Fig. 1](https://arxiv.org/html/2507.13340v1/x1.png)
 
 ### 当前挑战
 
@@ -113,6 +116,9 @@ Robomimic 的 30/50-demo 设置覆盖 Lift、Can、Square、Transport、3 seeds�
 **arXiv / DOI：** 2508.13104；未核验独立 DOI  
 **类别标签：** visual action prompt, skeleton, human-object interaction, action-to-video  
 **可靠入口：** [ICCV](https://openaccess.thecvf.com/content/ICCV2025/html/Wang_Precise_Action-to-Video_Generation_Through_Visual_Action_Prompts_ICCV_2025_paper.html)｜[arXiv](https://arxiv.org/abs/2508.13104)｜[项目](https://zju3dv.github.io/VAP/)
+**代表图：** Precise Action-to-Video Generation Through Visual Action Prompts，Fig. 1，骨架 visual action prompt 统一人手与机器人动作。来源：[Fig. 1 原图](https://arxiv.org/html/2508.13104/x1.png)
+
+![Precise Action-to-Video Generation Through Visual Action Prompts Fig. 1](https://arxiv.org/html/2508.13104/x1.png)
 
 ### 当前挑战
 
@@ -157,6 +163,9 @@ action-to-video 存在精度—通用性权衡：文本和 primitive 通用但�
 **arXiv / DOI：** 2606.04463；未核验独立 DOI  
 **类别标签：** skeleton action, omni-embodiment, policy evaluation, human-robot video  
 **可靠入口：** [arXiv](https://arxiv.org/abs/2606.04463)｜[项目](https://wuzy2115.github.io/oscar-project-page/)｜[代码](https://github.com/wuzy2115/oscar-public)｜[模型](https://huggingface.co/zywu2115/OSCAR-2B)｜[数据](https://huggingface.co/datasets/zywu2115/OSCAR_robot)
+**代表图：** OSCAR，Fig. 1，生成 rollout 与真实 RoboArena 策略评估的对应关系。来源：[Fig. 1 原图](https://arxiv.org/html/2606.04463/x1.png)
+
+![OSCAR Fig. 1](https://arxiv.org/html/2606.04463/x1.png)
 
 ### 当前挑战
 
@@ -292,6 +301,9 @@ GeniWorld 对视觉动作的生成质量与合成数据价值给出较强证据�
 **arXiv / DOI：** 2606.03943；未核验独立 DOI  
 **类别标签：** 3D point action, 4D generation, robot control, cross-embodiment  
 **可靠入口：** [arXiv](https://arxiv.org/abs/2606.03943)｜[项目](https://oriontmt.github.io/pointaction/)｜[代码](https://github.com/GMLR-Penn/PointAction)
+**代表图：** PointAction，Fig. 1，RGB 与动态 3D pointmap 联合生成并解码动作。来源：[Fig. 1 原图](https://arxiv.org/html/2606.03943/x1.png)
+
+![PointAction Fig. 1](https://arxiv.org/html/2606.03943/x1.png)
 
 ### 当前挑战
 
@@ -336,6 +348,9 @@ GitHub 已建立，但核验时 README 仍称代码整理中，不能视为完�
 **arXiv / DOI：** 2606.09813；未核验独立 DOI  
 **类别标签：** motion image, contact image, embodied world model, policy evaluation  
 **可靠入口：** [arXiv](https://arxiv.org/abs/2606.09813)｜[项目](https://imac-wm.github.io/)
+**代表图：** iMaC，Fig. 1，动作转换为 motion images 与 contact images 的整体流程。来源：[Fig. 1 原图](https://arxiv.org/html/2606.09813/x1.png)
+
+![iMaC Fig. 1](https://arxiv.org/html/2606.09813/x1.png)
 
 ### 当前挑战
 
@@ -380,6 +395,9 @@ iMaC 展示了接触几何条件对策略评估的潜力，但相机看不到关
 **arXiv / DOI：** 2607.22535；未核验独立 DOI  
 **类别标签：** robot rendering, nominal trajectory, leakage audit, cross-embodiment  
 **可靠入口：** [arXiv](https://arxiv.org/abs/2607.22535)｜[项目](https://bjkim95.github.io/rofacto/)｜[代码](https://github.com/bjkim95/rofacto)
+**代表图：** Robot-Factored World Models，Fig. 1，静态场景上下文与名义机器人渲染组成视觉动作接口。来源：[Fig. 1 原图](https://arxiv.org/html/2607.22535/x1.png)
+
+![Robot-Factored World Models Fig. 1](https://arxiv.org/html/2607.22535/x1.png)
 
 ### 当前挑战
 
@@ -424,6 +442,9 @@ RoFacto 最重要的贡献不是更高 PSNR，而是区分动作命令、部署�
 **arXiv / DOI：** 2511.21690；未核验独立 DOI  
 **类别标签：** 3D trace, cross-embodiment video, geometric world model, few-shot adaptation  
 **可靠入口：** [arXiv](https://arxiv.org/abs/2511.21690)｜[项目](https://tracegen.github.io/)
+**代表图：** TraceGen，Fig. 1，TraceForge 数据引擎、3D trace 世界模型与人机迁移。来源：[Fig. 1 原图](https://arxiv.org/html/2511.21690/x1.png)
+
+![TraceGen Fig. 1](https://arxiv.org/html/2511.21690/x1.png)
 
 ### 当前挑战
 
@@ -468,6 +489,9 @@ TraceGen 强力支持“场景级 3D 运动是跨本体中间语言”，且少�
 **arXiv / DOI：** 2511.01177；未核验独立 DOI  
 **类别标签：** particle displacement action, dexterous manipulation, cross-embodiment, MPC  
 **可靠入口：** [arXiv](https://arxiv.org/abs/2511.01177)｜[项目](https://alan-heoooh.github.io/dexwm.html)
+**代表图：** Scaling Cross-Embodiment World Models for Dexterous Manipulation，Fig. 1，粒子状态与末端粒子位移统一不同手型。来源：[Fig. 1 原图](https://arxiv.org/html/2511.01177/x1.png)
+
+![Scaling Cross-Embodiment World Models for Dexterous Manipulation Fig. 1](https://arxiv.org/html/2511.01177/x1.png)
 
 ### 当前挑战
 
@@ -512,6 +536,9 @@ TraceGen 强力支持“场景级 3D 运动是跨本体中间语言”，且少�
 **arXiv / DOI：** 2606.13769；未核验独立 DOI  
 **类别标签：** semantic 3D trace, video-only pretraining, action expert, cross-embodiment  
 **可靠入口：** [arXiv](https://arxiv.org/abs/2606.13769)｜[项目](https://mu0-wm.github.io/)
+**代表图：** μ₀，Fig. 1，从异构视频提取语义 3D interaction traces 并复用于 action expert。来源：[Fig. 1 原图](https://arxiv.org/html/2606.13769/x1.png)
+
+![μ₀ Fig. 1](https://arxiv.org/html/2606.13769/x1.png)
 
 ### 当前挑战
 

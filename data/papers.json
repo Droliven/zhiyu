@@ -1801,7 +1801,13 @@
       "world model",
       "机器人学习"
     ],
-    "figure": null,
+    "figure": {
+      "url": "https://arxiv.org/html/2606.09813/x1.png",
+      "alt": "iMaC Fig. 1",
+      "label": "iMaC，Fig. 1，动作转换为 motion images 与 contact images 的整体流程。来源：Fig. 1 原图",
+      "paper_title": "iMaC: Translating Actions into Motion and Contact Images for Embodied World Models",
+      "source_url": "https://arxiv.org/html/2606.09813/x1.png"
+    },
     "summary": "iMaC 把动作翻译成两类图像：motion image 给出未来机器人外观/位置，双向 contact image 给出未来机器人与当前场景的 3D 距离。核心 Insight 是让视频生成器显式读取“谁移动到哪里”和“哪里可能接触”，用于分钟级 rollout 与策略 checkpoint 排序。",
     "insight": "iMaC 把动作翻译成两类图像：motion image 给出未来机器人外观/位置，双向 contact image 给出未来机器人与当前场景的 3D 距离。核心 Insight 是让视频生成器显式读取“谁移动到哪里”和“哪里可能接触”，用于分钟级 rollout 与策略 checkpoint 排序。",
     "pipeline": {
@@ -2506,7 +2512,13 @@
       "world model",
       "机器人学习"
     ],
-    "figure": null,
+    "figure": {
+      "url": "https://arxiv.org/html/2606.04463/x1.png",
+      "alt": "OSCAR Fig. 1",
+      "label": "OSCAR，Fig. 1，生成 rollout 与真实 RoboArena 策略评估的对应关系。来源：Fig. 1 原图",
+      "paper_title": "OSCAR: Omni-Embodiment Action-Conditioned World Model for Robotics",
+      "source_url": "https://arxiv.org/html/2606.04463/x1.png"
+    },
     "summary": "二维运动学骨架只依赖拓扑与相机投影，不携带纹理；改变 URDF/MANO 拓扑即可表示不同机器人或人手。作者再通过大规模清洗和去重缓解数据覆盖问题。与 VAP 相邻且直接相关：VAP 强调跨域 action-to-video，OSCAR 更强调数据工程与策略排序。",
     "insight": "二维运动学骨架只依赖拓扑与相机投影，不携带纹理；改变 URDF/MANO 拓扑即可表示不同机器人或人手。作者再通过大规模清洗和去重缓解数据覆盖问题。与 VAP 相邻且直接相关：VAP 强调跨域 action-to-video，OSCAR 更强调数据工程与策略排序。",
     "pipeline": {
@@ -2568,7 +2580,13 @@
       "几何一致性",
       "机器人学习"
     ],
-    "figure": null,
+    "figure": {
+      "url": "https://arxiv.org/html/2606.03943/x1.png",
+      "alt": "PointAction Fig. 1",
+      "label": "PointAction，Fig. 1，RGB 与动态 3D pointmap 联合生成并解码动作。来源：Fig. 1 原图",
+      "paper_title": "PointAction: 3D Points as Universal Action Representations for Robot Control",
+      "source_url": "https://arxiv.org/html/2606.03943/x1.png"
+    },
     "summary": "作者把动态、像素对齐的 XYZ pointmap 作为通用中间动作：大型模型负责预测场景与机器人 4D 运动，小型本体专属 decoder 再映射低层动作。与纯几何输入 VLA 不同，这里的 3D points 是预测输出和控制接口，直接属于 geometry action。",
     "insight": "作者把动态、像素对齐的 XYZ pointmap 作为通用中间动作：大型模型负责预测场景与机器人 4D 运动，小型本体专属 decoder 再映射低层动作。与纯几何输入 VLA 不同，这里的 3D points 是预测输出和控制接口，直接属于 geometry action。",
     "pipeline": {
@@ -2614,6 +2632,7 @@
       "paper": "https://arxiv.org/abs/2607.22535",
       "project": "https://bjkim95.github.io/rofacto/",
       "code": "https://github.com/bjkim95/rofacto",
+      "model": "https://arxiv.org/html/2607.22535/x1.png",
       "alphaxiv": "https://alphaxiv.org/abs/2607.22535"
     },
     "tags": [
@@ -2627,7 +2646,13 @@
       "几何一致性",
       "机器人学习"
     ],
-    "figure": null,
+    "figure": {
+      "url": "https://arxiv.org/html/2607.22535/x1.png",
+      "alt": "Robot-Factored World Models Fig. 1",
+      "label": "Robot-Factored World Models，Fig. 1，静态场景上下文与名义机器人渲染组成视觉动作接口。来源：Fig. 1 原图",
+      "paper_title": "Robot-Factored World Models via Robot Rendering",
+      "source_url": "https://arxiv.org/html/2607.22535/x1.png"
+    },
     "summary": "作者提出“名义轨迹”：在无场景交互时，用部署可用的控制器与运动学把动作实现成轨迹，再渲染成相机对齐机器人几何。它将 action realization 和 embodiment geometry 移出网络，让模型专门预测环境响应，并首次清晰审计 logged future state leakage。",
     "insight": "作者提出“名义轨迹”：在无场景交互时，用部署可用的控制器与运动学把动作实现成轨迹，再渲染成相机对齐机器人几何。它将 action realization 和 embodiment geometry 移出网络，让模型专门预测环境响应，并首次清晰审计 logged future state leakage。",
     "pipeline": {
@@ -2813,7 +2838,13 @@
       "几何一致性",
       "机器人学习"
     ],
-    "figure": null,
+    "figure": {
+      "url": "https://arxiv.org/html/2511.21690/x1.png",
+      "alt": "TraceGen Fig. 1",
+      "label": "TraceGen，Fig. 1，TraceForge 数据引擎、3D trace 世界模型与人机迁移。来源：Fig. 1 原图",
+      "paper_title": "TraceGen: World Modeling in 3D Trace Space Enables Learning from Cross-Embodiment Videos",
+      "source_url": "https://arxiv.org/html/2511.21690/x1.png"
+    },
     "summary": "不同本体不可共享关节动作，但被操作物体、末端和工具的场景级 3D 运动具有共同结构。TraceGen 因此预测“世界中什么点怎样移动”，而非主体外观或关节命令；这是把 geometry action 扩展到 ego human、robot 和不同环境的直接方案。",
     "insight": "不同本体不可共享关节动作，但被操作物体、末端和工具的场景级 3D 运动具有共同结构。TraceGen 因此预测“世界中什么点怎样移动”，而非主体外观或关节命令；这是把 geometry action 扩展到 ego human、robot 和不同环境的直接方案。",
     "pipeline": {
@@ -3322,7 +3353,13 @@
       "visual action",
       "world model"
     ],
-    "figure": null,
+    "figure": {
+      "url": "https://arxiv.org/html/2606.13769/x1.png",
+      "alt": "μ₀ Fig. 1",
+      "label": "μ₀，Fig. 1，从异构视频提取语义 3D interaction traces 并复用于 action expert。来源：Fig. 1 原图",
+      "paper_title": "μ₀: A Scalable 3D Interaction-Trace World Model",
+      "source_url": "https://arxiv.org/html/2606.13769/x1.png"
+    },
     "summary": "μ₀ 将 TraceGen 的固定网格升级为语义交互点，把 episode caption 改为事件级语言，并让 action expert 直接消费 trace-denoising features。目标是从无动作视频学可复用运动先验，再以小型本体模块解码动作；与本专题直接相关。",
     "insight": "μ₀ 将 TraceGen 的固定网格升级为语义交互点，把 episode caption 改为事件级语言，并让 action expert 直接消费 trace-denoising features。目标是从无动作视频学可复用运动先验，再以小型本体模块解码动作；与本专题直接相关。",
     "pipeline": {
@@ -3583,6 +3620,13 @@
       "published": "2025-07-17T17:57:57Z",
       "revised_at": "2026-03-22T19:38:07Z",
       "primary_category": "cs.RO"
+    },
+    "figure": {
+      "url": "https://arxiv.org/html/2507.13340v1/x1.png",
+      "alt": "Latent Policy Steering Fig. 1",
+      "label": "Latent Policy Steering，Fig. 1，光流世界模型预训练与候选策略 steering。来源：Fig. 1 原图",
+      "paper_title": "Latent Policy Steering with Embodiment-Agnostic Pretrained World Models",
+      "source_url": "https://arxiv.org/html/2507.13340v1/x1.png"
     }
   },
   {
@@ -4003,7 +4047,13 @@
       "机器人学习",
       "视频生成"
     ],
-    "figure": null,
+    "figure": {
+      "url": "https://arxiv.org/html/2508.13104/x1.png",
+      "alt": "Precise Action-to-Video Generation Through Visual Action Prompts Fig. 1",
+      "label": "Precise Action-to-Video Generation Through Visual Action Prompts，Fig. 1，骨架 visual action prompt 统一人手与机器人动作。来源：Fig. 1 原图",
+      "paper_title": "Precise Action-to-Video Generation Through Visual Action Prompts",
+      "source_url": "https://arxiv.org/html/2508.13104/x1.png"
+    },
     "summary": "作者把动作“渲染”为相机平面中的主体结构，选择 2D 骨架作为获取成本与几何精度的折中。机器人关节状态和人类 MANO 手部姿态都能被转成同格式视频条件，从而联合学习 ego human video 与 robotic video 的交互动力学。",
     "insight": "作者把动作“渲染”为相机平面中的主体结构，选择 2D 骨架作为获取成本与几何精度的折中。机器人关节状态和人类 MANO 手部姿态都能被转成同格式视频条件，从而联合学习 ego human video 与 robotic video 的交互动力学。",
     "pipeline": {
@@ -4053,6 +4103,7 @@
     "links": {
       "paper": "https://arxiv.org/abs/2511.01177",
       "project": "https://alan-heoooh.github.io/dexwm.html",
+      "model": "https://arxiv.org/html/2511.01177/x1.png",
       "alphaxiv": "https://alphaxiv.org/abs/2511.01177"
     },
     "tags": [
@@ -4066,7 +4117,13 @@
       "world model",
       "几何一致性"
     ],
-    "figure": null,
+    "figure": {
+      "url": "https://arxiv.org/html/2511.01177/x1.png",
+      "alt": "Scaling Cross-Embodiment World Models for Dexterous Manipulation Fig. 1",
+      "label": "Scaling Cross-Embodiment World Models for Dexterous Manipulation，Fig. 1，粒子状态与末端粒子位移统一不同手型。来源：Fig. 1 原图",
+      "paper_title": "Scaling Cross-Embodiment World Models for Dexterous Manipulation",
+      "source_url": "https://arxiv.org/html/2511.01177/x1.png"
+    },
     "summary": "作者主张跨本体可共享的不是关节动作，而是对环境产生的物理交互。将人手、机器人手和物体统一成 3D 粒子，动作定义为末端粒子位移，就能把不同 DoF 的控制映射到同一几何接口，并用一个图世界模型加 MPC 部署。",
     "insight": "作者主张跨本体可共享的不是关节动作，而是对环境产生的物理交互。将人手、机器人手和物体统一成 3D 粒子，动作定义为末端粒子位移，就能把不同 DoF 的控制映射到同一几何接口，并用一个图世界模型加 MPC 部署。",
     "pipeline": {
