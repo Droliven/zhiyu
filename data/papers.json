@@ -304,6 +304,70 @@
     "year": 2026
   },
   {
+    "id": "arxiv-2608-19085",
+    "title": "DA-WAM: Decision-Aligned Future Latents for Driving World Models",
+    "authors": [
+      "Ruiguo Zhong",
+      "Benshan Ma",
+      "Xiaolong Chen",
+      "Lang Zhang",
+      "Mingyue Feng",
+      "Yaonong Wang",
+      "Pei Liu",
+      "Jun Ma"
+    ],
+    "year": 2026,
+    "publication": "2026，arXiv 预印本（v2 于 2026-08-20 更新）",
+    "arxiv_id": "2608.19085",
+    "doi": "",
+    "links": {
+      "paper": "https://arxiv.org/abs/2608.19085",
+      "alphaxiv": "https://alphaxiv.org/abs/2608.19085"
+    },
+    "tags": [
+      "4D重建",
+      "HOI",
+      "World-Action-Model",
+      "动作流",
+      "反事实推理",
+      "周报",
+      "因果建模",
+      "因果推理",
+      "流式生成",
+      "自我中心视觉"
+    ],
+    "figure": {
+      "url": "https://arxiv.org/html/2608.19085v2/Figures/overview2.png",
+      "alt": "DA-WAM Fig. 2：候选轨迹与未来隐状态一一对齐的规划框架",
+      "label": "DA-WAM，Fig. 2，为每条候选轨迹预测专属未来隐状态并进行因子化规划评分的整体框架。来源：Fig. 2 原图 PNG",
+      "paper_title": "DA-WAM: Decision-Aligned Future Latents for Driving World Models",
+      "source_url": "https://arxiv.org/html/2608.19085v2/Figures/overview2.png"
+    },
+    "summary": "DA-WAM 的核心 insight 是： 世界模型对规划最有用时，其预测应当是\"决策信息性的\"——每个候选轨迹应有其专属的未来隐状态预测 ，而非所有候选共享一个\"全局未来\"。现有方法或将预测表示学习与规划优化脱耦，或跨候选共享预测状态，稀释了动作特异性的后果信息。",
+    "insight": "DA-WAM 的核心 insight 是：**世界模型对规划最有用时，其预测应当是\"决策信息性的\"——每个候选轨迹应有其专属的未来隐状态预测**，而非所有候选共享一个\"全局未来\"。现有方法或将预测表示学习与规划优化脱耦，或跨候选共享预测状态，稀释了动作特异性的后果信息。\n\nDA-WAM 统一了预测性表示学习、动作条件未来建模和轨迹评分于单一决策目标：在线编码器（V-JEPA 2.1 + LoRA）提取场景隐 token，动作条件预测器为每个候选轨迹生成独立未来隐状态，因子化评分器基于未来隐状态评估轨迹。专家匹配轨迹的预测隐状态由观测未来表示直接监督；安全关键硬负例在规划边界提供额外监督。",
+    "pipeline": {
+      "input": "当前视觉观测（相机帧）+ 候选轨迹集合 tau i i=1^N",
+      "process": "在线编码器 E theta（V-JEPA 2.1 + LoRA）提取当前场景 token Z t；轨迹编码器 E tau 将每条候选编码为动作表示 a i；动作条件预测器 P phi 结合 a i 和 Z t 预测每条候选的未来隐状态 hatZ^i；因子化评分器基于 hatZ^i 输出轨迹评分；目标编码器 E bartheta（EMA 更新）提供未来表示监督",
+      "output": "每条候选轨迹的评分（用于规划选择）",
+      "details": "**输入**：当前视觉观测（相机帧）+ 候选轨迹集合 \\(\\{\\tau_i\\}_{i=1}^N\\)\n\n**过程**：在线编码器 \\(E_\\theta\\)（V-JEPA 2.1 + LoRA）提取当前场景 token \\(Z_t\\)；轨迹编码器 \\(E_\\tau\\) 将每条候选编码为动作表示 \\(a_i\\)；动作条件预测器 \\(P_\\phi\\) 结合 \\(a_i\\) 和 \\(Z_t\\) 预测每条候选的未来隐状态 \\(\\hat{Z}^i\\)；因子化评分器基于 \\(\\hat{Z}^i\\) 输出轨迹评分；目标编码器 \\(E_{\\bar\\theta}\\)（EMA 更新）提供未来表示监督\n\n**输出**：每条候选轨迹的评分（用于规划选择）"
+    },
+    "experiments": "- **数据集**：NAVSIM-v1, NAVSIM-v2\n- **指标**：规划相关指标（具体指标待全文确认）\n- **定量结果**：声称 SOTA，具体数值待全文核验\n- **消融**：AlphaXiv 概述提及消融验证了 action-conditioned predictor 和 hard negative 的贡献\n- **实验直接支持的结论**：统一预测与规划目标优于脱耦方案；每候选独立未来隐状态优于共享方案\n- **尚未被实验支持的主张**：反事实隐建模在更复杂场景下的校准性；方法的通用性（限于驾驶规划）",
+    "evidence_notes": "",
+    "code_data_status": "代码未公开。使用 NAVSIM 公开基准。",
+    "limitations": "- 反事实隐状态的监督仅在专家轨迹上直接施加，其余候选通过评分器间接优化——评分器校准是隐假设\n- 方法专用于驾驶规划，非通用世界模型框架\n- 依赖 V-JEPA 2.1 作为视觉骨干，迁移性未验证\n- 硬负例的选取策略和其对评分器决策边界的影响需进一步分析\n\n### 与知域的关系\n\nDA-WAM 与知域关注的 World-Action-Model 和因果建模方向直接相关。其\"每候选独立反事实隐状态\"的思路与 Causal-JEPA 等因果世界建模方向有概念交叉——两者都试图建模\"如果做 A 而非 B 会怎样\"——但 DA-WAM 的反事实是规划层面的隐空间干预（action-conditioned counterfactual latents），而非结构因果模型层面的识别。对\"世界模型如何服务于决策\"这一路线提供了新的架构选择。\n\n---",
+    "comments": "",
+    "source_reports": [
+      "report-f5f82689ca"
+    ],
+    "deleted": false,
+    "updated_at": "2026-08-23",
+    "arxiv": {
+      "published": "2026-08-19T16:33:02Z",
+      "revised_at": "2026-08-20T06:46:02Z",
+      "primary_category": "cs.RO"
+    }
+  },
+  {
     "arxiv": {
       "published": "2025-12-19T18:59:51Z",
       "revised_at": "2025-12-19T18:59:51Z",
@@ -424,6 +488,75 @@
     "title": "Discrete-WAM: Unified Discrete Vision-Action Token Editing for World-Policy Learning",
     "updated_at": "2026-08-20",
     "year": 2026
+  },
+  {
+    "id": "arxiv-2608-20308",
+    "title": "DreamHand: Repurposing Video Diffusion Models for Occlusion-Robust Egocentric 3D Hand Motion Recovery",
+    "authors": [
+      "Yufei Liu",
+      "Xixi Wang",
+      "Hao Li",
+      "Ganlong Zhao",
+      "Kaitong Cai",
+      "Chengkai Jin",
+      "Chunxiao Liu",
+      "Jianbo Liu",
+      "Siyuan Huang",
+      "Xingang Pan",
+      "Hongsheng Li"
+    ],
+    "year": 2026,
+    "publication": "2026，arXiv 预印本",
+    "arxiv_id": "2608.20308",
+    "doi": "",
+    "links": {
+      "paper": "https://arxiv.org/abs/2608.20308",
+      "project": "https://ggxxii.github.io/dreamhand/",
+      "alphaxiv": "https://alphaxiv.org/abs/2608.20308"
+    },
+    "tags": [
+      "3D/4D",
+      "4D重建",
+      "HOI",
+      "World-Action-Model",
+      "动作流",
+      "周报",
+      "因果建模",
+      "流式生成",
+      "第一视角",
+      "自我中心视觉",
+      "视频生成"
+    ],
+    "figure": {
+      "url": "https://arxiv.org/html/2608.20308v1/dreamhand_method.png",
+      "alt": "DreamHand Fig. 2：遮挡鲁棒的自我中心 3D 手部恢复框架",
+      "label": "DreamHand，Fig. 2，clean-latent 编码、Ray Head 与双向时空解码器组成的整体框架。来源：Fig. 2 原图 PNG",
+      "paper_title": "DreamHand: Repurposing Video Diffusion Models for Occlusion-Robust Egocentric 3D Hand Motion Recovery",
+      "source_url": "https://arxiv.org/html/2608.20308v1/dreamhand_method.png"
+    },
+    "summary": "DreamHand 的核心 insight 是： 视频扩散模型的 clean latent（sigma=0 单次前向）已经编码了被遮挡和出视野手部的状态信息 ，不需要多步随机采样做像素空间渲染。因此，将 VDM 从随机像素生成器重新定位为确定性几何编码器——Deterministic Clean-Latent Encoder——即可从单次前向中提取出包含遮挡区域信息的特征。",
+    "insight": "DreamHand 的核心 insight 是：**视频扩散模型的 clean latent（\\(\\sigma=0\\) 单次前向）已经编码了被遮挡和出视野手部的状态信息**，不需要多步随机采样做像素空间渲染。因此，将 VDM 从随机像素生成器重新定位为确定性几何编码器——Deterministic Clean-Latent Encoder——即可从单次前向中提取出包含遮挡区域信息的特征。\n\n配合双向时空解码器（Bidirectional Spatiotemporal Decoder），DreamHand 从离线 clip 级别恢复连续双手轨迹，实现度量级 3D 定位，无需外接检测器。Ray-Based Camera Solver 支持免相机内参配置。",
+    "pipeline": {
+      "input": "自我中心视频片段",
+      "process": "Wan VAE 编码为 latent → Wan DiT（sigma=0，确定性前向）提取 Block-15 特征 → 特征分两路：(1) Ray Head 预测相机内参（训练时监督，推理时可弃用）；(2) 双向时空解码器从特征恢复连续双手 3D 关节轨迹 → Ray-Based Camera Solver 从射线解算平移",
+      "output": "双手 3D 关节位置序列（度量坐标），可选配相机内参",
+      "details": "**输入**：自我中心视频片段\n\n**过程**：Wan VAE 编码为 latent → Wan DiT（\\(\\sigma=0\\)，确定性前向）提取 Block-15 特征 → 特征分两路：(1) Ray Head 预测相机内参（训练时监督，推理时可弃用）；(2) 双向时空解码器从特征恢复连续双手 3D 关节轨迹 → Ray-Based Camera Solver 从射线解算平移\n\n**输出**：双手 3D 关节位置序列（度量坐标），可选配相机内参"
+    },
+    "experiments": "- **基准**：ARCTIC, HOT3D, OAKINK2, HOCapture, 野生视频\n- **指标**：MPJPE-p, PA-p, MPJPE+OOS, EPE2D-p, GO-p, CT-p, Jitter, FAcc, Recall, F1\n- **定量结果**：ARCTIC 上 MPJPE-p 降低 30%（遮挡密集场景）；HOT3D 上降低 40%；含出视野手部评估时增益 46%–61%；五个基准全部 SOTA\n- **基线**：InterWild, HaMeR, Hamba, WildHands, WiLoR, EgoForce, OmniHands, Dyn-HaMR, HaWoR\n- **消融**：项目页展示了 K-free 配置（免相机内参）与标准配置的对比；展示了逐步遮挡程度的性能曲线\n- **实验直接支持的结论**：clean-latent 编码在遮挡和出视野场景下显著优于逐帧/窗口回归方法；无需外接检测器；免内参配置可行\n- **尚未被实验支持的主张**：方法对 Wan VAE+DiT 以外骨干的通用性；实时适用性（离线 clip 级别）",
+    "evidence_notes": "",
+    "code_data_status": "代码和模型暂未公开。项目页展示定性演示和 retargeting 结果，但无下载链接。",
+    "limitations": "- 方法依赖 Wan VAE+DiT 的特定架构，迁移到其他视频扩散骨干的通用性未验证\n- 离线 clip-level 框架，不适合实时场景\n- retargeting 演示为定性，缺定量评估\n- \"clean latent 隐含遮挡信息\"的机制解释停留在经验层面，理论分析不足\n\n### 与知域的关系\n\nDreamHand 与知域关注的自我中心世界模型和 HOI 方向直接相关。从人类日常自我中心视频恢复 3D 手部轨迹是 HOI 数据管线的关键入口，DreamHand 的遮挡鲁棒性直接提升了该管线的可用性。与知域已收录的 EgoGrasp（自我中心 HOI 估计）、Hand2World（自我中心交互生成）、HandsOnWorld（自我中心视频生成）形成互补——DreamHand 提供更上游的 3D 手部数据。\n\n---",
+    "comments": "",
+    "source_reports": [
+      "report-f5f82689ca"
+    ],
+    "deleted": false,
+    "updated_at": "2026-08-23",
+    "arxiv": {
+      "published": "2026-08-20T17:46:24Z",
+      "revised_at": "2026-08-20T17:46:24Z",
+      "primary_category": "cs.CV"
+    }
   },
   {
     "arxiv": {
@@ -1454,6 +1587,82 @@
     "year": 2026
   },
   {
+    "id": "arxiv-2608-18234",
+    "title": "GigaBrain-WBC-0.5: A Behavior World Model for Robust Whole-Body Control with Environment Interaction",
+    "authors": [
+      "Ziyang Cheng",
+      "Tianshu Tang",
+      "Jinxin Lan",
+      "Xinze Chen",
+      "Yuhan Gong",
+      "Zhichao Liu",
+      "Changzhong Wu",
+      "Yahao Mao",
+      "Zongyan Deng",
+      "Mingxuan Ma",
+      "Huasen Xi",
+      "Yilong Liu",
+      "Yutong Wu",
+      "Xiaofeng Wang",
+      "Yang Wang",
+      "Yun Ye",
+      "Guan Huang",
+      "Xiaojie Jin",
+      "Zheng Zhu",
+      "Jiwen Lu"
+    ],
+    "year": 2026,
+    "publication": "2026，arXiv 预印本（Technical report）",
+    "arxiv_id": "2608.18234",
+    "doi": "",
+    "links": {
+      "paper": "https://arxiv.org/abs/2608.18234",
+      "project": "https://shepherd1226.github.io/gigabrain-wbc-0.5/",
+      "alphaxiv": "https://alphaxiv.org/abs/2608.18234"
+    },
+    "tags": [
+      "3D/4D",
+      "4D重建",
+      "HOI",
+      "World-Action-Model",
+      "动作流",
+      "周报",
+      "因果建模",
+      "流式生成",
+      "自我中心视觉"
+    ],
+    "figure": {
+      "url": "https://arxiv.org/html/2608.18234v1/overview.png",
+      "alt": "GigaBrain-WBC-0.5 Fig. 2：行为世界模型整体框架",
+      "label": "GigaBrain-WBC-0.5，Fig. 2，行为命令量化与因果 Transformer 联合预测动作、状态和下一步隐行为命令的整体框架。来源：Fig. 2 原图 PNG",
+      "paper_title": "GigaBrain-WBC-0.5: A Behavior World Model for Robust Whole-Body Control with Environment Interaction",
+      "source_url": "https://arxiv.org/html/2608.18234v1/overview.png"
+    },
+    "summary": "GigaBrain-WBC-0.5 提出行为世界模型（BWM）范式： 因果 Transformer 同时预测下一步动作、下一步状态和下一步隐行为命令分布 ，使动作网络本身建模环境如何塑造其下一步能做什么。传统追踪器在空场景训练，从未学习地形和物体接触如何重塑动力学，而是试图通过不断增大参考运动语料来覆盖——一旦可行行为变得环境依赖，这条路线就失效了。",
+    "insight": "GigaBrain-WBC-0.5 提出行为世界模型（BWM）范式：**因果 Transformer 同时预测下一步动作、下一步状态和下一步隐行为命令分布**，使动作网络本身建模环境如何塑造其下一步能做什么。传统追踪器在空场景训练，从未学习地形和物体接触如何重塑动力学，而是试图通过不断增大参考运动语料来覆盖——一旦可行行为变得环境依赖，这条路线就失效了。\n\nBWM 的预测命令分布被复用于在线检测不可行指令并回退到已学行为，使机器人以\"尽力而为\"方式执行任务。自动地形标注管线从 retargeted 运动恢复完整 3D 接触几何，使地形标注达到现有运动数据集的规模。",
+    "pipeline": {
+      "input": "实时命令 + 本体感知 + 视觉/地形观测",
+      "process": "因果 Transformer 联合预测 (1) 下一步动作、(2) 下一步状态、(3) 下一步隐行为命令分布；预测的分布用于检测不可行命令并回退；自动地形标注管线在训练时为运动数据提供 3D 接触几何",
+      "output": "全身控制指令；不可行命令检测与回退",
+      "details": "**输入**：实时命令 + 本体感知 + 视觉/地形观测\n\n**过程**：因果 Transformer 联合预测 (1) 下一步动作、(2) 下一步状态、(3) 下一步隐行为命令分布；预测的分布用于检测不可行命令并回退；自动地形标注管线在训练时为运动数据提供 3D 接触几何\n\n**输出**：全身控制指令；不可行命令检测与回退"
+    },
+    "experiments": "- **基线**：三个大规模追踪器基线\n- **指标**：成功率\n- **定量结果**：地形交互成功率 81.3%（最强基线的 4.3×）；不可行指令下成功率 83.1%；跌倒恢复 99.3%（最强基线的 16.8×）；Unitree G1 → Maker L01 简单微调即可迁移\n- **消融**：待全文核验\n- **实验直接支持的结论**：BWM 在地形交互和不可行指令场景下大幅优于传统追踪器；跌倒恢复能力极强；跨硬件可迁移\n- **尚未被实验支持的主张**：BWM 对分布外地形/行为的处理能力；命令分布预测的校准性",
+    "evidence_notes": "",
+    "code_data_status": "代码和模型暂未公开。",
+    "limitations": "- 地形标注管线依赖 retargeted motion 的 3D 接触几何恢复，精度下界未分析\n- BWM 预测的命令分布与训练数据中的命令分布相关，分布外行为的处理能力未显式评估\n- 仅在类人机器人全身控制中验证，BWM 范式是否适用于其他控制场景未讨论\n- 多本体迁移的\"简单微调\"具体成本未量化\n\n### 与知域的关系\n\nGigaBrain-WBC-0.5 与知域关注的世界模型方向有交叉——其行为世界模型预测下一步隐行为命令分布，与世界动作模型预测未来场景/动作的思路有概念关联。但该工作聚焦在低层全身控制的策略层面而非视觉生成层面，属于世界模型在控制中的应用而非世界动作模型的方法论推进。对全身交互控制、地形感知行为生成的研究路线有参考价值。",
+    "comments": "",
+    "source_reports": [
+      "report-f5f82689ca"
+    ],
+    "deleted": false,
+    "updated_at": "2026-08-23",
+    "arxiv": {
+      "published": "2026-08-18T18:21:36Z",
+      "revised_at": "2026-08-18T18:21:36Z",
+      "primary_category": "cs.RO"
+    }
+  },
+  {
     "arxiv": {
       "published": "2026-07-15T15:46:42Z",
       "revised_at": "2026-07-17T13:39:37Z",
@@ -1770,6 +1979,74 @@
     "title": "HO-Flow: Generalizable Hand-Object Interaction Generation with Latent Flow Matching",
     "updated_at": "2026-08-20",
     "year": 2026
+  },
+  {
+    "id": "arxiv-2608-18077",
+    "title": "Hydra-0: Action Flow for Generalist World Modeling and Control",
+    "authors": [
+      "Hongyu Li",
+      "Bowen Wen",
+      "Xinghao Zhu",
+      "Yixuan Wang",
+      "Yilun Du",
+      "Yunzhu Li",
+      "George Konidaris",
+      "Stan Birchfield",
+      "Soha Pouya",
+      "Chenran Li",
+      "Yan Chang"
+    ],
+    "year": 2026,
+    "publication": "2026，arXiv 预印本",
+    "arxiv_id": "2608.18077",
+    "doi": "",
+    "links": {
+      "paper": "https://arxiv.org/abs/2608.18077",
+      "project": "https://nvidia-isaac.github.io/video_to_data/hydra-0/",
+      "alphaxiv": "https://alphaxiv.org/abs/2608.18077"
+    },
+    "tags": [
+      "3D/4D",
+      "4D重建",
+      "HOI",
+      "VLA",
+      "World-Action-Model",
+      "动作流",
+      "周报",
+      "因果建模",
+      "流式生成",
+      "自我中心视觉"
+    ],
+    "figure": {
+      "url": "https://arxiv.org/html/2608.18077v1/method_overview.png",
+      "alt": "Hydra-0 Fig. 1：action flow 世界建模与控制总览",
+      "label": "Hydra-0，Fig. 1，action flow 统一跨本体世界建模与控制的方法总览。来源：Fig. 1 原图 PNG",
+      "paper_title": "Hydra-0: Action Flow for Generalist World Modeling and Control",
+      "source_url": "https://arxiv.org/html/2608.18077v1/method_overview.png"
+    },
+    "summary": "Hydra-0 提出以 action flow ——图像平面上的轨迹流——作为跨本体的统一动作表示。核心 insight 是：无论是人手、手持夹爪、单臂还是双臂机器人，其可见运动都可以被描述为相机平面上的像素轨迹。这一表示将异质交互数据置于同一动作空间中，使单一通用世界模型能从多本体视频学习动作后果，并在正向模式下做未来场景预测、在逆向模式下从期望物体运动推导兼容机器人动作。",
+    "insight": "Hydra-0 提出以 **action flow**——图像平面上的轨迹流——作为跨本体的统一动作表示。核心 insight 是：无论是人手、手持夹爪、单臂还是双臂机器人，其可见运动都可以被描述为相机平面上的像素轨迹。这一表示将异质交互数据置于同一动作空间中，使单一通用世界模型能从多本体视频学习动作后果，并在正向模式下做未来场景预测、在逆向模式下从期望物体运动推导兼容机器人动作。\n\n关键创新点：action flow 既是条件信号（正向：给定轨迹流预测视频），也是控制接口（逆向：给定目标物体流反推机器人运动），且两者共享同一世界模型潜在空间。",
+    "pipeline": {
+      "input": "当前观测帧 + 动作流（像素平面轨迹序列，含可见性标记）",
+      "process": "动作流在训练时从交互视频中用密集追踪器恢复并用接地掩码分为本体轨迹和物体轨迹；在部署时从机器人运动学投影得到。视频扩散模型以第一帧 + 动作流为条件，用流匹配目标训练。逆向模式中，目标物体流编码到隐空间，经监督式动作头映射为可执行动作。",
+      "output": "正向模式输出未来视频序列（用于开环策略评估）；逆向模式输出可执行机器人动作（无需任务特定专家演示）",
+      "details": "**输入**：当前观测帧 + 动作流（像素平面轨迹序列，含可见性标记）\n\n**过程**：动作流在训练时从交互视频中用密集追踪器恢复并用接地掩码分为本体轨迹和物体轨迹；在部署时从机器人运动学投影得到。视频扩散模型以第一帧 + 动作流为条件，用流匹配目标训练。逆向模式中，目标物体流编码到隐空间，经监督式动作头映射为可执行动作。\n\n**输出**：正向模式输出未来视频序列（用于开环策略评估）；逆向模式输出可执行机器人动作（无需任务特定专家演示）"
+    },
+    "experiments": "- **数据**：2,202 小时过滤多本体训练视频（EgoDex 人手、Deform360 手持夹爪、DROID 单臂、XVLA-Soft-Fold 双臂）\n- **指标**：机器人运动误差、物体运动误差、RoboLab 成功率 Pearson 相关\n- **定量结果**：action flow 条件相比原生动作条件，机器人运动误差降低 90.4%，物体运动误差降低 60.2%；RoboLab 300 episode 上 replayed 与 reference 成功率 \\(r=0.96\\)；蒸馏后生成加速 16×\n- **消融**：摘要中提及零样本组合和数据高效适应，具体消融设计待全文核验\n- **实验直接支持的结论**：action flow 作为条件显著优于原生动作条件；世界模型评分与实际控制成功率高度相关；逆向模式可工作\n- **尚未被实验支持的主张**：跨本体逆向迁移（逆向模式仅在单一本体验证）；action flow 在非操作场景的通用性",
+    "evidence_notes": "",
+    "code_data_status": "代码、数据和模型在论文提交时均未公开。项目页仅展示演示视频和方法说明。无法判断复现性。",
+    "limitations": "- 逆向模式的跨本体迁移未验证\n- action flow 依赖密集追踪器在训练时的恢复质量，追踪失败如何影响世界模型训练未讨论\n- 2D 图像平面表示丢失深度信息，对需要 3D 精度的操作可能不足\n- 2,202 小时视频的过滤标准未在摘要中披露\n\n### 与知域的关系\n\nHydra-0 与知域关注的 World-Action-Model 方向直接相关。其 action flow 概念是 FlowWAM（光流动作）在 2D 图像平面的对应，但额外支持正向/逆向双模式操作，这是此前 WAM 路线中未见的。对跨本体学习、从人类视频到机器人控制的研究路线有直接影响。\n\n---",
+    "comments": "",
+    "source_reports": [
+      "report-f5f82689ca"
+    ],
+    "deleted": false,
+    "updated_at": "2026-08-23",
+    "arxiv": {
+      "published": "2026-08-18T17:59:30Z",
+      "revised_at": "2026-08-18T17:59:30Z",
+      "primary_category": "cs.RO"
+    }
   },
   {
     "id": "arxiv-2606-09813",
@@ -2812,6 +3089,69 @@
     "title": "SLIM-0.5B: Learning Action-Grounded Predictive Latents for Robot Manipulation",
     "updated_at": "2026-08-20",
     "year": 2026
+  },
+  {
+    "id": "arxiv-2608-19556",
+    "title": "Stream4D: 4D-Consistency for Streaming Autoregressive Diffusion Video Models",
+    "authors": [
+      "Yuanhao Ban",
+      "Jiaqi Feng",
+      "Hengguang Zhou",
+      "Xiaohuan Pei",
+      "Justin Cui",
+      "Cho-Jui Hsieh"
+    ],
+    "year": 2026,
+    "publication": "2026，arXiv 预印本（Under review）",
+    "arxiv_id": "2608.19556",
+    "doi": "",
+    "links": {
+      "paper": "https://arxiv.org/abs/2608.19556",
+      "project": "https://banyuanhao.github.io/Stream4D/",
+      "alphaxiv": "https://alphaxiv.org/abs/2608.19556"
+    },
+    "tags": [
+      "3D/4D",
+      "4D重建",
+      "HOI",
+      "World-Action-Model",
+      "动作流",
+      "周报",
+      "因果建模",
+      "因果推理",
+      "流式生成",
+      "自我中心视觉"
+    ],
+    "figure": {
+      "url": "https://arxiv.org/html/2608.19556v1/figure1_teaser.png",
+      "alt": "Stream4D Fig. 1：静态 3D 奖励与动态 4D 奖励对比",
+      "label": "Stream4D，Fig. 1，静态 3D 奖励导致场景冻结，而动态 4D 奖励保留运动并改善长程一致性。来源：Fig. 1 原图 PNG",
+      "paper_title": "Stream4D: 4D-Consistency for Streaming Autoregressive Diffusion Video Models",
+      "source_url": "https://arxiv.org/html/2608.19556v1/figure1_teaser.png"
+    },
+    "summary": "Stream4D 解决流式自回归视频生成中的长程几何漂移和运动退化问题。核心 insight 是： 用静态 3D 高斯泼溅重建作为一致性奖励会惩罚真实运动 ——因为动态物体无法被单个刚性 3D 重建解释，奖励最大化的捷径是冻结画面。在自回归设置下，每个 chunk 会传播前一个 chunk 的错误，这种\"冻结捷径\"尤其有害。",
+    "insight": "Stream4D 解决流式自回归视频生成中的长程几何漂移和运动退化问题。核心 insight 是：**用静态 3D 高斯泼溅重建作为一致性奖励会惩罚真实运动**——因为动态物体无法被单个刚性 3D 重建解释，奖励最大化的捷径是冻结画面。在自回归设置下，每个 chunk 会传播前一个 chunk 的错误，这种\"冻结捷径\"尤其有害。\n\nStream4D 用前馈 4D 重建（MoVieS）替代静态 3D 重建，使得能够被一致动态 4D 场景解释的视频获得高奖励。附加运动先验奖励自然场景流幅度并惩罚抖动和非刚性伪影，加上轻量感知锚点稳定外观。",
+    "pipeline": {
+      "input": "自回归扩散骨干生成的视频 rollout",
+      "process": "MoVieS 将 rollout 重建为动态 4D 高斯场景，在估计相机下重渲染，4D PSNR 作为一致性奖励；场景流幅度的峰值高斯目标 + 平滑/刚性正则作为运动先验；HPSv2 作为感知锚点；三项 z 归一化后求和作为总奖励。",
+      "output": "奖励信号反馈给自回归扩散策略，用于 RLHF 或蒸馏微调",
+      "details": "**输入**：自回归扩散骨干生成的视频 rollout\n\n**过程**：MoVieS 将 rollout 重建为动态 4D 高斯场景，在估计相机下重渲染，4D PSNR 作为一致性奖励；场景流幅度的峰值高斯目标 + 平滑/刚性正则作为运动先验；HPSv2 作为感知锚点；三项 z 归一化后求和作为总奖励。\n\n**输出**：奖励信号反馈给自回归扩散策略，用于 RLHF 或蒸馏微调"
+    },
+    "experiments": "- **骨干**：Self-Forcing, Causal-Forcing, LongLive\n- **指标**：MoVieS 4D-PSNR, Gemini Consistency win%, VideoReward Overall win%\n- **定量结果**：4D-PSNR 提升 +3.46/+5.53/+6.76 dB；Gemini Consistency win% 82.2%/73.9%/74.2%；VideoReward Overall win% 66.2%/76.0%/84.4%\n- **消融**：项目页对比了 World-R1 和 VideoGPA（静态 3D 奖励基线），Stream4D 在运动保持上一致更优\n- **实验直接支持的结论**：4D 重建奖励有效替代静态 3D 奖励，避免运动退化；跨骨干泛化；人类偏好更高\n- **尚未被实验支持的主张**：运动先验的\"自然运动量级\"假设是否跨场景泛化",
+    "evidence_notes": "",
+    "code_data_status": "代码和模型在项目页标注 \"Under review\"，暂未公开。",
+    "limitations": "- MoVieS 自身的重建误差和偏差会传递到奖励信号中，失败模式未讨论\n- 运动先验对\"自然运动量级\"的假设可能不适用于所有场景\n- 评估在 500 个运动突出提示词上进行，低运动/静态场景覆盖不明\n- 依赖 MoVieS 做 4D 重建，计算开销未报告\n\n### 与知域的关系\n\nStream4D 与知域关注的流式生成方向（Self-Forcing, Causal-Forcing, LongLive）直接相关。它不是新的生成骨干，而是这些骨干上的一致性奖励改进，对\"流式生成如何维持长程几何与运动一致性\"给出了比 World-R1/VideoGPA 更有针对性的方案。4D 重建奖励的思路对前馈重建方向也有间接参考。\n\n---",
+    "comments": "",
+    "source_reports": [
+      "report-f5f82689ca"
+    ],
+    "deleted": false,
+    "updated_at": "2026-08-23",
+    "arxiv": {
+      "published": "2026-08-20T01:54:26Z",
+      "revised_at": "2026-08-20T01:54:26Z",
+      "primary_category": "cs.CV"
+    }
   },
   {
     "id": "arxiv-2511-21690",
