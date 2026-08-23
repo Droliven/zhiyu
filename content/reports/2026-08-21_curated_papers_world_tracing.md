@@ -14,6 +14,9 @@
 **年份与发表：** 2026，World Labs Technical Report；arXiv:2606.13652v1（cs.CV，交叉列于 cs.GR，2026-06-11 提交）。未发现正式会议/期刊版本；DOI `10.48550/arXiv.2606.13652` 是 arXiv/DataCite DOI，不代表同行评审出版。  
 **类别标签：** 3D/4D、生成式几何、单目三维重建、分层深度、点图、流匹配、动态场景  
 **可靠入口：** [arXiv](https://arxiv.org/abs/2606.13652)｜[HTML 全文](https://arxiv.org/html/2606.13652v1)｜[DOI](https://doi.org/10.48550/arXiv.2606.13652)｜[项目页](https://haoz19.github.io/world-tracing-page/)｜[官方代码](https://github.com/haoz19/world-tracing)｜[对象模型权重](https://huggingface.co/haoz19/object-model-6layer)｜[在线演示](https://huggingface.co/spaces/haoz19/world-tracing-demo)｜[AlphaXiv](https://alphaxiv.org/abs/2606.13652)
+**代表图：** World Tracing，Fig. 2，从单张图像生成像素对齐、多层遮挡后几何的整体模型。来源：[Fig. 2 原图 PNG](https://arxiv.org/html/2606.13652v1/model_v4.png)
+
+![World Tracing Fig. 2: generative pixel-aligned geometry model](https://arxiv.org/html/2606.13652v1/model_v4.png)
 
 ### 当前挑战
 

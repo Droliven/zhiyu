@@ -109,6 +109,12 @@ def normalized_title(title: str) -> str:
     return re.sub(r"[^a-z0-9]+", "", title.casefold())
 
 
+def normalize_tag(tag: str) -> str:
+    """Normalize human-authored list syntax without changing tag meaning."""
+    tag = re.sub(r"^[\s\[\]【】]+|[\s\[\]【】]+$", "", tag)
+    return re.sub(r"\s+", " ", tag).strip()
+
+
 IMAGE_URL_RE = re.compile(r"\.(?:png|jpe?g|gif|webp|svg)(?:\?|#|$)", re.I)
 PLACEHOLDER_TAG = "未分类"
 
@@ -191,9 +197,12 @@ def major_marker(line: str) -> str | None:
         return "discussion"
     if "开放情况与局限" in value:
         return "open_and_limits"
-    if "代码与数据" in value or "代码/数据" in value:
+    compact_value = re.sub(r"\s+", "", value)
+    if "代码与数据" in value or "代码/数据" in compact_value:
         return "code_data"
-    if value.startswith("局限") or "失败案例" in value:
+    if "对你方向的启发" in value:
+        return "discussion"
+    if value.startswith("局限") or "局限" in value or "失败案例" in value:
         return "limitations"
     if value.startswith("主张、证据"):
         return "evidence"
@@ -458,7 +467,12 @@ def prefer_text(old: str, new: str) -> str:
 
 
 def merge_tags(*groups: list[str]) -> list[str]:
-    tags = {tag for group in groups for tag in (group or []) if tag}
+    tags = {
+        normalized
+        for group in groups
+        for tag in (group or [])
+        if (normalized := normalize_tag(tag))
+    }
     if tags - {PLACEHOLDER_TAG}:
         tags.discard(PLACEHOLDER_TAG)
     return sorted(tags, key=str.casefold)
@@ -563,14 +577,33 @@ def merge_records(
         if len(new.get("authors", [])) > len(merged.get("authors", [])):
             merged["authors"] = new["authors"]
     else:
-        # Unchanged reports must not backfill or rewrite historical fields.
-        pass
+        # Unchanged reports may fill genuinely empty fields, but never rewrite
+        # reviewed content already present in the generated collection.
+        for key in LEGACY_TEXT_FIELDS:
+            if not merged.get(key) and new.get(key):
+                merged[key] = new[key]
+        for key in OPTIONAL_NARRATIVE_FIELDS:
+            if not merged.get(key) and new.get(key):
+                merged[key] = new[key]
+        old_pipeline = old.get("pipeline", {})
+        new_pipeline = new.get("pipeline", {})
+        merged["pipeline"] = {
+            key: old_pipeline.get(key) or new_pipeline.get(key, "")
+            for key in ("input", "process", "output", "details")
+        }
+        if not merged.get("figure") and new.get("figure"):
+            merged["figure"] = new["figure"]
+        if not merged.get("authors") and new.get("authors"):
+            merged["authors"] = new["authors"]
+    merged["tags"] = merge_tags(old.get("tags", []), new.get("tags", []))
     for key in ("authors", "year", "publication", "arxiv_id", "doi"):
         if not merged.get(key) and new.get(key):
             merged[key] = new[key]
     old_links = dict(old.get("links") or {})
     new_links = dict(new.get("links") or {})
-    merged["links"] = {**new_links, **old_links} if allow_text_replace else old_links
+    # Existing links win; another unchanged report may still fill a missing
+    # official project, code, data, or model entry.
+    merged["links"] = {**new_links, **old_links}
     old_sources = list(old.get("source_reports") or [])
     combined_sources = set(old_sources) | set(new.get("source_reports") or [])
     merged["source_reports"] = sorted(combined_sources) if combined_sources != set(old_sources) else old_sources
@@ -599,9 +632,9 @@ def report_profile(path: Path, text: str) -> dict[str, Any]:
     )
     if tag_match:
         declared = [
-            item.strip()
+            normalize_tag(item)
             for item in re.split(r"[,，、;；]", tag_match.group(1))
-            if item.strip()
+            if normalize_tag(item)
         ]
         profile["tags"] = sorted(set(profile.get("tags", [])) | set(declared), key=str.casefold)
     if not profile.get("tags"):
@@ -609,9 +642,37 @@ def report_profile(path: Path, text: str) -> dict[str, Any]:
     return profile
 
 
+def fill_completeness_status(paper: dict[str, Any]) -> None:
+    """Make an audited absence explicit instead of leaving detail panels blank."""
+    if not paper.get("code_data_status"):
+        labels = {
+            "code": "官方代码",
+            "data": "官方数据",
+            "model": "官方模型/权重",
+        }
+        available = [label for key, label in labels.items() if paper.get("links", {}).get(key)]
+        if available:
+            paper["code_data_status"] = (
+                f"已记录{'、'.join(available)}入口；具体开放范围、许可证与复现条件"
+                "以官方页面和来源报告为准。"
+            )
+        else:
+            paper["code_data_status"] = (
+                "截至来源报告核验时，未记录可确认的官方代码、数据或模型入口；"
+                "这表示开放状态待核验，不代表资源确定不存在。"
+            )
+    if not paper.get("limitations"):
+        paper["limitations"] = (
+            "来源报告未单列可核验的局限、失败案例或开放问题；在补充原论文正文核验前，"
+            "不对该工作的泛化性、因果性、复现性或 SOTA 结论作扩大解释。"
+        )
+
+
 def build() -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
     existing = read_json(PAPERS_PATH, [])
     papers = list(existing)
+    for paper in papers:
+        paper["tags"] = merge_tags(paper.get("tags", []))
     key_to_index: dict[str, int] = {}
     for index, paper in enumerate(papers):
         for key in identity_keys(paper):
@@ -672,6 +733,8 @@ def build() -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
             }
         )
 
+    for paper in papers:
+        fill_completeness_status(paper)
     papers.sort(key=lambda item: (-(item.get("year") or 0), item["title"].casefold()))
     reports.sort(key=lambda item: (item["date"], item["title"]), reverse=True)
     return papers, reports

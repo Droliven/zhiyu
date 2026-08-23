@@ -996,6 +996,14 @@ main {
   font-size: 15px;
 }
 
+.prompt-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
 .prompt-block pre {
   max-height: 430px;
   margin: 0;
@@ -1012,6 +1020,29 @@ main {
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 12px;
   line-height: 1.65;
+}
+
+.prompt-block-weekly {
+  border-color: #86aaa3;
+  box-shadow: inset 4px 0 0 var(--teal);
+}
+
+.prompt-context {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--line);
+  background: #edf5f1;
+}
+
+.prompt-context strong {
+  color: var(--teal);
+  font-size: 12px;
+}
+
+.prompt-context p {
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
 }
 
 mjx-container[display="true"] {

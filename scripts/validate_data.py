@@ -15,7 +15,20 @@ ROOT = Path(__file__).resolve().parents[1]
 def main() -> None:
     papers = json.loads((ROOT / "data" / "papers.json").read_text(encoding="utf-8"))
     reports = json.loads((ROOT / "data" / "reports.json").read_text(encoding="utf-8"))
-    required = {"id", "title", "year", "publication", "links", "tags", "summary", "pipeline"}
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    index_html = (ROOT / "index.html").read_text(encoding="utf-8")
+    required = {
+        "id",
+        "title",
+        "year",
+        "publication",
+        "links",
+        "tags",
+        "summary",
+        "pipeline",
+        "code_data_status",
+        "limitations",
+    }
     errors: list[str] = []
     for index, paper in enumerate(papers):
         missing = sorted(required - paper.keys())
@@ -50,14 +63,70 @@ def main() -> None:
                 r"\.(?:png|jpe?g|gif|webp|svg)(?:\?|#|$)", url, flags=re.I
             ):
                 errors.append(f"{paper['id']}: figure.url is not a direct image file: {url}")
+        for tag in paper.get("tags", []):
+            if any(bracket in tag for bracket in "[]【】"):
+                errors.append(f"{paper['id']}: malformed tag contains brackets: {tag}")
 
     for report in reports:
         report_path = ROOT / report["path"]
         if not report_path.exists():
             errors.append(f"{report['id']}: missing report {report['path']}")
+        for tag in report.get("tags", []):
+            if any(bracket in tag for bracket in "[]【】"):
+                errors.append(f"{report['id']}: malformed tag contains brackets: {tag}")
         unknown_papers = set(report.get("paper_ids", [])) - paper_ids
         if unknown_papers:
             errors.append(f"{report['id']}: unknown papers {sorted(unknown_papers)}")
+
+    readme_modes = (
+        "方式一：直接检索论文",
+        "方式二：整理指定列表",
+        "方式三：专题检索综述",
+        "方式四：固定周期周报",
+    )
+    for mode in readme_modes:
+        if mode not in readme:
+            errors.append(f"README missing AI mode: {mode}")
+    for prompt_id in ("prompt-search", "prompt-list", "prompt-survey", "prompt-weekly"):
+        if f'id="{prompt_id}"' not in index_html:
+            errors.append(f"web README missing prompt module: {prompt_id}")
+    shared_prompts = (
+        "方式一：让 AI 直接检索论文",
+        "方式二：提供论文列表，让 AI 细化整理",
+        "方式三：专题检索与综述报告",
+    )
+    for title in shared_prompts:
+        pattern = rf"<summary><strong>{re.escape(title)}</strong></summary>[\s\S]*?```text\s*\n([\s\S]*?)\n```"
+        match = re.search(pattern, readme)
+        if not match or len(match.group(1).strip()) < 500:
+            errors.append(f"README shared prompt missing or incomplete: {title}")
+        if f'data-readme-prompt="{title}"' not in index_html:
+            errors.append(f"web README is not linked to shared prompt: {title}")
+    if "**报告标签**：[" in index_html:
+        errors.append("web README prompt uses bracketed report tags")
+    weekly_prompt = re.search(
+        r"## 每周论文更新模式(?:（方式四）)?[\s\S]*?```text\s*\n([\s\S]*?)\n```",
+        readme,
+    )
+    if not weekly_prompt:
+        errors.append("README weekly prompt cannot be extracted by the web module")
+    elif not all(
+        marker in weekly_prompt.group(1)
+        for marker in ("# 角色与唯一交付物", "# 无新增结果")
+    ):
+        errors.append("README weekly prompt is incomplete")
+    ordered_sections = (
+        "## AI 更新模式",
+        "<summary><strong>方式一：让 AI 直接检索论文</strong></summary>",
+        "<summary><strong>方式二：提供论文列表，让 AI 细化整理</strong></summary>",
+        "<summary><strong>方式三：专题检索与综述报告</strong></summary>",
+        "## 每周论文更新模式（方式四）",
+        "## 团队贡献",
+        "## 评论与软删除",
+    )
+    positions = [readme.find(section) for section in ordered_sections]
+    if any(position < 0 for position in positions) or positions != sorted(positions):
+        errors.append("README workflow sections are out of order")
 
     if errors:
         raise SystemExit("\n".join(errors))

@@ -83,6 +83,9 @@
 **作者：** Avinash Kori, Fabrizio Russo  
 **年份与发表：** 2026，arXiv 预印本；v1 于 2026-08-13 提交，距本次检索仅 7 天，尚无正式同行评审版本。  
 **可靠入口：** [arXiv 2608.13456](https://arxiv.org/abs/2608.13456)｜[HTML 全文](https://arxiv.org/html/2608.13456)
+**代表图：** A Unifying Perspective on Causal World Models，Fig. 1，从预测到干预与反事实能力的世界模型因果阶梯。来源：[Fig. 1 原图 PNG](https://arxiv.org/html/2608.13456v1/figures/Causal_Ladder_of_World_Models.png)
+
+![A Unifying Perspective on Causal World Models Fig. 1: causal ladder](https://arxiv.org/html/2608.13456v1/figures/Causal_Ladder_of_World_Models.png)
 
 ### Insight
 
@@ -389,6 +392,9 @@ inference: current observation + language -> action chunk
 **作者：** Yunfan Lou, Xiaowei Chi, Xiaojie Zhang, Zezhong Qian, Chengxuan Li, Rongyu Zhang, Yaoxu Lyu, Guoyu Song, Chuyao Fu, Haoxuan Xu, Pengwei Wang, Shanghang Zhang  
 **年份与发表：** ICML 2026；OpenReview camera-ready 页眉标注 PMLR 306。早期标题为 *Predicting What Matters: Robust Generalist Robot Policy Learning via Future Semantic Mask*；截至检索日 PMLR 独立落地页尚未被检索索引。  
 **可靠入口：** [arXiv 2604.19683](https://arxiv.org/abs/2604.19683)｜[HTML 全文](https://arxiv.org/html/2604.19683)｜[OpenReview PDF](https://openreview.net/pdf?id=CWerqtOXif)｜[官方代码](https://github.com/LYFCLOUDFAN/mask-world-model)
+**代表图：** Mask World Model，Fig. 2，以未来语义 mask 作为预测瓶颈并向动作策略提供中间特征的整体框架。来源：[Fig. 2 原图 PNG](https://arxiv.org/html/2604.19683v2/mwm.png)
+
+![Mask World Model Fig. 2: future semantic-mask prediction framework](https://arxiv.org/html/2604.19683v2/mwm.png)
 
 ### Insight
 

@@ -16,19 +16,26 @@
     "doi": "",
     "evidence_notes": "- **作者明确主张：** CWM 应连接感知、实体/关系表征、结构、干预和 utility，而不是只做 next-frame prediction。\n- **论文提供的支持：** 定义、命题与文献统一；没有新经验验证。\n- **阅读判断：** 很适合作为本课题的概念规范和审稿清单，但其中“统一”仍是 proposal，算法实现、部分可观测、latent confounding 和真实评测均待完成。",
     "experiments": "**无实证实验。**\n\n这是一个 formal / conceptual paper，不应把它当成 empirical SOTA 方法。",
-    "figure": null,
+    "figure": {
+      "url": "https://arxiv.org/html/2608.13456v1/figures/Causal_Ladder_of_World_Models.png",
+      "alt": "A Unifying Perspective on Causal World Models Fig. 1: causal ladder",
+      "label": "A Unifying Perspective on Causal World Models，Fig. 1，从预测到干预与反事实能力的世界模型因果阶梯。来源：Fig. 1 原图 PNG",
+      "paper_title": "A Unifying Perspective on Causal World Models: From Observations to Representations to Structure",
+      "source_url": "https://arxiv.org/html/2608.13456v1/figures/Causal_Ladder_of_World_Models.png"
+    },
     "id": "arxiv-2608-13456",
     "insight": "这篇不是一个新的 SOTA model，而是一篇**非常新的理论/概念框架论文**，对“什么才应该叫 Causal World Model”很有价值。\n\n作者认为 world model 不应仅仅能生成 plausible future，而应捕获：\n\n- entity properties；\n- entity–entity interactions；\n- entity–environment interactions；\n- action / intervention 下的 transition；\n- 支持 decision-making 所需的 utility / task structure。\n\n论文把 CWM 从 observation 一层层提升到：\n\n\\[\nx_t\n\\rightarrow\nv_t\n\\rightarrow\nr_t\n\\rightarrow\nG_r\n\\]\n\n其中：\n\n- \\(x_t\\)：原始 observation；\n- \\(v_t\\)：entity-level representation；\n- \\(r_t\\)：structured relational state；\n- \\(G_r\\)：causal relational structure。\n\n其核心价值是明确区分：\n\n> **predictive dynamics ≠ identified causal dynamics**。\n\n尤其重要的是，论文指出：\n\n\\[\nP(r_{t+1}\\mid r_t,a_t)\n\\]\n\n只有在满足 consistency、positivity，以及 action randomized 或 no-unmeasured-confounding 等条件下，才能被解释成：\n\n\\[\nP(r_{t+1}\\mid r_t;do(a_t=a))\n\\]\n\n这对当前大量“action-conditioned world model = causal world model”的说法是非常重要的校正。",
     "limitations": "- 理论/框架性工作，尚未证明实际视觉 world model 能满足其识别条件；\n- entity / relational representations 如何从真实图像自动学习仍是开放问题；\n- 对真实机器人和 3D/4D world state 没有实验验证。\n\n**阅读判断**：  \n如果你要写 Causal HOI World Model 的 motivation，这篇非常值得作为“概念基准”：它帮助你避免把普通 action-conditioned prediction 直接说成 causal inference。\n\n---",
     "links": {
-      "alphaxiv": "https://alphaxiv.org/abs/2608.13456",
-      "paper": "https://arxiv.org/abs/2608.13456"
+      "paper": "https://arxiv.org/abs/2608.13456",
+      "model": "https://arxiv.org/html/2608.13456v1/figures/Causal_Ladder_of_World_Models.png",
+      "alphaxiv": "https://alphaxiv.org/abs/2608.13456"
     },
     "pipeline": {
-      "details": "```text\nraw observation x_t\n  -> encoder phi\nentity-indexed representation v_t\n  -> relational map psi\nrelational state r_t (diagonal: attributes; off-diagonal: relations)\n  -> structured transition / intervention model\nfuture state, counterfactual rollout, utility-aware decision\n```\n\n论文将世界模型写为包含观测、动作、关系状态、transition 与 utility 的组合对象，并区分 observation、intervention、counterfactual 三层能力（原文 Definition 3、Fig. 1）。\n\n### 证据范围\n\n- **没有实验、数据集、baseline、消融或代码。** 它是观点与形式化框架论文，不应作为实证 SOTA 引用。\n- 论文明确讨论 causal sufficiency：缺失共同原因会使关系学习混杂；不能直接在 raw pixels 上假设有可解释的 pixel-level causal DAG。\n- 强 identifiability 在高维世界中往往不现实，论文主张以可保持决策接口的等价类为目标。",
       "input": "- 没有实验、数据集、baseline、消融或代码。 它是观点与形式化框架论文，不应作为实证 SOTA 引用。",
+      "process": "- 论文明确讨论 causal sufficiency：缺失共同原因会使关系学习混杂；不能直接在 raw pixels 上假设有可解释的 pixel-level causal DAG。",
       "output": "- 强 identifiability 在高维世界中往往不现实，论文主张以可保持决策接口的等价类为目标。",
-      "process": "- 论文明确讨论 causal sufficiency：缺失共同原因会使关系学习混杂；不能直接在 raw pixels 上假设有可解释的 pixel-level causal DAG。"
+      "details": "```text\nraw observation x_t\n  -> encoder phi\nentity-indexed representation v_t\n  -> relational map psi\nrelational state r_t (diagonal: attributes; off-diagonal: relations)\n  -> structured transition / intervention model\nfuture state, counterfactual rollout, utility-aware decision\n```\n\n论文将世界模型写为包含观测、动作、关系状态、transition 与 utility 的组合对象，并区分 observation、intervention、counterfactual 三层能力（原文 Definition 3、Fig. 1）。\n\n### 证据范围\n\n- **没有实验、数据集、baseline、消融或代码。** 它是观点与形式化框架论文，不应作为实证 SOTA 引用。\n- 论文明确讨论 causal sufficiency：缺失共同原因会使关系学习混杂；不能直接在 raw pixels 上假设有可解释的 pixel-level causal DAG。\n- 强 identifiability 在高维世界中往往不现实，论文主张以可保持决策接口的等价类为目标。"
     },
     "publication": "2026，arXiv preprint",
     "source_reports": [
@@ -45,7 +52,7 @@
       "对象中心"
     ],
     "title": "A Unifying Perspective on Causal World Models: From Observations to Representations to Structure",
-    "updated_at": "2026-08-20",
+    "updated_at": "2026-08-23",
     "year": 2026
   },
   {
@@ -202,26 +209,26 @@
     "evidence_notes": "- **作者明确主张：** 自回归 video-action modeling 改善长时记忆、数据效率、闭环控制与泛化。\n- **实验实际支持：** 在给定预训练数据和多个机器人 benchmark 上，控制 success 高，长 horizon 与少样本适配对 π0.5 有优势。\n- **阅读判断：** “causal”主要是 temporal arrow、causal attention 和 action-conditioned dynamics。没有 causal graph、干预目标识别、SCM 或 counterfactual benchmark，因此不能据此声称掌握结构因果或反事实推理。",
     "experiments": "论文使用约 5.3B 总模型规模，训练数据包括多来源 robot datasets。\n\n公开描述中包含约 **16K hours** robot data，并进行大规模 video-action pretraining。\n\n### RoboTwin 2.0\n\n- 50 tasks；\n- Clean + Randomized；\n- 多任务训练；\n- 论文报告 Easy / Hard 均取得非常强结果，long-horizon 任务优势更明显。\n\n### LIBERO\n\n论文报告平均约 **98.5%**；  \n评估采用多个 seeds / 大量 trials。\n\n需要注意公平性：\n\n> 部分 baseline 数字来自已有论文/报告，而非全部由作者在完全相同代码和训练设置下重新跑，因此不宜把小幅差距解释成严格 apples-to-apples superiority。\n\n### Real-world\n\n论文展示：\n\n- long-horizon manipulation；\n- few-shot post-training；\n- novel object / layout generalization。\n\n这些结果支持的是实际机器人控制能力，而不是正式 causal identification。\n\n## 代码 / 数据\n\n- 官方代码仓库公开；\n- model weights / 部分 post-training datasets 公开；\n- RoboTwin / LIBERO 训练使用方式有说明。\n\n## 最重要的局限：它的 “causal” 不是 causal inference\n\nLingBot-VA 中的 causality 主要指：\n\n\\[\naction \\rightarrow future\\ visual\\ dynamics\n\\]\n\n以及 autoregressive **causal attention / temporal ordering**。\n\n论文并没有：\n\n- causal graph discovery；\n- \\(do(\\cdot)\\) intervention identification；\n- structural causal model；\n- counterfactual benchmark；\n- identifiability proof。\n\n因此从严格 causal learning 角度，它更适合放在：\n\n> **causality-motivated generative world model**\n\n而不是“formal Causal WM”。\n\n**阅读判断**：  \n非常值得用作机器人世界模型 baseline，但如果你的论文强调 causal reasoning，必须在定义上与 LingBot-VA 拉开距离。\n\n---",
     "figure": {
+      "url": "content/images/lingbot_va_framework.png",
       "alt": "LingBot-VA 框架",
       "label": "LingBot-VA 框架",
       "paper_title": "Causal World Modeling for Robot Control（LingBot-VA）",
-      "source_url": "https://arxiv.org/html/2601.21998",
-      "url": "content/images/lingbot_va_framework.png"
+      "source_url": "content/images/lingbot_va_framework.png"
     },
     "id": "arxiv-2601-21998",
     "insight": "这是机器人 World Action Model 中非常新的代表工作，但它也是理解“causal”一词被过度使用的好例子。\n\nLingBot-VA 的基本逻辑：\n\n> video prediction 可以学习 action 与 future visual dynamics 的关系；因此将 video world model 与 action prediction 在同一 autoregressive diffusion framework 中联合学习，可以给 robot policy 提供更密集的 dynamics supervision。\n\n架构上：\n\n- video latent stream；\n- action stream；\n- MoT；\n- autoregressive causal ordering；\n- visual transition 再反哺 action generation；\n- closed-loop ground-truth observation feedback；\n- asynchronous execution。",
     "limitations": "- 代码与部分模型权重公开，许可证可核；完整 16K 小时语料包含内部数据，不能完全复现。\n- 5.3B 视频生成带来高计算与时延；论文自己指出视频与真实 dynamics 不对齐和执行漂移会导致失败，并将更高效压缩、触觉/力觉/音频列为未来方向。\n\n---",
     "links": {
-      "alphaxiv": "https://alphaxiv.org/abs/2601.21998",
+      "paper": "https://arxiv.org/abs/2601.21998",
       "code": "https://github.com/Robbyant/lingbot-va",
       "model": "https://huggingface.co/robbyant/lingbot-va",
-      "paper": "https://arxiv.org/abs/2601.21998"
+      "alphaxiv": "https://alphaxiv.org/abs/2601.21998"
     },
     "pipeline": {
-      "details": "**输入**：\n\n- 当前多视角 RGB observations；\n- robot state / language instruction。\n\n**过程**：\n\n1. video model 预测未来 visual latent；\n2. action model 根据 visual transition 预测 action；\n3. video/action 交替 autoregressive generation；\n4. causal attention mask 保证时间/信息顺序；\n5. real observation 定期替换 imagined state，形成闭环；\n6. KV cache + async execution 加速。\n\n**输出**：\n\n- future video latent；\n- robot action chunk。",
       "input": "Wan2.2 causal VAE + T5；5B video stream + 350M action stream 的 MoT；inverse-dynamics flow matching；KV cache + FDM-grounded asynchronous loop",
+      "process": "video latents + instruction features；未来 visual latents；action chunk；闭环机器人控制",
       "output": "video latents + instruction features；未来 visual latents；action chunk；闭环机器人控制",
-      "process": "video latents + instruction features；未来 visual latents；action chunk；闭环机器人控制"
+      "details": "**输入**：\n\n- 当前多视角 RGB observations；\n- robot state / language instruction。\n\n**过程**：\n\n1. video model 预测未来 visual latent；\n2. action model 根据 visual transition 预测 action；\n3. video/action 交替 autoregressive generation；\n4. causal attention mask 保证时间/信息顺序；\n5. real observation 定期替换 imagined state，形成闭环；\n6. KV cache + async execution 加速。\n\n**输出**：\n\n- future video latent；\n- robot action chunk。"
     },
     "publication": "2026，arXiv",
     "source_reports": [
@@ -240,7 +247,7 @@
       "机器人学习"
     ],
     "title": "Causal World Modeling for Robot Control",
-    "updated_at": "2026-08-20",
+    "updated_at": "2026-08-23",
     "year": 2026
   },
   {
@@ -264,26 +271,26 @@
     "evidence_notes": "- **作者明确主张：** masking 学到的是被遮挡对象的 *influence neighborhood*，即预测上最小充分的上下文。\n- **实验实际支持：** 该目标在两个对象编码器和两个 benchmark 上改善若干反事实 QA/控制指标，并显著压缩规划 latent。\n- **阅读判断：** 这是 causal inductive bias，不是 causal parent identification。作者也明确承认 influence neighborhood 可能包含后代或混杂相关变量。",
     "experiments": "- **CLEVRER：** 10,000/5,000/5,000 train/val/test，视频 128 帧、480×320；评价 descriptive、predictive、explanatory、counterfactual VQA（原文 §4.1、Table 1–3）。\n- 在 VideoSAUR 编码下，object mask 从 0 增至 4 后，总体准确率 **82.79→89.40**；counterfactual per-question **47.68→68.81**，提升 21.13 个百分点。该对照支持“对象级遮挡带来增益”，但仍是 CLEVRER 内分布题型。\n- **失败/非单调性：** SAVi 编码下 mask=2 的 counterfactual 为 **60.19**，mask=4 降到 **34.06**，甚至低于不遮挡的 **41.10**。因此“遮得越多越因果”不成立，效果依赖 slot 质量和可恢复信息量（Table 2）。\n- **Push-T MPC：** C-JEPA mask=1 成功率 **88.67%**；DINO-WM 为 **91.33%**，OC-JEPA 为 **76.00%**（Table 6）。对象 latent 只占 patch 特征预算约 **1.02%**；单张 L40S、50 条候选轨迹的规划时间约 **673 s vs. 5,763 s**，报告为 3 个 seed 平均。\n- 所有模型在预提取对象 embedding 上训练，单 GPU、30 epochs、batch 256。论文未给出真实机器人或跨域视频验证。",
     "figure": {
+      "url": "content/images/causal_jepa_pipeline.png",
       "alt": "Causal-JEPA 训练框架",
       "label": "Causal-JEPA 训练框架",
       "paper_title": "Causal-JEPA: Learning World Models through Object-Level Latent Masking",
-      "source_url": "https://arxiv.org/html/2602.11389",
-      "url": "content/images/causal_jepa_pipeline.png"
+      "source_url": "content/images/causal_jepa_pipeline.png"
     },
     "id": "arxiv-2602-11389",
     "insight": "这是目前最值得关注的新一代 **causal predictive world model** 之一。\n\n作者的出发点是：**object-centric representation 本身并不保证模型真正学习 object interaction**。即使已经把视频表示成 objects/slots，predictor 仍可能依赖每个 object 自己的 temporal dynamics 或统计 shortcut，而不理解 object-object interaction。\n\nC-JEPA 的核心设计非常简单：\n\n> **把某个 object 在 history 中的大部分 latent trajectory 整体 mask 掉，只保留最早的 identity anchor，迫使模型必须根据其他 objects 的状态、actions / proprioception 等信息推断这个 object 的状态。**\n\n因此，模型不能只做：\n\n\\[\nO_t^i \\rightarrow O_{t+1}^i\n\\]\n\n而必须利用：\n\n\\[\n\\{O^j\\}_{j\\neq i},\\, a_t\n\\rightarrow O^i\n\\]\n\n作者把这种 object-level masking 解释为一种 **latent intervention on predictor observability**，并认为它产生了 counterfactual-like training queries，使 interaction reasoning 变成完成预测任务所必需的能力。\n\n### 非常重要的“因果”边界\n\n论文自己明确强调：\n\n> C-JEPA 中的 “causal” 指的是在 object-level masking 下保持稳定的、时间有向的 predictive dependency，以及由 latent observability intervention 诱导的 causal inductive bias；**并不声称 causal identifiability**。\n\n所以这篇论文的贡献应该准确理解为：\n\n**causal inductive bias for world modeling**，而不是“恢复真实 SCM”。",
     "limitations": "作者实验直接显示一个重要失败模式：\n\n- mask 太少，interaction forcing 不够；\n- **mask 太多会把真正必要的信息也删掉**。\n\n例如 SAVi encoder 下，mask 4 objects 后 counterfactual per-question 反而从 41.10 降至 34.06。\n\n因此最优 masking 强烈依赖 object representation 的质量和稳定性。\n\n其他局限：\n\n- CLEVRER 是 synthetic 场景；\n- Push-T 任务单一；\n- object slot 本身依赖现有 object-centric encoder；\n- 没有显式 3D/4D grounding；\n- masking 是对 **observability** 的 intervention，不是直接对真实 environment variables 施加 \\(do(\\cdot)\\)。\n\n**阅读判断**：  \n目前这是最适合你关注的论文之一，因为它给出了一个非常干净的答案：**如何让 latent world model 不得不学习 interaction dependency**。但它距离真正“3D grounded interventional world model”仍有很明显的空间。\n\n---",
     "links": {
-      "alphaxiv": "https://alphaxiv.org/abs/2602.11389",
-      "code": "https://github.com/galilai-group/cjepa",
+      "publication": "https://openreview.net/pdf?id=VMAHQDOtjp",
       "paper": "https://arxiv.org/abs/2602.11389",
-      "publication": "https://openreview.net/pdf?id=VMAHQDOtjp"
+      "code": "https://github.com/galilai-group/cjepa",
+      "alphaxiv": "https://alphaxiv.org/abs/2602.11389"
     },
     "pipeline": {
-      "details": "**输入**：\n\n- 视频帧 \\(X_{t-T_h+1:t}\\)\n- 可选 action \\(a_t\\)\n- 可选 proprioception \\(p_t\\)\n\n**过程**：\n\n1. 冻结的 object-centric encoder（主要使用 VideoSAUR + frozen DINOv2）；\n2. 每帧编码成固定数量 object slots：\n   \\[\n   S_t=\\{s_t^1,\\ldots,s_t^N\\}\n   \\]\n3. 训练阶段选若干 object，把其 history latent 大部分 mask；\n4. 保留最早时刻的 object identity anchor；\n5. ViT-style masked predictor 同时：\n   - 恢复 masked history；\n   - 预测 future object latents；\n6. 使用 latent L2 prediction objective；\n7. inference 时不再 mask history，只 rollout future object states。\n\n**输出**：\n\n\\[\n\\hat S_{t+1:t+T_p}\n\\]\n\n即未来 object-centric latent trajectories。",
       "input": "视频帧；slots 历史；其余对象、可选 action/proprioception；learned slots",
+      "process": "冻结的 SAVi/VideoSAUR 等对象编码器；选择对象并遮挡其轨迹，仅留身份 anchor；predictor 同时重建被遮挡历史并预测未来 latent；VQA 头或 latent-space MPC",
       "output": "每帧 object slots；masked slot sequence；目标对象历史与未来 latent；问答答案或控制动作",
-      "process": "冻结的 SAVi/VideoSAUR 等对象编码器；选择对象并遮挡其轨迹，仅留身份 anchor；predictor 同时重建被遮挡历史并预测未来 latent；VQA 头或 latent-space MPC"
+      "details": "**输入**：\n\n- 视频帧 \\(X_{t-T_h+1:t}\\)\n- 可选 action \\(a_t\\)\n- 可选 proprioception \\(p_t\\)\n\n**过程**：\n\n1. 冻结的 object-centric encoder（主要使用 VideoSAUR + frozen DINOv2）；\n2. 每帧编码成固定数量 object slots：\n   \\[\n   S_t=\\{s_t^1,\\ldots,s_t^N\\}\n   \\]\n3. 训练阶段选若干 object，把其 history latent 大部分 mask；\n4. 保留最早时刻的 object identity anchor；\n5. ViT-style masked predictor 同时：\n   - 恢复 masked history；\n   - 预测 future object latents；\n6. 使用 latent L2 prediction objective；\n7. inference 时不再 mask history，只 rollout future object states。\n\n**输出**：\n\n\\[\n\\hat S_{t+1:t+T_p}\n\\]\n\n即未来 object-centric latent trajectories。"
     },
     "publication": "2026，ICML 2026",
     "source_reports": [
@@ -300,7 +307,7 @@
       "对象中心"
     ],
     "title": "Causal-JEPA: Learning World Models through Object-Level Latent Masking",
-    "updated_at": "2026-08-20",
+    "updated_at": "2026-08-23",
     "year": 2026
   },
   {
@@ -395,19 +402,19 @@
     },
     "id": "arxiv-2512-17907",
     "insight": "DWM 关注如何让静态 3D digital twin 具备可交互性。它不是让视频模型从零生成整个场景，而是先给定静态 3D scene rendering，再让模型学习 hand action 导致的 residual dynamics。关键是把 **static scene renderings** 和 **egocentric hand mesh renderings** 同时作为 video diffusion 条件。",
-    "limitations": "",
+    "limitations": "- 强项是 **3D scene prior + 2D video dynamics**。\n- 弱点是没有显式更新 object state；更像“3D-conditioned video world model”。\n- 可扩展方向：把 static 3D scene 改成 **dynamic 4D scene state**，做可累计交互。\n\n---",
     "links": {
-      "alphaxiv": "https://alphaxiv.org/abs/2512.17907",
-      "model": "https://arxiv.org/html/2512.17907v1/overview_v2_fix.png",
       "paper": "https://arxiv.org/abs/2512.17907",
       "project": "https://snuvclab.github.io/dwm/",
+      "model": "https://arxiv.org/html/2512.17907v1/overview_v2_fix.png",
+      "alphaxiv": "https://alphaxiv.org/abs/2512.17907",
       "publication": "https://openaccess.thecvf.com/content/CVPR2026/html/Kim_Dexterous_World_Models_CVPR_2026_paper.html"
     },
     "pipeline": {
-      "details": "- **输入**：静态 3D scene rendering、camera trajectory、egocentric hand mesh motion、文本 prompt。\n- **过程**：渲染静态场景以保证空间一致；渲染手部 mesh 表达动作几何和运动；video diffusion 学习 action-induced visual dynamics。\n- **输出**：抓取、打开、移动物体等第一视角交互视频。",
       "input": "静态 3D scene rendering、camera trajectory、egocentric hand mesh motion、文本 prompt。",
+      "process": "用 inpainting video diffusion 初始化；静态场景 latent 与手部 mesh latent 作为条件；DiT 在 latent video space 学习动作导致的残差变化。",
       "output": "抓取、打开、移动物体等第一视角交互视频。",
-      "process": "用 inpainting video diffusion 初始化；静态场景 latent 与手部 mesh latent 作为条件；DiT 在 latent video space 学习动作导致的残差变化。"
+      "details": "- **输入**：静态 3D scene rendering、camera trajectory、egocentric hand mesh motion、文本 prompt。\n- **过程**：渲染静态场景以保证空间一致；渲染手部 mesh 表达动作几何和运动；video diffusion 学习 action-induced visual dynamics。\n- **输出**：抓取、打开、移动物体等第一视角交互视频。"
     },
     "publication": "CVPR 2026",
     "source_reports": [
@@ -423,8 +430,9 @@
       "视频生成"
     ],
     "title": "Dexterous World Models",
-    "updated_at": "2026-08-20",
-    "year": 2026
+    "updated_at": "2026-08-23",
+    "year": 2026,
+    "discussion": "- 强项是 **3D scene prior + 2D video dynamics**。\n- 弱点是没有显式更新 object state；更像“3D-conditioned video world model”。\n- 可扩展方向：把 static 3D scene 改成 **dynamic 4D scene state**，做可累计交互。\n\n---"
   },
   {
     "arxiv": {
@@ -448,7 +456,7 @@
       "Guang Chen",
       "Hangjun Ye"
     ],
-    "code_data_status": "",
+    "code_data_status": "截至来源报告核验时，未记录可确认的官方代码、数据或模型入口；这表示开放状态待核验，不代表资源确定不存在。",
     "comments": "",
     "deleted": false,
     "doi": "",
@@ -463,16 +471,16 @@
     },
     "id": "arxiv-2606-05645",
     "insight": "Discrete-WAM 认为 continuous world latent 与 continuous action 分处不同表示空间，使 world generation、policy learning、counterfactual reasoning 难以统一。因此它提出：**把 future vision 和 ego action 都离散成 token，在同一个 discrete generative / editing framework 中建模**。这样“换一组 action token 后世界如何变化”天然成为可编辑、可组合的问题。",
-    "limitations": "",
+    "limitations": "来源报告未单列可核验的局限、失败案例或开放问题；在补充原论文正文核验前，不对该工作的泛化性、因果性、复现性或 SOTA 结论作扩大解释。",
     "links": {
-      "alphaxiv": "https://alphaxiv.org/abs/2606.05645",
-      "paper": "https://arxiv.org/abs/2606.05645"
+      "paper": "https://arxiv.org/abs/2606.05645",
+      "alphaxiv": "https://alphaxiv.org/abs/2606.05645"
     },
     "pipeline": {
-      "details": "- **输入**：camera observations、driving context / ego state / navigation。\n- **离散化**：image 转 discrete visual tokens；trajectory/action 转 discrete action tokens；高层行为转 decision token。\n- **统一 Transformer 任务**：World Modeling，即 action 到 future vision；World-Policy Modeling，即交错预测 action / vision token；Decision-conditioned Policy，即 decision 到 action trajectory。\n- **推理期输出**：先得到 high-level decision，再通过 confidence-guided parallel token editing 迭代 refinement action trajectory。",
       "input": "camera observations、driving context / ego state / navigation。",
+      "process": "- 离散化 ：image 转 discrete visual tokens；trajectory/action 转 discrete action tokens；高层行为转 decision token。；- 统一 Transformer 任务 ：World Modeling，即 action 到 future vision；World-Policy Modeling，即交错预测 action / vision token；Decision-conditioned Policy，即 decision 到 action trajectory。",
       "output": "先得到 high-level decision，再通过 confidence-guided parallel token editing 迭代 refinement action trajectory。",
-      "process": "- 离散化 ：image 转 discrete visual tokens；trajectory/action 转 discrete action tokens；高层行为转 decision token。；- 统一 Transformer 任务 ：World Modeling，即 action 到 future vision；World-Policy Modeling，即交错预测 action / vision token；Decision-conditioned Policy，即 decision 到 action trajectory。"
+      "details": "- **输入**：camera observations、driving context / ego state / navigation。\n- **离散化**：image 转 discrete visual tokens；trajectory/action 转 discrete action tokens；高层行为转 decision token。\n- **统一 Transformer 任务**：World Modeling，即 action 到 future vision；World-Policy Modeling，即交错预测 action / vision token；Decision-conditioned Policy，即 decision 到 action trajectory。\n- **推理期输出**：先得到 high-level decision，再通过 confidence-guided parallel token editing 迭代 refinement action trajectory。"
     },
     "publication": "arXiv 2026",
     "source_reports": [
@@ -576,7 +584,7 @@
       "Wei Sui",
       "Xinggang Wang"
     ],
-    "code_data_status": "",
+    "code_data_status": "截至来源报告核验时，未记录可确认的官方代码、数据或模型入口；这表示开放状态待核验，不代表资源确定不存在。",
     "comments": "",
     "deleted": false,
     "doi": "",
@@ -591,16 +599,16 @@
     },
     "id": "arxiv-2608-04996",
     "insight": "DreamWAM 对 RGB foresight 的批判更彻底：RGB future 混合了 action-relevant dynamics 与 texture、background、lighting、viewpoint 等 nuisance factors。因此 WAM 应预测的不是“未来长什么样”，而是未来有哪些对 action 有意义的状态变化。它将 future 拆为 **appearance + motion + geometry + semantics**。",
-    "limitations": "",
+    "limitations": "来源报告未单列可核验的局限、失败案例或开放问题；在补充原论文正文核验前，不对该工作的泛化性、因果性、复现性或 SOTA 结论作扩大解释。",
     "links": {
-      "alphaxiv": "https://alphaxiv.org/abs/2608.04996",
-      "paper": "https://arxiv.org/abs/2608.04996"
+      "paper": "https://arxiv.org/abs/2608.04996",
+      "alphaxiv": "https://alphaxiv.org/abs/2608.04996"
     },
     "pipeline": {
-      "details": "- **输入**：当前 RGB observation、language、action trajectory。\n- **训练 future targets**：RGB 使用 Wan VAE latent；Motion 使用 RAFT optical flow 后接 VAE；Geometry 使用 Depth Anything V3 feature；Semantic 使用 DINOv2 feature。\n- **建模方式**：RGB + optical flow 做 joint latent denoising；geometry / semantic 通过 gated residual branches 注入 VideoDiT；VideoDiT 与 ActionDiT shared attention。\n- **推理期输出**：beyond-RGB branches 删除；支持 no-rollout 当前帧到 action，也支持 joint RGB future + action 联合生成。",
       "input": "当前 RGB observation、language、action trajectory。",
+      "process": "- 训练 future targets ：RGB 使用 Wan VAE latent；Motion 使用 RAFT optical flow 后接 VAE；Geometry 使用 Depth Anything V3 feature；Semantic 使用 DINOv2 feature。；- 建模方式 ：RGB + optical flow 做 joint latent denoising；geometry / semantic 通过 gated residual branches 注入 VideoDiT；VideoDiT 与 ActionDiT shared attention。",
       "output": "beyond-RGB branches 删除；支持 no-rollout 当前帧到 action，也支持 joint RGB future + action 联合生成。",
-      "process": "- 训练 future targets ：RGB 使用 Wan VAE latent；Motion 使用 RAFT optical flow 后接 VAE；Geometry 使用 Depth Anything V3 feature；Semantic 使用 DINOv2 feature。；- 建模方式 ：RGB + optical flow 做 joint latent denoising；geometry / semantic 通过 gated residual branches 注入 VideoDiT；VideoDiT 与 ActionDiT shared attention。"
+      "details": "- **输入**：当前 RGB observation、language、action trajectory。\n- **训练 future targets**：RGB 使用 Wan VAE latent；Motion 使用 RAFT optical flow 后接 VAE；Geometry 使用 Depth Anything V3 feature；Semantic 使用 DINOv2 feature。\n- **建模方式**：RGB + optical flow 做 joint latent denoising；geometry / semantic 通过 gated residual branches 注入 VideoDiT；VideoDiT 与 ActionDiT shared attention。\n- **推理期输出**：beyond-RGB branches 删除；支持 no-rollout 当前帧到 action，也支持 joint RGB future + action 联合生成。"
     },
     "publication": "arXiv 2026",
     "source_reports": [
@@ -638,7 +646,7 @@
       "Jia Cai",
       "Xiangyang Xue"
     ],
-    "code_data_status": "",
+    "code_data_status": "截至来源报告核验时，未记录可确认的官方代码、数据或模型入口；这表示开放状态待核验，不代表资源确定不存在。",
     "comments": "",
     "deleted": false,
     "doi": "",
@@ -653,17 +661,17 @@
     },
     "id": "arxiv-2603-08254",
     "insight": "VGGT 擅长 static 3D reconstruction，但 dynamic scene 的关键不是独立重建每一帧，而是在统一坐标表示中显式建模 point 随时间如何运动。DynamicVGGT 将 static point map 扩展为 **Dynamic Point Map (DPM)**，同时学习 implicit temporal correspondence 和 explicit motion。",
-    "limitations": "",
+    "limitations": "- 它不是 HOI，但可以给你一个 4D 表示灵感：**把 HOI world state 表示成 dynamic point map / Gaussian state，而不是只用 video latent**。\n- 很适合借来做“object 4D state update”的几何 backbone。\n\n---",
     "links": {
-      "alphaxiv": "https://alphaxiv.org/abs/2603.08254",
+      "publication": "https://openaccess.thecvf.com/content/CVPR2026/html/He_DynamicVGGT_Learning_Dynamic_Point_Maps_for_4D_Scene_Reconstruction_in_CVPR_2026_paper.html",
       "paper": "https://arxiv.org/abs/2603.08254",
-      "publication": "https://openaccess.thecvf.com/content/CVPR2026/html/He_DynamicVGGT_Learning_Dynamic_Point_Maps_for_4D_Scene_Reconstruction_in_CVPR_2026_paper.html"
+      "alphaxiv": "https://alphaxiv.org/abs/2603.08254"
     },
     "pipeline": {
-      "details": "- **输入**：时间序列 monocular / multi-camera images。\n- **过程**：VGGT backbone 提取 geometry；Motion-aware Temporal Attention 建模时序；Future Point Head 预测 current/future point maps，并在统一 reference 中通过差值得到 implicit motion；Dynamic Gaussian Head 将 points 转为 3D Gaussians，并用 motion tokens 预测 Gaussian velocity，受 scene-flow supervision 约束。\n- **输出**：dynamic point maps、dynamic 3D Gaussians / velocities，可用于 4D reconstruction / rendering。",
       "input": "monocular / multi-camera image sequences。",
+      "process": "VGGT backbone 提取 geometry；Motion-aware Temporal Attention 建模时序；Future Point Head 预测 current/future point maps，并在统一 reference 中通过差值得到 implicit motion；Dynamic Gaussian Head 将 points 转为 3D Gaussians，并用 motion tokens 预测 Gaussian velocity，受 scene-flow supervision 约束。",
       "output": "dynamic point maps、dynamic 3D Gaussians / velocities，可用于 4D reconstruction / rendering。",
-      "process": "VGGT backbone 提取 geometry；Motion-aware Temporal Attention 建模时序；Future Point Head 预测 current/future point maps，并在统一 reference 中通过差值得到 implicit motion；Dynamic Gaussian Head 将 points 转为 3D Gaussians，并用 motion tokens 预测 Gaussian velocity，受 scene-flow supervision 约束。"
+      "details": "- **输入**：时间序列 monocular / multi-camera images。\n- **过程**：VGGT backbone 提取 geometry；Motion-aware Temporal Attention 建模时序；Future Point Head 预测 current/future point maps，并在统一 reference 中通过差值得到 implicit motion；Dynamic Gaussian Head 将 points 转为 3D Gaussians，并用 motion tokens 预测 Gaussian velocity，受 scene-flow supervision 约束。\n- **输出**：dynamic point maps、dynamic 3D Gaussians / velocities，可用于 4D reconstruction / rendering。"
     },
     "publication": "CVPR 2026",
     "source_reports": [
@@ -682,8 +690,9 @@
       "预测表征"
     ],
     "title": "DynamicVGGT: Learning Dynamic Point Maps for 4D Scene Reconstruction in Autonomous Driving",
-    "updated_at": "2026-08-20",
-    "year": 2026
+    "updated_at": "2026-08-23",
+    "year": 2026,
+    "discussion": "- 它不是 HOI，但可以给你一个 4D 表示灵感：**把 HOI world state 表示成 dynamic point map / Gaussian state，而不是只用 video latent**。\n- 很适合借来做“object 4D state update”的几何 backbone。\n\n---"
   },
   {
     "id": "arxiv-2605-06192",
@@ -704,16 +713,20 @@
       "alphaxiv": "https://alphaxiv.org/abs/2605.06192"
     },
     "tags": [
-      "[visual action",
       "cross-embodiment",
       "embodied AI",
-      "embodied AI]",
       "geometry action",
       "visual action",
       "world model",
       "机器人学习"
     ],
-    "figure": null,
+    "figure": {
+      "url": "https://arxiv.org/html/2605.06192v1/figure/fig2_copy_1.png",
+      "alt": "EA-WM Fig. 2: structured kinematic-to-visual action fields",
+      "label": "EA-WM，Fig. 2，结构化运动学视觉动作场与事件增强双流生成框架。来源：Fig. 2 原图 PNG",
+      "paper_title": "EA-WM: Event-Aware Generative World Model with Structured Kinematic-to-Visual Action Fields",
+      "source_url": "https://arxiv.org/html/2605.06192v1/figure/fig2_copy_1.png"
+    },
     "summary": "作者把关节动作与运动学状态投影成 Structured Kinematic-to-Visual Action Fields（KVAF），再用帧差监督 event gate。核心 Insight 是同时对齐表示空间和信息交换时机；与本专题直接相关，但 KVAF 是高带宽生成条件，不是数值动作的无损编码。",
     "insight": "作者把关节动作与运动学状态投影成 Structured Kinematic-to-Visual Action Fields（KVAF），再用帧差监督 event gate。核心 Insight 是同时对齐表示空间和信息交换时机；与本专题直接相关，但 KVAF 是高带宽生成条件，不是数值动作的无损编码。",
     "pipeline": {
@@ -731,7 +744,7 @@
       "report-a77d9a7ad6"
     ],
     "deleted": false,
-    "updated_at": "2026-08-21",
+    "updated_at": "2026-08-23",
     "challenges": "低维动作 token 缺少目标视角中的机器人几何、深度和接触位置；即使增设动作分支，普通融合也可能忽略物体真正发生变化的交互事件。本文具体针对“动作空间—视频空间错位”和“双流只交换一般特征而不聚焦事件”。",
     "motivation": "作者把关节动作与运动学状态投影成 Structured Kinematic-to-Visual Action Fields（KVAF），再用帧差监督 event gate。核心 Insight 是同时对齐表示空间和信息交换时机；与本专题直接相关，但 KVAF 是高带宽生成条件，不是数值动作的无损编码。",
     "technical_approach": "- **输入：** 首帧、语言、双臂关节/夹爪/末端位姿、URDF、相机参数和目标视频。\n- **过程：** 前向运动学与投影生成深度骨架、landmark、夹爪几何、末端热图和 RGB 位姿轴；RGB/KVAF 用同一 Wan2.2 VAE。两个 full-depth DiT 流在稀疏层双向 cross-attention；共享 event MLP 用相邻 RGB 绝对帧差 latent 监督门控。两阶段先训 LoRA/KVAF head，再解冻 fusion。\n- **输出：** 未来 RGB 与可解释 KVAF 序列；启发式动作恢复仅是附加分析。",
@@ -763,7 +776,7 @@
       "Meng Guo",
       "Shanghang Zhang"
     ],
-    "code_data_status": "",
+    "code_data_status": "截至来源报告核验时，未记录可确认的官方代码、数据或模型入口；这表示开放状态待核验，不代表资源确定不存在。",
     "comments": "",
     "deleted": false,
     "doi": "",
@@ -778,16 +791,16 @@
     },
     "id": "arxiv-2606-10040",
     "insight": "Efficient-WAM 直接挑战一个默认假设：**control 是否真的需要 photorealistic future video？** 作者认为 action 主要需要物体运动、接触、空间变化等 dynamics cue，而不是纹理、光照等视觉细节。因此 future prediction 应被看作 action guidance signal，而不是 video generation task 本身。",
-    "limitations": "",
+    "limitations": "来源报告未单列可核验的局限、失败案例或开放问题；在补充原论文正文核验前，不对该工作的泛化性、因果性、复现性或 SOTA 结论作扩大解释。",
     "links": {
-      "alphaxiv": "https://alphaxiv.org/abs/2606.10040",
-      "paper": "https://arxiv.org/abs/2606.10040"
+      "paper": "https://arxiv.org/abs/2606.10040",
+      "alphaxiv": "https://alphaxiv.org/abs/2606.10040"
     },
     "pipeline": {
-      "details": "- **输入**：当前 observation、language、robot state。\n- **过程**：从 WAN2.2-5B 蒸馏/压缩 Compact Video Expert 到约 1B；使用 sparse / low-resolution video tokens；video 分支使用比 action 分支更少的 denoising steps；训练分为 video dynamics 蒸馏、冻结 video expert 训练 action expert、video/action 联合 refinement。\n- **输出**：future latent + action chunk；部署时实现低延迟 action generation。",
       "input": "当前 observation、language、robot state。",
+      "process": "从 WAN2.2-5B 蒸馏/压缩 Compact Video Expert 到约 1B；使用 sparse / low-resolution video tokens；video 分支使用比 action 分支更少的 denoising steps；训练分为 video dynamics 蒸馏、冻结 video expert 训练 action expert、video/action 联合 refinement。",
       "output": "future latent + action chunk；部署时实现低延迟 action generation。",
-      "process": "从 WAN2.2-5B 蒸馏/压缩 Compact Video Expert 到约 1B；使用 sparse / low-resolution video tokens；video 分支使用比 action 分支更少的 denoising steps；训练分为 video dynamics 蒸馏、冻结 video expert 训练 action expert、video/action 联合 refinement。"
+      "details": "- **输入**：当前 observation、language、robot state。\n- **过程**：从 WAN2.2-5B 蒸馏/压缩 Compact Video Expert 到约 1B；使用 sparse / low-resolution video tokens；video 分支使用比 action 分支更少的 denoising steps；训练分为 video dynamics 蒸馏、冻结 video expert 训练 action expert、video/action 联合 refinement。\n- **输出**：future latent + action chunk；部署时实现低延迟 action generation。"
     },
     "publication": "arXiv 2026",
     "source_reports": [
@@ -822,7 +835,7 @@
       "Chenyu You",
       "Zhiwen Fan"
     ],
-    "code_data_status": "",
+    "code_data_status": "截至来源报告核验时，未记录可确认的官方代码、数据或模型入口；这表示开放状态待核验，不代表资源确定不存在。",
     "comments": "",
     "deleted": false,
     "doi": "",
@@ -837,17 +850,17 @@
     },
     "id": "arxiv-2603-13615",
     "insight": "EgoHOI 明确反对“给未来物体轨迹等 privileged future state，再做条件视频生成”的捷径。它认为真正的 egocentric HOI world model 应该从 action signals 推断 hand-object dynamics。为此，它从 3D estimates 中蒸馏 **physics-informed embeddings**：hand kinematic embeddings、ego-motion embeddings、object entity embeddings，用来约束 latent rollout 的物理合理性、手部运动学一致性、物体身份稳定性。",
-    "limitations": "",
+    "limitations": "- 这是目前最贴近“HOI world model”的工作之一。\n- 它强在 **3D prior distillation into video world model**。\n- 仍可继续做的点：显式 object pose/state update、contact state transition、4D object representation，而不是只作为 embedding regularizer。\n\n---",
     "links": {
-      "alphaxiv": "https://alphaxiv.org/abs/2603.13615",
       "paper": "https://arxiv.org/abs/2603.13615",
-      "project": "https://egohoi.github.io/"
+      "project": "https://egohoi.github.io/",
+      "alphaxiv": "https://alphaxiv.org/abs/2603.13615"
     },
     "pipeline": {
-      "details": "- **输入**：第一帧、action signals、估计出的 3D hand/camera/object priors。\n- **过程**：DiT backbone 做 latent-space state transition；HKE 约束高自由度手部运动；EME 用 Pluecker camera geometry 约束 ego-motion；OEE 用首帧物体实体特征维护 object identity；这些 embedding 通过 lightweight adapters 融入生成模型。\n- **输出**：photorealistic、contact-consistent 的 egocentric HOI rollout。",
       "input": "第一帧、action signals、估计出的 3D hand/camera/object priors。",
+      "process": "DiT backbone 做 latent-space state transition；HKE 约束高自由度手部运动；EME 用 Pluecker camera geometry 约束 ego-motion；OEE 用首帧物体实体特征维护 object identity；这些 embedding 通过 lightweight adapters 融入生成模型。",
       "output": "photorealistic、contact-consistent 的 egocentric HOI rollout。",
-      "process": "DiT backbone 做 latent-space state transition；HKE 约束高自由度手部运动；EME 用 Pluecker camera geometry 约束 ego-motion；OEE 用首帧物体实体特征维护 object identity；这些 embedding 通过 lightweight adapters 融入生成模型。"
+      "details": "- **输入**：第一帧、action signals、估计出的 3D hand/camera/object priors。\n- **过程**：DiT backbone 做 latent-space state transition；HKE 约束高自由度手部运动；EME 用 Pluecker camera geometry 约束 ego-motion；OEE 用首帧物体实体特征维护 object identity；这些 embedding 通过 lightweight adapters 融入生成模型。\n- **输出**：photorealistic、contact-consistent 的 egocentric HOI rollout。"
     },
     "publication": "arXiv 2026；作者主页标注 ECCV 2026",
     "source_reports": [
@@ -861,8 +874,9 @@
       "第一视角"
     ],
     "title": "Egocentric World Model for Photorealistic Hand-Object Interaction Synthesis",
-    "updated_at": "2026-08-20",
-    "year": 2026
+    "updated_at": "2026-08-23",
+    "year": 2026,
+    "discussion": "- 这是目前最贴近“HOI world model”的工作之一。\n- 它强在 **3D prior distillation into video world model**。\n- 仍可继续做的点：显式 object pose/state update、contact state transition、4D object representation，而不是只作为 embedding regularizer。\n\n---"
   },
   {
     "arxiv": {
@@ -885,7 +899,7 @@
       "Xu Cao",
       "Ismini Lourentzou"
     ],
-    "code_data_status": "",
+    "code_data_status": "截至来源报告核验时，未记录可确认的官方代码、数据或模型入口；这表示开放状态待核验，不代表资源确定不存在。",
     "comments": "",
     "deleted": false,
     "doi": "",
@@ -900,17 +914,17 @@
     },
     "id": "arxiv-2603-20169",
     "insight": "EgoForge 关注“目标导向”的第一视角世界模拟：给一张 egocentric image、高层指令、可选 exocentric view，生成完成目标的第一视角 rollout。核心 insight：长程 egocentric video 不仅要像，还要满足目标完成、时序因果、场景稳定和几何一致。",
-    "limitations": "",
+    "limitations": "来源报告未单列可核验的局限、失败案例或开放问题；在补充原论文正文核验前，不对该工作的泛化性、因果性、复现性或 SOTA 结论作扩大解释。",
     "links": {
-      "alphaxiv": "https://alphaxiv.org/abs/2603.20169",
       "paper": "https://arxiv.org/abs/2603.20169",
-      "project": "https://plan-lab.github.io/projects/egoforge/"
+      "project": "https://plan-lab.github.io/projects/egoforge/",
+      "alphaxiv": "https://alphaxiv.org/abs/2603.20169"
     },
     "pipeline": {
-      "details": "- **输入**：单张第一视角图像、自然语言目标/指令、可选第三视角参考图。\n- **过程**：DiT backbone；引入 geometry-level grounding，与 VGGT 几何特征对齐；VideoDiffusionNFT 用 trajectory-level reward 细化采样。\n- **输出**：目标导向的第一视角视频 rollout。",
       "input": "单张第一视角图像、自然语言目标/指令、可选第三视角参考图。",
+      "process": "DiT backbone；引入 geometry-level grounding，与 VGGT 几何特征对齐；VideoDiffusionNFT 用 trajectory-level reward 细化采样。",
       "output": "目标导向的第一视角视频 rollout。",
-      "process": "DiT backbone；引入 geometry-level grounding，与 VGGT 几何特征对齐；VideoDiffusionNFT 用 trajectory-level reward 细化采样。"
+      "details": "- **输入**：单张第一视角图像、自然语言目标/指令、可选第三视角参考图。\n- **过程**：DiT backbone；引入 geometry-level grounding，与 VGGT 几何特征对齐；VideoDiffusionNFT 用 trajectory-level reward 细化采样。\n- **输出**：目标导向的第一视角视频 rollout。"
     },
     "publication": "arXiv 2026",
     "source_reports": [
@@ -944,7 +958,7 @@
       "Zheng Liu",
       "Bo Zhao"
     ],
-    "code_data_status": "",
+    "code_data_status": "截至来源报告核验时，未记录可确认的官方代码、数据或模型入口；这表示开放状态待核验，不代表资源确定不存在。",
     "comments": "",
     "deleted": false,
     "doi": "",
@@ -959,17 +973,17 @@
     },
     "id": "arxiv-2601-01050",
     "insight": "EgoGrasp 解决从动态 egocentric monocular videos 中恢复 world-space hand-object interaction 的问题。它指出多数 HOI 方法停留在 camera coordinate 或单帧层面，缺少全局世界坐标下的时间一致 hand/object trajectory。EgoGrasp 通过 foundation models + body prior + HOI diffusion，实现 open-vocabulary object 的 world-space HOI reconstruction。",
-    "limitations": "",
+    "limitations": "- 它可以作为 3D/4D pseudo-label generator。\n- 如果你要用真实 ego video 训练 world model，EgoGrasp 这类方法可提供 object pose / contact / hand trajectory 标注。\n\n---",
     "links": {
-      "alphaxiv": "https://alphaxiv.org/abs/2601.01050",
       "paper": "https://arxiv.org/abs/2601.01050",
-      "project": "https://mint-sjtu.github.io/EgoGrasp.io/"
+      "project": "https://mint-sjtu.github.io/EgoGrasp.io/",
+      "alphaxiv": "https://alphaxiv.org/abs/2601.01050"
     },
     "pipeline": {
-      "details": "- **输入**：动态相机下的 egocentric monocular video。\n- **过程**：用 spatial perception models 提取 3D scene、hand、object attributes；用 body-guided diffusion 重建 upper-body / hand pose；用 HOI-prior-informed diffusion 对离散 object 6DoF 序列做 infilling，保证空间、时间、接触一致性。\n- **输出**：world-space hand poses、object 6DoF trajectories、temporally consistent W-HOI。",
       "input": "动态相机下的 egocentric monocular video。",
+      "process": "用 spatial perception models 提取 3D scene、hand、object attributes；用 body-guided diffusion 重建 upper-body / hand pose；用 HOI-prior-informed diffusion 对离散 object 6DoF 序列做 infilling，保证空间、时间、接触一致性。",
       "output": "world-space hand poses、object 6DoF trajectories、temporally consistent W-HOI。",
-      "process": "用 spatial perception models 提取 3D scene、hand、object attributes；用 body-guided diffusion 重建 upper-body / hand pose；用 HOI-prior-informed diffusion 对离散 object 6DoF 序列做 infilling，保证空间、时间、接触一致性。"
+      "details": "- **输入**：动态相机下的 egocentric monocular video。\n- **过程**：用 spatial perception models 提取 3D scene、hand、object attributes；用 body-guided diffusion 重建 upper-body / hand pose；用 HOI-prior-informed diffusion 对离散 object 6DoF 序列做 infilling，保证空间、时间、接触一致性。\n- **输出**：world-space hand poses、object 6DoF trajectories、temporally consistent W-HOI。"
     },
     "publication": "arXiv 2026",
     "source_reports": [
@@ -983,8 +997,9 @@
       "重建"
     ],
     "title": "EgoGrasp: World-Space Hand-Object Interaction Estimation from Egocentric Videos",
-    "updated_at": "2026-08-20",
-    "year": 2026
+    "updated_at": "2026-08-23",
+    "year": 2026,
+    "discussion": "- 它可以作为 3D/4D pseudo-label generator。\n- 如果你要用真实 ego video 训练 world model，EgoGrasp 这类方法可提供 object pose / contact / hand trajectory 标注。\n\n---"
   },
   {
     "arxiv": {
@@ -1005,7 +1020,7 @@
       "Jiangmiao Pang",
       "Xudong Xu"
     ],
-    "code_data_status": "",
+    "code_data_status": "截至来源报告核验时，未记录可确认的官方代码、数据或模型入口；这表示开放状态待核验，不代表资源确定不存在。",
     "comments": "",
     "deleted": false,
     "doi": "",
@@ -1020,17 +1035,17 @@
     },
     "id": "arxiv-2604-01001",
     "insight": "EgoSim 把问题从“生成一段视频”推进到“维护并更新 3D scene state”。它指出现有 egocentric simulators 要么缺显式 3D grounding，视角变化时结构漂移；要么把场景当静态，无法支持多阶段交互后的世界状态变化。因此 EgoSim 建模 **updatable world state**，让交互视频生成和 3D 状态更新互相约束。",
-    "limitations": "",
+    "limitations": "- 如果你要强调 3D/4D，EgoSim 比纯视频生成更重要。\n- 它提供了一个可讲的核心卖点：**persistent 3D state update**。\n- 可扩展方向：把 state update 细化到 object-centric 4D state、contact state、hand-object relation graph。\n\n---",
     "links": {
-      "alphaxiv": "https://alphaxiv.org/abs/2604.01001",
       "paper": "https://arxiv.org/abs/2604.01001",
-      "project": "https://egosimulator.github.io/"
+      "project": "https://egosimulator.github.io/",
+      "alphaxiv": "https://alphaxiv.org/abs/2604.01001"
     },
     "pipeline": {
-      "details": "- **输入**：scene image / scene video、action sequence、相机轨迹/动作估计。\n- **过程**：Geometry-action-aware Observation Simulation 生成 action-conditioned egocentric observation；Interaction-aware State Updating 维护并更新 3D scene state；数据管线从 in-the-wild monocular ego videos 中抽取 static point cloud、camera trajectory、embodiment actions；EgoCap 用手机低成本扫描真实场景并采集交互。\n- **输出**：空间一致的第一视角交互视频，以及随交互持续更新的 3D world state。",
       "input": "scene image / scene video、action sequence、相机轨迹/动作估计。",
+      "process": "Geometry-action-aware Observation Simulation 生成 action-conditioned egocentric observation；Interaction-aware State Updating 维护并更新 3D scene state；数据管线从 in-the-wild monocular ego videos 中抽取 static point cloud、camera trajectory、embodiment actions；EgoCap 用手机低成本扫描真实场景并采集交互。",
       "output": "空间一致的第一视角交互视频，以及随交互持续更新的 3D world state。",
-      "process": "Geometry-action-aware Observation Simulation 生成 action-conditioned egocentric observation；Interaction-aware State Updating 维护并更新 3D scene state；数据管线从 in-the-wild monocular ego videos 中抽取 static point cloud、camera trajectory、embodiment actions；EgoCap 用手机低成本扫描真实场景并采集交互。"
+      "details": "- **输入**：scene image / scene video、action sequence、相机轨迹/动作估计。\n- **过程**：Geometry-action-aware Observation Simulation 生成 action-conditioned egocentric observation；Interaction-aware State Updating 维护并更新 3D scene state；数据管线从 in-the-wild monocular ego videos 中抽取 static point cloud、camera trajectory、embodiment actions；EgoCap 用手机低成本扫描真实场景并采集交互。\n- **输出**：空间一致的第一视角交互视频，以及随交互持续更新的 3D world state。"
     },
     "publication": "arXiv 2026；v2 更新于 2026-07",
     "source_reports": [
@@ -1045,8 +1060,9 @@
       "第一视角"
     ],
     "title": "EgoSim: Egocentric World Simulator for Embodied Interaction Generation",
-    "updated_at": "2026-08-20",
-    "year": 2026
+    "updated_at": "2026-08-23",
+    "year": 2026,
+    "discussion": "- 如果你要强调 3D/4D，EgoSim 比纯视频生成更重要。\n- 它提供了一个可讲的核心卖点：**persistent 3D state update**。\n- 可扩展方向：把 state update 细化到 object-centric 4D state、contact state、hand-object relation graph。\n\n---"
   },
   {
     "arxiv": {
@@ -1065,7 +1081,7 @@
       "Jianxin Li",
       "Zhibo Chen"
     ],
-    "code_data_status": "",
+    "code_data_status": "截至来源报告核验时，未记录可确认的官方代码、数据或模型入口；这表示开放状态待核验，不代表资源确定不存在。",
     "comments": "",
     "deleted": false,
     "doi": "",
@@ -1080,16 +1096,16 @@
     },
     "id": "arxiv-2608-02990",
     "insight": "EmbodiedVAE 关注更底层的 tokenizer / VAE 问题：WAM 常用 Video VAE 原本面向 natural video，其 latent 未必适合机器人。机器人视频具有明显结构：robot arm 运动丰富、需要 controllability；environment/background 时序冗余大。因此不应对整段视频使用统一 compression rate，而应做 **robot / environment disentanglement + asymmetric compression**。",
-    "limitations": "",
+    "limitations": "来源报告未单列可核验的局限、失败案例或开放问题；在补充原论文正文核验前，不对该工作的泛化性、因果性、复现性或 SOTA 结论作扩大解释。",
     "links": {
-      "alphaxiv": "https://alphaxiv.org/abs/2608.02990",
-      "paper": "https://arxiv.org/abs/2608.02990"
+      "paper": "https://arxiv.org/abs/2608.02990",
+      "alphaxiv": "https://alphaxiv.org/abs/2608.02990"
     },
     "pipeline": {
-      "details": "- **输入**：robot manipulation video；arm mask 仅训练时使用。\n- **结构**：双 Encoder + 单 Decoder。Arm Encoder 使用较弱 temporal compression 以保留 motion；Environment Encoder 使用更强 temporal compression 以压缩静态背景；OT-based motion consistency 约束 arm latent 跨帧 correspondence；Unified Decoder 合并两种 latent 重建完整视频。\n- **输出**：更紧凑、可控的 embodied video latent，可供下游 action-conditioned world model 使用。",
       "input": "robot manipulation video；arm mask 仅训练时使用。",
+      "process": "- 结构 ：双 Encoder + 单 Decoder。Arm Encoder 使用较弱 temporal compression 以保留 motion；Environment Encoder 使用更强 temporal compression 以压缩静态背景；OT-based motion consistency 约束 arm latent 跨帧 correspondence；Unified Decoder 合并两种 latent 重建完整视频。",
       "output": "更紧凑、可控的 embodied video latent，可供下游 action-conditioned world model 使用。",
-      "process": "- 结构 ：双 Encoder + 单 Decoder。Arm Encoder 使用较弱 temporal compression 以保留 motion；Environment Encoder 使用更强 temporal compression 以压缩静态背景；OT-based motion consistency 约束 arm latent 跨帧 correspondence；Unified Decoder 合并两种 latent 重建完整视频。"
+      "details": "- **输入**：robot manipulation video；arm mask 仅训练时使用。\n- **结构**：双 Encoder + 单 Decoder。Arm Encoder 使用较弱 temporal compression 以保留 motion；Environment Encoder 使用更强 temporal compression 以压缩静态背景；OT-based motion consistency 约束 arm latent 跨帧 correspondence；Unified Decoder 合并两种 latent 重建完整视频。\n- **输出**：更紧凑、可控的 embodied video latent，可供下游 action-conditioned world model 使用。"
     },
     "publication": "ECCV 2026；arXiv 2026",
     "source_reports": [
@@ -1425,10 +1441,8 @@
     },
     "tags": [
       "3D/4D",
-      "[visual action",
       "cross-embodiment",
       "embodied AI",
-      "embodied AI]",
       "geometry action",
       "visual action",
       "world model",
@@ -1502,17 +1516,17 @@
     "insight": "作者明确声称的问题：通用 text-to-video diffusion model 在 camera motion 和 object motion 下常出现对象形变、纹理漂移、背景非刚性抖动。GeoFlow 的核心 insight 是：\n\n> 几何一致的视频应满足两类近似条件：静态背景运动应能被相机运动诱导的刚性 flow 解释；独立运动物体沿其运动轨迹应保持语义/外观身份。\n\n因此 GeoFlow 不直接要求有 3D/4D ground truth，而是从生成视频自身出发，用 monocular depth/pose、optical flow、DINO feature correspondence 构造一个 geometry-consistency reward，再用 Flow-GRPO 对 video generator 做 RL fine-tuning。",
     "limitations": "作者在附录和项目页明确提到：\n\n- 对严重拓扑变化不稳，例如大遮挡、打开抽屉露出新内容等，因为 pixel persistence 假设被破坏。\n- 快速瞬时错误如果发生在 reward sampling interval 之外，可能无法惩罚。\n- RL alignment 受基础模型能力上限约束；若 base model 对 OOD prompt 已经完全混乱，reward 可能过稀疏。\n- 静态/动态区域边界模糊时，reward 可能误伤合理动态，例如布料/帐篷摆动。\n- 仍可能只部分改善一致性，不能消除所有 artifacts。\n\n## 对 HOI world model 的启发\n\nGeoFlow 适合作为 **HOI 视频生成的几何一致性 reward/evaluator**。但它没有显式建模 hand mesh、object pose、contact、force-like object response。若直接用于手物交互，建议把 reward 从“background rigid + dynamic identity”扩展为：\n\n- hand kinematics consistency；\n- hand-object contact timing；\n- object pose / shape persistence；\n- contact 后 object motion 是否由 hand motion 合理导致。\n\n---",
     "links": {
-      "alphaxiv": "https://alphaxiv.org/abs/2605.18365",
+      "paper": "https://arxiv.org/abs/2605.18365",
+      "project": "https://geometryflow.github.io/",
       "code": "https://github.com/geometryflow/GeoFlow",
       "model": "https://huggingface.co/ackermannj/geoflow",
-      "paper": "https://arxiv.org/abs/2605.18365",
-      "project": "https://geometryflow.github.io/"
+      "alphaxiv": "https://alphaxiv.org/abs/2605.18365"
     },
     "pipeline": {
-      "details": "- **输入**：text prompt；基础视频模型为 Wan2.1-T2V-1.3B。\n- **视频采样**：对每个 prompt 采样一组 candidate videos，并同步初始噪声以降低 group comparison 方差。\n- **几何奖励**：\n  - Depth Anything 3 预测 depth、camera intrinsics / extrinsics；\n  - WAFT / optical flow 估计相邻帧 observed flow；\n  - 由 depth + relative camera pose 计算 rigid camera-induced flow；\n  - 比较 observed flow 与 rigid flow，得到 background / structural consistency；\n  - 用 DINOv2 feature 在 flow-warped frame 与目标帧间比较，约束 dynamic object identity。\n- **优化**：用 Flow-GRPO 做 RL post-training；仅对早期 denoising steps 做 truncated backpropagation，以控制显存和计算。\n- **输出**：几何一致性更好的 text-to-video generator / LoRA adapter。",
       "input": "text prompt；基础视频模型为 Wan2.1-T2V-1.3B。",
+      "process": "- 视频采样 ：对每个 prompt 采样一组 candidate videos，并同步初始噪声以降低 group comparison 方差。；- 几何奖励 ：；- Depth Anything 3 预测 depth、camera intrinsics / extrinsics；；- WAFT / optical flow 估计相邻帧 observed flow；；- 由 depth + relative camera pose 计算 rigid camera-induced flow；；- 比较 observed flow 与 rigid flow，得到 background / structural consistency；；- 用 DINOv2 feature 在 flow-warped frame 与目标帧间比较，约束 dynamic object identity。；- 优化 ：用 Flow-GRPO 做 RL post-training；仅对早期 denoising steps 做 truncated backpropagation，以控制显存和计算。",
       "output": "几何一致性更好的 text-to-video generator / LoRA adapter。",
-      "process": "- 视频采样 ：对每个 prompt 采样一组 candidate videos，并同步初始噪声以降低 group comparison 方差。；- 几何奖励 ：；- Depth Anything 3 预测 depth、camera intrinsics / extrinsics；；- WAFT / optical flow 估计相邻帧 observed flow；；- 由 depth + relative camera pose 计算 rigid camera-induced flow；；- 比较 observed flow 与 rigid flow，得到 background / structural consistency；；- 用 DINOv2 feature 在 flow-warped frame 与目标帧间比较，约束 dynamic object identity。；- 优化 ：用 Flow-GRPO 做 RL post-training；仅对早期 denoising steps 做 truncated backpropagation，以控制显存和计算。"
+      "details": "- **输入**：text prompt；基础视频模型为 Wan2.1-T2V-1.3B。\n- **视频采样**：对每个 prompt 采样一组 candidate videos，并同步初始噪声以降低 group comparison 方差。\n- **几何奖励**：\n  - Depth Anything 3 预测 depth、camera intrinsics / extrinsics；\n  - WAFT / optical flow 估计相邻帧 observed flow；\n  - 由 depth + relative camera pose 计算 rigid camera-induced flow；\n  - 比较 observed flow 与 rigid flow，得到 background / structural consistency；\n  - 用 DINOv2 feature 在 flow-warped frame 与目标帧间比较，约束 dynamic object identity。\n- **优化**：用 Flow-GRPO 做 RL post-training；仅对早期 denoising steps 做 truncated backpropagation，以控制显存和计算。\n- **输出**：几何一致性更好的 text-to-video generator / LoRA adapter。"
     },
     "publication": "2026",
     "source_reports": [
@@ -1545,7 +1559,7 @@
       "Qiang Zhang",
       "Jun Ma"
     ],
-    "code_data_status": "",
+    "code_data_status": "截至来源报告核验时，未记录可确认的官方代码、数据或模型入口；这表示开放状态待核验，不代表资源确定不存在。",
     "comments": "",
     "deleted": false,
     "doi": "",
@@ -1560,16 +1574,16 @@
     },
     "id": "arxiv-2606-03188",
     "insight": "GeoSem-WAM 关注 WAM 收益究竟来自 test-time imagination，还是 predictive training 学到的 representation。论文倾向后者，并进一步指出：如果 future prediction 主要是 representation learning objective，那么 RGB 不应是唯一监督，应该显式加入 **geometry + semantics**。",
-    "limitations": "",
+    "limitations": "来源报告未单列可核验的局限、失败案例或开放问题；在补充原论文正文核验前，不对该工作的泛化性、因果性、复现性或 SOTA 结论作扩大解释。",
     "links": {
-      "alphaxiv": "https://alphaxiv.org/abs/2606.03188",
-      "paper": "https://arxiv.org/abs/2606.03188"
+      "paper": "https://arxiv.org/abs/2606.03188",
+      "alphaxiv": "https://alphaxiv.org/abs/2606.03188"
     },
     "pipeline": {
-      "details": "- **输入**：RGB observation、language、action trajectory。\n- **训练期监督**：future RGB、future geometry、future semantic segmentation、future action。\n- **实现方式**：基于 Wan2.2-5B + Action DiT；geometry / semantic 使用 DPT-style auxiliary heads，从 VideoDiT 中间 feature 解码。\n- **推理期输出**：只输入当前 observation，single forward 直接预测 action；不生成 future video，geometry / semantic heads 删除。",
       "input": "RGB observation、language、action trajectory。",
+      "process": "- 训练期监督 ：future RGB、future geometry、future semantic segmentation、future action。；- 实现方式 ：基于 Wan2.2-5B + Action DiT；geometry / semantic 使用 DPT-style auxiliary heads，从 VideoDiT 中间 feature 解码。",
       "output": "只输入当前 observation，single forward 直接预测 action；不生成 future video，geometry / semantic heads 删除。",
-      "process": "- 训练期监督 ：future RGB、future geometry、future semantic segmentation、future action。；- 实现方式 ：基于 Wan2.2-5B + Action DiT；geometry / semantic 使用 DPT-style auxiliary heads，从 VideoDiT 中间 feature 解码。"
+      "details": "- **输入**：RGB observation、language、action trajectory。\n- **训练期监督**：future RGB、future geometry、future semantic segmentation、future action。\n- **实现方式**：基于 Wan2.2-5B + Action DiT；geometry / semantic 使用 DPT-style auxiliary heads，从 VideoDiT 中间 feature 解码。\n- **推理期输出**：只输入当前 observation，single forward 直接预测 action；不生成 future video，geometry / semantic heads 删除。"
     },
     "publication": "arXiv 2026",
     "source_reports": [
@@ -1700,7 +1714,7 @@
       "Zhanqian Wu",
       "Zheng Zhu"
     ],
-    "code_data_status": "",
+    "code_data_status": "截至来源报告核验时，未记录可确认的官方代码、数据或模型入口；这表示开放状态待核验，不代表资源确定不存在。",
     "comments": "",
     "deleted": false,
     "doi": "",
@@ -1715,17 +1729,17 @@
     },
     "id": "arxiv-2607-13960",
     "insight": "延续 GigaWorld-Policy 的 Action-Centered World Modeling：future RGB 是 action 的密集监督，但不应成为 action 推理时的前置依赖。核心是让 **Action -> Future RGB**，而不是让 action 依赖 future RGB；训练获得 dense video supervision，推理可完全关闭 video generation。",
-    "limitations": "",
+    "limitations": "来源报告未单列可核验的局限、失败案例或开放问题；在补充原论文正文核验前，不对该工作的泛化性、因果性、复现性或 SOTA 结论作扩大解释。",
     "links": {
-      "alphaxiv": "https://alphaxiv.org/abs/2607.13960",
       "paper": "https://arxiv.org/abs/2607.13960",
-      "project": "https://open-gigaai.github.io"
+      "project": "https://open-gigaai.github.io",
+      "alphaxiv": "https://alphaxiv.org/abs/2607.13960"
     },
     "pipeline": {
-      "details": "- **输入**：left / front / right cameras、proprioception、language；三视角先 compose 成一张 image。\n- **训练期**：Visual Expert 预测 future visual observations；Action Expert 预测 action chunk；causal attention mask 允许 future visual 读取 action，但 action 不能读取 future visual；混合 AC-WM + WAM pretraining；MoT 分离大 Visual Expert 与小 Action Expert；AutoResearch 自动搜索 LR、warmup 等配置。\n- **推理期输出**：关闭 future visual tokens，只运行 action pathway。",
       "input": "left / front / right cameras、proprioception、language；三视角先 compose 成一张 image。",
+      "process": "- 训练期 ：Visual Expert 预测 future visual observations；Action Expert 预测 action chunk；causal attention mask 允许 future visual 读取 action，但 action 不能读取 future visual；混合 AC-WM + WAM pretraining；MoT 分离大 Visual Expert 与小 Action Expert；AutoResearch 自动搜索 LR、warmup 等配置。",
       "output": "关闭 future visual tokens，只运行 action pathway。",
-      "process": "- 训练期 ：Visual Expert 预测 future visual observations；Action Expert 预测 action chunk；causal attention mask 允许 future visual 读取 action，但 action 不能读取 future visual；混合 AC-WM + WAM pretraining；MoT 分离大 Visual Expert 与小 Action Expert；AutoResearch 自动搜索 LR、warmup 等配置。"
+      "details": "- **输入**：left / front / right cameras、proprioception、language；三视角先 compose 成一张 image。\n- **训练期**：Visual Expert 预测 future visual observations；Action Expert 预测 action chunk；causal attention mask 允许 future visual 读取 action，但 action 不能读取 future visual；混合 AC-WM + WAM pretraining；MoT 分离大 Visual Expert 与小 Action Expert；AutoResearch 自动搜索 LR、warmup 等配置。\n- **推理期输出**：关闭 future visual tokens，只运行 action pathway。"
     },
     "publication": "arXiv 2026",
     "source_reports": [
@@ -1763,7 +1777,7 @@
       "Chen Ye",
       "Guang Chen"
     ],
-    "code_data_status": "",
+    "code_data_status": "截至来源报告核验时，未记录可确认的官方代码、数据或模型入口；这表示开放状态待核验，不代表资源确定不存在。",
     "comments": "",
     "deleted": false,
     "doi": "",
@@ -1778,16 +1792,16 @@
     },
     "id": "arxiv-2608-07619",
     "insight": "GWM-VLA 针对 VLA-JEPA 类 latent world model 的问题：多相机分别编码再 concat，虽然能预测 future latent，但跨视角 geometry relationship 没有被显式编码。它使用 **VGGT-Omega jointly encode multi-view**，把带 cross-view geometry 的 representation 直接作为 world-model state。",
-    "limitations": "",
+    "limitations": "来源报告未单列可核验的局限、失败案例或开放问题；在补充原论文正文核验前，不对该工作的泛化性、因果性、复现性或 SOTA 结论作扩大解释。",
     "links": {
-      "alphaxiv": "https://alphaxiv.org/abs/2608.07619",
-      "paper": "https://arxiv.org/abs/2608.07619"
+      "paper": "https://arxiv.org/abs/2608.07619",
+      "alphaxiv": "https://alphaxiv.org/abs/2608.07619"
     },
     "pipeline": {
-      "details": "- **输入**：multi-view images、language、proprioception。\n- **过程**：Frozen VGGT-Omega 联合同一 timestep 所有视角，得到 geometry-aware multi-view state；不预测完整 multi-view future，只预测 target wrist-view patch tokens；wrist-view register tokens 提供 global geometric context；Qwen3-VL-2B 产生 latent-action tokens；同一组 latent-action 同时 condition latent world model 与 flow-matching action head。\n- **推理期输出**：current observations -> latent action -> continuous action chunk；world-model loss 只是训练辅助目标。",
       "input": "multi-view images、language、proprioception。",
+      "process": "Frozen VGGT-Omega 联合同一 timestep 所有视角，得到 geometry-aware multi-view state；不预测完整 multi-view future，只预测 target wrist-view patch tokens；wrist-view register tokens 提供 global geometric context；Qwen3-VL-2B 产生 latent-action tokens；同一组 latent-action 同时 condition latent world model 与 flow-matching action head。",
       "output": "current observations - latent action - continuous action chunk；world-model loss 只是训练辅助目标。",
-      "process": "Frozen VGGT-Omega 联合同一 timestep 所有视角，得到 geometry-aware multi-view state；不预测完整 multi-view future，只预测 target wrist-view patch tokens；wrist-view register tokens 提供 global geometric context；Qwen3-VL-2B 产生 latent-action tokens；同一组 latent-action 同时 condition latent world model 与 flow-matching action head。"
+      "details": "- **输入**：multi-view images、language、proprioception。\n- **过程**：Frozen VGGT-Omega 联合同一 timestep 所有视角，得到 geometry-aware multi-view state；不预测完整 multi-view future，只预测 target wrist-view patch tokens；wrist-view register tokens 提供 global geometric context；Qwen3-VL-2B 产生 latent-action tokens；同一组 latent-action 同时 condition latent world model 与 flow-matching action head。\n- **推理期输出**：current observations -> latent action -> continuous action chunk；world-model loss 只是训练辅助目标。"
     },
     "publication": "arXiv 2026",
     "source_reports": [
@@ -1820,7 +1834,7 @@
       "Zhiqi Shen",
       "Xingang Pan"
     ],
-    "code_data_status": "",
+    "code_data_status": "截至来源报告核验时，未记录可确认的官方代码、数据或模型入口；这表示开放状态待核验，不代表资源确定不存在。",
     "comments": "",
     "deleted": false,
     "doi": "",
@@ -1835,17 +1849,17 @@
     },
     "id": "arxiv-2602-09600",
     "insight": "Hand2World 从单张 scene image 和 free-space hand gesture 生成第一视角交互视频。它指出 mask-based hand conditioning 会把“手几何”和“可见性/遮挡”混在一起：训练视频中手常被物体遮挡，而推理时 free-space gesture 是完整可见的手，导致分布偏移。因此它用 **projected 3D MANO hand mesh 的 silhouette + wireframe** 作为 occlusion-invariant control，并用 per-pixel Pluecker-ray embedding 显式建模相机运动。",
-    "limitations": "",
+    "limitations": "- 它非常适合和 HandsOnWorld 放一起对比：二者都强调 **3D hand + camera disentanglement**。\n- 但 Hand2World 的 object response 仍是 video diffusion 隐式学习出来的；缺少显式 object state / 4D object dynamics。\n- 可扩展方向：把 hand mesh control 扩为 **hand-object-contact-object-state control**。\n\n---",
     "links": {
-      "alphaxiv": "https://alphaxiv.org/abs/2602.09600",
       "paper": "https://arxiv.org/abs/2602.09600",
-      "project": "https://hand2world.github.io/"
+      "project": "https://hand2world.github.io/",
+      "alphaxiv": "https://alphaxiv.org/abs/2602.09600"
     },
     "pipeline": {
-      "details": "- **输入**：单张 egocentric scene image、free-space hand gesture sequence、可选 camera control。\n- **过程**：重建/投影 3D hand mesh；生成 silhouette + wireframe 控制信号；注入 Pluecker-ray camera geometry；将 bidirectional diffusion distill 成 causal autoregressive generator。\n- **输出**：可长时程、可流式生成的第一视角手-物交互视频。",
       "input": "单张 egocentric scene image、free-space hand gesture sequence、可选 camera control。",
+      "process": "重建/投影 3D hand mesh；生成 silhouette + wireframe 控制信号；注入 Pluecker-ray camera geometry；将 bidirectional diffusion distill 成 causal autoregressive generator。",
       "output": "可长时程、可流式生成的第一视角手-物交互视频。",
-      "process": "重建/投影 3D hand mesh；生成 silhouette + wireframe 控制信号；注入 Pluecker-ray camera geometry；将 bidirectional diffusion distill 成 causal autoregressive generator。"
+      "details": "- **输入**：单张 egocentric scene image、free-space hand gesture sequence、可选 camera control。\n- **过程**：重建/投影 3D hand mesh；生成 silhouette + wireframe 控制信号；注入 Pluecker-ray camera geometry；将 bidirectional diffusion distill 成 causal autoregressive generator。\n- **输出**：可长时程、可流式生成的第一视角手-物交互视频。"
     },
     "publication": "arXiv 2026",
     "source_reports": [
@@ -1863,8 +1877,9 @@
       "视频生成"
     ],
     "title": "Hand2World: Autoregressive Egocentric Interaction Generation via Free-Space Hand Gestures",
-    "updated_at": "2026-08-20",
-    "year": 2026
+    "updated_at": "2026-08-23",
+    "year": 2026,
+    "discussion": "- 它非常适合和 HandsOnWorld 放一起对比：二者都强调 **3D hand + camera disentanglement**。\n- 但 Hand2World 的 object response 仍是 video diffusion 隐式学习出来的；缺少显式 object state / 4D object dynamics。\n- 可扩展方向：把 hand mesh control 扩为 **hand-object-contact-object-state control**。\n\n---"
   },
   {
     "arxiv": {
@@ -1881,7 +1896,7 @@
       "Pengfei Wan",
       "Yebin Liu"
     ],
-    "code_data_status": "",
+    "code_data_status": "截至来源报告核验时，未记录可确认的官方代码、数据或模型入口；这表示开放状态待核验，不代表资源确定不存在。",
     "comments": "",
     "deleted": false,
     "doi": "",
@@ -1896,16 +1911,16 @@
     },
     "id": "arxiv-2607-02075",
     "insight": "HandsOnWorld 解决的是 unconstrained monocular egocentric video 下的 hand-controlled generation。关键 insight 是：实验室多视角/动捕数据太窄，真实 ego video 又缺干净 3D hand annotation；因此它构建 EgoVid-Pro，用 protagonist-centered annotation pipeline 从大规模单目视频中过滤出干净 3D hand trajectories。另一个关键点是 **Pluecker Hand Map**：把手部表面也放进与相机同一世界坐标下的 Pluecker-style representation，缓解 camera motion 和 hand motion 的纠缠。",
-    "limitations": "",
+    "limitations": "- 适合作为出发点和 baseline。\n- 但它更偏 **hand-controlled video generation**，不是完整 HOI simulator。\n- 可扩展方向：加入 **object-centric 3D/4D state、contact dynamics、persistent world memory**。\n\n---",
     "links": {
-      "alphaxiv": "https://alphaxiv.org/abs/2607.02075",
-      "paper": "https://arxiv.org/abs/2607.02075"
+      "paper": "https://arxiv.org/abs/2607.02075",
+      "alphaxiv": "https://alphaxiv.org/abs/2607.02075"
     },
     "pipeline": {
-      "details": "- **输入**：首帧图像、目标 3D camera trajectory、目标 3D hand trajectory。\n- **过程**：从 EgoVid-5M 中筛选出动作语义、图像质量、3D 几何都可靠的 EgoVid-Pro；用 Pluecker Hand Map 表达 3D-aware hand control；训练 egocentric video generator。\n- **输出**：手部动作可控、相机-手部运动解耦的第一视角视频。",
       "input": "首帧图像、目标 3D camera trajectory、目标 3D hand trajectory。",
+      "process": "从 EgoVid-5M 中筛选出动作语义、图像质量、3D 几何都可靠的 EgoVid-Pro；用 Pluecker Hand Map 表达 3D-aware hand control；训练 egocentric video generator。",
       "output": "手部动作可控、相机-手部运动解耦的第一视角视频。",
-      "process": "从 EgoVid-5M 中筛选出动作语义、图像质量、3D 几何都可靠的 EgoVid-Pro；用 Pluecker Hand Map 表达 3D-aware hand control；训练 egocentric video generator。"
+      "details": "- **输入**：首帧图像、目标 3D camera trajectory、目标 3D hand trajectory。\n- **过程**：从 EgoVid-5M 中筛选出动作语义、图像质量、3D 几何都可靠的 EgoVid-Pro；用 Pluecker Hand Map 表达 3D-aware hand control；训练 egocentric video generator。\n- **输出**：手部动作可控、相机-手部运动解耦的第一视角视频。"
     },
     "publication": "arXiv 2026；v2 更新于 2026-08-13",
     "source_reports": [
@@ -1920,8 +1935,9 @@
       "视频生成"
     ],
     "title": "HandsOnWorld: Unconstrained Egocentric Video Generation with Camera-Disentangled Hand Control",
-    "updated_at": "2026-08-20",
-    "year": 2026
+    "updated_at": "2026-08-23",
+    "year": 2026,
+    "discussion": "- 适合作为出发点和 baseline。\n- 但它更偏 **hand-controlled video generation**，不是完整 HOI simulator。\n- 可扩展方向：加入 **object-centric 3D/4D state、contact dynamics、persistent world memory**。\n\n---"
   },
   {
     "arxiv": {
@@ -1938,7 +1954,7 @@
       "Cordelia Schmid",
       "Stefanos Zafeiriou"
     ],
-    "code_data_status": "",
+    "code_data_status": "截至来源报告核验时，未记录可确认的官方代码、数据或模型入口；这表示开放状态待核验，不代表资源确定不存在。",
     "comments": "",
     "deleted": false,
     "doi": "",
@@ -1953,17 +1969,17 @@
     },
     "id": "arxiv-2604-10836",
     "insight": "HO-Flow 生成 text-conditioned 3D hand-object interaction motion sequence。它的重点是把 hand 和 object motion 编进统一 latent manifold，并用 masked flow matching 做时间推理和连续 latent generation。关键 insight 是：要同时建模 hand kinematics、object motion、contact-rich coordination，才能得到物理合理且多样的 4D interaction sequence。",
-    "limitations": "",
+    "limitations": "- 适合作为 4D HOI motion prior。\n- 不做 RGB video，但可作为 video world model 的 3D latent supervision。\n\n---",
     "links": {
-      "alphaxiv": "https://alphaxiv.org/abs/2604.10836",
       "paper": "https://arxiv.org/abs/2604.10836",
-      "project": "https://zerchen.github.io/projects/hoflow.html"
+      "project": "https://zerchen.github.io/projects/hoflow.html",
+      "alphaxiv": "https://alphaxiv.org/abs/2604.10836"
     },
     "pipeline": {
-      "details": "- **输入**：text prompt、object geometry / point cloud、上下文 motion tokens。\n- **过程**：Interaction-aware VAE 编码 hand/object motion；masked auto-regressive flow matching 逐步生成 latent；object motion 用相对初始帧表示以增强泛化。\n- **输出**：3D hand-object interaction motion sequence。",
       "input": "text prompt、object geometry / point cloud、上下文 motion tokens。",
+      "process": "Interaction-aware VAE 编码 hand/object motion；masked auto-regressive flow matching 逐步生成 latent；object motion 用相对初始帧表示以增强泛化。",
       "output": "3D hand-object interaction motion sequence。",
-      "process": "Interaction-aware VAE 编码 hand/object motion；masked auto-regressive flow matching 逐步生成 latent；object motion 用相对初始帧表示以增强泛化。"
+      "details": "- **输入**：text prompt、object geometry / point cloud、上下文 motion tokens。\n- **过程**：Interaction-aware VAE 编码 hand/object motion；masked auto-regressive flow matching 逐步生成 latent；object motion 用相对初始帧表示以增强泛化。\n- **输出**：3D hand-object interaction motion sequence。"
     },
     "publication": "ECCV 2026",
     "source_reports": [
@@ -1977,8 +1993,9 @@
       "第一视角"
     ],
     "title": "HO-Flow: Generalizable Hand-Object Interaction Generation with Latent Flow Matching",
-    "updated_at": "2026-08-20",
-    "year": 2026
+    "updated_at": "2026-08-23",
+    "year": 2026,
+    "discussion": "- 适合作为 4D HOI motion prior。\n- 不做 RGB video，但可作为 video world model 的 3D latent supervision。\n\n---"
   },
   {
     "id": "arxiv-2608-18077",
@@ -2075,10 +2092,8 @@
     },
     "tags": [
       "3D/4D",
-      "[visual action",
       "cross-embodiment",
       "embodied AI",
-      "embodied AI]",
       "geometry action",
       "visual action",
       "world model",
@@ -2152,18 +2167,18 @@
     },
     "id": "arxiv-2603-13375",
     "insight": "InfiniteDance 解决 3D dance generation 的野外泛化问题。核心 insight：泛化差主要来自数据规模和模型容量不足，因此同时 scale data 和 model：从野外单目视频自动重建大规模 3D 舞蹈数据，并用 LLaMA-style architecture 学音乐到舞蹈。",
-    "limitations": "",
+    "limitations": "来源报告未单列可核验的局限、失败案例或开放问题；在补充原论文正文核验前，不对该工作的泛化性、因果性、复现性或 SOTA 结论作扩大解释。",
     "links": {
-      "alphaxiv": "https://alphaxiv.org/abs/2603.13375",
-      "model": "https://huggingface.co/huuuuuuuuu/InfiniteDance",
       "paper": "https://arxiv.org/abs/2603.13375",
-      "project": "https://infinitedance.github.io/"
+      "project": "https://infinitedance.github.io/",
+      "model": "https://huggingface.co/huuuuuuuuu/InfiniteDance",
+      "alphaxiv": "https://alphaxiv.org/abs/2603.13375"
     },
     "pipeline": {
-      "details": "- **输入**：音乐音频，可选检索到的参考舞蹈 prompt。\n- **过程**：自动单目视频重建 3D dance；Foot Restoration Diffusion Model 修复脚滑、浮空、穿透；构建 100.69h、30 genres、SMPL-X 数据集；ChoreoLLaMA 用 RAG 注入参考舞蹈，并用 slow/fast-cadence MoE 适配不同节奏。\n- **输出**：与音乐同步、长时程、跨舞种泛化的 3D dance motion。",
       "input": "音乐音频，可选检索到的参考舞蹈 prompt。",
+      "process": "自动单目视频重建 3D dance；Foot Restoration Diffusion Model 修复脚滑、浮空、穿透；构建 100.69h、30 genres、SMPL-X 数据集；ChoreoLLaMA 用 RAG 注入参考舞蹈，并用 slow/fast-cadence MoE 适配不同节奏。",
       "output": "与音乐同步、长时程、跨舞种泛化的 3D dance motion。",
-      "process": "自动单目视频重建 3D dance；Foot Restoration Diffusion Model 修复脚滑、浮空、穿透；构建 100.69h、30 genres、SMPL-X 数据集；ChoreoLLaMA 用 RAG 注入参考舞蹈，并用 slow/fast-cadence MoE 适配不同节奏。"
+      "details": "- **输入**：音乐音频，可选检索到的参考舞蹈 prompt。\n- **过程**：自动单目视频重建 3D dance；Foot Restoration Diffusion Model 修复脚滑、浮空、穿透；构建 100.69h、30 genres、SMPL-X 数据集；ChoreoLLaMA 用 RAG 注入参考舞蹈，并用 slow/fast-cadence MoE 适配不同节奏。\n- **输出**：与音乐同步、长时程、跨舞种泛化的 3D dance motion。"
     },
     "publication": "arXiv 2026",
     "source_reports": [
@@ -2200,7 +2215,7 @@
       "Yu-Xiong Wang",
       "Liangyan Gui"
     ],
-    "code_data_status": "",
+    "code_data_status": "截至来源报告核验时，未记录可确认的官方代码、数据或模型入口；这表示开放状态待核验，不代表资源确定不存在。",
     "comments": "",
     "deleted": false,
     "doi": "",
@@ -2215,17 +2230,17 @@
     },
     "id": "arxiv-2602-06035",
     "insight": "InterPrior 学的是 physics simulator 中的 HOI controller，而不只是离线生成轨迹。核心 insight：大规模 imitation distillation 可以提供自然动作先验，但单靠蒸馏泛化差；单靠 RL 容易 reward hacking。因此先蒸馏 imitation expert，再用 RL post-training 把策略推到更鲁棒的可行流形。",
-    "limitations": "",
+    "limitations": "来源报告未单列可核验的局限、失败案例或开放问题；在补充原论文正文核验前，不对该工作的泛化性、因果性、复现性或 SOTA 结论作扩大解释。",
     "links": {
-      "alphaxiv": "https://alphaxiv.org/abs/2602.06035",
       "paper": "https://arxiv.org/abs/2602.06035",
-      "project": "https://sirui-xu.github.io/InterPrior"
+      "project": "https://sirui-xu.github.io/InterPrior",
+      "alphaxiv": "https://alphaxiv.org/abs/2602.06035"
     },
     "pipeline": {
-      "details": "- **输入**：当前人-物状态、历史状态、高层目标，如 snapshot、trajectory、contact、稀疏目标。\n- **过程**：训练 full-reference imitation expert；蒸馏成 goal-conditioned variational policy，latent 表示 skill；对 latent/observation 做 bounding；RL finetuning 增强 OOD 鲁棒性。\n- **输出**：可在物理仿真中执行的 full-body HOI control policy。",
       "input": "当前人-物状态、历史状态、高层目标，如 snapshot、trajectory、contact、稀疏目标。",
+      "process": "训练 full-reference imitation expert；蒸馏成 goal-conditioned variational policy，latent 表示 skill；对 latent/observation 做 bounding；RL finetuning 增强 OOD 鲁棒性。",
       "output": "可在物理仿真中执行的 full-body HOI control policy。",
-      "process": "训练 full-reference imitation expert；蒸馏成 goal-conditioned variational policy，latent 表示 skill；对 latent/observation 做 bounding；RL finetuning 增强 OOD 鲁棒性。"
+      "details": "- **输入**：当前人-物状态、历史状态、高层目标，如 snapshot、trajectory、contact、稀疏目标。\n- **过程**：训练 full-reference imitation expert；蒸馏成 goal-conditioned variational policy，latent 表示 skill；对 latent/observation 做 bounding；RL finetuning 增强 OOD 鲁棒性。\n- **输出**：可在物理仿真中执行的 full-body HOI control policy。"
     },
     "publication": "arXiv 2026；IPA 2026 Best Poster",
     "source_reports": [
@@ -2327,7 +2342,7 @@
       "Yi Xu",
       "Hanli Wang"
     ],
-    "code_data_status": "",
+    "code_data_status": "截至来源报告核验时，未记录可确认的官方代码、数据或模型入口；这表示开放状态待核验，不代表资源确定不存在。",
     "comments": "",
     "deleted": false,
     "doi": "",
@@ -2342,16 +2357,16 @@
     },
     "id": "arxiv-2607-05468",
     "insight": "传统 WAM 用 future RGB / video prediction 为 action 学习提供密集监督，但 video latent 更偏 appearance，不一定显式编码 manipulation 所需的时变 3D / 4D geometry。MECo-WAM 的关键观点是：**4D geometry 不必成为推理阶段的输入或输出，更适合作为 training-time representation constraint**，把几何知识蒸馏进最终部署的 video-action representation。",
-    "limitations": "",
+    "limitations": "来源报告未单列可核验的局限、失败案例或开放问题；在补充原论文正文核验前，不对该工作的泛化性、因果性、复现性或 SOTA 结论作扩大解释。",
     "links": {
-      "alphaxiv": "https://alphaxiv.org/abs/2607.05468",
-      "paper": "https://arxiv.org/abs/2607.05468"
+      "paper": "https://arxiv.org/abs/2607.05468",
+      "alphaxiv": "https://alphaxiv.org/abs/2607.05468"
     },
     "pipeline": {
-      "details": "- **输入**：当前 RGB observation、proprioception、language instruction。\n- **训练期**：Video Expert 预测 future video latent；Action Expert 预测 future action chunk；额外 4D Expert 使用 frozen VGGT 提取 current/future geometry feature；Decayed 4D Read-Mask 早期允许有限读取当前几何，随后逐渐关闭；Action-Aware Temporal Geometric Distillation 对齐几何关系及其时间变化，并强调 action-relevant region。\n- **推理期输出**：直接输出 action chunk；VGGT、4D Expert、alignment module 全部删除。",
       "input": "当前 RGB observation、proprioception、language instruction。",
+      "process": "- 训练期 ：Video Expert 预测 future video latent；Action Expert 预测 future action chunk；额外 4D Expert 使用 frozen VGGT 提取 current/future geometry feature；Decayed 4D Read-Mask 早期允许有限读取当前几何，随后逐渐关闭；Action-Aware Temporal Geometric Distillation 对齐几何关系及其时间变化，并强调 action-relevant region。",
       "output": "直接输出 action chunk；VGGT、4D Expert、alignment module 全部删除。",
-      "process": "- 训练期 ：Video Expert 预测 future video latent；Action Expert 预测 future action chunk；额外 4D Expert 使用 frozen VGGT 提取 current/future geometry feature；Decayed 4D Read-Mask 早期允许有限读取当前几何，随后逐渐关闭；Action-Aware Temporal Geometric Distillation 对齐几何关系及其时间变化，并强调 action-relevant region。"
+      "details": "- **输入**：当前 RGB observation、proprioception、language instruction。\n- **训练期**：Video Expert 预测 future video latent；Action Expert 预测 future action chunk；额外 4D Expert 使用 frozen VGGT 提取 current/future geometry feature；Decayed 4D Read-Mask 早期允许有限读取当前几何，随后逐渐关闭；Action-Aware Temporal Geometric Distillation 对齐几何关系及其时间变化，并强调 action-relevant region。\n- **推理期输出**：直接输出 action chunk；VGGT、4D Expert、alignment module 全部删除。"
     },
     "publication": "arXiv 2026",
     "source_reports": [
@@ -2396,21 +2411,28 @@
     "doi": "",
     "evidence_notes": "- **作者明确主张：** 未来 mask prediction 让策略聚焦 action-relevant geometry，改善 OOD robustness。\n- **实验实际支持：** 在视觉扰动、6-task RLBench 子集和 4 个真实任务上，成功率高于所选 baseline。\n- **阅读判断：** 这是信息瓶颈与几何监督带来的稳健性，不是因果识别。mask 会主动丢弃纹理/颜色；若任务本身依赖颜色、材质或文字，这可能成为失败源，但论文未充分覆盖该反例。",
     "experiments": "- **LIBERO：** 每 suite 用 held-out validation 选 checkpoint，再评 500 episodes。MWM Spatial/Object/Goal/LIBERO-10 为 **0.988/1.000/0.982/0.960**，平均 **0.983**；GE-ACT **0.965**，π0 **0.942**（Table 1）。没有报告 seed/std，近饱和差异需谨慎。\n- **表文不一致：** Table 1 中 Cosmos + Latent IDM 平均为 **0.919**、MWM-C2 为 **0.918**，但正文写成从 **0.873 提升到 0.918**。因此不能依据正文声称 C2 优于该表中 baseline；报告应以表格并标注冲突。\n- **RLBench：** 从 100 个任务中只选 6 个，每任务 20 episodes；MWM **68.3%**，FiS-VLA **50.0%**、CogACT **42.5%**、π0 **33.3%**、GE-ACT **30.8%**（Table 2）。每 task 20 次使成功率步长为 5 个百分点，且不代表完整 100-task benchmark。\n- **真实 Franka：** 4 tasks，每 task 50 demos，20 trials；ID 平均 **67.5%**，π0 **38.8%**、GE-ACT **23.8%**；appearance OOD 平均 **42.1%**，对照 **19.2/12.5%**（Table 3）。同数据训练增强了公平性，但 trial 数仍小。\n- 论文另做 token pruning/视觉扰动压力测试，支持 mask bottleneck 对背景变化更稳；没有直接证明其表征是 causal variables。",
-    "figure": null,
+    "figure": {
+      "url": "https://arxiv.org/html/2604.19683v2/mwm.png",
+      "alt": "Mask World Model Fig. 2: future semantic-mask prediction framework",
+      "label": "Mask World Model，Fig. 2，以未来语义 mask 作为预测瓶颈并向动作策略提供中间特征的整体框架。来源：Fig. 2 原图 PNG",
+      "paper_title": "Mask World Model: Predicting What Matters for Robust Robot Policy Learning",
+      "source_url": "https://arxiv.org/html/2604.19683v2/mwm.png"
+    },
     "id": "arxiv-2604-19683",
     "insight": "RGB future prediction会浪费容量重建纹理、光照和背景。MWM 改为预测未来 semantic masks，把对象身份、布局、接触和运动压进低带宽几何瓶颈；action policy 读取 mask-predictive intermediate features。训练需要离线 mask，推理只需 RGB，不在线调用 segmenter。",
     "limitations": "- 代码仓库公开，但 README 说明当前 release 主要保留 LIBERO 与核心实现；RLBench、真实机器人流程和完整预训练数据并未全部打包。训练 masks 需借助外部 RoboEngine/segmentation pipeline 生成。\n- 依赖 mask 质量和类别体系；checkpoint 逐 suite 选择；无随机波动；部分 baseline 比较/正文数字不一致；没有 SCM、反事实或因果图评测。\n\n---",
     "links": {
-      "alphaxiv": "https://alphaxiv.org/abs/2604.19683",
-      "code": "https://github.com/LYFCLOUDFAN/mask-world-model",
       "paper": "https://arxiv.org/abs/2604.19683",
-      "publication": "https://openreview.net/pdf?id=CWerqtOXif"
+      "publication": "https://openreview.net/pdf?id=CWerqtOXif",
+      "code": "https://github.com/LYFCLOUDFAN/mask-world-model",
+      "model": "https://arxiv.org/html/2604.19683v2/mwm.png",
+      "alphaxiv": "https://alphaxiv.org/abs/2604.19683"
     },
     "pipeline": {
-      "details": "| 阶段 | 输入 | 模块 | 输出 |\n|---|---|---|---|\n| world-model pretraining | 4 帧多视角 RGB；未来 mask targets | conditional diffusion/latent mask predictor | 5 帧未来 mask latent 与中间特征 |\n| policy training | 当前视觉 + world-model features | diffusion action policy | 36-step action chunk |\n| deployment | raw RGB | recurrent horizon control；10 Euler steps | 执行首个动作后重规划 |",
       "input": "输入；4 帧多视角 RGB；未来 mask targets；当前视觉 + world-model features；raw RGB",
+      "process": "模块；conditional diffusion/latent mask predictor；diffusion action policy；recurrent horizon control；10 Euler steps",
       "output": "输出；5 帧未来 mask latent 与中间特征；36-step action chunk；执行首个动作后重规划",
-      "process": "模块；conditional diffusion/latent mask predictor；diffusion action policy；recurrent horizon control；10 Euler steps"
+      "details": "| 阶段 | 输入 | 模块 | 输出 |\n|---|---|---|---|\n| world-model pretraining | 4 帧多视角 RGB；未来 mask targets | conditional diffusion/latent mask predictor | 5 帧未来 mask latent 与中间特征 |\n| policy training | 当前视觉 + world-model features | diffusion action policy | 36-step action chunk |\n| deployment | raw RGB | recurrent horizon control；10 Euler steps | 执行首个动作后重规划 |"
     },
     "publication": "ICML 2026；OpenReview camera-ready 页眉标注 PMLR 306。早期标题为 Predicting What Matters: Robust Generalist Robot Policy Learning via Future Semantic Mask ；截至检索日 PMLR 独立落地页尚未被检索索引。",
     "source_reports": [
@@ -2427,7 +2449,7 @@
       "机器人学习"
     ],
     "title": "Mask World Model: Predicting What Matters for Robust Robot Policy Learning",
-    "updated_at": "2026-08-20",
+    "updated_at": "2026-08-23",
     "year": 2026
   },
   {
@@ -2608,10 +2630,8 @@
       "alphaxiv": "https://alphaxiv.org/abs/2512.13030"
     },
     "tags": [
-      "[visual action",
       "cross-embodiment",
       "embodied AI",
-      "embodied AI]",
       "geometry action",
       "visual action",
       "VLA",
@@ -2671,26 +2691,26 @@
     "evidence_notes": "- **作者明确限定：** 原文将 causality 定义为 token-level dependency，并明确写明不是 causal inference 语境下的 causality。\n- **实验实际支持：** 对象分解和任务相关 attention 在这些 RL benchmark 上提高 return/success。\n- **阅读判断：** causality score 可能是 reward relevance、attention utility 或相关性，不能解释为真实因果边、干预效应或反事实机制。",
     "experiments": "### Safety Gym\n\n- 8 个 object-rich 3D tasks；\n- first-person observation；\n- baseline：TWM、DreamerV3、TD-MPC2；\n- learning curves 多 run 汇总；\n- STICA 在绝大多数任务上表现最好或最具竞争力。\n\n### OCVRL\n\n包含：\n\n- 2D object-goal；\n- object-interaction；\n- 3D object-reaching。\n\n典型 final success：\n\n| Model | Object-goal | Interaction | 3D Reaching |\n|---|---:|---:|---:|\n| TWM | 0.727 | 0.080 | 0.772 |\n| DreamerV3 | 0.677 | 0.156 | 0.697 |\n| STICA | **0.737** | **0.333** | **0.867** |\n\n消融表明：\n\n- object-centric WM 本身只带来部分收益；\n- causality-aware attention 对 downstream performance 的贡献更明显。\n\n## 代码 / 数据\n\n- 基于公开 RL benchmarks；\n- arXiv/作者页面声明 code available；可优先从论文页提供的代码入口确认最新版本。",
     "figure": {
+      "url": "content/images/stica_world_model.png",
       "alt": "STICA object-centric world model",
       "label": "STICA object-centric world model",
       "paper_title": "Object-Centric World Models for Causality-Aware Reinforcement Learning",
-      "source_url": "https://ojs.aaai.org/index.php/AAAI/article/download/39642/43603",
-      "url": "content/images/stica_world_model.png"
+      "source_url": "content/images/stica_world_model.png"
     },
     "id": "arxiv-2511-14262",
     "insight": "STICA 认为 holistic world latent 在 object-rich environment 中效率不高，因此：\n\n1. observation 被拆为 object-centric tokens；\n2. Transformer world model 学 object token dynamics；\n3. policy / value network 估计 token-level cause–effect relevance；\n4. causality-aware attention 重点关注真正影响 reward / decision 的 objects。\n\n它的核心价值是：\n\n> **world model 不只是 object-centric，policy 也应该显式选择“哪些 object 对当前 decision 有影响”。**",
     "limitations": "- “causality” 主要是 learned dependency / relevance，不是正式 intervention；\n- 没有 counterfactual world-state evaluation；\n- benchmark 以 simulation 为主；\n- 没有真实机器人；\n- 没有显式 3D world-state causal consistency。\n\n**阅读判断**：  \n值得作为 **object-centric causal WM** 的相邻工作，但如果你做真正 Causal HOI，应明确比它更进一步：从 relevance/dependency 走到 **interventional / counterfactual dynamics**。\n\n---",
     "links": {
-      "alphaxiv": "https://alphaxiv.org/abs/2511.14262",
-      "code": "https://github.com/nishimoto0430/STICA",
+      "publication": "https://ojs.aaai.org/index.php/AAAI/article/view/39642",
       "paper": "https://arxiv.org/abs/2511.14262",
-      "publication": "https://ojs.aaai.org/index.php/AAAI/article/view/39642"
+      "code": "https://github.com/nishimoto0430/STICA",
+      "alphaxiv": "https://alphaxiv.org/abs/2511.14262"
     },
     "pipeline": {
-      "details": "**输入**：\n\n- image observation；\n- action；\n- reward。\n\n**过程**：\n\n1. object-centric encoder 得到 object tokens；\n2. 加入 action / reward tokens；\n3. Transformer world model 预测下一时刻 object tokens、reward、discount；\n4. policy/value networks 估计 token-level dependency score；\n5. causality-aware attention 根据 dependency 调节决策。\n\n**输出**：\n\n- imagined object-level world trajectories；\n- policy action / value。\n\n## “Causal” 的边界\n\n这篇必须谨慎引用。\n\n作者实际使用的是 **token-level cause–effect / dependency score** 来指导 attention。  \n它更接近：\n\n> causality-aware object dependency\n\n而不是完整 causal discovery / intervention identification。\n\n所以不能用这篇证明：\n\n> “object-centric attention 已经学到了真实 causal graph”。",
       "input": "- image observation；",
+      "process": "1. object-centric encoder 得到 object tokens；",
       "output": "- imagined object-level world trajectories；",
-      "process": "1. object-centric encoder 得到 object tokens；"
+      "details": "**输入**：\n\n- image observation；\n- action；\n- reward。\n\n**过程**：\n\n1. object-centric encoder 得到 object tokens；\n2. 加入 action / reward tokens；\n3. Transformer world model 预测下一时刻 object tokens、reward、discount；\n4. policy/value networks 估计 token-level dependency score；\n5. causality-aware attention 根据 dependency 调节决策。\n\n**输出**：\n\n- imagined object-level world trajectories；\n- policy action / value。\n\n## “Causal” 的边界\n\n这篇必须谨慎引用。\n\n作者实际使用的是 **token-level cause–effect / dependency score** 来指导 attention。  \n它更接近：\n\n> causality-aware object dependency\n\n而不是完整 causal discovery / intervention identification。\n\n所以不能用这篇证明：\n\n> “object-centric attention 已经学到了真实 causal graph”。"
     },
     "publication": "AAAI 2026",
     "source_reports": [
@@ -2707,7 +2727,7 @@
       "对象中心"
     ],
     "title": "Object-Centric World Models for Causality-Aware Reinforcement Learning",
-    "updated_at": "2026-08-20",
+    "updated_at": "2026-08-23",
     "year": 2026
   },
   {
@@ -2730,7 +2750,7 @@
       "Shunbo Zhou",
       "Haoang Li"
     ],
-    "code_data_status": "",
+    "code_data_status": "截至来源报告核验时，未记录可确认的官方代码、数据或模型入口；这表示开放状态待核验，不代表资源确定不存在。",
     "comments": "",
     "deleted": false,
     "doi": "",
@@ -2745,17 +2765,17 @@
     },
     "id": "arxiv-2512-01677",
     "insight": "SCAR 指出 HOI video generation 面临 2D 与 3D 表示的两难：3D mesh/pose 保真但难规模化，2D mask/flow 易规模化但缺接触与结构。它提出 **structure and contact-aware representation**：用 hand-object contour、contact region、depth map 等形成可规模化的交互监督，不依赖 3D annotation。",
-    "limitations": "",
+    "limitations": "- 你说得对：它不是严格 3D/4D。\n- 但它提供了一个很实用的路线：**用可规模化的 2.5D/contact supervision 替代昂贵 3D annotation**。\n- 可扩展方向：把 SCAR 表示升级成 object-centric 3D point/pose/contact state。\n\n---",
     "links": {
-      "alphaxiv": "https://alphaxiv.org/abs/2512.01677",
       "paper": "https://arxiv.org/abs/2512.01677",
-      "project": "https://hgzn258.github.io/SCAR/"
+      "project": "https://hgzn258.github.io/SCAR/",
+      "alphaxiv": "https://alphaxiv.org/abs/2512.01677"
     },
     "pipeline": {
-      "details": "- **输入**：observed image、task description。\n- **训练表示构建**：VLM + SAM2 得到 hand/object masks；估计 contact region；估计 video depth；将 contact-augmented contours 与 depth 融合为 HOI representation。\n- **生成模型**：jointly generate RGB video 和 HOI representation；Hierarchical Joint Denoiser 在统一 latent space 中 co-denoise visual tokens 和 interaction tokens。\n- **输出**：HOI video 及对应的结构/接触表示。",
       "input": "observed image、task description。",
+      "process": "- 训练表示构建 ：VLM + SAM2 得到 hand/object masks；估计 contact region；估计 video depth；将 contact-augmented contours 与 depth 融合为 HOI representation。；- 生成模型 ：jointly generate RGB video 和 HOI representation；Hierarchical Joint Denoiser 在统一 latent space 中 co-denoise visual tokens 和 interaction tokens。",
       "output": "HOI video 及对应的结构/接触表示。",
-      "process": "- 训练表示构建 ：VLM + SAM2 得到 hand/object masks；估计 contact region；估计 video depth；将 contact-augmented contours 与 depth 融合为 HOI representation。；- 生成模型 ：jointly generate RGB video 和 HOI representation；Hierarchical Joint Denoiser 在统一 latent space 中 co-denoise visual tokens 和 interaction tokens。"
+      "details": "- **输入**：observed image、task description。\n- **训练表示构建**：VLM + SAM2 得到 hand/object masks；估计 contact region；估计 video depth；将 contact-augmented contours 与 depth 融合为 HOI representation。\n- **生成模型**：jointly generate RGB video 和 HOI representation；Hierarchical Joint Denoiser 在统一 latent space 中 co-denoise visual tokens 和 interaction tokens。\n- **输出**：HOI video 及对应的结构/接触表示。"
     },
     "publication": "CVPR 2026",
     "source_reports": [
@@ -2769,8 +2789,9 @@
       "视频生成"
     ],
     "title": "Open-world Hand-Object Interaction Video Generation Based on Structure and Contact-aware Representation",
-    "updated_at": "2026-08-20",
-    "year": 2026
+    "updated_at": "2026-08-23",
+    "year": 2026,
+    "discussion": "- 你说得对：它不是严格 3D/4D。\n- 但它提供了一个很实用的路线：**用可规模化的 2.5D/contact supervision 替代昂贵 3D annotation**。\n- 可扩展方向：把 SCAR 表示升级成 object-centric 3D point/pose/contact state。\n\n---"
   },
   {
     "id": "arxiv-2606-04463",
@@ -2792,10 +2813,8 @@
       "alphaxiv": "https://alphaxiv.org/abs/2606.04463"
     },
     "tags": [
-      "[visual action",
       "cross-embodiment",
       "embodied AI",
-      "embodied AI]",
       "geometry action",
       "visual action",
       "world model",
@@ -2858,10 +2877,8 @@
     },
     "tags": [
       "3D/4D",
-      "[visual action",
       "cross-embodiment",
       "embodied AI",
-      "embodied AI]",
       "geometry action",
       "visual action",
       "VLA",
@@ -2925,10 +2942,8 @@
       "alphaxiv": "https://alphaxiv.org/abs/2607.22535"
     },
     "tags": [
-      "[visual action",
       "cross-embodiment",
       "embodied AI",
-      "embodied AI]",
       "geometry action",
       "visual action",
       "world model",
@@ -2988,7 +3003,7 @@
       "Marcelo H. Ang",
       "Haiyue Zhu"
     ],
-    "code_data_status": "",
+    "code_data_status": "截至来源报告核验时，未记录可确认的官方代码、数据或模型入口；这表示开放状态待核验，不代表资源确定不存在。",
     "comments": "",
     "deleted": false,
     "doi": "",
@@ -3003,16 +3018,16 @@
     },
     "id": "arxiv-2608-01397",
     "insight": "SG-WAM 认为好的 future latent 必须同时满足两点：与 policy/action representation 对齐，并包含足够 geometry。外部 V-JEPA / VGGT latent 虽然强，但未必 policy-aligned；RGB 又太重。因此它提出：**直接在 policy 自己的 representation space 中预测 future，并用 geometry teacher 塑造该 policy space**。",
-    "limitations": "",
+    "limitations": "来源报告未单列可核验的局限、失败案例或开放问题；在补充原论文正文核验前，不对该工作的泛化性、因果性、复现性或 SOTA 结论作扩大解释。",
     "links": {
-      "alphaxiv": "https://alphaxiv.org/abs/2608.01397",
-      "paper": "https://arxiv.org/abs/2608.01397"
+      "paper": "https://arxiv.org/abs/2608.01397",
+      "alphaxiv": "https://alphaxiv.org/abs/2608.01397"
     },
     "pipeline": {
-      "details": "- **输入**：当前 visual observation、language。\n- **过程**：Qwen3.5-based policy 内部引入 learnable Dynamics Tokens；SGWP 根据当前 dynamics tokens 与 intervening action 预测 future dynamics tokens；future target 来自同一 policy 的 EMA copy；frozen VGGT 对 visual tokens 施加 geometry supervision；Action Expert 用 flow matching 输出 action。\n- **推理期输出**：EMA target、VGGT、SGWP 全部删除，只保留 policy 到 action。",
       "input": "当前 visual observation、language。",
+      "process": "Qwen3.5-based policy 内部引入 learnable Dynamics Tokens；SGWP 根据当前 dynamics tokens 与 intervening action 预测 future dynamics tokens；future target 来自同一 policy 的 EMA copy；frozen VGGT 对 visual tokens 施加 geometry supervision；Action Expert 用 flow matching 输出 action。",
       "output": "EMA target、VGGT、SGWP 全部删除，只保留 policy 到 action。",
-      "process": "Qwen3.5-based policy 内部引入 learnable Dynamics Tokens；SGWP 根据当前 dynamics tokens 与 intervening action 预测 future dynamics tokens；future target 来自同一 policy 的 EMA copy；frozen VGGT 对 visual tokens 施加 geometry supervision；Action Expert 用 flow matching 输出 action。"
+      "details": "- **输入**：当前 visual observation、language。\n- **过程**：Qwen3.5-based policy 内部引入 learnable Dynamics Tokens；SGWP 根据当前 dynamics tokens 与 intervening action 预测 future dynamics tokens；future target 来自同一 policy 的 EMA copy；frozen VGGT 对 visual tokens 施加 geometry supervision；Action Expert 用 flow matching 输出 action。\n- **推理期输出**：EMA target、VGGT、SGWP 全部删除，只保留 policy 到 action。"
     },
     "publication": "arXiv 2026",
     "source_reports": [
@@ -3049,7 +3064,7 @@
       "Lemao Liu",
       "Dejing Dou"
     ],
-    "code_data_status": "",
+    "code_data_status": "截至来源报告核验时，未记录可确认的官方代码、数据或模型入口；这表示开放状态待核验，不代表资源确定不存在。",
     "comments": "",
     "deleted": false,
     "doi": "",
@@ -3064,16 +3079,16 @@
     },
     "id": "arxiv-2608-09771",
     "insight": "SLIM 同时质疑 VLA 与 WAM：大 VLM 中许多容量用于 open-domain semantics，pixel-level WAM 又花大量计算预测 control-irrelevant details。作者认为 manipulation 真正需要的是一个紧凑的 observation-action-transition latent space。关键是 predictive latent 必须 **action-grounded**：既能由 action 推断 future，也能从 state transition 反推出 action。",
-    "limitations": "",
+    "limitations": "来源报告未单列可核验的局限、失败案例或开放问题；在补充原论文正文核验前，不对该工作的泛化性、因果性、复现性或 SOTA 结论作扩大解释。",
     "links": {
-      "alphaxiv": "https://alphaxiv.org/abs/2608.09771",
-      "paper": "https://arxiv.org/abs/2608.09771"
+      "paper": "https://arxiv.org/abs/2608.09771",
+      "alphaxiv": "https://alphaxiv.org/abs/2608.09771"
     },
     "pipeline": {
-      "details": "- **输入**：current observation latent、future observation latent、proprioception、action tokens、language。\n- **Stage 1**：Masked Trajectory Prediction，包括 inverse dynamics grounding：current latent + future latent 重建 action；forward dynamics grounding：current latent + action 预测 future latent。future target 来自 EMA encoder，防止 latent collapse。\n- **Stage 2**：current observation + proprioception + language 通过 flow matching 输出 action chunk。\n- **推理期输出**：不显式预测 future observation，直接生成 action chunk。",
       "input": "current observation latent、future observation latent、proprioception、action tokens、language。",
+      "process": "- Stage 1 ：Masked Trajectory Prediction，包括 inverse dynamics grounding：current latent + future latent 重建 action；forward dynamics grounding：current latent + action 预测 future latent。future target 来自 EMA encoder，防止 latent collapse。；- Stage 2 ：current observation + proprioception + language 通过 flow matching 输出 action chunk。",
       "output": "不显式预测 future observation，直接生成 action chunk。",
-      "process": "- Stage 1 ：Masked Trajectory Prediction，包括 inverse dynamics grounding：current latent + future latent 重建 action；forward dynamics grounding：current latent + action 预测 future latent。future target 来自 EMA encoder，防止 latent collapse。；- Stage 2 ：current observation + proprioception + language 通过 flow matching 输出 action chunk。"
+      "details": "- **输入**：current observation latent、future observation latent、proprioception、action tokens、language。\n- **Stage 1**：Masked Trajectory Prediction，包括 inverse dynamics grounding：current latent + future latent 重建 action；forward dynamics grounding：current latent + action 预测 future latent。future target 来自 EMA encoder，防止 latent collapse。\n- **Stage 2**：current observation + proprioception + language 通过 flow matching 输出 action chunk。\n- **推理期输出**：不显式预测 future observation，直接生成 action chunk。"
     },
     "publication": "arXiv 2026",
     "source_reports": [
@@ -3180,10 +3195,8 @@
     },
     "tags": [
       "3D/4D",
-      "[visual action",
       "cross-embodiment",
       "embodied AI",
-      "embodied AI]",
       "geometry action",
       "visual action",
       "world model",
@@ -3259,15 +3272,15 @@
     "insight": "VGGRPO 针对的是 RGB-space geometry reward 的成本和鲁棒性问题。作者认为：已有 alignment 方法常在 RGB 解码后再跑几何模型，导致反复 VAE decoding，计算贵；而 RGB-based reward 还容易受生成图像分布偏移影响。\n\n核心 insight：\n\n> 如果 video diffusion latent 已包含足够视觉信息，可以训练一个 Latent Geometry Model，把 diffusion latent 直接接到 4D geometry foundation model，从 latent 中解码 camera pose、depth、point map、scene flow，再在 latent space 做 GRPO reward。\n\n这使几何奖励不必每次回到 RGB pixel space，也能利用 4D reconstruction model 支持 dynamic scenes。",
     "limitations": "论文没有像 GeoFlow 那样集中列出详细 failure cases，但根据方法假设和实验范围，可明确区分：\n\n- **作者明确覆盖**：static + dynamic scene geometry consistency、camera smoothness、latent reward efficiency。\n- **实验未充分证明**：对细粒度物理交互、手物接触、物体可操作状态变化的建模能力。\n- **潜在局限**：\n  - 奖励质量受 LGM 和背后 geometry foundation model 上限影响；\n  - 对严重拓扑变化、细粒度非刚性接触、透明/反光物体等可能仍难；\n  - 不是 action-conditioned world model，不能直接证明“动作导致世界变化”的因果一致性。\n\n## 对 HOI world model 的启发\n\nVGGRPO 对你方向最有价值的是 **latent 4D reward**。如果你做 hand-object interaction，可以借鉴：\n\n- 不必每次 decode RGB 再算 3D reward；\n- 可训练一个 HOI Latent Geometry Model，从 video/action latents 解码 hand pose、object pose、contact map、scene flow；\n- 用 latent reward 对 video world model 做 post-training。\n\n换句话说，VGGRPO 是“4D 几何奖励怎么高效算”的参考，而不是 HOI 任务本身的解决方案。\n\n---",
     "links": {
-      "alphaxiv": "https://alphaxiv.org/abs/2603.26599",
       "paper": "https://arxiv.org/abs/2603.26599",
-      "project": "https://zhaochongan.github.io/projects/VGGRPO/"
+      "project": "https://zhaochongan.github.io/projects/VGGRPO/",
+      "alphaxiv": "https://alphaxiv.org/abs/2603.26599"
     },
     "pipeline": {
-      "details": "- **输入**：text prompt、video diffusion latents。\n- **Latent Geometry Model (LGM)**：\n  - 用 VAE encoder 得到 video latents；\n  - 通过 lightweight connector / transformer layers 接到 geometry foundation model；\n  - 预测 camera pose、point map、depth map、scene flow 等 4D geometry outputs；\n  - 用 alignment loss 保留几何 foundation model 的 4D prior。\n- **VGGRPO post-training**：\n  - video diffusion model 采样 grouped rollouts；\n  - LGM 直接从 denoised latents 预测几何；\n  - 计算 camera motion smoothness reward 与 geometry reprojection consistency reward；\n  - 在 latent space 中执行 GRPO 更新。\n- **输出**：更 world-consistent 的 video diffusion model；论文还给出 training-free latent reward guidance 伪代码。",
       "input": "text prompt、video diffusion latents。",
+      "process": "- Latent Geometry Model (LGM) ：；- 用 VAE encoder 得到 video latents；；- 通过 lightweight connector / transformer layers 接到 geometry foundation model；；- 预测 camera pose、point map、depth map、scene flow 等 4D geometry outputs；；- 用 alignment loss 保留几何 foundation model 的 4D prior。；- VGGRPO post-training ：；- video diffusion model 采样 grouped rollouts；；- LGM 直接从 denoised latents 预测几何；；- 计算 camera motion smoothness reward 与 geometry reprojection consistency reward；；- 在 latent space 中执行 GRPO 更新。",
       "output": "更 world-consistent 的 video diffusion model；论文还给出 training-free latent reward guidance 伪代码。",
-      "process": "- Latent Geometry Model (LGM) ：；- 用 VAE encoder 得到 video latents；；- 通过 lightweight connector / transformer layers 接到 geometry foundation model；；- 预测 camera pose、point map、depth map、scene flow 等 4D geometry outputs；；- 用 alignment loss 保留几何 foundation model 的 4D prior。；- VGGRPO post-training ：；- video diffusion model 采样 grouped rollouts；；- LGM 直接从 denoised latents 预测几何；；- 计算 camera motion smoothness reward 与 geometry reprojection consistency reward；；- 在 latent space 中执行 GRPO 更新。"
+      "details": "- **输入**：text prompt、video diffusion latents。\n- **Latent Geometry Model (LGM)**：\n  - 用 VAE encoder 得到 video latents；\n  - 通过 lightweight connector / transformer layers 接到 geometry foundation model；\n  - 预测 camera pose、point map、depth map、scene flow 等 4D geometry outputs；\n  - 用 alignment loss 保留几何 foundation model 的 4D prior。\n- **VGGRPO post-training**：\n  - video diffusion model 采样 grouped rollouts；\n  - LGM 直接从 denoised latents 预测几何；\n  - 计算 camera motion smoothness reward 与 geometry reprojection consistency reward；\n  - 在 latent space 中执行 GRPO 更新。\n- **输出**：更 world-consistent 的 video diffusion model；论文还给出 training-free latent reward guidance 伪代码。"
     },
     "publication": "2026",
     "source_reports": [
@@ -3304,7 +3317,7 @@
       "Yanwei Fu",
       "Simo Wu"
     ],
-    "code_data_status": "",
+    "code_data_status": "截至来源报告核验时，未记录可确认的官方代码、数据或模型入口；这表示开放状态待核验，不代表资源确定不存在。",
     "comments": "",
     "deleted": false,
     "doi": "",
@@ -3319,17 +3332,17 @@
     },
     "id": "arxiv-2608-08558",
     "insight": "Vid2WAM 进一步追问：WAM 的 future supervision 是否一定要来自昂贵的 target-task robot expert trajectories？大型 video diffusion model 已经包含大量 world / dynamics prior。Vid2WAM 让 video foundation model 离线“想象 future”，再用 inverse dynamics model 把 visual transition 翻译成 embodiment-specific pseudo action，最后蒸馏给小 WAM。核心是 **world knowledge acquisition 与 robot expert collection 解耦**。",
-    "limitations": "",
+    "limitations": "来源报告未单列可核验的局限、失败案例或开放问题；在补充原论文正文核验前，不对该工作的泛化性、因果性、复现性或 SOTA 结论作扩大解释。",
     "links": {
-      "alphaxiv": "https://alphaxiv.org/abs/2608.08558",
       "paper": "https://arxiv.org/abs/2608.08558",
-      "project": "https://qch-fa.github.io"
+      "project": "https://qch-fa.github.io",
+      "alphaxiv": "https://alphaxiv.org/abs/2608.08558"
     },
     "pipeline": {
-      "details": "- **离线输入**：当前 observation + language instruction。\n- **过程**：large video diffusion teacher 生成 task-conditioned future rollout；future rollout 直接监督 student future-video branch；同一 rollout 输入 IDM 得到 pseudo action；real demos + synthetic rollout 联合训练 student；Source-Aware Residual Action Adapter 分离 real / pseudo action distribution，降低 noisy IDM action 干扰。\n- **推理期输出**：video teacher + IDM 全部删除，只保留 compact WAM student。",
       "input": "- 离线输入 ：当前 observation + language instruction。",
+      "process": "large video diffusion teacher 生成 task-conditioned future rollout；future rollout 直接监督 student future-video branch；同一 rollout 输入 IDM 得到 pseudo action；real demos + synthetic rollout 联合训练 student；Source-Aware Residual Action Adapter 分离 real / pseudo action distribution，降低 noisy IDM action 干扰。",
       "output": "video teacher + IDM 全部删除，只保留 compact WAM student。",
-      "process": "large video diffusion teacher 生成 task-conditioned future rollout；future rollout 直接监督 student future-video branch；同一 rollout 输入 IDM 得到 pseudo action；real demos + synthetic rollout 联合训练 student；Source-Aware Residual Action Adapter 分离 real / pseudo action distribution，降低 noisy IDM action 干扰。"
+      "details": "- **离线输入**：当前 observation + language instruction。\n- **过程**：large video diffusion teacher 生成 task-conditioned future rollout；future rollout 直接监督 student future-video branch；同一 rollout 输入 IDM 得到 pseudo action；real demos + synthetic rollout 联合训练 student；Source-Aware Residual Action Adapter 分离 real / pseudo action distribution，降低 noisy IDM action 干扰。\n- **推理期输出**：video teacher + IDM 全部删除，只保留 compact WAM student。"
     },
     "publication": "arXiv 2026",
     "source_reports": [
@@ -3372,7 +3385,7 @@
       "Zhiyuan Ma",
       "Hui Xiong"
     ],
-    "code_data_status": "",
+    "code_data_status": "截至来源报告核验时，未记录可确认的官方代码、数据或模型入口；这表示开放状态待核验，不代表资源确定不存在。",
     "comments": "",
     "deleted": false,
     "doi": "",
@@ -3387,16 +3400,16 @@
     },
     "id": "arxiv-2602-09638",
     "insight": "VideoAfford 关注从 HOI videos 中学习 3D affordance grounding。它认为静态图片/语言缺少交互因果线索，而视频中的 pre-contact、contact、post-contact 能揭示物体哪里可操作、如何被操作。",
-    "limitations": "",
+    "limitations": "- 可作为 object affordance prior，为 HOI world model 提供 action-relevant regions。\n- 但它不预测未来视频，也不维护动态世界状态。\n\n---",
     "links": {
-      "alphaxiv": "https://alphaxiv.org/abs/2602.09638",
-      "paper": "https://arxiv.org/abs/2602.09638"
+      "paper": "https://arxiv.org/abs/2602.09638",
+      "alphaxiv": "https://alphaxiv.org/abs/2602.09638"
     },
     "pipeline": {
-      "details": "- **输入**：HOI video、text instruction、3D point cloud。\n- **过程**：LanguageBind 编码视频；latent action encoder 提取动作先验；3D encoder 提取 point features；video MLLM 输出 affordance token；decoder 生成 3D affordance mask；spatial-aware loss 增强空间一致性。\n- **输出**：3D object affordance mask。",
       "input": "HOI video、text instruction、3D point cloud。",
+      "process": "LanguageBind 编码视频；latent action encoder 提取动作先验；3D encoder 提取 point features；video MLLM 输出 affordance token；decoder 生成 3D affordance mask；spatial-aware loss 增强空间一致性。",
       "output": "3D object affordance mask。",
-      "process": "LanguageBind 编码视频；latent action encoder 提取动作先验；3D encoder 提取 point features；video MLLM 输出 affordance token；decoder 生成 3D affordance mask；spatial-aware loss 增强空间一致性。"
+      "details": "- **输入**：HOI video、text instruction、3D point cloud。\n- **过程**：LanguageBind 编码视频；latent action encoder 提取动作先验；3D encoder 提取 point features；video MLLM 输出 affordance token；decoder 生成 3D affordance mask；spatial-aware loss 增强空间一致性。\n- **输出**：3D object affordance mask。"
     },
     "publication": "arXiv 2026",
     "source_reports": [
@@ -3412,8 +3425,9 @@
       "第一视角"
     ],
     "title": "VideoAfford: Grounding 3D Affordance from Human-Object-Interaction Videos via Multimodal Large Language Model",
-    "updated_at": "2026-08-20",
-    "year": 2026
+    "updated_at": "2026-08-23",
+    "year": 2026,
+    "discussion": "- 可作为 object affordance prior，为 HOI world model 提供 action-relevant regions。\n- 但它不预测未来视频，也不维护动态世界状态。\n\n---"
   },
   {
     "arxiv": {
@@ -3444,17 +3458,17 @@
     "insight": "未来帧不必生成像素，只需作为训练期 target 教 VLA 当前表示保留可预测、与动作相关的状态变化。V-JEPA2 的未来 embedding 是 teacher target；机器人推理时可以丢掉 world-model branch，只保留 VLM 与 action head，因而把世界模型当作**训练正则/表征教师**而不是在线规划器。",
     "limitations": "- 代码、训练说明与 checkpoints 公开；完整数据依赖已有大型数据集。\n- 缺少多 seed/statistical uncertainty；baseline 数据预算不完全一致；真实任务少；细粒度语言 grounding 是明确失败模式；没有验证 learned latent 是否对应可干预因果变量。\n\n---",
     "links": {
-      "alphaxiv": "https://alphaxiv.org/abs/2602.10098",
+      "paper": "https://arxiv.org/abs/2602.10098",
+      "project": "https://ginwind.github.io/VLA-JEPA/",
       "code": "https://github.com/ginwind/VLA-JEPA",
       "model": "https://huggingface.co/ginwind/VLA-JEPA/",
-      "paper": "https://arxiv.org/abs/2602.10098",
-      "project": "https://ginwind.github.io/VLA-JEPA/"
+      "alphaxiv": "https://alphaxiv.org/abs/2602.10098"
     },
     "pipeline": {
-      "details": "```text\ncurrent RGB + instruction\n  -> Qwen3-VL / student tokens + latent action tokens\nfuture frames (training only)\n  -> frozen V-JEPA2 target encoder\nstudent tokens + block-causal predictor\n  -> predicted future V-JEPA2 embeddings\nrobot data: joint latent prediction loss + flow-matching action loss\ninference: current observation + language -> action chunk\n```",
       "input": "",
+      "process": "",
       "output": "",
-      "process": ""
+      "details": "```text\ncurrent RGB + instruction\n  -> Qwen3-VL / student tokens + latent action tokens\nfuture frames (training only)\n  -> frozen V-JEPA2 target encoder\nstudent tokens + block-causal predictor\n  -> predicted future V-JEPA2 embeddings\nrobot data: joint latent prediction loss + flow-matching action loss\ninference: current observation + language -> action chunk\n```"
     },
     "publication": "arXiv 2026；作者项目/仓库标注 ECCV 2026。ECCV 2026 将于 2026-09 举行，截至检索日 Springer/ECVA proceedings 尚未公开，因此正式出版页待补。",
     "source_reports": [
@@ -3506,18 +3520,18 @@
     },
     "id": "arxiv-2512-13644",
     "insight": "DexWM 认为现有 world models 的 action space 太粗，无法建模 dexterous hand-object interaction。它用从 egocentric videos 中提取的 **3D finger keypoints** 表示细粒度 dexterous actions，并学习 past latent state + hand action -> future latent state 的 dynamics。另一个 insight 是：只预测视觉 latent 不够，需要 auxiliary hand consistency loss 来约束精细手部构型。",
-    "limitations": "",
+    "limitations": "- 它很适合连接 human ego video 和 robot dexterous manipulation。\n- 但它不是 photorealistic video generator，而是 latent world model / planning model。\n- 可扩展方向：把 DexWM 的 3D hand action latent 与 EgoSim / EgoHOI 的 video simulator 结合。\n\n---",
     "links": {
-      "alphaxiv": "https://alphaxiv.org/abs/2512.13644",
-      "code": "https://github.com/facebookresearch/dexwm",
       "paper": "https://arxiv.org/abs/2512.13644",
-      "project": "https://raktimgg.github.io/dexwm/"
+      "project": "https://raktimgg.github.io/dexwm/",
+      "code": "https://github.com/facebookresearch/dexwm",
+      "alphaxiv": "https://alphaxiv.org/abs/2512.13644"
     },
     "pipeline": {
-      "details": "- **输入**：过去图像 latent、3D hand keypoint action、camera motion。\n- **过程**：DINOv2 编码图像为 latent state；DexWM predictor 根据 hand keypoints 和 camera motion 预测未来 latent state；用 hand consistency loss 约束 dexterity；训练数据包括 EgoDex 和 DROID。\n- **输出**：未来 latent state；可用于 planning，并能迁移到 Franka + Allegro gripper。",
       "input": "过去图像 latent、3D hand keypoint action、camera motion。",
+      "process": "DINOv2 编码图像为 latent state；DexWM predictor 根据 hand keypoints 和 camera motion 预测未来 latent state；用 hand consistency loss 约束 dexterity；训练数据包括 EgoDex 和 DROID。",
       "output": "未来 latent state；可用于 planning，并能迁移到 Franka + Allegro gripper。",
-      "process": "DINOv2 编码图像为 latent state；DexWM predictor 根据 hand keypoints 和 camera motion 预测未来 latent state；用 hand consistency loss 约束 dexterity；训练数据包括 EgoDex 和 DROID。"
+      "details": "- **输入**：过去图像 latent、3D hand keypoint action、camera motion。\n- **过程**：DINOv2 编码图像为 latent state；DexWM predictor 根据 hand keypoints 和 camera motion 预测未来 latent state；用 hand consistency loss 约束 dexterity；训练数据包括 EgoDex 和 DROID。\n- **输出**：未来 latent state；可用于 planning，并能迁移到 Franka + Allegro gripper。"
     },
     "publication": "ECCV 2026",
     "source_reports": [
@@ -3531,8 +3545,9 @@
       "第一视角"
     ],
     "title": "World Models for Learning Dexterous Hand-Object Interactions from Human Videos",
-    "updated_at": "2026-08-20",
-    "year": 2026
+    "updated_at": "2026-08-23",
+    "year": 2026,
+    "discussion": "- 它很适合连接 human ego video 和 robot dexterous manipulation。\n- 但它不是 photorealistic video generator，而是 latent world model / planning model。\n- 可扩展方向：把 DexWM 的 3D hand action latent 与 EgoSim / EgoHOI 的 video simulator 结合。\n\n---"
   },
   {
     "id": "arxiv-2606-13652",
@@ -3567,7 +3582,13 @@
       "扩散模型",
       "生成式几何"
     ],
-    "figure": null,
+    "figure": {
+      "url": "https://arxiv.org/html/2606.13652v1/model_v4.png",
+      "alt": "World Tracing Fig. 2: generative pixel-aligned geometry model",
+      "label": "World Tracing，Fig. 2，从单张图像生成像素对齐、多层遮挡后几何的整体模型。来源：Fig. 2 原图 PNG",
+      "paper_title": "World Tracing: Generative Pixel-Aligned Geometry Beyond the Visible",
+      "source_url": "https://arxiv.org/html/2606.13652v1/model_v4.png"
+    },
     "summary": "作者明确主张： 下游三维编辑、视角变化视频和纹理 mesh 生成真正需要的是相机坐标中既忠实又完整的几何，而不是彼此分离的 depth map 与 canonical asset。核心 Insight 是把每个输入像素对应的相机射线表示为由近到远的 (L) 个三维交点：L0 是可见表面，L1–L5 是后续遮挡表面。于是“重建”与“生成”成为同一个 (L times H times W times3) 张量中的不同层，像素对应由表示本身保证。",
     "insight": "**作者明确主张：** 下游三维编辑、视角变化视频和纹理 mesh 生成真正需要的是相机坐标中既忠实又完整的几何，而不是彼此分离的 depth map 与 canonical asset。核心 Insight 是把每个输入像素对应的相机射线表示为由近到远的 (L) 个三维交点：L0 是可见表面，L1–L5 是后续遮挡表面。于是“重建”与“生成”成为同一个 (L\\times H\\times W\\times3) 张量中的不同层，像素对应由表示本身保证。\n\n这一选择同时改变了三个接口：\n\n- **表征接口：** 从每像素一个深度/点或规范坐标 mesh，改成相机坐标、多层、像素对齐 XYZ pointmaps；无需把相机内参作为输入，必要时可从 L0 的像素—点对应闭式拟合自洽内参。\n- **监督接口：** 对没有第 (L) 个真实交点的射线，用最近的前一有效交点前向填充，取消逐层有效性分类头；单层 RGB-D 样本则只打开 L0 loss mask，使同一架构可混合单层和多层监督。\n- **生成信号：** 用直接作用于 XYZ 像素空间的 flow matching 表达不可见几何的多模态分布，并用混合 timestep 日程分别照顾近似重建的 L0 与更偏生成的深层。\n\n与本知识库 3D/4D 世界建模课题直接相关之处，是它提供了可供编辑、视频新视角和动态几何共享的显式世界状态接口。**阅读者推断：** 该接口可能比单层深度更适合作为生成式世界模型的几何记忆；但论文没有因果干预、反事实识别或长期交互实验，不能据此把 World Tracing 称为因果世界模型。",
     "pipeline": {
@@ -3585,7 +3606,7 @@
       "report-77695ff321"
     ],
     "deleted": false,
-    "updated_at": "2026-08-21",
+    "updated_at": "2026-08-23",
     "challenges": "**领域长期挑战。** 单张图像到三维存在不可消除的遮挡歧义：观测只约束第一可见表面，背面、被前景遮住的物体和视锥外结构只能依赖先验生成。已有两条路线各自牺牲一端：单目深度/pointmap 方法逐像素对齐、能忠实恢复可见表面，却天然每条射线只给一个点；image-to-3D 生成器能补出完整物体，但通常在规范坐标系生成，可能改变输入中的姿态、前后关系或局部轮廓，后续还要做相机与物体配准。\n\n**本文针对的具体缺口。** 作者要同时保留相机坐标中的像素—三维对应和遮挡后完整几何。最近的分层表示 LaRI / DualPM 虽允许一条射线有多个交点，但回归式深度加逐层有效性 mask 会遭遇两类失败：不可见背面是多模态的，点回归易平均成平滑形状；越深层有效像素越稀疏，本文对象渲染统计从 L0 平均 8.14% 降至 L5 的 0.60%，mask 分类容易塌缩为“无效”。场景和动态方法还常使用不同表示，难以共享同一接口。\n\n评测层面也有长期缺口：视觉上“像真的”mesh/video 指标未必衡量其是否忠实于输入。本文因此以可见深度误差、Chamfer distance 和 F-score 为主，而不是只报美学质量。不过，作者使用随机生成方法 best-of-8 结果，且有 200 个内部场景样本，仍不是完全无选择偏差、完全公开的统一比较。",
     "motivation": "**作者明确主张：** 下游三维编辑、视角变化视频和纹理 mesh 生成真正需要的是相机坐标中既忠实又完整的几何，而不是彼此分离的 depth map 与 canonical asset。核心 Insight 是把每个输入像素对应的相机射线表示为由近到远的 (L) 个三维交点：L0 是可见表面，L1–L5 是后续遮挡表面。于是“重建”与“生成”成为同一个 (L\\times H\\times W\\times3) 张量中的不同层，像素对应由表示本身保证。\n\n这一选择同时改变了三个接口：\n\n- **表征接口：** 从每像素一个深度/点或规范坐标 mesh，改成相机坐标、多层、像素对齐 XYZ pointmaps；无需把相机内参作为输入，必要时可从 L0 的像素—点对应闭式拟合自洽内参。\n- **监督接口：** 对没有第 (L) 个真实交点的射线，用最近的前一有效交点前向填充，取消逐层有效性分类头；单层 RGB-D 样本则只打开 L0 loss mask，使同一架构可混合单层和多层监督。\n- **生成信号：** 用直接作用于 XYZ 像素空间的 flow matching 表达不可见几何的多模态分布，并用混合 timestep 日程分别照顾近似重建的 L0 与更偏生成的深层。\n\n与本知识库 3D/4D 世界建模课题直接相关之处，是它提供了可供编辑、视频新视角和动态几何共享的显式世界状态接口。**阅读者推断：** 该接口可能比单层深度更适合作为生成式世界模型的几何记忆；但论文没有因果干预、反事实识别或长期交互实验，不能据此把 World Tracing 称为因果世界模型。",
     "technical_approach": "- **输入：** 静态对象/场景版本接收一张 RGBA 图像（场景中 alpha 用于屏蔽天空等无限深度区域）；动态版本接收短单目视频。模型不要求相机内参作为输入。\n- **过程：** 冻结的 MoGe ViT-L 从图像提取像素对齐特征；含噪的六层 XYZ 张量按 (14\\times14) patch 转成逐层 geometry tokens，与对应图像 token 在像素位置上融合。WT-DiT 交替使用层内二维注意力、同射线跨层注意力和全局注意力，并用 layer FiLM 区分层序；WT-D 在全局块后增加时间注意力。训练先用 depth peeling 从三维资产渲染每条射线的前六个交点，缺失深层以前向填充变密；XYZ 经对象 z-score 或场景 median + signed-log 归一化后做 (x_0)-parameterized flow matching，并加入软相邻层单调约束。推理从高斯噪声出发，用 20 个 ODE 步得到多层点图。\n- **输出：** (X\\in\\mathbb{R}^{L\\times H\\times W\\times3}) 的相机坐标多层 XYZ pointmaps（默认 (L=6)）；L0 对应输入可见表面，更深层给出沿相同像素射线的遮挡几何。公开模型本身不预测颜色或逐层可见性，颜色从输入 RGB 采样，alpha 作为各层共同有效域。\n\n三个变体共用表示和主要目标：WT-O 处理静态对象，WT-S 处理静态场景，WT-D 从 WT-O 微调并加入时间注意力处理动态对象。主模型为约 1.7B 参数（1.4B 可训练）、504×504、六层；论文以 64 张 H100、全局 batch 512 训练，WT-D 再从对象 checkpoint 微调。\n\n与最近 baseline 的实质差异是：相对 MoGe-2 / VGGT / Pi3X，它从单可见点扩展到同射线多交点；相对 LaRI，它用生成式 flow matching 和稠密 depth-filling 目标，去掉稀疏 mask head；相对 TRELLIS.2 / SAM 3D 等规范坐标生成器，它把输入相机帧和像素对应保留为原生坐标；相对动态 GVFDiffusion / SS4D / ActionMesh，它保持相同的逐像素多层目标，仅额外加入时间耦合。",
@@ -3634,17 +3655,17 @@
     "insight": "World-R1 的出发点与 GeoFlow/VGGRPO 接近：video foundation model 已有强视觉合成能力，但缺内在 3D 几何约束。它反对在推理时加重型 3D control modules，主张通过 RL 后训练把几何一致性“内化”到模型中。\n\n核心 insight：\n\n> 用 3D foundation model 和 VLM 作为 reward providers，通过 Flow-GRPO 对 text-to-video 模型做后训练，可以在不改架构、不加推理期 3D 模块的情况下强化 3D consistency。\n\n它还引入 implicit camera conditioning：从 text 中解析 camera motion，将轨迹先验写入 initial latent noise，而不是增加额外控制网络。",
     "limitations": "作者明确指出两点局限：\n\n- RL 用于视频生成仍成本高，因为需要重复 rollout 和 reward evaluation。\n- World-R1 受基础视频模型生成能力限制；dense multi-object composition、fine-grained non-rigid motion、detailed hand dynamics、very long-horizon scene evolution 仍可能继承 base model artifacts。\n\n作者还分析了 reward hacking 风险：如果只优化窄 3D metric，模型可能生成 near-static clips 来方便重建但不遵循 camera motion。World-R1 用 composite reward、trajectory term、periodic dynamic-only training 来缓解，但这不等于完全消除。\n\n## 对 HOI world model 的启发\n\nWorld-R1 特别适合借鉴到 HOI 的后训练框架：\n\n- 用 3D / 4D foundation model 给生成视频打分；\n- 加入 camera trajectory / viewpoint consistency reward；\n- 用 VLM 评估 novel view 或 meta-view plausibility；\n- 通过 periodic dynamic training 避免 reward 过度鼓励“静态化”。\n\n但它对 HOI 最关键的 hand-object contact 没有直接处理。若迁移到 HOI，需要把 reward 改为：\n\n- hand pose / MANO consistency；\n- object 6DoF / articulated state consistency；\n- contact map / affordance alignment；\n- action-conditioned object response；\n- first-person camera 与手部运动解耦。\n\n---",
     "links": {
-      "alphaxiv": "https://alphaxiv.org/abs/2604.24764",
+      "paper": "https://arxiv.org/abs/2604.24764",
+      "project": "https://microsoft.github.io/World-R1/",
       "code": "https://github.com/microsoft/World-R1",
       "data": "https://huggingface.co/datasets/microsoft/World-R1",
-      "paper": "https://arxiv.org/abs/2604.24764",
-      "project": "https://microsoft.github.io/World-R1/"
+      "alphaxiv": "https://alphaxiv.org/abs/2604.24764"
     },
     "pipeline": {
-      "details": "- **输入**：pure text world-simulation prompt；其中可包含 camera push / pull / pan / orbit 等运动描述。\n- **Camera conditioning**：\n  - 解析文本中的 camera motion tokens；\n  - 转为 deterministic camera extrinsics；\n  - 投影成 dense optical flow；\n  - 用 trajectory-guided noise wrapping 注入初始 latent noise。\n- **Policy rollout**：Wan2.1 T2V backbone 生成 grouped candidate videos。\n- **Reward design**：\n  - Depth Anything 3 / DA3 将视频 lifted 到 3DGS；\n  - meta-view score：用 Qwen3-VL 判断 novel/meta views 是否合理；\n  - rendering score：用 LPIPS 等衡量重渲染一致性；\n  - trajectory score：评估 camera trajectory adherence；\n  - general reward：HPSv3 约束视觉质量。\n- **Training strategy**：Flow-GRPO-Fast；周期性 decoupled training，每 100 steps 暂时关闭 3D reward，只用 general reward 在 dynamic prompts 上训练，避免过度刚性化。\n- **输出**：World-R1-Small / World-R1-Large 这类 3D-consistent T2V 模型。",
       "input": "pure text world-simulation prompt；其中可包含 camera push / pull / pan / orbit 等运动描述。",
+      "process": "- Camera conditioning ：；- 解析文本中的 camera motion tokens；；- 转为 deterministic camera extrinsics；；- 投影成 dense optical flow；；- 用 trajectory-guided noise wrapping 注入初始 latent noise。；- Policy rollout ：Wan2.1 T2V backbone 生成 grouped candidate videos。；- Reward design ：；- Depth Anything 3 / DA3 将视频 lifted 到 3DGS；；- meta-view score：用 Qwen3-VL 判断 novel/meta views 是否合理；；- rendering score：用 LPIPS 等衡量重渲染一致性；；- trajectory score：评估 camera trajectory adherence；；- general reward：HPSv3 约束视觉质量。；- Training strategy ：Flow-GRPO-Fast；周期性 decoupled training，每 100 steps 暂时关闭 3D reward，只用 general reward 在 dynamic prompts 上训练，避免过度刚性化。",
       "output": "World-R1-Small / World-R1-Large 这类 3D-consistent T2V 模型。",
-      "process": "- Camera conditioning ：；- 解析文本中的 camera motion tokens；；- 转为 deterministic camera extrinsics；；- 投影成 dense optical flow；；- 用 trajectory-guided noise wrapping 注入初始 latent noise。；- Policy rollout ：Wan2.1 T2V backbone 生成 grouped candidate videos。；- Reward design ：；- Depth Anything 3 / DA3 将视频 lifted 到 3DGS；；- meta-view score：用 Qwen3-VL 判断 novel/meta views 是否合理；；- rendering score：用 LPIPS 等衡量重渲染一致性；；- trajectory score：评估 camera trajectory adherence；；- general reward：HPSv3 约束视觉质量。；- Training strategy ：Flow-GRPO-Fast；周期性 decoupled training，每 100 steps 暂时关闭 3D reward，只用 general reward 在 dynamic prompts 上训练，避免过度刚性化。"
+      "details": "- **输入**：pure text world-simulation prompt；其中可包含 camera push / pull / pan / orbit 等运动描述。\n- **Camera conditioning**：\n  - 解析文本中的 camera motion tokens；\n  - 转为 deterministic camera extrinsics；\n  - 投影成 dense optical flow；\n  - 用 trajectory-guided noise wrapping 注入初始 latent noise。\n- **Policy rollout**：Wan2.1 T2V backbone 生成 grouped candidate videos。\n- **Reward design**：\n  - Depth Anything 3 / DA3 将视频 lifted 到 3DGS；\n  - meta-view score：用 Qwen3-VL 判断 novel/meta views 是否合理；\n  - rendering score：用 LPIPS 等衡量重渲染一致性；\n  - trajectory score：评估 camera trajectory adherence；\n  - general reward：HPSv3 约束视觉质量。\n- **Training strategy**：Flow-GRPO-Fast；周期性 decoupled training，每 100 steps 暂时关闭 3D reward，只用 general reward 在 dynamic prompts 上训练，避免过度刚性化。\n- **输出**：World-R1-Small / World-R1-Large 这类 3D-consistent T2V 模型。"
     },
     "publication": "2026",
     "source_reports": [
@@ -3707,18 +3728,18 @@
     },
     "id": "arxiv-2608-09298",
     "insight": "WorldSimProbe 指出现有 world model benchmark 的核心问题：生成视频看起来合理、task outcome 正确，并不代表模型真的执行了给定 action。例如机器人动作没有按 action 走，但物体却“自己”到了目标位置，传统 video metric 仍可能给高分。因此它提出 **Observable Simulator Contract**：supplied action 必须导致对应 robot motion；environment response 必须由实际 motion/contact 导致。",
-    "limitations": "",
+    "limitations": "来源报告未单列可核验的局限、失败案例或开放问题；在补充原论文正文核验前，不对该工作的泛化性、因果性、复现性或 SOTA 结论作扩大解释。",
     "links": {
-      "alphaxiv": "https://alphaxiv.org/abs/2608.09298",
+      "paper": "https://arxiv.org/abs/2608.09298",
       "code": "https://evophys.com",
       "data": "https://evophys.com",
-      "paper": "https://arxiv.org/abs/2608.09298"
+      "alphaxiv": "https://alphaxiv.org/abs/2608.09298"
     },
     "pipeline": {
-      "details": "- **输入**：当前状态 x_t 与 action sequence a_{t:t+H}。\n- **被测对象**：ACWM 输出 future rollout。\n- **五组测试**：Local Action Calibration；Global Trajectory Coverage；Action-Source Behavior Preservation；Interaction Grounding；Interaction Dynamics。\n- **覆盖范围**：RoboTwin、ManiSkill、LIBERO，约 18K+ instances，测试 6 个开源 ACWM。",
       "input": "当前状态 x t 与 action sequence a {t:t+H}。",
+      "process": "- 被测对象 ：ACWM 输出 future rollout。；- 五组测试 ：Local Action Calibration；Global Trajectory Coverage；Action-Source Behavior Preservation；Interaction Grounding；Interaction Dynamics。",
       "output": "- 覆盖范围 ：RoboTwin、ManiSkill、LIBERO，约 18K+ instances，测试 6 个开源 ACWM。",
-      "process": "- 被测对象 ：ACWM 输出 future rollout。；- 五组测试 ：Local Action Calibration；Global Trajectory Coverage；Action-Source Behavior Preservation；Interaction Grounding；Interaction Dynamics。"
+      "details": "- **输入**：当前状态 x_t 与 action sequence a_{t:t+H}。\n- **被测对象**：ACWM 输出 future rollout。\n- **五组测试**：Local Action Calibration；Global Trajectory Coverage；Action-Source Behavior Preservation；Interaction Grounding；Interaction Dynamics。\n- **覆盖范围**：RoboTwin、ManiSkill、LIBERO，约 18K+ instances，测试 6 个开源 ACWM。"
     },
     "publication": "arXiv 2026",
     "source_reports": [
@@ -3759,10 +3780,8 @@
     },
     "tags": [
       "3D/4D",
-      "[visual action",
       "cross-embodiment",
       "embodied AI",
-      "embodied AI]",
       "geometry action",
       "visual action",
       "world model"
@@ -3880,7 +3899,7 @@
       "Zhixiang Chen",
       "Jianglin Lan"
     ],
-    "code_data_status": "",
+    "code_data_status": "截至来源报告核验时，未记录可确认的官方代码、数据或模型入口；这表示开放状态待核验，不代表资源确定不存在。",
     "comments": "",
     "deleted": false,
     "doi": "",
@@ -3895,17 +3914,17 @@
     },
     "id": "arxiv-2507-01737",
     "insight": "HOI-Dyn 把 HOI 生成建模为 **driver-responder system**：人体动作是 driver，物体运动是 responder。关键 insight：只联合生成 human motion 和 object motion 不够，必须显式约束“物体应如何响应人体动作”，否则会出现物体提前移动、漂浮、反应夸张等因果错误。",
-    "limitations": "",
+    "limitations": "来源报告未单列可核验的局限、失败案例或开放问题；在补充原论文正文核验前，不对该工作的泛化性、因果性、复现性或 SOTA 结论作扩大解释。",
     "links": {
-      "alphaxiv": "https://alphaxiv.org/abs/2507.01737",
       "paper": "https://arxiv.org/abs/2507.01737",
-      "project": "https://wulin97.github.io/hoi-dyn/"
+      "project": "https://wulin97.github.io/hoi-dyn/",
+      "alphaxiv": "https://alphaxiv.org/abs/2507.01737"
     },
     "pipeline": {
-      "details": "- **输入**：文本/条件、物体几何、初始状态、稀疏 waypoint/contact context。\n- **过程**：conditional motion diffusion 生成 human-object trajectory；训练时加入轻量 Transformer interaction dynamics model，预测物体对人体相对运动的响应；residual dynamics loss 约束生成。\n- **输出**：3D human motion、object motion、interaction context。",
       "input": "文本/条件、物体几何、初始状态、稀疏 waypoint/contact context。",
+      "process": "conditional motion diffusion 生成 human-object trajectory；训练时加入轻量 Transformer interaction dynamics model，预测物体对人体相对运动的响应；residual dynamics loss 约束生成。",
       "output": "3D human motion、object motion、interaction context。",
-      "process": "conditional motion diffusion 生成 human-object trajectory；训练时加入轻量 Transformer interaction dynamics model，预测物体对人体相对运动的响应；residual dynamics loss 约束生成。"
+      "details": "- **输入**：文本/条件、物体几何、初始状态、稀疏 waypoint/contact context。\n- **过程**：conditional motion diffusion 生成 human-object trajectory；训练时加入轻量 Transformer interaction dynamics model，预测物体对人体相对运动的响应；residual dynamics loss 约束生成。\n- **输出**：3D human motion、object motion、interaction context。"
     },
     "publication": "NeurIPS 2025",
     "source_reports": [
@@ -3940,28 +3959,28 @@
     "deleted": false,
     "doi": "",
     "evidence_notes": "- **作者明确主张：** learned CWM 能减少 LLM 在未知环境中的多步状态推演错误并改善规划。\n- **实验实际支持：** 在两个模拟环境、固定 action vocabulary 和同一 LLM 对照下，短到中等 horizon 明显改善。\n- **阅读判断：** 这是九篇中因果语义最接近 causal representation + simulator 的系统，但不是完全无监督：最终变量命名需要少量标签，并继承 BISCUIT 的可识别性假设。",
-    "experiments": "- **数据：** GridWorld 与 iTHOR；训练 10,000 条×100 steps，validation/test 各 1,000×100，另有 100 个 ICL episodes；N-step 评测每个 N 使用 100 episodes（Appendix B.1, Table 5）。autoencoder 另使用约 10 倍无标签随机样本，比较数据预算时不能忽略。\n- **因果状态推演，Table 2：** iTHOR 的 1/2/4-step accuracy 为 **0.824/0.680/0.630**，LM-only 为 **0.482/0.285/0.110**；GridWorld 的 1/2/4/6/8-step 为 **0.954/0.922/0.829/0.797/0.758**，LM-only 为 **0.391/0.220/0.085/0.045/0.005**。\n- **规划，Table 4：** iTHOR 2/4-step success **0.58/0.44 vs. 0.25/0.11**；GridWorld 2/4/6/8-step **0.95/0.73/0.46/0.42 vs. 0.20/0.11/0.08/0.06**。对照使用同一 LLM，但 baseline 范围不宽，表中未报告置信区间。",
+    "experiments": "- **数据：** GridWorld 与 iTHOR；训练 10,000 条×100 steps，validation/test 各 1,000×100，另有 100 个 ICL episodes；N-step 评测每个 N 使用 100 episodes（Appendix B.1, Table 5）。autoencoder 另使用约 10 倍无标签随机样本，比较数据预算时不能忽略。\n- **因果状态推演，Table 2：** iTHOR 的 1/2/4-step accuracy 为 **0.824/0.680/0.630**，LM-only 为 **0.482/0.285/0.110**；GridWorld 的 1/2/4/6/8-step 为 **0.954/0.922/0.829/0.797/0.758**，LM-only 为 **0.391/0.220/0.085/0.045/0.005**。\n- **规划，Table 4：** iTHOR 2/4-step success **0.58/0.44 vs. 0.25/0.11**；GridWorld 2/4/6/8-step **0.95/0.73/0.46/0.42 vs. 0.20/0.11/0.08/0.06**。对照使用同一 LLM，但 baseline 范围不宽，表中未报告置信区间。\n- **失败案例：** 扩展 3,000 样本分析中，iTHOR Toggle/Open/NoOp accuracy 为 **0.957/0.926/0.962**，Put/Pickup 仅 **0.506/0.431**。作者归因于 3D 坐标独立性与二元交互机制假设不匹配（§5.3）。\n- 训练使用 A100；autoencoder 约 1–2 天，flow + language head 约 0.5–1 小时（Appendix B.3）。",
     "figure": {
+      "url": "content/images/language_agents_cwm_pipeline.png",
       "alt": "Language Agents Meet Causality 方法框架",
       "label": "Language Agents Meet Causality 方法框架",
       "paper_title": "Language Agents Meet Causality: Bridging LLMs and Causal World Models",
-      "source_url": "https://arxiv.org/html/2410.19923",
-      "url": "content/images/language_agents_cwm_pipeline.png"
+      "source_url": "content/images/language_agents_cwm_pipeline.png"
     },
     "id": "arxiv-2410-19923",
     "insight": "这篇工作比很多“causal world model”更接近正式 causal representation learning。\n\n它的核心 idea：\n\n> **LLM 很会高层规划，但其 causal knowledge 来自互联网，可能错误或与当前环境不匹配；因此应该让 agent 自己从环境数据中学习一个 causal world model，再把 causal state / transition 翻译成语言供 LLM 查询。**\n\n因此 world model 不只是一个 future predictor，而是一个 **learned causal simulator**。\n\n方法继承 BISCUIT 的 causal representation learning 思路，从 high-dimensional image observations 中学习 latent causal variables，并通过 action/intervention 信息识别环境 dynamics。",
     "limitations": "作者明确指出：\n\n- 当前 environments 仍较简单；\n- real-world scalability 尚未证明；\n- causal variables 的解释/映射仍有 supervision 成分；\n- 希望未来减少对 labeled causal variables 的依赖。\n\n额外可观察 failure：\n\n- iTHOR 中涉及 position / pickup / put 的 dynamics 明显更困难；\n- 视觉输入虽来自 3D simulator，但不等于真实 3D perception；\n- 没有真实 robot / ego video；\n- 识别条件依赖 intervention diversity。\n\n**阅读判断**：  \n这是“**causal latent simulator 真正用于 counterfactual planning**”最值得看的代表之一，也很适合和 C-JEPA 对比：\n\n- C-JEPA：弱 causal assumption、强 scalable predictive bias；\n- 本文：更正式的 causal representation，但环境和假设更受限。\n\n---",
     "links": {
-      "alphaxiv": "https://alphaxiv.org/abs/2410.19923",
-      "code": "https://github.com/j0hngou/LLMCWM",
+      "publication": "https://proceedings.iclr.cc/paper_files/paper/2025/hash/5c5bc3553815adb4d1a8a5b8701e41a9-Abstract-Conference.html",
       "paper": "https://arxiv.org/abs/2410.19923",
-      "publication": "https://proceedings.iclr.cc/paper_files/paper/2025/hash/5c5bc3553815adb4d1a8a5b8701e41a9-Abstract-Conference.html"
+      "code": "https://github.com/j0hngou/LLMCWM",
+      "alphaxiv": "https://alphaxiv.org/abs/2410.19923"
     },
     "pipeline": {
-      "details": "**输入**：\n\n- 当前图像 observation；\n- 自然语言 action description。\n\n**过程**：\n\n1. causal representation learner：\n   \\[\n   I_t\\rightarrow z_t^{causal}\n   \\]\n2. action encoder：\n   \\[\n   a_t^{text}\\rightarrow e(a_t)\n   \\]\n3. causal transition：\n   \\[\n   (z_t^{causal},a_t)\\rightarrow z_{t+1}^{causal}\n   \\]\n4. causal mapper 将 latent variables 映射到可理解的 state descriptors；\n5. LLM 使用 world model rollout 的 state descriptions 做 reasoning；\n6. planning 使用 LLM proposal + CWM simulation + RAP/MCTS-style search。\n\n**输出**：\n\n- next causal world state；\n- rollout state description；\n- 最终 action plan。\n\n## 因果假设\n\n论文依赖 BISCUIT 一类 identifiable causal representation learning 的假设，例如：\n\n- 不同 causal variables 应有可区分的 binary interaction patterns；\n- intervention pattern 随时间具有足够变化。\n\n这比 C-JEPA 的 “causal inductive bias” 更强，但也意味着方法对 intervention richness 有较强假设。",
       "input": "BISCUIT 式 causal representation learner；causal transition model；causal mapper / state descriptor；LLaMA 3 + 修改的 RAP/MCTS",
+      "process": "解耦 latent causal variables；下一 latent state；可读状态描述；动作计划",
       "output": "解耦 latent causal variables；下一 latent state；可读状态描述；动作计划",
-      "process": "解耦 latent causal variables；下一 latent state；可读状态描述；动作计划"
+      "details": "**输入**：\n\n- 当前图像 observation；\n- 自然语言 action description。\n\n**过程**：\n\n1. causal representation learner：\n   \\[\n   I_t\\rightarrow z_t^{causal}\n   \\]\n2. action encoder：\n   \\[\n   a_t^{text}\\rightarrow e(a_t)\n   \\]\n3. causal transition：\n   \\[\n   (z_t^{causal},a_t)\\rightarrow z_{t+1}^{causal}\n   \\]\n4. causal mapper 将 latent variables 映射到可理解的 state descriptors；\n5. LLM 使用 world model rollout 的 state descriptions 做 reasoning；\n6. planning 使用 LLM proposal + CWM simulation + RAP/MCTS-style search。\n\n**输出**：\n\n- next causal world state；\n- rollout state description；\n- 最终 action plan。\n\n## 因果假设\n\n论文依赖 BISCUIT 一类 identifiable causal representation learning 的假设，例如：\n\n- 不同 causal variables 应有可区分的 binary interaction patterns；\n- intervention pattern 随时间具有足够变化。\n\n这比 C-JEPA 的 “causal inductive bias” 更强，但也意味着方法对 intervention richness 有较强假设。"
     },
     "publication": "ICLR 2025",
     "source_reports": [
@@ -3979,7 +3998,7 @@
       "机器人学习"
     ],
     "title": "Language Agents Meet Causality -- Bridging LLMs and Causal World Models",
-    "updated_at": "2026-08-20",
+    "updated_at": "2026-08-23",
     "year": 2025
   },
   {
@@ -4000,10 +4019,8 @@
       "alphaxiv": "https://alphaxiv.org/abs/2507.13340"
     },
     "tags": [
-      "[visual action",
       "cross-embodiment",
       "embodied AI",
-      "embodied AI]",
       "geometry action",
       "visual action",
       "world model"
@@ -4055,7 +4072,7 @@
       "Phillip Lippe",
       "Sara Magliacane"
     ],
-    "code_data_status": "",
+    "code_data_status": "截至来源报告核验时，未记录可确认的官方代码、数据或模型入口；这表示开放状态待核验，不代表资源确定不存在。",
     "comments": "",
     "deleted": false,
     "doi": "",
@@ -4070,16 +4087,16 @@
     },
     "id": "arxiv-2511-02225",
     "insight": "提出 **Factored Interactive Object-Centric World Model (FIOC-WM)**。多数 object-centric RL 只把状态拆成对象，但交互关系仍是隐式的；本文进一步显式学习对象间 interaction graph，并把每个对象状态拆为动态属性与静态属性。关键 insight：长时程任务可以被分解成一串“对象交互 primitive”，高层策略选择交互图，低层策略执行交互。",
-    "limitations": "",
+    "limitations": "来源报告未单列可核验的局限、失败案例或开放问题；在补充原论文正文核验前，不对该工作的泛化性、因果性、复现性或 SOTA 结论作扩大解释。",
     "links": {
-      "alphaxiv": "https://alphaxiv.org/abs/2511.02225",
-      "paper": "https://arxiv.org/abs/2511.02225"
+      "paper": "https://arxiv.org/abs/2511.02225",
+      "alphaxiv": "https://alphaxiv.org/abs/2511.02225"
     },
     "pipeline": {
-      "details": "- **输入**：像素观测、动作、奖励。\n- **过程**：DINO/R3M 等预训练视觉特征 + Slot Attention 得到对象表示；VAE 学 object latents；拆分 static / dynamic factors；学习 interaction graph、transition、reward；再训练层级策略。\n- **输出**：可用于规划和策略学习的 object-centric interactive world model，以及高低层策略。",
       "input": "像素观测、动作、奖励。",
+      "process": "DINO/R3M 等预训练视觉特征 + Slot Attention 得到对象表示；VAE 学 object latents；拆分 static / dynamic factors；学习 interaction graph、transition、reward；再训练层级策略。",
       "output": "可用于规划和策略学习的 object-centric interactive world model，以及高低层策略。",
-      "process": "DINO/R3M 等预训练视觉特征 + Slot Attention 得到对象表示；VAE 学 object latents；拆分 static / dynamic factors；学习 interaction graph、transition、reward；再训练层级策略。"
+      "details": "- **输入**：像素观测、动作、奖励。\n- **过程**：DINO/R3M 等预训练视觉特征 + Slot Attention 得到对象表示；VAE 学 object latents；拆分 static / dynamic factors；学习 interaction graph、transition、reward；再训练层级策略。\n- **输出**：可用于规划和策略学习的 object-centric interactive world model，以及高低层策略。"
     },
     "publication": "NeurIPS 2025",
     "source_reports": [
@@ -4272,7 +4289,7 @@
       "Zhongbin Zhang",
       "Zongqing Lu"
     ],
-    "code_data_status": "",
+    "code_data_status": "截至来源报告核验时，未记录可确认的官方代码、数据或模型入口；这表示开放状态待核验，不代表资源确定不存在。",
     "comments": "",
     "deleted": false,
     "doi": "",
@@ -4287,17 +4304,17 @@
     },
     "id": "arxiv-2505-16602",
     "insight": "MEgoHand 生成的是 egocentric hand-object interaction 中的 hand motion，而不是完整视频 world model。它认为单靠文本或 RGB 不足以恢复第一视角 HOI motion，需要结合 VLM 语义理解、monocular depth 的 3D 空间推理、初始 MANO hand pose。",
-    "limitations": "",
+    "limitations": "- 它适合作为 hand action prior，而不是完整 world model。\n- 可与 EgoHOI / Hand2World 结合：先生成/估计 MANO trajectory，再驱动 video world model。\n\n---",
     "links": {
-      "alphaxiv": "https://alphaxiv.org/abs/2505.16602",
       "paper": "https://arxiv.org/abs/2505.16602",
-      "project": "https://beingbeyond.github.io/MEgoHand/"
+      "project": "https://beingbeyond.github.io/MEgoHand/",
+      "alphaxiv": "https://alphaxiv.org/abs/2505.16602"
     },
     "pipeline": {
-      "details": "- **输入**：egocentric RGB、text instruction、initial MANO hand parameters。\n- **过程**：VLM 编码语义；depth estimator 提供 object-agnostic spatial reasoning；DiT-based flow-matching policy 生成 fine-grained MANO hand trajectory；Temporal Orthogonal Filtering 提升稳定性。\n- **输出**：未来 hand-object interaction 的 3D MANO hand motion sequence。",
       "input": "egocentric RGB、text instruction、initial MANO hand parameters。",
+      "process": "VLM 编码语义；depth estimator 提供 object-agnostic spatial reasoning；DiT-based flow-matching policy 生成 fine-grained MANO hand trajectory；Temporal Orthogonal Filtering 提升稳定性。",
       "output": "未来 hand-object interaction 的 3D MANO hand motion sequence。",
-      "process": "VLM 编码语义；depth estimator 提供 object-agnostic spatial reasoning；DiT-based flow-matching policy 生成 fine-grained MANO hand trajectory；Temporal Orthogonal Filtering 提升稳定性。"
+      "details": "- **输入**：egocentric RGB、text instruction、initial MANO hand parameters。\n- **过程**：VLM 编码语义；depth estimator 提供 object-agnostic spatial reasoning；DiT-based flow-matching policy 生成 fine-grained MANO hand trajectory；Temporal Orthogonal Filtering 提升稳定性。\n- **输出**：未来 hand-object interaction 的 3D MANO hand motion sequence。"
     },
     "publication": "NeurIPS 2025；arXiv 2025",
     "source_reports": [
@@ -4313,8 +4330,9 @@
       "第一视角"
     ],
     "title": "MEgoHand: Multimodal Egocentric Hand-Object Interaction Motion Generation",
-    "updated_at": "2026-08-20",
-    "year": 2025
+    "updated_at": "2026-08-23",
+    "year": 2025,
+    "discussion": "- 它适合作为 hand action prior，而不是完整 world model。\n- 可与 EgoHOI / Hand2World 结合：先生成/估计 MANO trajectory，再驱动 video world model。\n\n---"
   },
   {
     "arxiv": {
@@ -4333,7 +4351,7 @@
       "Youyi Zheng",
       "Xin Chen"
     ],
-    "code_data_status": "",
+    "code_data_status": "截至来源报告核验时，未记录可确认的官方代码、数据或模型入口；这表示开放状态待核验，不代表资源确定不存在。",
     "comments": "",
     "deleted": false,
     "doi": "",
@@ -4348,17 +4366,17 @@
     },
     "id": "arxiv-2506-24086",
     "insight": "MotionGPT3 把 human motion 当成和 text 并列的第二模态，而不是把 motion 强行离散成 token。核心 insight：motion tokenization 会带来量化误差，single-stream text-motion 混训会产生跨模态干扰；因此用连续 VAE latent + 双流 Transformer + shared attention 更适合 motion-language unified modeling。",
-    "limitations": "",
+    "limitations": "来源报告未单列可核验的局限、失败案例或开放问题；在补充原论文正文核验前，不对该工作的泛化性、因果性、复现性或 SOTA 结论作扩大解释。",
     "links": {
-      "alphaxiv": "https://alphaxiv.org/abs/2506.24086",
       "paper": "https://arxiv.org/abs/2506.24086",
-      "project": "https://motiongpt3.github.io/"
+      "project": "https://motiongpt3.github.io/",
+      "alphaxiv": "https://alphaxiv.org/abs/2506.24086"
     },
     "pipeline": {
-      "details": "- **输入**：文本序列或 motion sequence。\n- **过程**：motion VAE 编码连续 latent；文本分支保留预训练 LLM 参数；motion branch 用 diffusion head 预测 motion latent；双分支通过 shared attention 交互；三阶段 generate-then-align training。\n- **输出**：text-to-motion、motion-to-text，以及混合 motion-language 任务输出。",
       "input": "文本序列或 motion sequence。",
+      "process": "motion VAE 编码连续 latent；文本分支保留预训练 LLM 参数；motion branch 用 diffusion head 预测 motion latent；双分支通过 shared attention 交互；三阶段 generate-then-align training。",
       "output": "text-to-motion、motion-to-text，以及混合 motion-language 任务输出。",
-      "process": "motion VAE 编码连续 latent；文本分支保留预训练 LLM 参数；motion branch 用 diffusion head 预测 motion latent；双分支通过 shared attention 交互；三阶段 generate-then-align training。"
+      "details": "- **输入**：文本序列或 motion sequence。\n- **过程**：motion VAE 编码连续 latent；文本分支保留预训练 LLM 参数；motion branch 用 diffusion head 预测 motion latent；双分支通过 shared attention 交互；三阶段 generate-then-align training。\n- **输出**：text-to-motion、motion-to-text，以及混合 motion-language 任务输出。"
     },
     "publication": "arXiv 2025",
     "source_reports": [
@@ -4384,27 +4402,33 @@
       "Qi Ye",
       "Jingya Wang"
     ],
-    "code_data_status": "",
+    "code_data_status": "截至来源报告核验时，未记录可确认的官方代码、数据或模型入口；这表示开放状态待核验，不代表资源确定不存在。",
     "comments": "",
     "deleted": false,
     "doi": "10.52202/085713-5553",
     "evidence_notes": "",
     "experiments": "论文报告其在 novel object categories、multi-stage tasks、complex language instructions 下优于 SOTA 3D HOI synthesis 方法。\n\n**对你方向的启发**\n\n- 如果你的 world model 要接语言目标、任务分解、affordance，这篇很重要。\n- 它不是视频生成，但可以作为 “language -> 3D affordance/contact plan” 模块。\n\n---",
-    "figure": null,
+    "figure": {
+      "url": "https://arxiv.org/html/2505.18947v2/pipeline.png",
+      "alt": "OpenHOI Fig. 2：开放世界 3D HOI 合成流程",
+      "label": "OpenHOI，Fig. 2，3D MLLM 任务分解、affordance grounding、HOI diffusion 与物理优化的整体流程。来源：Fig. 2 原图 PNG",
+      "paper_title": "OpenHOI: Open-World Hand-Object Interaction Synthesis with Multimodal Large Language Model",
+      "source_url": "https://arxiv.org/html/2505.18947v2/pipeline.png"
+    },
     "id": "paper-3cc64741b1",
     "insight": "OpenHOI 面向 open-world 3D hand-object interaction synthesis，解决 closed-set object 和 predefined task 泛化差的问题。它用 3D MLLM 同时做 affordance grounding 和 semantic task decomposition，把复杂语言任务拆成可执行子任务，再用 affordance-driven diffusion 生成 HOI，并用 physics refinement 减少穿透、优化 affordance alignment。",
-    "limitations": "",
+    "limitations": "- 如果你的 world model 要接语言目标、任务分解、affordance，这篇很重要。\n- 它不是视频生成，但可以作为 “language -> 3D affordance/contact plan” 模块。\n\n---",
     "links": {
-      "alphaxiv": "https://alphaxiv.org/abs/2505.18947",
+      "publication": "https://proceedings.neurips.cc/paper_files/paper/2025/hash/f376f5dff6f6ec6364aea7a46ab49574-Abstract-Conference.html",
       "paper": "https://arxiv.org/abs/2505.18947",
       "project": "https://openhoi.github.io/",
-      "publication": "https://proceedings.neurips.cc/paper_files/paper/2025/hash/f376f5dff6f6ec6364aea7a46ab49574-Abstract-Conference.html"
+      "alphaxiv": "https://alphaxiv.org/abs/2505.18947"
     },
     "pipeline": {
-      "details": "- **输入**：自由语言指令、novel object / 3D object information。\n- **过程**：3D MLLM 定位可交互区域并做任务分解；affordance-driven diffusion 生成 hand-object interaction；training-free physics refinement 优化物理合理性。\n- **输出**：长程、多阶段、open-world 的 3D HOI sequence。",
       "input": "自由语言指令、novel object / 3D object information。",
+      "process": "3D MLLM 定位可交互区域并做任务分解；affordance-driven diffusion 生成 hand-object interaction；training-free physics refinement 优化物理合理性。",
       "output": "长程、多阶段、open-world 的 3D HOI sequence。",
-      "process": "3D MLLM 定位可交互区域并做任务分解；affordance-driven diffusion 生成 hand-object interaction；training-free physics refinement 优化物理合理性。"
+      "details": "- **输入**：自由语言指令、novel object / 3D object information。\n- **过程**：3D MLLM 定位可交互区域并做任务分解；affordance-driven diffusion 生成 hand-object interaction；training-free physics refinement 优化物理合理性。\n- **输出**：长程、多阶段、open-world 的 3D HOI sequence。"
     },
     "publication": "NeurIPS 2025",
     "source_reports": [
@@ -4418,13 +4442,14 @@
       "第一视角"
     ],
     "title": "OpenHOI: Open-World Hand-Object Interaction Synthesis with Multimodal Large Language Model",
-    "updated_at": "2026-08-20",
+    "updated_at": "2026-08-23",
     "year": 2025,
     "arxiv": {
       "published": "2025-05-25T02:48:43Z",
       "revised_at": "2025-12-21T08:11:53Z",
       "primary_category": "cs.CV"
-    }
+    },
+    "discussion": "- 如果你的 world model 要接语言目标、任务分解、affordance，这篇很重要。\n- 它不是视频生成，但可以作为 “language -> 3D affordance/contact plan” 模块。\n\n---"
   },
   {
     "id": "arxiv-2508-13104",
@@ -4451,10 +4476,8 @@
     },
     "tags": [
       "3D/4D",
-      "[visual action",
       "cross-embodiment",
       "embodied AI",
-      "embodied AI]",
       "geometry action",
       "visual action",
       "world model",
@@ -4522,10 +4545,8 @@
     },
     "tags": [
       "3D/4D",
-      "[visual action",
       "cross-embodiment",
       "embodied AI",
-      "embodied AI]",
       "geometry action",
       "visual action",
       "world model",
@@ -4652,15 +4673,15 @@
     "insight": "CBM 关注一个非常重要但常被忽视的问题：\n\n> 一个 good world state 不应该包含所有 observable variables，而应该只保留完成当前任务真正需要的 **causal variables**。\n\n它先学习 environment 的 reusable causal dynamics，再根据具体 reward/task 找出与任务结果有 causal dependency 的变量，构建最小 state abstraction。\n\n所以它区分：\n\n- **environment dynamics**：可跨任务复用；\n- **task reward dependency**：任务相关；\n- **policy state**：只保留当前任务真正需要的变量。\n\n这给 causal world model 一个很重要的思想：\n\n\\[\n\\boxed{\n\\text{Good state representation}\n\\neq\n\\text{maximum reconstruction information}\n}\n\\]\n\n而是：\n\n\\[\n\\text{minimal intervention-relevant state}\n\\]",
     "limitations": "最大限制：\n\n> **输入已经是 factored low-dimensional state，而不是从图像中发现 causal variables。**\n\n因此它解决的是：\n\n\\[\n\\text{known state factors}\n\\rightarrow\n\\text{causal abstraction}\n\\]\n\n而不是：\n\n\\[\nRGB/Video\n\\rightarrow\n\\text{unknown causal state}\n\\]\n\n另外：\n\n- causal graph ground truth 主要存在于 simulator；\n- distractors 是人工构造；\n- 没有 counterfactual visual rollout；\n- 没有 3D/4D representation learning。\n\n**阅读判断**：  \n这篇对你的研究很有启发：真正值得学习的不是 mesh/pose 越多越好，而是学习一个 **minimal causal state**。\n\n---",
     "links": {
-      "alphaxiv": "https://alphaxiv.org/abs/2401.12497",
+      "publication": "https://ojs.aaai.org/index.php/AAAI/article/view/29507",
       "paper": "https://arxiv.org/abs/2401.12497",
-      "publication": "https://ojs.aaai.org/index.php/AAAI/article/view/29507"
+      "alphaxiv": "https://alphaxiv.org/abs/2401.12497"
     },
     "pipeline": {
-      "details": "**输入**：\n\n- factored low-dimensional state \\(s_t\\)；\n- action \\(a_t\\)；\n- reward \\(r_t\\)。\n\n**过程**：\n\n1. 学 causal dynamics dependency；\n2. 使用 implicit / energy-based dynamics model，判断哪些输入变量真正影响下一状态变量；\n3. 学 task-specific reward dependency；\n4. 从 causal graph 中回溯与 reward 有关的 ancestors；\n5. 得到 binary state mask；\n6. policy 只在 minimal causal abstraction 上学习。\n\n**输出**：\n\n- reusable causal dynamics model；\n- task-specific minimal state abstraction；\n- downstream policy。",
       "input": "implicit energy-based dynamics；causal reward model；ancestor tracing / causal bisimulation；SAC",
+      "process": "条件依赖/动态图；reward parents；task-specific state mask；policy/value",
       "output": "条件依赖/动态图；reward parents；task-specific state mask；policy/value",
-      "process": "条件依赖/动态图；reward parents；task-specific state mask；policy/value"
+      "details": "**输入**：\n\n- factored low-dimensional state \\(s_t\\)；\n- action \\(a_t\\)；\n- reward \\(r_t\\)。\n\n**过程**：\n\n1. 学 causal dynamics dependency；\n2. 使用 implicit / energy-based dynamics model，判断哪些输入变量真正影响下一状态变量；\n3. 学 task-specific reward dependency；\n4. 从 causal graph 中回溯与 reward 有关的 ancestors；\n5. 得到 binary state mask；\n6. policy 只在 minimal causal abstraction 上学习。\n\n**输出**：\n\n- reusable causal dynamics model；\n- task-specific minimal state abstraction；\n- downstream policy。"
     },
     "publication": "AAAI 2024",
     "source_reports": [
@@ -4703,15 +4724,15 @@
     "insight": "这篇论文的价值主要是**理论上解释为什么 robust intelligent agent 需要 causal world model**。\n\n核心结果可以概括为：\n\n> 如果一个 agent 能在足够丰富的 local distribution shifts 下做到低 regret、快速适应，那么它的内部知识必须能够恢复环境的近似 causal model；反过来，拥有 causal model 也足以支持这种 robust adaptation。\n\n随着 regret 接近 0，恢复出的 causal model 也趋近真实 causal model。\n\n它给 Causal WM 提供的是一种理论 justification：\n\n\\[\n\\text{OOD robust adaptation}\n\\Rightarrow\n\\text{causal structure knowledge}\n\\]\n\n而不是一种新的视觉 world-model architecture。",
     "limitations": "- 截至检索日，论文与 DeepMind 页面未链接可核实的官方代码。\n- 原文局限包括：要求几乎所有环境变量的局部干预；regret 较大时关系不可识别；主结果针对 unmediated decision tasks。后续 NeurIPS 2025 工作已扩展到 mediation，见补充推荐。\n\n---",
     "links": {
-      "alphaxiv": "https://alphaxiv.org/abs/2402.10877",
+      "publication": "https://deepmind.google/research/publications/49666/",
       "paper": "https://arxiv.org/abs/2402.10877",
-      "publication": "https://deepmind.google/research/publications/49666/"
+      "alphaxiv": "https://alphaxiv.org/abs/2402.10877"
     },
     "pipeline": {
-      "details": "```text\nenvironment family under local interventions\n  -> robust/optimal policy oracle\n  -> carefully chosen decision queries\n  -> recover DAG orientation + distributions over utility ancestors\n  -> predict/adapt under new mechanism shifts\n```\n\n输出是可从策略响应中**恢复**的 causal model；定理并不证明神经网络内部显式存储了唯一 SCM。\n\n### 理论与实验支持\n\n- Theorem 1–3 将对局部机制变化的最优性/低 regret 与 causal graph、utility ancestors 上联合分布的可恢复性联系起来。\n- 附录实验在 **1,000 个随机二元 causal Bayesian networks** 上运行因果发现；两个 binary latent 的简化任务中，normalized regret 约 30% 时方向识别接近 **90%**，随机基线约为机会水平。\n- 实验是 theorem 的 sanity check，不是视觉世界模型评测；没有机器人、复杂 MDP 或高维 observation。",
       "input": "- Theorem 1–3 将对局部机制变化的最优性/低 regret 与 causal graph、utility ancestors 上联合分布的可恢复性联系起来。",
+      "process": "- 附录实验在 1,000 个随机二元 causal Bayesian networks 上运行因果发现；两个 binary latent 的简化任务中，normalized regret 约 30% 时方向识别接近 90% ，随机基线约为机会水平。",
       "output": "- 根据 agent 的决策行为与 adaptation properties，分析其是否必须包含 causal model。",
-      "process": "- 附录实验在 1,000 个随机二元 causal Bayesian networks 上运行因果发现；两个 binary latent 的简化任务中，normalized regret 约 30% 时方向识别接近 90% ，随机基线约为机会水平。"
+      "details": "```text\nenvironment family under local interventions\n  -> robust/optimal policy oracle\n  -> carefully chosen decision queries\n  -> recover DAG orientation + distributions over utility ancestors\n  -> predict/adapt under new mechanism shifts\n```\n\n输出是可从策略响应中**恢复**的 causal model；定理并不证明神经网络内部显式存储了唯一 SCM。\n\n### 理论与实验支持\n\n- Theorem 1–3 将对局部机制变化的最优性/低 regret 与 causal graph、utility ancestors 上联合分布的可恢复性联系起来。\n- 附录实验在 **1,000 个随机二元 causal Bayesian networks** 上运行因果发现；两个 binary latent 的简化任务中，normalized regret 约 30% 时方向识别接近 **90%**，随机基线约为机会水平。\n- 实验是 theorem 的 sanity check，不是视觉世界模型评测；没有机器人、复杂 MDP 或高维 observation。"
     },
     "publication": "ICLR 2024 Oral",
     "source_reports": [

@@ -59,6 +59,8 @@ async function init() {
     return;
   }
 
+  loadReadmePrompts();
+
   try {
     const [papers, reports, overrides] = await Promise.all([
       fetchJson("data/papers.json"),
@@ -72,6 +74,55 @@ async function init() {
   } catch (error) {
     renderLoadError(`请确认网站通过 HTTP(S) 提供，并且 data 目录已完整发布。错误：${error.message}`);
   }
+}
+
+async function loadReadmePrompts() {
+  const promptTargets = [
+    ...document.querySelectorAll("[data-readme-prompt]"),
+    document.querySelector("#prompt-weekly"),
+  ].filter(Boolean);
+  try {
+    const response = await fetch("README.md", { cache: "no-store" });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const readme = await response.text();
+    promptTargets.forEach((target) => {
+      const button = document.querySelector(`[data-copy-prompt="${target.id}"]`);
+      let section;
+      if (target.id === "prompt-weekly") {
+        section = readme.match(
+      /## 每周论文更新模式(?:（方式四）)?[\s\S]*?```text\s*\n([\s\S]*?)\n```/,
+        );
+      } else {
+        const title = escapeRegExp(target.dataset.readmePrompt);
+        section = readme.match(
+          new RegExp(
+            "<summary><strong>" +
+              title +
+              "</strong></summary>[\\s\\S]*?```text\\s*\\n([\\s\\S]*?)\\n```",
+          ),
+        );
+      }
+      if (!section) throw new Error(`README 中未找到 ${target.id}`);
+      target.textContent = section[1].trim();
+      if (button) {
+        button.disabled = false;
+        button.textContent = target.id === "prompt-weekly" ? "复制完整周报提示词" : "复制提示词";
+      }
+    });
+  } catch (error) {
+    promptTargets.forEach((target) => {
+      const button = document.querySelector(`[data-copy-prompt="${target.id}"]`);
+      target.textContent = `提示词载入失败：${error.message}。请打开仓库 README 查看完整提示词。`;
+      if (button) {
+        button.disabled = true;
+        button.textContent = "请从 README 复制";
+      }
+    });
+  }
+}
+
+function escapeRegExp(value) {
+  return String(value).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
 function renderLoadError(message) {

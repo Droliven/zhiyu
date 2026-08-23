@@ -330,7 +330,9 @@ HO-Flow 生成 text-conditioned 3D hand-object interaction motion sequence。它
 - **发表情况**：NeurIPS 2025
 - **链接**：[NeurIPS](https://proceedings.neurips.cc/paper_files/paper/2025/hash/f376f5dff6f6ec6364aea7a46ab49574-Abstract-Conference.html) / [arXiv](https://arxiv.org/abs/2505.18947) / [Project](https://openhoi.github.io/)
 - **3D/4D 相关度**：**强 3D HOI synthesis + affordance；非视频 world model**
-- **代表图**：无稳定 arXiv HTML 图链接，建议看 NeurIPS paper / supplementary。
+- **代表图**：OpenHOI，Fig. 2，3D MLLM 任务分解、affordance grounding、HOI diffusion 与物理优化的整体流程。来源：[Fig. 2 原图 PNG](https://arxiv.org/html/2505.18947v2/pipeline.png)
+
+![OpenHOI Fig. 2：开放世界 3D HOI 合成流程](https://arxiv.org/html/2505.18947v2/pipeline.png)
 
 **核心概括 / Insight**  
 OpenHOI 面向 open-world 3D hand-object interaction synthesis，解决 closed-set object 和 predefined task 泛化差的问题。它用 3D MLLM 同时做 affordance grounding 和 semantic task decomposition，把复杂语言任务拆成可执行子任务，再用 affordance-driven diffusion 生成 HOI，并用 physics refinement 减少穿透、优化 affordance alignment。

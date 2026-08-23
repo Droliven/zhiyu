@@ -641,6 +641,10 @@ RoFacto 最重要的贡献不是更高 PSNR，而是区分动作命令、部署�
 
 ## 14. EA-WM: Event-Aware Generative World Model with Structured Kinematic-to-Visual Action Fields
 
+**代表图：** EA-WM，Fig. 2，结构化运动学视觉动作场与事件增强双流生成框架。来源：[Fig. 2 原图 PNG](https://arxiv.org/html/2605.06192v1/figure/fig2_copy_1.png)
+
+![EA-WM Fig. 2: structured kinematic-to-visual action fields](https://arxiv.org/html/2605.06192v1/figure/fig2_copy_1.png)
+
 **作者：** Zhaoyang Yang, Yurun Jin, Lizhe Qi, Kai Chen, Cong Huang
 **年份与发表：** 2026，arXiv preprint
 **arXiv / DOI：** 2605.06192；未核验独立 DOI

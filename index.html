@@ -11,7 +11,7 @@
     <title>知域 · 研究知识库</title>
     <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png" />
-    <link rel="stylesheet" href="assets/styles.css" />
+    <link rel="stylesheet" href="assets/styles.css?v=20260823-3" />
     <script>
       window.MathJax = {
         tex: {
@@ -22,7 +22,7 @@
       };
     </script>
     <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
-    <script defer src="assets/app.js"></script>
+    <script defer src="assets/app.js?v=20260823-3"></script>
   </head>
   <body>
     <header class="site-header">
@@ -159,7 +159,7 @@
           <nav class="readme-index" aria-label="README 目录">
             <a href="#readme-preview"><strong>01</strong><span>本地预览</span></a>
             <a href="#readme-workflow"><strong>02</strong><span>贡献修改</span></a>
-            <a href="#readme-collaboration"><strong>03</strong><span>AI 提示词</span></a>
+            <a href="#readme-collaboration"><strong>03</strong><span>AI 与周报</span></a>
             <a href="#readme-boundary"><strong>04</strong><span>数据边界</span></a>
           </nav>
 
@@ -254,118 +254,49 @@ git switch -c papers/[topic]-[date]</code></pre>
           </section>
 
           <section class="readme-section readme-prompts flow-section" data-flow-step="2" aria-labelledby="readme-collaboration">
-            <div class="readme-section-heading"><span>复制给 AI，不在终端运行</span><h3 id="readme-collaboration">选择任务并让 AI 修改项目</h3></div>
-            <p>选择一种任务，替换方括号中的内容，然后把整段提示词发给能够联网并访问本地仓库的 AI 编程助手。AI 会直接修改当前分支中的文件并运行校验。</p>
-            <p>三套提示词都要求 AI 停在未提交状态：不得执行 <code>git commit</code>、<code>git push</code> 或创建 Pull Request。</p>
+            <div class="readme-section-heading"><span>复制给 AI，不在终端运行</span><h3 id="readme-collaboration">选择 AI 更新模式</h3></div>
+            <p>方式一至三用于能够联网并访问本地仓库的 AI 编程助手：替换方括号中的内容后发送，AI 会修改当前分支并运行校验。方式四用于固定周期运行的在线 Agent：它只生成 Markdown 周报，不访问本地仓库。</p>
+            <p>四套提示词都不授权 AI 执行 <code>git commit</code>、<code>git push</code> 或创建 Pull Request；本地修改与周报导入均须由贡献者审阅。</p>
             <p>新入库论文按「当前挑战、研究动机、技术方案、实验结果、总结讨论」来写。导入器仍识别旧报告里的 Insight / Pipeline / 实验与证据 / 局限；已有论文缺少新字段时继续显示原卡片，不会空白或报错。不要回写或删改不是你产生的历史正文。</p>
 
             <article class="prompt-block">
               <div class="prompt-heading">
                 <div><span>方式一</span><h4>让 AI 直接检索论文</h4></div>
-                <button class="button secondary" type="button" data-copy-prompt="prompt-search">复制提示词</button>
+                <button class="button secondary" type="button" data-copy-prompt="prompt-search" disabled>正在载入提示词</button>
               </div>
-              <pre><code id="prompt-search">你正在维护当前独立的“知域”研究知识库。请围绕“[研究主题]”检索并新增论文，检索范围为“[时间范围，例如过去三个月]”，预计收录 [数量] 篇。请完整执行，不要只给建议。
-
-如果用户还没有提供研究主题、时间范围或期望数量，请先逐项询问用户；得到明确回答后再开始检索，不要自行猜测。
-
-开始前：
-1. 先确认当前工作目录是知域仓库根目录，其中必须包含 index.html、data、content 和 scripts；如果不是，请停止并让用户提供正确的仓库路径。然后阅读 README.md 和 CONTRIBUTING.md，遵守其中的证据、格式和维护要求。
-2. 检查 git status 和现有 content/reports、data/papers.json，保留工作区中不是你产生的修改，不得覆盖或回退他人内容。
-3. 先按 arXiv ID、DOI 和规范化标题检查重复；同一工作的预印本、会议版和期刊版应合并判断，避免重复收录。
-
-检索与核验：
-1. 可以从 arXiv、Google Scholar、Hugging Face Papers Daily、papers.cool 等获取线索，但必须优先核对原论文、正式出版页、官方项目页和官方代码仓库。
-2. 尽可能阅读论文正文，不能只根据标题或摘要编造。若只能访问摘要或二手资料，明确标记信息范围和置信度。
-3. 每篇论文记录标题、作者、年份与发表状态、arXiv/DOI、论文/项目/代码/数据/模型/AlphaXiv 链接、类别标签，以及完整叙事小节：当前挑战、研究动机、技术方案、实验结果、总结讨论，外加代码数据开放情况和局限要点。
-4. 严格区分作者主张、实验实际支持的结论和你的分析。核对数据集、指标、baseline、公平性、消融、统计波动、计算成本和数据泄漏风险。
-5. 配图只有在来源和图号可核验时才加入，并同时给出：论文名、图号、以及可直接打开的 png/jpg/webp 原图 URL（写成 `![论文名 Fig. N](https://.../xxx.png)`）。**来源链接也必须指向这张原图文件**，不要只链到 arXiv HTML 页面。入库前确认该 URL 能返回图片。无法取得原图时宁可缺图。
-6. 不要改已有论文里更完整的历史正文；新字段是可选的，旧的 Insight / Pipeline / 实验与证据 / 局限必须继续可导入。
-
-写入与校验：
-1. 在仓库根目录新建 content/reports/[YYYY-MM-DD_topic_slug].md。在开头写“**报告标签**：[标签1, 标签2]”；使用一个一级标题；每篇论文使用“## 1. 论文标题”形式的连续编号二级标题。论文小节标题必须原样使用，并按下列深度来写：
-   - 当前挑战：具体失败模式、过强假设或评测缺口；区分领域长期挑战和本文针对的缺口；不要只复述摘要第一句。
-   - 研究动机：作者为何做这项工作、核心 Insight、挑战如何导向方法选择（接口/表征/训练信号/因果或物理假设）；与本知识库课题的相关性，相邻工作要标明“间接相关”。不要再单独写 Insight 小节。
-   - 技术方案：必须单独成行写 **输入：**、**过程：**、**输出：**（导入器据此填写 Pipeline）；再写关键模块、训练/推理流程、与最近 baseline 的实质差异。理论/框架论文写形式化接口并标明无实现。不要再单独写 Pipeline 小节。
-   - 实验结果：数据集及划分、指标、baseline、主结果、消融或失败设置、计算成本（若有）；区分主张与证据。无实验则写“无实证实验”及原因，禁止编造数字。
-   - 总结讨论：贡献收束、适用边界、失败案例、与相关工作的真正差异、开放问题、阅读判断。不得把相关性写成因果性。
-   - 另设“代码与数据”“局限、失败案例与开放问题”（3–6 条要点，不要只写见上文）。
-   小节标题不要用“讨论相关工作”“方法概述”等变体。
-2. 在仓库根目录运行：
-   python3 scripts/ingest_reports.py
-   python3 scripts/enrich_arxiv.py
-   python3 scripts/validate_data.py
-   python3 scripts/check_asset_budget.py
-3. 检查生成的数据和 git diff，确认没有重复记录、无效链接、意外删除或无关改动。若 arXiv 网络补全暂时失败，说明情况，但仍完成其余校验。确认新论文在详情页能看到上述五个叙事小节和代表图原图，且旧论文仍显示 Insight / Pipeline。不要改写不是你产生的历史正文，也不要用导入器把旧论文的 updated_at 无故刷新。
-4. 不要执行 git add、git commit 或 git push；保留修改供用户审阅。
-
-最后报告：检索日期、检索范围、纳入/排除数量、关键新增论文、修改文件、校验结果、建议的 commit message，以及仍需人工核验的问题。</code></pre>
+              <pre><code id="prompt-search" data-readme-prompt="方式一：让 AI 直接检索论文">正在从 README.md 载入完整提示词…</code></pre>
             </article>
 
             <article class="prompt-block">
               <div class="prompt-heading">
                 <div><span>方式二</span><h4>提供论文列表，让 AI 细化整理</h4></div>
-                <button class="button secondary" type="button" data-copy-prompt="prompt-list">复制提示词</button>
+                <button class="button secondary" type="button" data-copy-prompt="prompt-list" disabled>正在载入提示词</button>
               </div>
-              <pre><code id="prompt-list">你正在维护当前独立的“知域”研究知识库。我会提供一份论文列表，请逐篇核验、阅读、细化整理并持久化到仓库。请完整执行，不要只输出聊天摘要。
-
-如果用户还没有在提示词末尾提供论文列表，请先让用户粘贴论文标题、arXiv 链接、DOI 或项目页；收到至少一条可识别线索后再开始，不要自行猜测列表。
-
-先确认当前工作目录是知域仓库根目录，其中必须包含 index.html、data、content 和 scripts；如果不是，请停止并让用户提供正确的仓库路径。然后阅读 README.md 和 CONTRIBUTING.md。检查 git status，保留所有不属于你的现有修改。检查 data/papers.json，并按 arXiv ID、DOI、规范化标题识别重复和同一论文的不同版本；已有记录应补充或关联来源，不要创建重复条目。
-
-对列表中的每篇论文：
-1. 优先访问原论文、正式出版页、官方项目页和官方代码仓库，核对准确标题、完整作者、年份、发表状态、arXiv ID、DOI 及可靠链接。
-2. 尽可能阅读正文，整理类别标签，并按下列小节深入写清（标题必须原样使用，导入器按标题切分）：
-   - 当前挑战：现有方法的具体失败模式、过强假设或评测缺口；区分领域长期挑战和本文针对的缺口。
-   - 研究动机：作者为何做这项工作、核心 Insight、方法选择所改变的接口/表征/训练信号；与本课题的相关性。不要再单独写 Insight 小节。
-   - 技术方案：必须单独成行写 **输入：**、**过程：**、**输出：**；再写关键模块、训练/推理流程、与最近 baseline 的实质差异。不要再单独写 Pipeline 小节。
-   - 实验结果：数据集及划分、指标、baseline、主结果、消融、证据真正支持的结论。无实验则明确写出，禁止编造。
-   - 总结讨论：贡献收束、适用边界、失败案例、开放问题、阅读判断。不得把相关性写成因果性。
-   - 代码与数据；局限、失败案例与开放问题（3–6 条要点，不要只写见上文）。
-3. 明确区分作者声称、实验事实和阅读者推断；无法全文核验的字段要标注“仅据摘要/待核验”，不得猜测。
-4. 只在图片来源、论文名称和图号都可核验时加入代表图。必须同时写入 Markdown 图片和可直接打开的 png/jpg/webp 原图 URL；来源不要只链到论文 HTML 页。无法取得原图时宁可缺图。
-5. 已有记录只补充缺失或明显更完整的内容，不要覆盖更详细的历史正文，也不要创建重复条目。
-
-将结果写入仓库根目录的 content/reports/[YYYY-MM-DD_curated_papers].md：在开头写“**报告标签**：[标签1, 标签2]”；使用一个一级标题，每篇论文使用“## 1. 论文标题”形式的连续编号二级标题，并包含“作者”“年份与发表”“当前挑战”“研究动机”“技术方案”“实验结果”“总结讨论”“代码与数据”“局限、失败案例与开放问题”等小节。旧标题 Insight / Pipeline / 实验与证据 仍可被导入，但新报告不要混用两套标题。
-
-然后在仓库根目录运行：
-python3 scripts/ingest_reports.py
-python3 scripts/enrich_arxiv.py
-python3 scripts/validate_data.py
-python3 scripts/check_asset_budget.py
-
-检查 git diff，确保没有意外删除、重复记录或无关改动。不要执行 git add、git commit 或 git push；保留修改供用户审阅。最后给出已收录、合并到已有记录、排除、待核验的论文清单，校验结果和建议的 commit message。
-
-论文列表：
-[在这里粘贴标题、arXiv 链接、DOI、项目页或任意已有线索]</code></pre>
+              <pre><code id="prompt-list" data-readme-prompt="方式二：提供论文列表，让 AI 细化整理">正在从 README.md 载入完整提示词…</code></pre>
             </article>
 
             <article class="prompt-block">
               <div class="prompt-heading">
                 <div><span>方式三</span><h4>专题检索与综述报告</h4></div>
-                <button class="button secondary" type="button" data-copy-prompt="prompt-survey">复制提示词</button>
+                <button class="button secondary" type="button" data-copy-prompt="prompt-survey" disabled>正在载入提示词</button>
               </div>
-              <pre><code id="prompt-survey">你正在维护当前独立的“知域”研究知识库。请针对“[专题或研究问题]”完成一次可核验的专题检索与研究脉络梳理，同时把论文元信息和完整专题报告持久化到仓库。时间范围为“[时间范围]”，重点回答“[希望回答的核心问题]”。
+              <pre><code id="prompt-survey" data-readme-prompt="方式三：专题检索与综述报告">正在从 README.md 载入完整提示词…</code></pre>
+            </article>
 
-如果用户还没有提供专题、时间范围或希望回答的核心问题，请先逐项询问用户；得到明确回答后再开始研究，不要自行设定范围。
-
-先确认当前工作目录是知域仓库根目录，其中必须包含 index.html、data、content 和 scripts；如果不是，请停止并让用户提供正确的仓库路径。然后阅读 README.md 和 CONTRIBUTING.md；检查 git status、既有专题报告和 data/papers.json，保留他人修改并做好去重。
-
-研究要求：
-1. 制定检索词、纳入标准和排除标准，记录检索日期。线索来源可以广泛，但关键事实必须回到论文原文、正式出版页和官方项目核验。
-2. 选择能够覆盖奠基工作、关键技术分支、代表性方法、最新进展和反例/负结果的论文，不要只罗列近期论文。
-3. 对每篇论文记录完整元信息、可靠链接、标签，以及当前挑战、研究动机、技术方案（含输入/过程/输出）、实验结果、总结讨论、开放情况和局限要点。明确全文已读、仅摘要可见或二手线索的证据等级。小节标题必须原样使用，不要写 Insight / Pipeline 的旧标题，也不要用“讨论相关工作”等变体。
-4. 报告应进一步比较问题定义、输入输出、表示方式、训练信号、数据集、指标、计算成本和适用边界；总结一致结论、争议、证据缺口、发展趋势，以及可能影响选题 novelty 的工作。代表图必须给出可直接打开的原图文件链接，不要只贴 HTML 页。
-5. 不得把相关性写成因果性，不得把作者主张写成已被实验充分证明的事实。已有论文只补充或关联，不要重复入库，也不要回写更完整的历史正文。
-
-将报告写入仓库根目录的 content/reports/[YYYY-MM-DD_topic_survey].md。在开头写“**报告标签**：[标签1, 标签2]”；使用一个一级标题；先写分类比较、研究脉络、证据审计、开放问题和选题建议，再写论文条目。单篇论文条目统一使用“## 1. 论文标题”形式的连续编号二级标题并放在报告末尾，每篇包含“当前挑战”“研究动机”“技术方案”“实验结果”“总结讨论”“代码与数据”“局限、失败案例与开放问题”。报告级的总结不要写成“## N. 总结讨论”，以免被当成论文条目。
-
-然后在仓库根目录运行：
-python3 scripts/ingest_reports.py
-python3 scripts/enrich_arxiv.py
-python3 scripts/validate_data.py
-python3 scripts/check_asset_budget.py
-
-检查网站数据与 git diff，确保去重正确、报告可在“专题报告”中打开、没有意外删除或无关改动。不要执行 git add、git commit 或 git push；保留修改供用户审阅。最后报告检索策略、纳入与排除情况、主要结论、变更文件、校验结果、建议的 commit message 和待人工复核项。</code></pre>
+            <article class="prompt-block prompt-block-weekly">
+              <div class="prompt-heading">
+                <div><span>方式四 · 固定周期</span><h4>在线 Agent 检索并生成每周论文报告</h4></div>
+                <div class="prompt-actions">
+                  <a class="button secondary" href="README.md">打开 README 完整提示词</a>
+                  <button class="button secondary" type="button" data-copy-prompt="prompt-weekly" disabled>正在载入提示词</button>
+                </div>
+              </div>
+              <div class="prompt-context">
+                <strong>适用场景</strong>
+                <p>每周固定时间交给在线 Agent 运行。Agent 先读取知域公开 JSON，再检索执行日前 7 天的新论文和重要更新，最终只返回一份可下载的 Markdown 周报。</p>
+                <p>下载后由本地维护者审阅，并使用仓库的增量导入流程写入知域。线上去重只是第一层检查，本地导入器会再次去重。</p>
+              </div>
+              <pre><code id="prompt-weekly">正在从 README.md 载入完整周报提示词…</code></pre>
             </article>
             <p class="flow-next">AI 完成并报告校验结果后，继续第 3 步审阅文件。</p>
           </section>
