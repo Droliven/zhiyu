@@ -1,5 +1,31 @@
 [
   {
+    "id": "report-f5f82689ca",
+    "title": "知域每周论文更新：2026-08-23",
+    "date": "2026-08-23",
+    "tags": [
+      "4D重建",
+      "HOI",
+      "World-Action-Model",
+      "动作流",
+      "周报",
+      "因果建模",
+      "流式生成",
+      "自我中心视觉"
+    ],
+    "summary": "报告标签 ：周报, World-Action-Model, HOI, 流式生成, 4D重建, 因果建模, 动作流, 自我中心视觉",
+    "paper_ids": [
+      "arxiv-2608-18077",
+      "arxiv-2608-18234",
+      "arxiv-2608-19085",
+      "arxiv-2608-19556",
+      "arxiv-2608-20308"
+    ],
+    "path": "content/reports/2026-08-23_weekly_paper_update.md",
+    "source_file": "2026-08-23_weekly_paper_update.md",
+    "content_sha1": "acb307071feccc5f67996f3072fce3803ed3eda8"
+  },
+  {
     "id": "report-c7ced2c92d",
     "title": "自回归交互视频：从 CausVid 到 Causal Forcing++ 与 minWM",
     "date": "2026-08-21",
