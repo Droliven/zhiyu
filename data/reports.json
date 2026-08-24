@@ -27,26 +27,29 @@
   },
   {
     "id": "report-c7ced2c92d",
-    "title": "自回归交互视频：从 CausVid 到 Causal Forcing++ 与 minWM",
+    "title": "自回归交互视频：从 DMD 到 Causal Forcing++、LongLive-2.0 与 minWM",
     "date": "2026-08-21",
     "tags": [
       "交互世界模型",
       "自回归扩散",
       "视频生成"
     ],
-    "summary": "这是一条从双向视频扩散走向实时交互的技术链： CausVid 把双向 teacher 不对称蒸馏成因果 4-step 学生； Self Forcing 指出 DMD 必须在自 rollout 分布上匹配，否则训练输出不是推理分布； Causal Forcing 再指出 ODE 初始化必须满足帧级单射，因此应用 AR teacher 而不是双向 teacher； Causal Forcing++ 用因果 consistency distillation 替代昂贵的因果 ODE 轨迹，把设定推到 frame-wise 1–2 step； minWM 把这条蒸馏配方做成可复现的相机可控世界模型全栈。 MAGI-1 是同谱系的大规模 chunk-wise AR 世界模型（非 few-step DMD 主线）； Lon…",
+    "summary": "这是一条从单步图像蒸馏走向实时交互长视频的技术链： DMD 用 target score 与 fake score 之差近似分布级 KL 梯度； DMD2 去掉昂贵的 ODE 回归集，并以 two-time-scale 更新、GAN 项和推理态多步模拟稳定/增强蒸馏。 CausVid 随后把不对称 DMD 用于因果 4-step 视频学生； Self Forcing 指出 DMD 必须在自 rollout 分布上匹配； Causal Forcing / Causal Forcing++ 依次修正 ODE 初始化对象与轨迹成本； LongLive 解决分钟级流式与 prompt 切换， LongLive-2.0 再把长视频训练、少步 LoRA、NVFP4 与并行推理做成一套基础设施； minWM 把蒸馏配方接到…",
     "paper_ids": [
+      "arxiv-2311-18828",
+      "arxiv-2405-14867",
       "arxiv-2412-07772",
       "arxiv-2505-13211",
       "arxiv-2506-08009",
       "arxiv-2509-22622",
       "arxiv-2602-02214",
       "arxiv-2605-15141",
+      "arxiv-2605-18739",
       "arxiv-2605-30263"
     ],
     "path": "content/reports/2026-08-21_ar_interactive_video.md",
     "source_file": "2026-08-21_ar_interactive_video.md",
-    "content_sha1": "6528087c986e3562cfdce4df3d4975d7246b6d01"
+    "content_sha1": "2d9ff547c79075d478357cbc2472f6af5a882a5e"
   },
   {
     "id": "report-77695ff321",

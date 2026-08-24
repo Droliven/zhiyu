@@ -1,14 +1,144 @@
-# 自回归交互视频：从 CausVid 到 Causal Forcing++ 与 minWM
+# 自回归交互视频：从 DMD 到 Causal Forcing++、LongLive-2.0 与 minWM
 
 **报告标签**：视频生成, 自回归扩散, 交互世界模型  
-**检索与核对日期：2026-08-21**  
-**阅读范围：** 七篇均核对其 arXiv HTML 全文（含方法、实验、讨论/局限要点）、项目页和官方 GitHub。CausVid 另核 CVPR 2025 Open Access 页；Self Forcing 另核 NeurIPS 2025 Spotlight 页。不是仅依据标题或摘要。
+**检索与核对日期：2026-08-21；补充核对：2026-08-24**
+**阅读范围：** 十篇均核对其 arXiv HTML 全文（含方法、实验、讨论/局限要点）、项目页和官方 GitHub（若公开）。DMD 另核 CVPR 2024 Open Access 页，CausVid 另核 CVPR 2025 Open Access 页，Self Forcing 另核 NeurIPS 2025 Spotlight 页。不是仅依据标题或摘要。
 
-> 这是一条从双向视频扩散走向实时交互的技术链：**CausVid** 把双向 teacher 不对称蒸馏成因果 4-step 学生；**Self Forcing** 指出 DMD 必须在自 rollout 分布上匹配，否则训练输出不是推理分布；**Causal Forcing** 再指出 ODE 初始化必须满足帧级单射，因此应用 AR teacher 而不是双向 teacher；**Causal Forcing++** 用因果 consistency distillation 替代昂贵的因果 ODE 轨迹，把设定推到 frame-wise 1–2 step；**minWM** 把这条蒸馏配方做成可复现的相机可控世界模型全栈。**MAGI-1** 是同谱系的大规模 chunk-wise AR 世界模型（非 few-step DMD 主线）；**LongLive** 在 Self Forcing 之上解决分钟级交互长视频。七篇都不是结构因果或反事实识别工作；“causal”在此指注意力/时序因果，不是 \(do(\cdot)\)。
+> 这是一条从单步图像蒸馏走向实时交互长视频的技术链：**DMD** 用 target score 与 fake score 之差近似分布级 KL 梯度；**DMD2** 去掉昂贵的 ODE 回归集，并以 two-time-scale 更新、GAN 项和推理态多步模拟稳定/增强蒸馏。**CausVid** 随后把不对称 DMD 用于因果 4-step 视频学生；**Self Forcing** 指出 DMD 必须在自 rollout 分布上匹配；**Causal Forcing / Causal Forcing++** 依次修正 ODE 初始化对象与轨迹成本；**LongLive** 解决分钟级流式与 prompt 切换，**LongLive-2.0** 再把长视频训练、少步 LoRA、NVFP4 与并行推理做成一套基础设施；**minWM** 把蒸馏配方接到相机可控世界模型。**MAGI-1** 是非 DMD 的原生 chunk-wise AR 对照。DMD/DMD2 只做图像，但它们定义了后续视频方法反复复用的损失与稳定化部件；其余工作的“causal”也指注意力/时序因果，不是结构因果或 \(do(\cdot)\)。
 
 ---
 
-## 1. From Slow Bidirectional to Fast Autoregressive Video Diffusion Models
+## 1. One-step Diffusion with Distribution Matching Distillation
+
+**作者：** Tianwei Yin, Michaël Gharbi, Richard Zhang, Eli Shechtman, Frédo Durand, William T. Freeman, Taesung Park
+**年份与发表：** 2024，CVPR 2024。MIT / Adobe Research。预印本 arXiv:2311.18828（v4，cs.CV）；arXiv DOI：10.48550/arXiv.2311.18828。
+**可靠入口：** [arXiv](https://arxiv.org/abs/2311.18828)｜[HTML 全文](https://arxiv.org/html/2311.18828)｜[CVPR Open Access](https://openaccess.thecvf.com/content/CVPR2024/html/Yin_One-step_Diffusion_with_Distribution_Matching_Distillation_CVPR_2024_paper.html)｜[项目页](https://tianweiy.github.io/dmd/)｜[AlphaXiv](https://alphaxiv.org/abs/2311.18828)
+**代表图：** DMD，Fig. 2，分布匹配梯度与 ODE 回归正则的整体训练框架。来源：[Fig. 2 原图 PNG](https://arxiv.org/html/2311.18828v4/overview.png)
+
+![DMD Fig. 2: distribution matching plus regression regularization](https://arxiv.org/html/2311.18828v4/overview.png)
+
+### 当前挑战
+
+扩散模型质量高但通常要几十至上百次网络前向；直接把确定性 teacher 轨迹回归成一次映射，又会迫使学生复现特定 noise–image 对，在一对多的图像分布上容易平均化或损失细节。本文针对的缺口是：**能否不逐样本模仿 teacher 轨迹，而让一步生成器的整体输出分布逼近预训练扩散模型。**
+
+- 直接最小化生成分布与 teacher 分布的 KL 不可行，因为一步生成器没有显式密度。
+- 仅靠 score distillation 的近似梯度会有 mode collapse / 不稳定；仅靠回归又限制学生只能跟随预计算 ODE 路径。
+- 论文只验证图像生成，不验证视频时序、AR rollout 或 KV cache；其价值是后续 CausVid / Self Forcing 的损失基础。
+
+### 研究动机
+
+核心 Insight：**在加噪空间中，KL 对生成图像的梯度可以写成 target diffusion score 与 fake diffusion score 的差。** target score 由冻结的 teacher 给出；fake score 由一个在线训练的扩散模型估计学生当前输出分布。梯度再通过一步生成器回传。作者同时保留小权重 LPIPS 回归正则，用 teacher 的确定性采样 noise–image 对固定大尺度结构并抑制 mode collapse。
+
+与本报告 **基础相关而非视频直接相关**：CausVid 的 asymmetric DMD、Self Forcing 的 rollout distribution matching，以及后续 CF 系列的 real/fake score 都沿用这一“两个 score 之差”框架；但 DMD 原文没有证明该目标在自回归视频上稳定。
+
+### 技术方案
+
+- **输入：** 随机噪声；类标签（ImageNet）或文本 prompt（Stable Diffusion v1.5）。
+- **过程：** 从 teacher 初始化一步生成器 \(G_\theta\)；对生成图像随机加噪，冻结的 real diffusion model 估计 \(s_{\text{real}}\)，在线 fake diffusion model 在学生样本上学习 \(s_{\text{fake}}\)，二者之差形成近似反向 KL 梯度。训练中偶尔读取预计算的确定性 ODE noise–image 对，对 \(G_\theta(z)\) 与 teacher 输出施加 LPIPS 回归。作者对梯度作归一化，以控制不同噪声级别的尺度。
+- **输出：** 一次网络前向的类条件或文本条件图像；SD-v1.5 版本以 FP16 在论文硬件口径下约 20 FPS。
+
+相对 progressive distillation / consistency model，DMD 的主监督不是逐点复制 teacher 轨迹，而是输出分布匹配；但初版仍依赖预计算回归集，这正是 DMD2 要去掉的部分。
+
+### 实验结果
+
+**作者主张：** 一步学生在大幅减少前向次数的同时，质量接近原扩散模型，并优于当时已发表的 few-step 方法。
+
+实验实际支持：
+
+- **ImageNet 64×64：** 一步 DMD 的 FID **2.62**；论文同时在 CIFAR-10 / ImageNet 的无条件或类条件设置与扩散蒸馏、GAN 基线比较。
+- **zero-shot COCO-30k：** SD-v1.5 一步 DMD 的 FID **11.49**；生成一次约 90 ms，而论文所用 Stable Diffusion 基线约 2590 ms。20 FPS 是批量/FP16 吞吐口径，不等同于单图 50 ms 延迟。
+- **消融结论：** 去掉分布匹配，回归结果更平滑、细节弱；去掉回归正则，训练更容易 mode collapse。两项联合才是初版稳定配方。
+- **训练代价：** 文本到图像版本需先用多步确定性 sampler 制作大量 noise–image 对；DMD2 指出仅这一步的成本已超过其后续完整训练计算的 4 倍。
+
+**证据未支持：** 一步模型与 teacher 在多样性上完全等价；图像 FID 改善能直接外推到视频动态；DMD 的近似 KL 梯度是无偏估计。
+
+### 总结讨论
+
+DMD 真正重要的贡献不是“把扩散变成 GAN”，而是提供了可反传的分布匹配梯度：冻结 teacher score 把样本拉向目标分布，在线 fake score 抵消当前生成分布自身的密度方向。它允许 teacher/student 架构不同，因此适合后来把双向视频 teacher 蒸成因果学生。适用边界是单步图像蒸馏；初版的 ODE 回归集、反向 KL 的 mode seeking、fake score 追踪误差都是后续工作的关键欠账。阅读判断：报告 CausVid 时应把 DMD 写成其损失来源，而不能说 DMD 已经解决 AR 暴露偏差。
+
+### 代码与数据
+
+- **代码 / 模型：** 项目页提供论文、视频、slides 与 poster，但本次核对未找到作者维护的官方代码仓库或权重下载；不要把 DMD2 仓库误写成 DMD 初版代码。
+- **数据：** ImageNet / COCO 为评测或训练来源；文本版还依赖 teacher 生成的预计算 noise–image 回归对，制作成本高且不是纯粹“无数据蒸馏”。
+
+### 局限、失败案例与开放问题
+
+- 需要昂贵的多步 teacher ODE 回归数据集，限制大模型扩展。
+- fake score 模型追踪非平稳学生分布，梯度有近似误差。
+- reverse-KL 倾向 mode seeking，作者用回归项换稳定性，可能牺牲分布自由度。
+- 一步学生在复杂文本组合、细节和多样性上仍受 SD-v1.5 teacher 与蒸馏设定限制。
+- 没有视频、长序列或交互控制实验。
+
+---
+
+## 2. Improved Distribution Matching Distillation for Fast Image Synthesis
+
+**作者：** Tianwei Yin, Michaël Gharbi, Taesung Park, Richard Zhang, Eli Shechtman, Frédo Durand, William T. Freeman
+**年份与发表：** 2024，NeurIPS 2024 Main Conference Track，*Advances in Neural Information Processing Systems 37*。MIT / Adobe Research。预印本 arXiv:2405.14867（v2，cs.CV）；正式论文 DOI：10.52202/079017-1505；arXiv DOI：10.48550/arXiv.2405.14867。
+**可靠入口：** [arXiv](https://arxiv.org/abs/2405.14867)｜[HTML 全文](https://arxiv.org/html/2405.14867)｜[NeurIPS 论文页](https://proceedings.neurips.cc/paper_files/paper/2024/hash/54dcf25318f9de5a7a01f0a4125c541e-Abstract-Conference.html)｜[项目页](https://tianweiy.github.io/dmd2/)｜[代码与模型](https://github.com/tianweiy/DMD2)｜[AlphaXiv](https://alphaxiv.org/abs/2405.14867)
+**代表图：** DMD2，Fig. 3，TTUR、GAN 判别分支与分布匹配联合训练。来源：[Fig. 3 原图 PNG](https://arxiv.org/html/2405.14867v2/gan_pipeline_new.png)
+
+![DMD2 Fig. 3: distribution matching, TTUR, and GAN loss](https://arxiv.org/html/2405.14867v2/gan_pipeline_new.png)
+
+### 当前挑战
+
+DMD 的分布目标有吸引力，但实际稳定性依赖预计算的 ODE 回归对：制作昂贵，而且把学生绑定到 teacher 的特定采样路径，形成质量上限。直接删掉回归项又会因 fake score 跟不上快速变化的生成分布而发生亮度振荡和训练崩坏。扩展到多步生成时，训练若从“真实图像加噪”开始、推理却从“学生上一步输出”开始，还会出现新的输入分布错位。
+
+本文具体要解决三点：**无回归集的稳定纯 DMD、利用真实数据超过 imperfect teacher score、多步训练与推理分布对齐。**
+
+### 研究动机
+
+核心 Insight 有三层：
+
+- fake score 是移动目标，应比 generator 更频繁更新；作者采用 **5 次 fake-score 更新 : 1 次 generator 更新** 的 two-time-scale update rule（TTUR）。
+- teacher score 本身近似真实数据分布；在 fake denoiser bottleneck 加一个轻量 GAN classifier，让真实图像直接校正分布匹配误差。
+- 多步学生必须在训练时看到自己前几步产生的 noisy synthetic states，而非只看 real images 加噪；这与后来 Self Forcing 强调的 train–test distribution 对齐在思想上相通，但 DMD2 仍是非 AR 图像生成。
+
+与本报告 **基础相关**：DMD2 解释了 fake-score 更新频率、GAN 辅助和多步 self-simulation 为什么能稳定蒸馏；后续视频工作主要继承 DMD 主体，但在时序 rollout 上发展出 Self Forcing，而不是直接照搬 DMD2 的图像多步管线。
+
+### 技术方案
+
+- **输入：** 随机噪声、类标签或文本 prompt；ImageNet 真实图像用于 GAN 项，文本模型基于 SD-v1.5 / SDXL。
+- **过程：** 删除 DMD 的 ODE LPIPS 回归；每次更新生成器前多次更新 fake diffusion score。fake denoiser 的 encoder/bottleneck 同时接 GAN 分类头，区分加噪后的真实与生成样本；generator 联合优化 distribution matching 与 non-saturating GAN loss。多步版本把 generator 重新参数化为可接受当前噪声状态与时间步的 denoiser，并以 backward simulation 生成接近推理态的训练输入。
+- **输出：** 1-step ImageNet / SD-v1.5 图像，以及 1–4 step 的 SDXL 百万像素图像。
+
+相对 DMD，DMD2 不再需要 teacher ODE 配对集，且允许真实数据把学生质量推过 teacher sampler；相对纯 GAN，它保留 teacher score、CFG 接口和分布匹配约束。
+
+### 实验结果
+
+**作者主张：** DMD2 在一与少步图像生成上达到新的最佳结果，部分指标超过蒸馏 teacher。
+
+实验实际支持：
+
+- **ImageNet 64×64，一步：** FID **1.28**，相对 DMD 的 2.62 明显改善。
+- **zero-shot COCO 2014，一步 SD-v1.5：** FID **8.35**，比 DMD 的 11.49 改善 3.14；论文以 teacher 的 50-step PNDM 为比较口径，并称推理成本约降 500×，该倍数依赖其 FLOPs/前向设定。
+- **SDXL，4-step：** COCO-10K FID / CLIP 为 **19.32 / 0.332**。人评中，4-step DMD2 在视觉吸引力上有 24% 样本被偏好于 100-step teacher，文本对齐接近；这不是“总体胜率 76%”或全面支配 teacher。
+- **消融：** 直接去回归项，ImageNet FID 退到 3.48；加 TTUR 恢复到 DMD 量级；再加 GAN 项约降 1.1 FID。SDXL 消融显示去 GAN 会过饱和/过平滑，去 distribution matching 的纯 GAN 文本对齐和稳定性更差，去 backward simulation 的 patch FID 变差。
+- **成本边界：** TTUR 提高单次 generator 更新成本；10:1 更稳定但太慢，作者选择 5:1 折中。
+
+**证据未支持：** DMD2 在所有 prompt 上优于 SDXL teacher；1-step SDXL 已达到 4-step 质量；加入 GAN 后仍是完全不依赖真实数据的蒸馏。
+
+### 总结讨论
+
+DMD2 把初版“分布匹配 + 轨迹回归”的妥协改成更纯的分布训练：用更快的 fake-score 内循环解决移动 critic，用真实数据 GAN 项修 teacher score，用推理态模拟解决多步 mismatch。它与 Self Forcing 的关键共同点是训练输入必须接近推理生成分布，但 DMD2 没有历史帧或 AR cache。阅读判断：应把它放在 CausVid 前作为稳定化基础与概念先驱；不能用其图像 FID 为视频 DMD 的时序稳定性背书。
+
+### 代码与数据
+
+- **代码 / 模型：** [tianweiy/DMD2](https://github.com/tianweiy/DMD2)，项目页声明代码、模型和数据可用。
+- **数据：** ImageNet 实验使用真实训练图像；文本实验涉及 COCO 评测与 SD 系 teacher。GAN 项意味着训练不再是仅从预训练模型取知识。
+- **许可：** 仓库代码与各 SD / SDXL 权重许可需分别遵守，不能由论文开放状态一并推断。
+
+### 局限、失败案例与开放问题
+
+- 4-step 才能匹配最大 SDXL teacher 的质量，一步仍有明显差距。
+- 文本到图像多样性相对 teacher 略降，GAN 权重与多样性/对齐存在权衡。
+- TTUR 需要多次 fake-score 更新，提高训练算力与实现复杂度。
+- GAN 项需要真实数据，并引入对抗训练稳定性问题。
+- backward simulation 解决的是图像多步输入错位，不包含 AR 视频的长程暴露偏差。
+
+---
+
+## 3. From Slow Bidirectional to Fast Autoregressive Video Diffusion Models
 
 **作者：** Tianwei Yin, Qiang Zhang, Richard Zhang, William T. Freeman, Frédo Durand, Eli Shechtman, Xun Huang  
 **年份与发表：** 2025，CVPR 2025（*Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition*，pp. 22963–22974）。Tianwei Yin 与 Qiang Zhang 为共同一作，通讯 tianweiy@mit.edu。预印本 arXiv:2412.07772（v4，cs.CV）。arXiv DOI：10.48550/arXiv.2412.07772。IEEE Xplore 正式 DOI 本次未单独打开核验。模型通称 **CausVid**。  
@@ -77,7 +207,7 @@ CausVid 把“双向质量 vs 因果流式”收成一套可复现配方：block
 
 ---
 
-## 2. Self Forcing: Bridging the Train-Test Gap in Autoregressive Video Diffusion
+## 4. Self Forcing: Bridging the Train-Test Gap in Autoregressive Video Diffusion
 
 **作者：** Xun Huang, Zhengqi Li, Guande He, Mingyuan Zhou, Eli Shechtman  
 **年份与发表：** 2025，NeurIPS 2025 Spotlight（官方会议页标注 Spotlight Poster）。预印本 arXiv:2506.08009（v2）。Adobe Research + UT Austin。通讯 xuhuang@adobe.com。尚无单独核验的会议 DOI；arXiv DOI：10.48550/arXiv.2506.08009。  
@@ -144,7 +274,7 @@ Self Forcing 把 CausVid 的不对称 DMD 补上了缺失的一环：匹配对�
 
 ---
 
-## 3. Causal Forcing: Autoregressive Diffusion Distillation Done Right for High-Quality Real-Time Interactive Video Generation
+## 5. Causal Forcing: Autoregressive Diffusion Distillation Done Right for High-Quality Real-Time Interactive Video Generation
 
 **作者：** Hongzhou Zhu, Min Zhao, Guande He, Hang Su, Chongxuan Li, Jun Zhu  
 **年份与发表：** 2026，arXiv preprint（v2/v5 HTML 与摘要一致；cs.LG/cs.CV 线索见 arXiv）。Hongzhou Zhu 与 Min Zhao 共同一作；通讯 Jun Zhu（dcszj@tsinghua.edu.cn）。清华 / 生数 / UT Austin / 人大。尚无 DOI / 正式出版页。arXiv:2602.02214。  
@@ -209,7 +339,7 @@ Causal Forcing 把 Self Forcing 的失败从“DMD 匹配错分布”推进到�
 
 ---
 
-## 4. Causal Forcing++: Scalable Few-Step Autoregressive Diffusion Distillation for Real-Time Interactive Video Generation
+## 6. Causal Forcing++: Scalable Few-Step Autoregressive Diffusion Distillation for Real-Time Interactive Video Generation
 
 **作者：** Min Zhao, Hongzhou Zhu, Kaiwen Zheng, Zihan Zhou, Bokai Yan, Xinyuan Li, Xiao Yang, Chongxuan Li, Jun Zhu  
 **年份与发表：** 2026，arXiv preprint（v3 HTML）。Min Zhao 与 Hongzhou Zhu 共同一作；通讯 Jun Zhu。清华 / 生数 / 人大。arXiv:2605.15141。尚无 DOI / 正式出版页。  
@@ -276,7 +406,7 @@ Causal Forcing++ 把“正确的 AR flow map”从昂贵离线轨迹改成可扩
 
 ---
 
-## 5. MAGI-1: Autoregressive Video Generation at Scale
+## 7. MAGI-1: Autoregressive Video Generation at Scale
 
 **作者：** Sand.AI, Hansi Teng, Hongyu Jia, Lei Sun, Lingzhi Li, Maolin Li, Mingqiu Tang, Shuai Han, Tianning Zhang, W. Q. Zhang, Weifeng Luo, Xiaoyang Kang, Yuchen Sun, Yue Cao, Yunpeng Huang, Yutong Lin, Yuxin Fang, Zewei Tao, Zheng Zhang, Zhongshu Wang, Zixun Liu, Dai Shi, Guoli Su, Hanwen Sun, Hong Pan, Jie Wang, Jiexin Sheng, Min Cui, Min Hu, Ming Yan, Shucheng Yin, Siran Zhang, Tingting Liu, Xianping Yin, Xiaoyu Yang, Xin Song, Xuan Hu, Yankai Zhang, Yuqiao Li  
 **年份与发表：** 2025，arXiv preprint（v1，cs.CV）。arXiv:2505.13211。arXiv DOI：10.48550/arXiv.2505.13211。作者列表以 GitHub README / arXiv bibtex 为准；HTML 页未逐人展开署名。尚无会议/期刊版本。  
@@ -343,7 +473,7 @@ MAGI-1 说明：不靠 DMD，单靠大规模 chunk-wise AR 扩散也可以做流
 
 ---
 
-## 6. LongLive: Real-time Interactive Long Video Generation
+## 8. LongLive: Real-time Interactive Long Video Generation
 
 **作者：** Shuai Yang, Wei Huang, Ruihang Chu, Yicheng Xiao, Yuyang Zhao, Xianbang Wang, Muyang Li, Enze Xie, Yingcong Chen, Yao Lu, Song Han, Yukang Chen  
 **年份与发表：** 2025，arXiv preprint（cs.CV）。arXiv:2509.22622。单位 NVIDIA / MIT / HKUST(GZ) / HKU / THU。尚无 DOI / 正式出版页。arXiv DOI：10.48550/arXiv.2509.22622。  
@@ -415,7 +545,75 @@ LongLive 把实时 AR 视频从 5 s 推到可交互的分钟级：recache 处理
 
 ---
 
-## 7. minWM: A Full-Stack Open-Source Framework for Real-Time Interactive Video World Models
+## 9. LongLive-2.0: An NVFP4 Parallel Infrastructure for Long Video Generation
+
+**作者：** Yukang Chen, Luozhou Wang, Wei Huang, Shuai Yang, Bohan Zhang, Yicheng Xiao, Ruihang Chu, Weian Mao, Qixin Hu, Shaoteng Liu, Yuyang Zhao, Huizi Mao, Ying-Cong Chen, Enze Xie, Xiaojuan Qi, Song Han
+**年份与发表：** 2026，arXiv preprint（cs.CV / cs.DC，v2）。Yukang Chen、Luozhou Wang、Wei Huang、Shuai Yang 为共同一作；NVIDIA。arXiv:2605.18739；arXiv DOI：10.48550/arXiv.2605.18739。尚无正式会议或期刊页。
+**可靠入口：** [arXiv](https://arxiv.org/abs/2605.18739)｜[HTML 全文](https://arxiv.org/html/2605.18739)｜[项目页](https://nvlabs.github.io/LongLive/LongLive2/)｜[代码](https://github.com/NVlabs/LongLive)｜[文档](https://nvlabs.github.io/LongLive/LongLive2/docs/)｜[AlphaXiv](https://alphaxiv.org/abs/2605.18739)
+**代表图：** LongLive-2.0，Fig. 1，训练侧 Balanced SP / NVFP4 / few-step LoRA 与推理侧 W4A4、KV 量化、异步 VAE 的全链路。来源：[Fig. 1 原图 PNG](https://arxiv.org/html/2605.18739v2/fig1-overall.png)
+
+![LongLive-2.0 Fig. 1: end-to-end NVFP4 training and inference infrastructure](https://arxiv.org/html/2605.18739v2/fig1-overall.png)
+
+### 当前挑战
+
+LongLive 1.0 已能分钟级流式生成，但其算法链仍是“ODE 初始化 → DMD → streaming long tuning”，基座只有 1.3B；长序列训练会被视频 token、VAE 编码和 teacher-forcing mask 的显存/通信成本卡住，推理还要同时承担 DiT、不断增长的 KV cache 和 VAE 解码。本文针对的不是新的 DMD 理论，而是：**如何把 5B、720p、multi-shot 长视频的训练与端到端推理共同扩展到实时。**
+
+- 常规 sequence parallel 只均分 token，没有利用 AR teacher forcing 中“干净历史 + 加噪目标块”的结构，容易负载不均或需要复杂 mask。
+- 只量化 DiT 权重不足以解决长视频 KV cache；只报 denoiser FPS 也会掩盖 VAE 解码空转。
+- Blackwell 有 NVFP4 Tensor Core，A100/H100 没有同等原生 W4A4 加速；硬件口径必须分开。
+- 算法侧，作者认为高质量长视频数据与基础设施足够时，可以直接把双向模型 TF 微调成 long multi-shot AR，而不必把 ODE/DMD/long tuning 全串进主模型训练。
+
+### 研究动机
+
+核心 Insight：**把 AR 数据布局、sequence parallel、4-bit 数值格式和流式解码作为一个系统共同设计。** Balanced SP 在每个 rank 上配对 clean-history 与 noisy-target temporal chunks，使 teacher-forcing mask 自然落在本地布局；训练线性层使用 NVFP4，并让 reduction、normalization statistics、optimizer states 等敏感操作保留高精度。推理则同时做 W4A4 model、NVFP4 KV cache、并行 KV 解量化和异步 streaming VAE。
+
+算法上另一个重要变化是 **clean pipeline**：直接在真实 long multi-shot 数据上把 Wan2.2-TI2V-5B 调成 AR；实时 4/3/2-step 能力以独立 DMD LoRA 叠加，不污染主 AR checkpoint。与本知识库课题 **直接相关于部署与长程状态接口，间接相关于世界模型**：它支持 T2V/I2V、多镜头和交互 prompt，不提供相机动作或物理干预控制。
+
+### 技术方案
+
+- **输入：** 长单镜头或多镜头视频、shot-level prompts；骨干 Wan2.2-TI2V-5B，支持 T2V / I2V，目标分辨率最高 1280×720。训练按时间 chunk 拆成干净历史和当前加噪目标。
+- **过程：** Balanced sequence parallel 将成对 chunks 分发到各 rank，并用 SP-aware chunked VAE encoding 控制峰值显存；主模型直接做长视频 teacher-forcing AR 微调，可使用 BF16 或 end-to-end NVFP4。少步阶段以 standalone LoRA 做 DMD，teacher/student/real-score 同步到 W4A4。推理将线性层权重与激活量化为 NVFP4，KV cache 以 chunk 为单位量化（论文给出的存储式从约 \(4T_cHd\) bytes 降到 \(9T_cHd/8\)，实测约 3.6× 压缩），sink-token 滑窗内用定制 CUDA 并行解量化；VAE 在独立 stream 上边生成边解码。非 Blackwell 用多卡 SP inference 替代原生 NVFP4 加速。
+- **输出：** 720p 流式、可多次切换 prompt 的长视频；主模型可叠加 4/3/2-step LoRA，在 GB200 NVL72 的论文口径下最高 45.7 FPS 端到端吞吐。
+
+相对 LongLive 1.0，2.0 更换为 5B Wan2.2 基座、引入真实 multi-shot 数据与 shot-level attention sink，并把量化/并行覆盖训练、蒸馏、KV 和 VAE；相对 Self/Causal Forcing，主 AR 模型不需要 ODE 初始化，DMD 只负责独立的实时 LoRA。
+
+### 实验结果
+
+**作者主张：** 这是首个面向长视频生成的 end-to-end NVFP4 训练与推理系统，训练最高加速约 2.15×，推理最高约 1.84×，5B 模型达到 45.7 FPS。
+
+实验实际支持：
+
+- **公开模型总表：** BF16 LongLive-2.0-5B 为 **24.8 FPS / VBench 85.06**；NVFP4 4-step 为 **29.7 FPS / 84.51**；NVFP4 2-step 为 **45.7 FPS / 83.14**。LongLive-1.3B 为 20.7 FPS / 84.87。速度提升伴随 VBench 下降，2-step 不是免费加速。
+- **步数–速度：** 3-step 35.2 FPS，2-step 45.7 FPS；论文称相对既有方法最高约 2×。这些是 1280×720、Blackwell 集群与其端到端 pipeline 的特定口径，不能写成单卡 45.7 FPS。
+- **训练基础设施：** 随视频长度增加，GEMM 占比上升，NVFP4 收益更明显；Balanced SP + NVFP4 在论文设置中给出最高 **2.15×** 加速，并降低峰值显存。需按各表的 GPU 数与视频长度比较，不能把峰值倍数视为所有配置恒定值。
+- **60 s 长视频（MovieGenBench prompts + VBench-Long，4-step）：** LongLive-2.0 在比较方法中平均 rank 最好；NVFP4 的 Subject Consistency **97.62** 最优，BF16 的 Background Consistency **97.00** 最优。量化与 BF16 各胜不同维度，并非 NVFP4 全轴更高。
+- **推理部件消融：** W4A4、NVFP4 KV、并行解量化与异步 VAE 共同形成最高约 **1.84×** 端到端加速；KV 存储约 3.6× 压缩。作者明确强调 end-to-end FPS，不只统计 DiT。
+
+**证据未支持：** GB200 上的 NVFP4 加速可原样迁移到 H100/A100；VBench 83.14 的 2-step 模型质量优于 4-step/BF16；多镜头 benchmark 已覆盖叙事一致性与剪辑质量；“clean pipeline”说明 DMD 不再有用——论文仍用 DMD 训练实时 LoRA。
+
+### 总结讨论
+
+LongLive-2.0 的贡献是算法–基础设施收口，而不是替代 LongLive 1.0 的三项算法 Insight。1.0 解决 train-long–test-long、KV-recache 与 frame sink；2.0 解决 5B 长视频怎样训练、怎样把少步蒸馏以 LoRA 插拔、怎样让 4-bit model/KV 与 VAE 真正端到端跑快。它还给出一个重要谱系修正：主 AR 能力可以由高质量长视频 TF 直接得到，ODE/DMD 不必承担所有能力迁移；但实时化仍使用 DMD。阅读判断：适合作为“长视频生成系统层”的收尾卡片；不能把 NVFP4 吞吐写成新的生成建模定律，也不能把 prompt 交互等同动作世界模型。
+
+### 代码与数据
+
+- **代码：** [NVlabs/LongLive](https://github.com/NVlabs/LongLive)，main 分支为 2.0，1.0 保留在 `v1.0` 分支；仓库声明 Apache-2.0。
+- **模型：** 仓库/项目页提供 LongLive-2.0-5B、NVFP4 4-step / 2-step 等权重入口；以 release 页面实际文件为准。
+- **数据：** 论文使用长单镜头与 multi-shot 策展数据，具体语料规模、来源与可再分发性需按论文附录/仓库数据说明核对；完整训练集并非由代码仓库自动提供。
+- **实现边界：** NVFP4 路径依赖 Transformer Engine、定制 CUDA/Triton kernel 与 Blackwell；非 Blackwell 文档走 sequence-parallel 推理。
+
+### 局限、失败案例与开放问题
+
+- NVFP4 的实质加速依赖 Blackwell Tensor Cores；H100/A100 只能用 SP 等替代路线。
+- 2-step 45.7 FPS 的 VBench 低于 4-step 与 BF16，速度–质量权衡明确存在。
+- 多镜头和 prompt 切换仍是文本接口，没有相机/动作控制与闭环环境反馈。
+- 真实 long multi-shot 数据质量是 clean pipeline 成立的重要前提，数据不完整公开会影响复现。
+- 系统包含量化、SP、LoRA、KV kernel、异步 VAE，多部件组合使跨硬件公平复现困难。
+- 60 s 指标与演示不能证明任意时长无漂移；长程叙事和镜头转场仍缺统一标准。
+
+---
+
+## 10. minWM: A Full-Stack Open-Source Framework for Real-Time Interactive Video World Models
 
 **作者：** Min Zhao, Hongzhou Zhu, Bokai Yan, Zihan Zhou, Yimin Chen, Wenqiang Sun, Kaiwen Zheng, Guande He, Xiao Yang, Chongxuan Li, Fan Bao, Jun Zhu  
 **年份与发表：** 2026，arXiv preprint。arXiv:2605.30263。Min Zhao 为项目负责人；Hongzhou Zhu、Bokai Yan、Zihan Zhou、Yimin Chen 共同一作；Fan Bao / Jun Zhu 为顾问。生数 / 清华 / 人大 / HKUST / UT Austin。尚无 DOI / 正式出版页。  
