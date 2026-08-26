@@ -8,7 +8,7 @@
       "robot learning",
       "video generation",
       "video representation",
-      "world action model"
+      "World Action Model"
     ],
     "summary": "报告标签 ：video representation, latent action, world action model, robot learning, video generation",
     "paper_ids": [
@@ -27,7 +27,7 @@
     "tags": [
       "4D重建",
       "HOI",
-      "World-Action-Model",
+      "World Action Model",
       "动作流",
       "周报",
       "因果建模",

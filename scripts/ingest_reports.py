@@ -109,10 +109,24 @@ def normalized_title(title: str) -> str:
     return re.sub(r"[^a-z0-9]+", "", title.casefold())
 
 
+TAG_CANONICAL_CASE = {
+    "worldactionmodel": "World Action Model",
+    "vla": "VLA",
+    "hoi": "HOI",
+    "3d/4d": "3D/4D",
+}
+
+
+def tag_identity(tag: str) -> str:
+    """Compare tags without case, whitespace, or hyphen differences."""
+    return re.sub(r"[-‐‑‒–—\s]+", "", tag).casefold()
+
+
 def normalize_tag(tag: str) -> str:
-    """Normalize human-authored list syntax without changing tag meaning."""
+    """Normalize human-authored list syntax and stable tag casing."""
     tag = re.sub(r"^[\s\[\]【】]+|[\s\[\]【】]+$", "", tag)
-    return re.sub(r"\s+", " ", tag).strip()
+    tag = re.sub(r"\s+", " ", tag).strip()
+    return TAG_CANONICAL_CASE.get(tag_identity(tag), tag)
 
 
 IMAGE_URL_RE = re.compile(r"\.(?:png|jpe?g|gif|webp|svg)(?:\?|#|$)", re.I)
@@ -467,15 +481,14 @@ def prefer_text(old: str, new: str) -> str:
 
 
 def merge_tags(*groups: list[str]) -> list[str]:
-    tags = {
-        normalized
-        for group in groups
-        for tag in (group or [])
-        if (normalized := normalize_tag(tag))
-    }
-    if tags - {PLACEHOLDER_TAG}:
-        tags.discard(PLACEHOLDER_TAG)
-    return sorted(tags, key=str.casefold)
+    tags: dict[str, str] = {}
+    for group in groups:
+        for tag in group or []:
+            if normalized := normalize_tag(tag):
+                tags.setdefault(tag_identity(normalized), normalized)
+    if any(tag != PLACEHOLDER_TAG for tag in tags.values()):
+        tags.pop(tag_identity(PLACEHOLDER_TAG), None)
+    return sorted(tags.values(), key=str.casefold)
 
 
 def figure_quality(figure: dict[str, str] | None) -> int:
