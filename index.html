@@ -157,10 +157,11 @@
           </header>
 
           <nav class="readme-index" aria-label="README 目录">
-            <a href="#readme-preview"><strong>01</strong><span>本地预览</span></a>
-            <a href="#readme-workflow"><strong>02</strong><span>贡献修改</span></a>
-            <a href="#readme-collaboration"><strong>03</strong><span>AI 与周报</span></a>
-            <a href="#readme-boundary"><strong>04</strong><span>数据边界</span></a>
+            <a href="#readme-boundary"><strong>01</strong><span>了解网页</span></a>
+            <a href="#readme-workflow"><strong>02</strong><span>同步仓库</span></a>
+            <a href="#readme-collaboration"><strong>03</strong><span>AI 更新</span></a>
+            <a href="#readme-preview"><strong>04</strong><span>预览结果</span></a>
+            <a href="#readme-submit"><strong>05</strong><span>审阅提交</span></a>
           </nav>
 
           <section class="readme-topics" aria-labelledby="readme-topics-heading">
@@ -177,51 +178,6 @@
                 <span><i class="legend-high"></i>深色 · 收录最多</span>
               </div>
             </div>
-          </section>
-
-          <section class="readme-section readme-preview" aria-labelledby="readme-preview">
-            <div class="readme-section-heading">
-              <span>Terminal · read only</span>
-              <h3 id="readme-preview">在本地启动只读预览</h3>
-            </div>
-            <p>克隆仓库后，在仓库根目录启动静态 HTTP 服务。该命令只读取项目文件，不会安装依赖、修改论文数据或产生 Git commit。</p>
-            <div class="terminal-block">
-              <div class="terminal-heading"><span>你在终端执行</span><strong>启动与停止</strong></div>
-              <pre><code># 替换为你在本机克隆知域仓库的实际路径
-cd /path/to/zhiyu
-
-# 看到提示才说明目录正确
-test -f index.html &amp;&amp; test -d scripts &amp;&amp; echo "已进入知域仓库根目录"
-python3 -m http.server 8080
-
-# 浏览器打开 http://localhost:8080/
-# 预览结束后在终端按 Ctrl+C 停止服务</code></pre>
-            </div>
-            <p class="readme-notice"><strong>不要双击 index.html。</strong> 地址栏以 <code>file://</code> 开头时，浏览器会阻止页面读取 JSON 和 Markdown；正确地址应以 <code>http://localhost:8080/</code> 开头。</p>
-          </section>
-
-          <section class="readme-section readme-workflow flow-section" data-flow-step="1" aria-labelledby="readme-workflow">
-            <div class="readme-section-heading">
-              <span>你在终端执行</span>
-              <h3 id="readme-workflow">同步仓库并创建工作分支</h3>
-            </div>
-            <p>每次更新从独立分支开始。这样 AI 产生的修改与主分支隔离，也方便团队通过 Pull Request 审阅。</p>
-            <div class="terminal-block">
-              <div class="terminal-heading"><span>Terminal · Step 1</span><strong>同步并建分支</strong></div>
-              <pre><code># 每次打开新终端，都先进入知域仓库根目录
-cd /path/to/zhiyu
-test -f index.html &amp;&amp; test -d scripts &amp;&amp; echo "已进入知域仓库根目录"
-
-# 若团队默认分支是 master，请把下面的 main 改为 master
-git switch main
-git pull --ff-only
-# 将 [topic] 和 [date] 替换为实际内容，例如 papers/hoi-2026-08-20
-# -c 表示新建分支。若提示 already exists：
-#   尚未合入 main 时，去掉 -c 继续用同一条分支：git switch papers/[topic]-[date]
-#   已经合入过（或远程仍留着旧分支）时，换一个新名字再创建，例如 papers/hoi-2026-08-20-2
-git switch -c papers/[topic]-[date]</code></pre>
-            </div>
-            <p class="flow-next">完成后继续第 2 步，在下面选择一种 AI 任务。</p>
           </section>
 
           <section class="readme-section" aria-labelledby="readme-boundary">
@@ -251,6 +207,31 @@ git switch -c papers/[topic]-[date]</code></pre>
             <div class="readme-section-heading"><span>Evidence</span><h3 id="readme-content">内容与外部资源</h3></div>
             <p>本站展示的是研究资料的整理结果，不替代论文原文。论文元数据、摘要、阅读判断和专题报告可能存在遗漏或过时信息，关键结论应回到原论文和官方项目页核验。</p>
             <p>外部论文、代码、模型和项目链接由各自网站维护，其可用性、许可协议、隐私政策与内容准确性不受本站控制。</p>
+          </section>
+
+          <section class="readme-section readme-workflow flow-section" data-flow-step="1" aria-labelledby="readme-workflow">
+            <div class="readme-section-heading">
+              <span>你在终端执行</span>
+              <h3 id="readme-workflow">同步仓库并创建工作分支</h3>
+            </div>
+            <p>每次更新前先确认工作区没有需要保留的未提交修改，再同步主分支并创建独立工作分支。这样 AI 产生的修改与主分支隔离，也方便团队通过 Pull Request 审阅。</p>
+            <div class="terminal-block">
+              <div class="terminal-heading"><span>Terminal · Step 1</span><strong>同步并建分支</strong></div>
+              <pre><code># 每次打开新终端，都先进入知域仓库根目录
+cd /path/to/zhiyu
+test -f index.html &amp;&amp; test -d scripts &amp;&amp; echo "已进入知域仓库根目录"
+git status --short
+
+# 如果上面的命令显示未提交修改，请先确认并妥善处理，不要直接 pull
+git switch main
+git pull --ff-only
+# 将 [topic] 和 [date] 替换为实际内容，例如 papers/hoi-2026-08-20
+# -c 表示新建分支。若提示 already exists：
+#   尚未合入 main 时，去掉 -c 继续使用该分支：git switch papers/[topic]-[date]
+#   已经合入过时，换一个新名字再创建，例如 papers/hoi-2026-08-20-2
+git switch -c papers/[topic]-[date]</code></pre>
+            </div>
+            <p class="flow-next">完成后继续第 2 步，在下面选择一种 AI 任务。</p>
           </section>
 
           <section class="readme-section readme-prompts flow-section" data-flow-step="2" aria-labelledby="readme-collaboration">
@@ -298,14 +279,33 @@ git switch -c papers/[topic]-[date]</code></pre>
               </div>
               <pre><code id="prompt-weekly">正在从 README.md 载入完整周报提示词…</code></pre>
             </article>
-            <p class="flow-next">AI 完成并报告校验结果后，继续第 3 步审阅文件。</p>
+            <p class="flow-next">AI 完成或周报导入后，继续第 3 步预览实际结果。</p>
           </section>
 
-          <section class="readme-section readme-submit flow-section" data-flow-step="3" aria-labelledby="readme-submit">
+          <section class="readme-section readme-preview flow-section" data-flow-step="3" aria-labelledby="readme-preview">
+            <div class="readme-section-heading">
+              <span>你在终端执行</span>
+              <h3 id="readme-preview">在本地预览更新结果</h3>
+            </div>
+            <p>AI 修改或周报导入完成后，在仓库根目录启动静态 HTTP 服务，检查新增论文、报告、标签和配图是否正确。</p>
+            <div class="terminal-block">
+              <div class="terminal-heading"><span>Terminal · Step 3</span><strong>启动与停止</strong></div>
+              <pre><code>cd /path/to/zhiyu
+test -f index.html &amp;&amp; test -d scripts &amp;&amp; echo "已进入知域仓库根目录"
+python3 -m http.server 8080
+
+# 浏览器打开 http://localhost:8080/
+# 预览结束后在终端按 Ctrl+C 停止服务</code></pre>
+            </div>
+            <p class="readme-notice"><strong>不要双击 index.html。</strong> 地址栏以 <code>file://</code> 开头时，浏览器会阻止页面读取 JSON 和 Markdown；正确地址应以 <code>http://localhost:8080/</code> 开头。</p>
+            <p class="flow-next">确认页面展示正确后，继续第 4 步审阅并提交。</p>
+          </section>
+
+          <section class="readme-section readme-submit flow-section" data-flow-step="4" aria-labelledby="readme-submit">
             <div class="readme-section-heading"><span>你回到终端执行</span><h3 id="readme-submit">审阅、提交并创建 Pull Request</h3></div>
             <p>先阅读 AI 的结果，再逐项检查实际文件差异。只有确认内容正确后才暂存和提交。</p>
             <div class="terminal-block">
-              <div class="terminal-heading"><span>Terminal · Step 3</span><strong>审阅并提交</strong></div>
+              <div class="terminal-heading"><span>Terminal · Step 4</span><strong>审阅并提交</strong></div>
               <pre><code># 如果换过终端窗口，先重新进入知域仓库根目录
 cd /path/to/zhiyu
 test -f index.html &amp;&amp; test -d scripts &amp;&amp; echo "已进入知域仓库根目录"

@@ -105,7 +105,7 @@ def main() -> None:
     if "**报告标签**：[" in index_html:
         errors.append("web README prompt uses bracketed report tags")
     weekly_prompt = re.search(
-        r"## 每周论文更新模式(?:（方式四）)?[\s\S]*?```text\s*\n([\s\S]*?)\n```",
+        r"<summary><strong>方式四：每周论文自动抓取</strong></summary>[\s\S]*?```text\s*\n([\s\S]*?)\n```",
         readme,
     )
     if not weekly_prompt:
@@ -116,12 +116,16 @@ def main() -> None:
     ):
         errors.append("README weekly prompt is incomplete")
     ordered_sections = (
+        "## 网页功能与数据边界",
+        "## 团队贡献",
         "## AI 更新模式",
         "<summary><strong>方式一：让 AI 直接检索论文</strong></summary>",
         "<summary><strong>方式二：提供论文列表，让 AI 细化整理</strong></summary>",
         "<summary><strong>方式三：专题检索与综述报告</strong></summary>",
-        "## 每周论文更新模式（方式四）",
-        "## 团队贡献",
+        "<summary><strong>方式四：每周论文自动抓取</strong></summary>",
+        "## 增量导入",
+        "## 本地预览",
+        "## 审阅并提交 Pull Request",
         "## 评论与软删除",
     )
     positions = [readme.find(section) for section in ordered_sections]
