@@ -17,6 +17,7 @@ def main() -> None:
     reports = json.loads((ROOT / "data" / "reports.json").read_text(encoding="utf-8"))
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
     index_html = (ROOT / "index.html").read_text(encoding="utf-8")
+    styles = (ROOT / "assets" / "styles.css").read_text(encoding="utf-8")
     required = {
         "id",
         "title",
@@ -78,6 +79,15 @@ def main() -> None:
         if unknown_papers:
             errors.append(f"{report['id']}: unknown papers {sorted(unknown_papers)}")
 
+    tag_variants: dict[str, set[str]] = {}
+    for item in (*papers, *reports):
+        for tag in item.get("tags", []):
+            identity = re.sub(r"[-‐‑‒–—\s]+", "", tag).casefold()
+            tag_variants.setdefault(identity, set()).add(tag)
+    for variants in tag_variants.values():
+        if len(variants) > 1:
+            errors.append(f"equivalent duplicate tags: {sorted(variants)}")
+
     readme_modes = (
         "方式一：直接检索论文",
         "方式二：整理指定列表",
@@ -105,7 +115,7 @@ def main() -> None:
     if "**报告标签**：[" in index_html:
         errors.append("web README prompt uses bracketed report tags")
     weekly_prompt = re.search(
-        r"## 每周论文更新模式(?:（方式四）)?[\s\S]*?```text\s*\n([\s\S]*?)\n```",
+        r"<summary><strong>方式四：每周论文自动抓取</strong></summary>[\s\S]*?```text\s*\n([\s\S]*?)\n```",
         readme,
     )
     if not weekly_prompt:
@@ -116,17 +126,39 @@ def main() -> None:
     ):
         errors.append("README weekly prompt is incomplete")
     ordered_sections = (
+        "## 网页功能与数据边界",
+        "## 团队贡献",
         "## AI 更新模式",
         "<summary><strong>方式一：让 AI 直接检索论文</strong></summary>",
         "<summary><strong>方式二：提供论文列表，让 AI 细化整理</strong></summary>",
         "<summary><strong>方式三：专题检索与综述报告</strong></summary>",
-        "## 每周论文更新模式（方式四）",
-        "## 团队贡献",
+        "<summary><strong>方式四：每周论文自动抓取</strong></summary>",
+        "## 增量导入",
+        "## 本地预览",
+        "## 审阅并提交 Pull Request",
         "## 评论与软删除",
     )
     positions = [readme.find(section) for section in ordered_sections]
     if any(position < 0 for position in positions) or positions != sorted(positions):
         errors.append("README workflow sections are out of order")
+
+    visual_order = (
+        (r"\.readme-intro", 0),
+        (r"\.readme-index", 1),
+        (r"\.readme-topics", 2),
+        (r'\.readme-section\[aria-labelledby="readme-boundary"\]', 3),
+        (r'\.readme-section\[aria-labelledby="readme-storage"\]', 4),
+        (r'\.readme-section\[aria-labelledby="readme-content"\]', 5),
+        (r"\.readme-workflow", 6),
+        (r"\.readme-prompts", 7),
+        (r"\.readme-preview", 8),
+        (r"\.readme-submit", 9),
+    )
+    for selector, expected_order in visual_order:
+        if not re.search(rf"{selector}\s*\{{\s*order:\s*{expected_order}\s*;\s*\}}", styles):
+            errors.append(
+                f"web README visual order mismatch: {selector} should be {expected_order}"
+            )
 
     if errors:
         raise SystemExit("\n".join(errors))

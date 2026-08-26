@@ -90,7 +90,7 @@ async function loadReadmePrompts() {
       let section;
       if (target.id === "prompt-weekly") {
         section = readme.match(
-      /## 每周论文更新模式(?:（方式四）)?[\s\S]*?```text\s*\n([\s\S]*?)\n```/,
+          /<summary><strong>方式四：每周论文自动抓取<\/strong><\/summary>[\s\S]*?```text\s*\n([\s\S]*?)\n```/,
         );
       } else {
         const title = escapeRegExp(target.dataset.readmePrompt);

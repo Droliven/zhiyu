@@ -1,6 +1,27 @@
 [
   {
     "id": "report-89efbb2378",
+    "title": "视频表征、潜在动作与世界动作模型论文整理",
+    "date": "2026-08-26",
+    "tags": [
+      "latent action",
+      "robot learning",
+      "video generation",
+      "video representation",
+      "World Action Model"
+    ],
+    "summary": "报告标签 ：video representation, latent action, world action model, robot learning, video generation",
+    "paper_ids": [
+      "arxiv-2606-13674",
+      "arxiv-2607-14088",
+      "arxiv-2608-19613"
+    ],
+    "path": "content/reports/2026-08-26_curated_papers.md",
+    "source_file": "2026-08-26_curated_papers.md",
+    "content_sha1": "cb14f9fea3d75129d1ac1ce1b17563f46b7f7f15"
+  },
+  {
+    "id": "report-5a20368080",
     "title": "知域指定论文精读：3D/4D 重建、几何优化与生成式视图合成",
     "date": "2026-08-26",
     "tags": [
@@ -15,8 +36,8 @@
       "arxiv-2607-09225",
       "arxiv-2608-04701"
     ],
-    "path": "content/reports/2026-08-26_curated_papers.md",
-    "source_file": "2026-08-26_curated_papers.md",
+    "path": "content/reports/2026-08-26_3d_4d_curated_papers.md",
+    "source_file": "2026-08-26_3d_4d_curated_papers.md",
     "content_sha1": "044129c10add1a6428dc75891ff3fc101c749453"
   },
   {
@@ -26,7 +47,7 @@
     "tags": [
       "4D重建",
       "HOI",
-      "World-Action-Model",
+      "World Action Model",
       "动作流",
       "周报",
       "因果建模",

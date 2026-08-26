@@ -624,14 +624,14 @@ main {
 .readme-intro { order: 0; }
 .readme-index { order: 1; }
 .readme-topics { order: 2; }
-.readme-preview { order: 3; }
-.readme-workflow { order: 4; }
-.readme-prompts { order: 5; }
-.readme-submit { order: 6; }
 #readme-boundary { scroll-margin-top: 18px; }
-.readme-section[aria-labelledby="readme-boundary"] { order: 7; }
-.readme-section[aria-labelledby="readme-storage"] { order: 8; }
-.readme-section[aria-labelledby="readme-content"] { order: 9; }
+.readme-section[aria-labelledby="readme-boundary"] { order: 3; }
+.readme-section[aria-labelledby="readme-storage"] { order: 4; }
+.readme-section[aria-labelledby="readme-content"] { order: 5; }
+.readme-workflow { order: 6; }
+.readme-prompts { order: 7; }
+.readme-preview { order: 8; }
+.readme-submit { order: 9; }
 
 .readme-intro {
   padding: 48px 0 38px;

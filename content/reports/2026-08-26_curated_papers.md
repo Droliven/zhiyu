@@ -1,154 +1,139 @@
-# 知域指定论文精读：3D/4D 重建、几何优化与生成式视图合成
+# 视频表征、潜在动作与世界动作模型论文整理
 
-**报告标签**：3D/4D, 重建, 几何一致性, 视频生成
+**报告标签**：video representation, latent action, world action model, robot learning, video generation
 
-**整理日期：** 2026-08-26
+本报告核验用户给出的三条线索。其中“rapwam”按主题与检索结果规范化为 **RepWAM**；精确拼写 RAPWAM 指向早期并行 Prolog 架构，与本列表另外两篇论文无关。以下内容以 arXiv 正文、作者项目页及官方代码仓库为依据。论文均为 2026 年 arXiv 预印本，尚未核验正式会议或期刊录用信息。
 
-> 本报告逐篇核验三项指定工作，覆盖原文方法与实验、官方项目页、代码开放状态及可复现边界。
+## 1. VideoRAE: Taming Video Foundation Models for Generative Modeling via Representation Autoencoders
 
-## 1. UniWorld-View: Large-Baseline View Synthesis via Video Diffusion Models
+**作者：** Zhihao Xie, Junfeng Wu, Xinting Hu, Junchao Huang, Li Jiang  
+**年份与发表：** 2026，arXiv preprint，arXiv:2607.14088；DOI 待核验  
+**可靠入口：** [arXiv](https://arxiv.org/abs/2607.14088)｜[项目](https://zhxie0117.github.io/VideoRAE/)｜[代码](https://github.com/zhxie0117/VideoRAE)｜[Hugging Face Papers](https://huggingface.co/papers/2607.14088)  
+**类别标签：** video representation, representation autoencoder, video tokenizer, video generation, V-JEPA 2, VideoMAEv2  
+**代表图：** VideoRAE，Fig. 1，对比传统像素重建驱动的 3D-VAE 与冻结视频基础模型驱动的表示自编码器。来源：[Fig. 1 原图](https://arxiv.org/html/2607.14088v1/x1.png)
 
-**作者：** Haiyang Zhou, Wangbo Yu, Chaoran Feng, Xunyu Zhou, Yonghong Tian, Li Yuan  
-**年份与发表：** 2026，arXiv preprint，v1 于 2026-08-05 提交；截至核验日未发现正式出版页  
-**arXiv ID：** 2608.04701  
-**DOI：** 无独立出版 DOI；仅有 arXiv DataCite DOI 10.48550/arXiv.2608.04701  
-**可靠入口：** [arXiv](https://arxiv.org/abs/2608.04701)｜[HTML 全文](https://arxiv.org/html/2608.04701v1)｜[项目页](https://zhouhyocean.github.io/uniworld-view/)｜[官方代码](https://github.com/PKU-YuanGroup/UniWorld-View)｜[AlphaXiv](https://alphaxiv.org/abs/2608.04701)  
-**类别标签：** 大基线新视角合成, 视频扩散, 几何条件生成, 4D 重建, 相机控制  
-**证据范围：** 已核验 arXiv v1 全文的方法与实验章节、官方项目页和官方代码仓库。
+![VideoRAE Fig. 1](https://arxiv.org/html/2607.14088v1/x1.png)
 
 ### 当前挑战
 
-稀疏单目图像或视频无法覆盖大幅视角变化中新显露的区域。NeRF/3DGS 一类重建方法依赖密集多视图与逐场景优化；纯相机位姿条件的生成方法又缺少显式几何约束。已有点云条件方法虽然提供深度和相机先验，但大基线下会把前景纹理撕裂到背景、把背景错投到前景，并错误显示背向表面，给扩散模型输入相互矛盾的几何提示。
+视频生成通常在 3D-VAE 或离散 tokenizer 的压缩空间中训练，但这些编码器主要优化像素重建和对抗损失，可能弱化高层语义及长时空结构，迫使后续生成器重新学习复杂动态。另一方面，V-JEPA 2、VideoMAEv2 等视频基础模型具有强理解表征，但冻结特征能否同时做到高压缩、可重建且适合自回归和扩散生成，此前缺少系统验证。
 
 ### 研究动机
 
-作者的核心动机是把“相机变换”交给显式 3D 渲染，把“孔洞补全与外观生成”交给视频扩散先验，同时在进入扩散模型前消除点云可见性歧义。由此，模型不必仅从相机编码中隐式推断几何，也不必要求输入已经覆盖目标视角。对知域而言，这项工作连接了 feed-forward 几何、生成式新视角合成与单目 4D 重建，但它是相机条件的视觉生成系统，不是可交互物理世界模型。
+作者的核心主张是：与其从零训练像素驱动的编码器，不如直接把冻结 VFM 的分层特征变成生成潜空间，使语义与宏观时空结构在生成器训练前就进入 latent。阅读判断是，这项工作主要回答“理解表征能否成为视频生成 tokenizer”，并不证明该 latent 自动获得可控物理状态、因果变量或机器人动作语义。
 
 ### 技术方案
 
-- **输入：** 一张图像或一段单目视频、源相机/估计深度与用户指定的目标相机轨迹；训练时还使用静态多视图三元组和动态单目视频对。
-- **过程：** 先由 feed-forward 几何模型估计深度、相机与点云；再用三次重投影累积源视图可见性掩码，并以表面法线过滤背向点；随后把点云渲染及有效掩码送入 VACE Context Blocks，把完整但与目标视角不对齐的源视频送入参考分支，以双流条件驱动基于 WAN2.1-14B/VACE 的视频扩散。用于 4DGS 时，系统先在冻结时刻生成一组静态视角作为外观锚点，再在固定相机位姿上逐视角生成同步动态视频并更新遮挡内容，最后联合源视频优化动态 3DGS。
-- **输出：** 沿目标相机轨迹生成的 3D/4D 新视角视频；可进一步输出供动态 3D Gaussian Splatting 优化使用的同步多视图视频与 4DGS 表示。
+- **输入：** 视频片段，以及冻结的 V-JEPA 2 或 VideoMAEv2 编码器产生的多尺度时空特征。
+- **过程：** 聚合 VFM 不同层级特征，以轻量 1D self-attention projector 压缩；连续分支直接服务 DiT，离散分支用 multi-codebook high-dimensional SimVQ 量化；解码器以像素重建、LPIPS、GAN 及局部—全局 representation alignment（REPA）联合训练，连续分支不依赖 KL 正则。
+- **输出：** 可重建视频的连续 latent 或离散 token，并供扩散式或自回归式视频生成器使用。
 
 ### 实验结果
 
-- **实验设置：** 视频统一为 480×832、81 帧。Context Blocks 在 100K 静态多视图三元组上训练 10K iterations；Ref-DiT 在 100K 自监督动态单目视频对上训练 10K iterations；两阶段 batch size 均为 8，使用 32 张 GPU。论文未报告 GPU 型号、总训练时长或能耗。
-- **实验事实：** WorldScore 上，UniWorld-View 的 Static/Dynamic 分数为 85.53/76.09；Static 在表中最高，Dynamic 略低于 WorldScape-0.2 的 76.23。其 Camera Control、Object Control、Content Alignment 分别为 97.72、88.98、86.61，均为表中最高，但 Subjective Quality 63.12、Motion Smoothness 60.42 并非领先。
-- **实验事实：** 在沿用 SEVA 划分的 zero-shot NVS 上，RealEstate10K、CO3D、DL3DV 的 PSNR/SSIM 分别为 21.7261/0.7833、19.9958/0.5787、15.8190/0.4462，三组均为表中最高；LPIPS 只在 CO3D 最优，RealEstate10K 与 DL3DV 均落后于最佳对照，因此“所有感知指标全面领先”不成立。
-- **作者主张：** 遮挡感知点云条件与双流扩散共同改善大基线下的相机可控性、几何一致性和视觉质量。
-- **阅读判断：** 主表支持系统整体优于所列对照，但论文没有独立消融三次重投影、法线过滤、参考分支和混合数据策略，也未报告随机波动；各组件的因果贡献和排行榜差异的稳定性仍待验证。WorldScore 是生成质量/控制评测，不能替代真实 4D 几何误差或物理一致性评测。
+作者在 UCF-101 与 TokenBench 上评估重建，在 UCF-101 上评估类别条件生成，并做 2B 规模文本到视频替换实验。离散 V-JEPA 2 版本在 UCF-101 / TokenBench 获得 rFVD 13 / 28；UCF-101 类别条件生成中，AR 与 DiT 分支分别报告 gFVD 40 与 93。与 LARP 的受控训练曲线相比，VideoRAE 在 400 epoch 达到相近于 LARP 2000 epoch 的 gFVD，支持论文所称约 5 倍收敛加速，但这不是端到端训练成本或跨数据集速度定律。REPA 消融把连续/离散 gFVD 分别从 105/67 降到 93/40；多尺度层 8–24 配置报告 PSNR 29.39、gFVD 40。实验支持“VFM latent 对所测视频生成设置有效”，尚不能外推到具身控制或真实世界因果动力学。
 
 ### 总结讨论
 
-UniWorld-View 的实质差异不是再增加一种相机编码，而是先把单目观测变成遮挡感知的显式点云渲染，再让大视频扩散模型只在可靠几何锚点与源外观之间补全。它适合大基线 NVS、单目视频重定向和为动态 3DGS制造额外视图；对需要度量几何、可编辑拓扑或物理交互的任务，只能作为视图生成前端，不能把生成一致性等同于真实场景恢复。
+VideoRAE 的实质贡献是把 frozen VFM encoder、强压缩 projector、双形态 latent 和解码侧语义对齐组合成统一 tokenizer。值得注意的是，VideoMAEv2 版本有更强像素重建，而 V-JEPA 2 版本有更好 gFVD，说明重建保真并不等同于生成友好性。对知域的直接价值在于为“共享视频表征能否同时服务理解与生成”提供可操作接口；它不是 world-action model，也没有动作条件闭环实验。
 
 ### 代码与数据
 
-官方仓库已公开推理代码、配置、模型下载脚本和 Gradio demo，项目代码许可证为 Apache-2.0；README 提供 MoSca bundle-adjustment 与 STream3R feed-forward 两种几何前端，并建议至少 60 GB 显存。4D 重建实现位于 `recon` 分支。权重可由脚本从 Hugging Face 下载，但完整 100K+100K 训练数据配对和训练流程是否全部可重建，仓库说明不足，需人工复现核验。
+官方项目页与 GitHub 仓库可访问，仓库标注 MIT License；当前公开内容与权重、训练配置的完整可复现程度仍应以实际 release 文件逐项核验。实验使用 UCF-101、TokenBench、Kinetics-600 等数据，完整文本到视频训练数据组成和许可边界需回到仓库说明核验。
 
 ### 局限、失败案例与开放问题
 
-- 依赖基础视频扩散模型的生成能力；官方仓库明确指出复杂、超出基座生成分布的场景可能失败。
-- 大基线下新显露区域仍由模型生成，视觉合理不保证几何或语义真实。
-- 论文缺少组件消融、随机种子/置信区间和真实度量 4D 几何评测。
-- 训练使用 32 张 GPU，但未披露 GPU 型号、总时长、能耗及完整数据清单，训练复现成本难以审计。
-- 4D 多视图由逐视角生成与遮挡传播构造，动态前景的跨视角身份/纹理漂移仍是潜在开放问题。
+- 主要结果来自视频重建和生成基准，没有动作控制或真实交互验证。
+- 与工业级 VAE 的训练数据、算力和预训练来源不完全等价，SOTA 表述只适用于论文给定协议。
+- 约 5 倍是特定收敛曲线比较，不能解释为所有训练流程或推理均加速 5 倍。
+- frozen VFM 的语义偏差、训练数据覆盖及跨领域迁移失败尚未系统展开。
+- 2B 文生视频替换实验支持相对收敛优势，但不足以建立更大模型规模下的普遍规律。
 
-## 2. Glob3R: Global Structure-from-Motion with 3D Foundation Models
+## 2. What Matters for Latent Actions in Robot Learning
 
-**作者：** Junyuan Deng, Heng Li, Kejie Qiu, Lingteng Qiu, Rui Peng, Weichao Shen, Weihao Yuan, Siyu Zhu, Zilong Dong, Ping Tan  
-**年份与发表：** 2026，arXiv preprint，v1 于 2026-07-10 提交；截至核验日未发现正式出版页  
-**arXiv ID：** 2607.09225  
-**DOI：** 无独立出版 DOI；仅有 arXiv DataCite DOI 10.48550/arXiv.2607.09225  
-**可靠入口：** [arXiv](https://arxiv.org/abs/2607.09225)｜[HTML 全文](https://arxiv.org/html/2607.09225v1)｜[项目页](https://junyuandeng.github.io/Glob3r/)｜[官方代码仓库](https://github.com/aigc3d/Glob3R)｜[AlphaXiv](https://alphaxiv.org/abs/2607.09225)  
-**类别标签：** 全局 SfM, 3D foundation model, 稠密匹配, 长序列重建, bundle adjustment  
-**证据范围：** 已核验 arXiv v1 全文、附录失败案例与运行时表、官方项目页和官方仓库。
+**作者：** Xizhou Bu, Qingda Hu, Lei Zhou, Lingfeng Zhang, Yingbo Tang, Zihao Liu, Xinyi Tao, Zhiqiang Ma, Qingqiu Huang, Chufeng Tang, Hongbo Wang, Jing Zhang, Jiayi Ma, Hangjun Ye, Wei Li, Xiaoshuai Hao  
+**年份与发表：** 2026，arXiv preprint，arXiv:2608.19613；DOI 待核验  
+**可靠入口：** [arXiv](https://arxiv.org/abs/2608.19613)｜[项目](https://carldegio.github.io/latent_action.github.io/)｜[代码](https://github.com/XizoB/What-Matters-for-Latent-Actions-in-Robot-Learning)  
+**类别标签：** latent action model, robot learning, VLA, representation learning, manipulation, empirical study  
+**代表图：** What Matters for Latent Actions in Robot Learning，Fig. 1，统一的三阶段训练与评测框架。来源：[Fig. 1 原图](https://arxiv.org/html/2608.19613v1/main.png)
+
+![What Matters for Latent Actions in Robot Learning Fig. 1](https://arxiv.org/html/2608.19613v1/main.png)
 
 ### 当前挑战
 
-VGGT、Pi3X 等 3D foundation model 能快速给出相机和点图，但几何精度仍不足；面对长序列或大规模无序图像集时通常要切窗，窗口级结果会出现尺度不一致、漂移和接缝。经典 SfM 的全局优化精确，却高度依赖可靠匹配，在弱纹理、重复结构、前向驾驶和大规模图像集上既昂贵又容易被错误边破坏。
+潜在动作模型常用无动作视频学习帧间转移，但现有工作在建模范式、正则、latent 维度、动作头和数据规模上各自采用不同设置，难以判断性能来自哪项设计。更实际的障碍是，下游机器人策略评测昂贵，而 probe loss 或重建误差等廉价代理指标是否能可靠预测控制成功率并未得到统一检验。
 
 ### 研究动机
 
-作者希望让 feed-forward 预测从“最终答案”变成“可优化初始化”，再把 foundation model 的鲁棒先验与经典 SfM 的全局几何约束结合。关键接口是把冻结 Pi3X 的 token 变成稠密 image warp，再筛成跨窗口的稀疏多视图 tracks；这些 tracks 比直接拼接窗口位姿更适合逐帧 motion averaging 与 bundle adjustment。
+作者试图把代表性 LAM 统一到同一自编码框架，在相同三阶段流程下系统比较 41 项设计选择，并检验四种代理指标。其价值是控制混杂变量后给出工程优先级，而不是提出一个单一新模块。阅读判断是，论文所说的 latent action 是从观测转移中学习的紧凑表征；其“causal leakage”指未来帧进入 IDM 造成的信息捷径，不等同于 SCM 意义的因果识别或 `do(·)` 干预。
 
 ### 技术方案
 
-- **输入：** 有序图像序列，或把无序图像经检索排成的伪序列；若有相机标定可固定内参与畸变，否则共同优化。
-- **过程：** 冻结 Pi3X 主干及原有预测头，仅训练一个由 transformer decoder、DPT 和多尺度 refinement 组成的稠密匹配头，预测参考帧到邻帧的全分辨率 warp 与置信度；在重叠滑窗中按重投影覆盖率选关键帧，把高置信 warp 稀疏化成多视图 tracks 并合并为全局关联图；以最大生成树和 Pi3X 相对尺度初始化，然后依次执行鲁棒旋转平均、基于多视图射线一致性的平移/稀疏点估计、bundle adjustment，以及深度融合得到稠密几何。
-- **输出：** 全局一致的逐帧相机位姿、相机参数、稀疏多视图点和融合后的稠密场景几何，可用于新视角渲染。
+- **输入：** Stage I 的相邻无标签视频帧，Stage II 的视频—文本数据及自动标注 latent action，Stage III 的机器人观测、语言指令和少量物理动作数据。
+- **过程：** 在统一 IDM–FDM / consecutive-frame-difference autoencoding 框架中比较 LAPO、LAOF、CoMo、语义差分和光流等范式，以及 AE、VAE、VQ-VAE、Sparsity、SIGReg、不同正则强度与 8–1024 维 latent；随后比较 DAP、LAP、JAP 及混合动作头，并以 Linear/MLP Probe、SSIM Gain、MSE Gain 四项代理指标关联下游结果。
+- **输出：** 经 latent-action 数据微调的 VLM backbone，以及在 LIBERO、LIBERO-Plus、RoboTwin2.0 和真机任务上输出物理动作的策略。
 
 ### 实验结果
 
-- **实验事实：** Tanks and Temples 所列 14 个场景上，用优化位姿训练/评估渲染的平均 PSNR 为 19.56 dB，高于 COLMAP 18.73、SAIL-Recon 18.55、Pi3X 17.62；但不是每个场景都最优，例如 Church 略低于 GLOMAP，Courtroom 也低于 GLOMAP。
-- **实验事实：** TUM RGB-D 九序列平均轨迹 RMSE 为 3.2 cm，与 AMB3R 同均值；论文称其为所比较 uncalibrated 方法中最佳，但逐序列并非始终领先。KITTI 11 个序列平均 RMSE 为 13.21 m，低于 Scal3R 的 14.55 m 和 LoGeR 的 18.65 m；序列 01、06、10 等仍有对照更优。
-- **实验事实：** ETH3D 无序图像集上，Glob3R 在 5° 阈值的平均旋转/平移准确率为 100.0/91.3；在更严格 1° 阈值为 91.58/73.27。由于表中不同方法使用 5° 与 1° 两种阈值，不能跨列直接做无条件排名。
-- **实验事实：** 800 帧序列处理速度为 2.06 FPS，快于 COLMAP 0.14、GLOMAP 0.67 和 Pi3X 1.64 FPS，但明显慢于 DA3 8.10、FastVGGT 15.10、VGGT-SLAM 16.87 FPS。
-- **作者主张：** 显式 tracks 加全局优化能系统性修正 foundation model 的粗糙位姿与窗口尺度不一致，同时保持可扩展性。
-- **阅读判断：** 跨室内、驾驶、无序 SfM 和渲染评测的结果支持“精度—速度折中优于单纯 feed-forward/拼窗”这一结论；但 backbone、matching head 和优化后端强耦合，且官方代码尚未释放，当前无法独立复现训练、超参数和对照配置。
+论文在三套仿真基准中统一评测 41 项选择，并在 7-DoF Franka Panda + 1-DoF UMI gripper 上验证四个任务。作者报告：原始 LAPO 仍是强基线；简单语义特征差分有竞争力，而光流质量并不稳定转化为控制性能；正则强度通常比正则类型更关键；`d_z=32` 是所测设置的较佳折中；JAP 通过并行预测 latent 与物理动作持续约束 backbone，整体优于只在预训练使用 latent 的 DAP。代理指标只适合粗筛，同维度下 FDM 重建指标总体比 probe 指标相关性更强，跨 latent 维度时相关性下降。Stage II 数据从全量的 14.5% 扩到 100% 后三套基准均改善，LIBERO-Plus 最大提升 9.0 个百分点。真机汇总中 LA-Tuned 为 317/400，基线为 259/400，即 79.25% 对 64.75%，提升 14.5 个百分点；这是受控设置中的实验事实，不代表所有 LAM 都有同等收益。
 
 ### 总结讨论
 
-Glob3R 的贡献可概括为把学习到的稠密对应转译成经典全局 SfM 能消费的 tracks，并把所有图像而非仅窗口边界纳入优化。它对长序列 feed-forward 重建和可扩展 BA 很有参考价值，也适合作为 VGGT/Pi3X 类模型的后端；代价是失去纯前馈速度，且恢复上限受初始几何和匹配质量限制。
+这篇论文最重要的结论不是“某个新 LAM 胜出”，而是 latent action 的收益很大程度来自如何持续塑造 VLM backbone：联合 latent/physical action 目标比把 latent 当一次性预训练标签更有效。它还提醒，低 probe loss 不足以证明下游控制好，像素光流也不是更优动作表征的充分条件。对知域的意义在于提供可证伪的设计轴和统一消融模板；不能把这些相关性结果扩大成 latent action 已恢复真实因果动作变量。
 
 ### 代码与数据
 
-官方项目页和 GitHub 仓库已建立，但截至 2026-08-26，仓库仅含 README，`Inference Code Release` 与 `Evaluation Script` 均仍列为 TODO，未提供可运行实现、权重或明确许可证。论文使用 Tanks and Temples、TUM RGB-D、KITTI、ETH3D 等公开 benchmark；训练 matching head 所用数据构成和可获取性仍需结合代码发布进一步核验。
+作者项目页和官方 GitHub 仓库均可访问，项目页提供代码入口；论文使用 LIBERO、LIBERO-Plus、RoboTwin2.0、OXE 组成的视频数据与自采真机示范。仓库许可证、全部训练权重及 59M 视频标注数据的完整可复现性仍需逐项核验。
 
 ### 局限、失败案例与开放问题
 
-- 论文附录明确报告 Tanks and Temples Ballroom/Palace 一类失败：Pi3X 把单一房间预测成多个不一致片段，重复吊灯又产生错误匹配，后端只能部分修复。
-- matching head 建立在 Pi3X token 上，初始 foundation geometry 严重错误时，匹配与优化误差会级联。
-- 2.06 FPS 不是实时高速方案，且仍显著慢于多种 feed-forward/streaming 对照。
-- 部分实验的阈值、标定条件和失败/OOM 状态不同，需谨慎解释平均排名的公平性。
-- 官方代码、评测脚本、权重和许可证尚未落地，论文数字目前不可独立复核。
+- 结论集中在机械臂操作，尚未验证灵巧手、四足、人形或更长时程任务。
+- 41 项选择虽广，但仍受统一 backbone、数据混合和三阶段训练协议约束。
+- 代理指标对跨 latent 维度排序不可靠，不能替代完整策略评测。
+- IDM 访问未来帧存在信息捷径风险；瓶颈与正则不能保证语义可辨识或因果可解释。
+- 真机只有四项桌面任务、单一平台和固定相机视角，外部有效性有限。
+- 作者明确把更大规模野外视频和跨机器人平台泛化列为未来工作。
 
-## 3. One Video, One World: Turning Monocular Video into Physical 4D Scenes
+## 3. RepWAM: World Action Modeling with Representation Visual-Action Tokenizers
 
-**作者：** Junhao Chen, Boran Zhang, Mingjin Chen, Henghaofan Zhang, Saining Zhang, Congcong Zhu, Hao Zhao, Ruqi Huang, Zhihao Li, Yufei Wang  
-**年份与发表：** 2026，作者与 arXiv 标注 Accepted by ECCV 2026；截至核验日尚未发现可核对 DOI 的正式 proceedings 页面  
-**arXiv ID：** 2606.31388  
-**DOI：** 无独立出版 DOI；仅有 arXiv DataCite DOI 10.48550/arXiv.2606.31388  
-**可靠入口：** [arXiv](https://arxiv.org/abs/2606.31388)｜[HTML 全文](https://arxiv.org/html/2606.31388v1)｜[项目页](https://onevideooneworld.github.io/)｜[官方代码](https://github.com/SparcAI-Inc/OVOW)｜[AlphaXiv](https://alphaxiv.org/abs/2606.31388)  
-**类别标签：** Video-to-4D, 实例级网格, 物理仿真, 单目重建, 场景分解  
-**证据范围：** 已核验 arXiv v1 全文、实验与失败案例附录、官方项目页、主代码仓库及其许可证/复现说明。
+**作者：** Junke Wang, Qihang Zhang, Shuai Yang, Yiming Luo, Yujun Shen, Zuxuan Wu, Yu-Gang Jiang, Yinghao Xu  
+**年份与发表：** 2026，arXiv preprint，arXiv:2606.13674；DOI 待核验  
+**可靠入口：** [arXiv](https://arxiv.org/abs/2606.13674)｜[项目](https://wdrink.github.io/RepWAM/)｜[代码](https://github.com/wdrink/RepWAM)｜[Hugging Face Papers](https://huggingface.co/papers/2606.13674)  
+**类别标签：** world action model, visual-action tokenizer, latent action, robot manipulation, flow matching, video representation  
+**代表图：** RepWAM，Fig. 1，RepViTok 将视觉 token 与冻结视觉基础模型对齐，并在同一语义空间中以 IDM/FDM 学习转移 token。来源：[Fig. 1 原图](https://arxiv.org/html/2606.13674v1/x1.png)
+
+![RepWAM Fig. 1](https://arxiv.org/html/2606.13674v1/x1.png)
 
 ### 当前挑战
 
-现有单目 4D 重建多输出辐射场、Gaussian 或点云，适合渲染却缺少物理模拟需要的封闭网格、实例分离、统一尺度和标准化接口；单对象网格/骨骼方法又难以覆盖多对象场景和非刚体运动。与此同时，既有指标偏向 PSNR/SSIM/LPIPS，没有检查场景布局、实例分离、接触和重力稳定性，也缺少“视频—实例级 4D 网格场景”成对数据。
+现有 World Action Models 往往沿用视频生成模型中以像素重建为中心的 VAE latent。它们能保存外观，却不一定提供足够的指令语义、接触相关结构或动作转移信息，可能导致未来预测与闭环控制之间存在表征错位。用户给出的“rapwam”经核验最符合本文 RepWAM；报告不把无关的 RAP-WAM Prolog 架构计入馆藏。
 
 ### 研究动机
 
-OVOW 试图把互联网或机器人单目视频变成可编辑、可仿真的结构化资产，而不是只追求新视角外观。作者以直接顶点形变统一静态、刚体和非刚体运动，避免预定义骨架与类别特定 rigging；再用显式接触装配把各实例接入 Blender/URDF 等物理工作流。该方向与 4D world model 的数据基础设施直接相关，但系统本身是训练免除的多模型编排管线，不是学习到的物理动力学模型。
+作者希望把视觉状态和引发状态变化的 latent action 放在共享语义空间中建模，让 world expert 的未来预测与 action expert 的控制输出通过同一 representation visual-action tokenizer 对齐。作者称其 DiT 为 causal world action model，主要依据时序生成/注意结构；阅读时不应将这一命名自动解释为结构因果模型、干预识别或反事实保证。
 
 ### 技术方案
 
-- **输入：** 单段 RGB 单目视频（系统也支持单图）；可选择远程或本地 Qwen3-VL，其他阶段调用预训练视觉、3D 与跟踪模型。
-- **过程：** Qwen3-VL 发现、命名并把实例分为 static/rigid/deformable，SAM3 生成逐帧掩码；静态/刚体对象经 FLUX.2 amodal inpainting 与 Hi3DGen 得到封闭网格，非刚体经 Motion324 得到拓扑一致的网格序列；利用 VGGT 场景几何、RoMa v2 稠密对应和 FoundationPose 做迭代 render-match-optimize，恢复度量尺度、朝向和逐帧 6-DoF 位姿，并把全局刚体运动与局部顶点形变分离；最后用 RANSAC 地面、接触投影与实例间最近表面约束消除漂浮/穿透，恢复 HDR 环境光并导出场景。
-- **输出：** 实例分离、封闭且带逐帧刚体位姿/非刚体顶点动画的 4D mesh scene，以及可用于 Blender 物理模拟、编辑和 URDF/GLB 工作流的结构化资产。
+- **输入：** 视频观测序列、语言指令；适配阶段再加入 embodiment-specific 机器人轨迹和动作。
+- **过程：** RepViTok 先以冻结视觉基础模型对齐视觉 latent，再用耦合 IDM/FDM 将相邻视觉 latent 的转移编码为 latent action；预训练阶段以配对的 world expert 与 action expert、flow matching 联合建模未来视觉状态和 latent action；随后用真实机器人示范把 latent dynamics 适配为可执行动作。
+- **输出：** 指令条件的未来视觉 latent、对应 latent action，以及闭环执行所需的机器人动作序列。
 
 ### 实验结果
 
-- **实验设置：** 作者构造两个各含 120 个合成场景的 benchmark：OVOW-3D-Scene-Bench 为静态场景，OVOW-4D-Scene-Bench 至少含一个刚体运动对象。指标包括场景 AABB/OBB IoU、Hungarian 匹配后的 Object-IoU、photometric loss、negative CLIP、耗时和显存；因此它们衡量结构与外观，但不覆盖真实视频的完整 ground-truth 4D 几何。
-- **实验事实：** 静态 benchmark 上，OVOW 的 Scene-IoU-OBB 0.218、Object-IoU 0.190、PL 5.70、N-CLIP 1.87 为表中最佳；Scene-IoU-AABB 0.130 低于 VIGA 的 0.156，单图耗时 272 s 也不是最快。
-- **实验事实：** 4D benchmark 上，OVOW 的 AABB/OBB/Object IoU 为 0.180/0.440/0.210，PL/N-CLIP 为 2.90/1.43，表中均领先；3.35 s/frame 明显快于所列单图对照的 103–788 s，但这种比较利用了视频内摊销，不能理解为所有端到端设置严格同预算。
-- **实验事实：** 验证集上各阶段报告 95.4% motion-category accuracy、93.1%/88.7% 刚体/非刚体重建成功率、92.4% pose recovery、86.8% 最终有效场景率和 82.7% 重力模拟稳定率。超参数表显示迭代次数从 3 增到 5 时 IoU-B 仅由 0.78 到 0.79，接触阈值与装配轮数附近较稳定。
-- **作者主张：** OVOW 是首个从单目视频生成实例级、simulation-ready 4D mesh scene 的 training-free 系统，并可作为合成 Video-to-4D 成对数据的引擎。
-- **阅读判断：** 表格支持其在作者新建合成 benchmark 上的结构指标和运行效率优势，也展示了物理引擎中的稳定输出；但“首个”和“simulation-ready”的外延依赖作者的任务定义，82.7% 稳定率也说明并非普遍物理可用。benchmark、方法和指标均由同一工作提出，需要独立数据与外部复现检验泛化。
+RepWAM 在 RoboTwin 2.0 的 50 项任务中报告 5B 模型 Easy 89.3、Hard 88.4。1.3B 受控替换中，RepViTok 相比 WAN2.2 VAE 将 Easy/Hard 平均成功率从 78.0/76.0 提高到 86.6/83.1。tokenizer 消融中，RepViTok 相对 reconstruction-only WAN2.2 VAE 的 gFVD 分别下降 9.5%/13.2%，但论文同时显示仅提高开放环 action 指标并不必然带来闭环成功。latent-action 两阶段训练在所测设置取得 gFVD 48.23/58.83、PSNR 22.86/19.93、OLS 19.87/16.98；PickFruit 成功率为 50%，对比无 latent action 的 30% 和 joint prediction 的 20%。三项真机任务各 10 次 rollout：RepWAM-5B 在摘取水果、推抽屉、插试管分别为 60%、80%、60%；样本量较小，应视为初步闭环证据。
 
 ### 总结讨论
 
-OVOW 最值得关注的是输出接口：从渲染型 4D 表示转向实例级封闭网格、位姿、形变和接触关系，使单目视频可进入仿真与编辑工具链。其优势来自把多个强基础模型组织成明确的结构化管线；同样，任何上游分割、深度、生成或跟踪错误都会传播。它可用作 4D world-model 的伪标签/数据引擎，但不应把几何装配稳定性扩大为真实摩擦、关节或复杂接触动力学已被识别。
+RepWAM 将 WAM 的问题焦点从“是否生成未来视频”推进到“未来与动作共享什么 latent 接口”。最有价值的消融是：语义 tokenizer、两阶段 latent-action 预训练与机器人动作适配分别有可测贡献，而简单附加 joint-prediction head 反而损害动态质量。对知域的意义是它给出 `observation → semantic visual latent → latent transition → robot action` 的可实现分解；但共享语义空间和时序 causal mask 仍不等于可识别因果机制。
 
 ### 代码与数据
 
-官方主仓库已发布完整管线、smoke tests、benchmark evaluator 和批处理脚本。OVOW 自有代码为 MIT，但仓库整合 FoundationPose、Motion324、SAM3 等多种非商业或专用许可证组件，因此整体仅限非商业研究/评估，不是 OSI 意义的开源发行版。复现建议 Linux、NVIDIA GPU ≥40 GB、约 120 GB 磁盘，需下载约 55 GB 权重；benchmark 仓库提供评测器与协议，ground truth/data 另在 Hugging Face 发布。生成步骤非固定 seed，官方只保证流程产物而非逐位一致。
+官方项目页与 GitHub 仓库可访问；论文和仓库表述为代码与权重将开放，当前具体 checkpoint、训练脚本、数据处理与许可证完整性需以仓库最新内容逐项核验。实验涉及 RoboTwin 2.0、AgiBot Eval、ImageNet、UCF101 以及自采 Franka 双臂示范。
 
 ### 局限、失败案例与开放问题
 
-- 对象通常超过 10 个、很小或强遮挡时，VLM/SAM 场景分解会漏实例或误判运动类别；VGGT 的实例尺度和位置也随之恶化。
-- 拓扑变化（破碎、液体、从袋中取物）违反一致网格假设；极大形变如展开成团布料也会产生严重网格伪影。
-- 高遮挡（论文举例 >80%）、稀有类别、透明/反光/细薄/弱纹理对象、运动模糊和剧烈光照变化会影响生成、深度或跟踪。
-- 当前装配只处理重力对齐接触和简单堆叠，不建模关节、摩擦依赖或 deformable-deformable 接触；“物理就绪”不能解释为完整物理参数已恢复。
-- 大幅或快速相机运动会破坏 VGGT 几何与尺度恢复；系统不重建墙、地板和室外地形等背景。
-- 依赖多套重量级模型、混合许可证和较高硬件/磁盘成本，训练免除不等于低成本或易部署。
+- 真机每任务仅 10 次 rollout，置信区间和随机种子稳定性没有充分呈现。
+- RepWAM 从零训练，与继承 WAN 视频生成预训练的系统并非完全等成本比较。
+- 5B 相比 1.3B 的提升与模型容量、训练资源耦合，尚不能只归因于 tokenizer。
+- 视觉未来与 latent action 的联合预测仍可能编码外观相关捷径，并不保证动作语义可解释。
+- 当前预训练主要是机器人域视频；作者把扩展到互联网、尤其第一视角人类视频列为未来工作。
+- 闭环延迟、算力成本、失败恢复与安全边界仍缺少系统报告。
