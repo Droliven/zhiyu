@@ -1,5 +1,26 @@
 [
   {
+    "id": "report-89efbb2378",
+    "title": "视频表征、潜在动作与世界动作模型论文整理",
+    "date": "2026-08-26",
+    "tags": [
+      "latent action",
+      "robot learning",
+      "video generation",
+      "video representation",
+      "world action model"
+    ],
+    "summary": "报告标签 ：video representation, latent action, world action model, robot learning, video generation",
+    "paper_ids": [
+      "arxiv-2606-13674",
+      "arxiv-2607-14088",
+      "arxiv-2608-19613"
+    ],
+    "path": "content/reports/2026-08-26_curated_papers.md",
+    "source_file": "2026-08-26_curated_papers.md",
+    "content_sha1": "cb14f9fea3d75129d1ac1ce1b17563f46b7f7f15"
+  },
+  {
     "id": "report-f5f82689ca",
     "title": "知域每周论文更新：2026-08-23",
     "date": "2026-08-23",

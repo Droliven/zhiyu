@@ -19,40 +19,22 @@
 
 浏览器本地状态不会上传或跨设备同步；清除站点数据、使用隐私模式或更换浏览器后可能消失。本站整理不替代论文原文，关键结论、开放状态和许可证应回到原论文及官方页面核验。
 
-## 本地预览
+## 团队贡献
 
-网站通过 `fetch()` 读取 JSON 和 Markdown，请用本地 HTTP 服务预览：
+每次开始更新前，先进入知域仓库根目录，确认工作区没有需要保留的未提交修改，再将本地 `main` 与远端对齐并创建独立工作分支：
 
 ```bash
-# 替换为你在本机克隆知域仓库的实际路径
 cd /path/to/zhiyu
 test -f index.html && test -d scripts && echo "已进入知域仓库根目录"
-python3 -m http.server 8080
+git status --short
+
+# 如果上面的命令显示未提交修改，请先确认并妥善处理，不要直接 pull
+git switch main
+git pull --ff-only
+git switch -c papers/[topic]-[date]
 ```
 
-打开 `http://localhost:8080/`。
-
-不要直接双击 `index.html`。地址栏为 `file://` 时，浏览器会阻止页面读取 JSON、Markdown 和 README 提示词；正确预览地址应以 `http://localhost:8080/` 开头，结束后在终端按 `Ctrl+C` 停止服务。
-
-## 增量导入
-
-把新的 AI 论文报告复制进文献库并重建数据：
-
-```bash
-python3 scripts/ingest_reports.py --copy /absolute/path/to/new_report.md
-python3 scripts/enrich_arxiv.py
-python3 scripts/validate_data.py
-```
-
-导入器会扫描 `content/reports/*.md`，并按以下优先级合并重复论文：
-
-1. arXiv ID；
-2. DOI；
-3. 规范化标题（忽略大小写、标点和空格）。
-
-已存在的评论、删除标记和人工字段不会被导入器覆盖。**只有源报告文件内容变化时，才会更新该报告里已有论文的正文、配图和标签**；未改动的报告重跑导入不会刷新 `updated_at`，也不需要再手工还原 `papers.json`。新报告必须遵循 [CONTRIBUTING.md](CONTRIBUTING.md) 中的检索、证据和标题层级规则。代表图必须使用可直接打开的图片文件链接，不要只贴论文 HTML 页。`enrich_arxiv.py` 只补全空标题和 arXiv 元数据，不会覆盖已经写好的题名。
-
-每篇新入库论文应写清 **当前挑战、研究动机、技术方案、实验结果、总结讨论**，并保留代码与数据、局限要点。导入器同时识别旧报告里的 Insight / Pipeline / 实验与证据 / 局限：新字段是可选的，不会要求旧论文补齐，也不会覆盖已有评论或更完整的历史正文。
+刚执行完 `git clone` 的新仓库通常已与远端对齐；以后每次开始更新仍应执行上述检查。`git switch -c papers/[topic]-[date]` 只用于新建分支；若提示 `already exists`，未合入的分支去掉 `-c` 直接切换，已合入过的分支名则换一个新名字再创建。完成后再选择下面一种 AI 更新模式。
 
 ## AI 更新模式
 
@@ -69,6 +51,7 @@ python3 scripts/validate_data.py
 
 <details>
 <summary><strong>方式一：让 AI 直接检索论文</strong></summary>
+
 
 ```text
 你正在维护当前独立的“知域”研究知识库。请围绕“[研究主题]”检索并新增论文，检索范围为“[时间范围，例如过去三个月]”，预计收录 [数量] 篇。请完整执行，不要只给建议。
@@ -104,6 +87,8 @@ python3 scripts/validate_data.py
 
 </details>
 
+
+
 <details>
 <summary><strong>方式二：提供论文列表，让 AI 细化整理</strong></summary>
 
@@ -137,6 +122,8 @@ python3 scripts/check_asset_budget.py
 
 </details>
 
+
+
 <details>
 <summary><strong>方式三：专题检索与综述报告</strong></summary>
 
@@ -167,7 +154,10 @@ python3 scripts/check_asset_budget.py
 
 </details>
 
-## 每周论文更新模式（方式四）
+
+
+<details>
+<summary><strong>方式四：每周论文自动抓取</strong></summary>
 
 在固定时间运行下面的提示词，在线 AI Agent 会读取已部署的知域馆藏、检索执行日前 7 天的论文与重要更新，并只返回一份可下载的 Markdown 周报。在线 Agent 不操作本地仓库；下载周报后，再由本地维护者按“增量导入”和“团队贡献”流程审阅、导入并提交 PR。
 
@@ -417,10 +407,42 @@ python3 scripts/check_asset_budget.py
 
 无新增报告只包含检索日期、窗口、馆藏检查、来源、关键词、排除统计及原因、待核验线索，不得包含任何“## 1. Paper Title”形式的正式条目。
 ```
+</details>
 
-## 团队贡献
 
-用户先 `cd` 到包含 `index.html`、`data/`、`content/` 和 `scripts/` 的知域仓库根目录，在终端同步主分支并创建工作分支，再把站内 README 提供的提示词交给 AI。`git switch -c papers/[topic]-[date]` 只用于新建分支；若提示 `already exists`，未合入的分支去掉 `-c` 直接切换，已合入过的分支名则换一个新名字再创建。AI 负责检索、编辑、重建数据和运行校验，但停在未提交状态。用户检查 `git diff` 后，亲自选择文件、创建 commit、push 分支并发起 Pull Request。
+## 增量导入
+
+方式一至三会直接修改当前工作分支并重建数据；使用方式四取得可下载的 Markdown 周报后，需要由本地维护者将报告复制进文献库并重建数据：
+
+```bash
+python3 scripts/ingest_reports.py --copy /absolute/path/to/new_report.md
+python3 scripts/enrich_arxiv.py
+python3 scripts/validate_data.py
+```
+
+导入器会扫描 `content/reports/*.md`，并依次按 arXiv ID、DOI、规范化标题（忽略大小写、标点和空格）合并重复论文。
+
+已存在的评论、删除标记和人工字段不会被导入器覆盖。**只有源报告文件内容变化时，才会更新该报告里已有论文的正文、配图和标签**；未改动的报告重跑导入不会刷新 `updated_at`，也不需要再手工还原 `papers.json`。新报告必须遵循 [CONTRIBUTING.md](CONTRIBUTING.md) 中的检索、证据和标题层级规则。代表图必须使用可直接打开的图片文件链接，不要只贴论文 HTML 页。`enrich_arxiv.py` 只补全空标题和 arXiv 元数据，不会覆盖已经写好的题名。
+
+每篇新入库论文应写清 **当前挑战、研究动机、技术方案、实验结果、总结讨论**，并保留代码与数据、局限要点。导入器同时识别旧报告里的 Insight / Pipeline / 实验与证据 / 局限：新字段是可选的，不会要求旧论文补齐，也不会覆盖已有评论或更完整的历史正文。
+
+## 本地预览
+
+AI 修改或周报导入完成后，再用本地 HTTP 服务预览实际结果：
+
+```bash
+cd /path/to/zhiyu
+test -f index.html && test -d scripts && echo "已进入知域仓库根目录"
+python3 -m http.server 8080
+```
+
+打开 `http://localhost:8080/`，检查新增论文、报告、标签和配图是否正确；结束后在终端按 `Ctrl+C` 停止服务。
+
+不要直接双击 `index.html`。地址栏为 `file://` 时，浏览器会阻止页面读取 JSON、Markdown 和 README 提示词；正确预览地址应以 `http://localhost:8080/` 开头。
+
+## 审阅并提交 Pull Request
+
+AI 负责检索、编辑、重建数据和运行校验，但停在未提交状态。用户完成本地预览后检查 `git diff`，亲自选择文件、创建 commit、push 分支并发起 Pull Request。
 
 不要让 AI 自动执行 `git add`、`git commit` 或 `git push`，也不要使用 `git add .` 将未审阅的工作区内容一起提交。
 
