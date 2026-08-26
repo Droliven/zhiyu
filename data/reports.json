@@ -1,5 +1,25 @@
 [
   {
+    "id": "report-89efbb2378",
+    "title": "知域指定论文精读：3D/4D 重建、几何优化与生成式视图合成",
+    "date": "2026-08-26",
+    "tags": [
+      "3D/4D",
+      "几何一致性",
+      "视频生成",
+      "重建"
+    ],
+    "summary": "本报告逐篇核验三项指定工作，覆盖原文方法与实验、官方项目页、代码开放状态及可复现边界。",
+    "paper_ids": [
+      "arxiv-2606-31388",
+      "arxiv-2607-09225",
+      "arxiv-2608-04701"
+    ],
+    "path": "content/reports/2026-08-26_curated_papers.md",
+    "source_file": "2026-08-26_curated_papers.md",
+    "content_sha1": "044129c10add1a6428dc75891ff3fc101c749453"
+  },
+  {
     "id": "report-f5f82689ca",
     "title": "知域每周论文更新：2026-08-23",
     "date": "2026-08-23",
