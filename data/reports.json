@@ -1,5 +1,26 @@
 [
   {
+    "id": "report-ea0469615f",
+    "title": "ViDiHand：视频扩散表征用于第一视角 4D 双手运动重建",
+    "date": "2026-08-29",
+    "tags": [
+      "4D hand reconstruction",
+      "diffusion features",
+      "egocentric vision",
+      "embodied AI",
+      "hand-object interaction",
+      "MANO",
+      "video diffusion model"
+    ],
+    "summary": "报告标签 ：4D hand reconstruction, egocentric vision, hand-object interaction, video diffusion model, diffusion features, MANO, embodied AI",
+    "paper_ids": [
+      "arxiv-2606-30308"
+    ],
+    "path": "content/reports/2026-08-29_curated_papers.md",
+    "source_file": "2026-08-29_curated_papers.md",
+    "content_sha1": "0cc26ec4450fa266300a1fe925777f3aba9f3134"
+  },
+  {
     "id": "report-89efbb2378",
     "title": "视频表征、潜在动作与世界动作模型论文整理",
     "date": "2026-08-26",
