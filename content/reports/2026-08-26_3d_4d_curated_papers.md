@@ -16,6 +16,10 @@
 **类别标签：** 大基线新视角合成, 视频扩散, 几何条件生成, 4D 重建, 相机控制  
 **证据范围：** 已核验 arXiv v1 全文的方法与实验章节、官方项目页和官方代码仓库。
 
+**代表图：** UniWorld-View，Fig. 2，遮挡感知点云条件与双流视频扩散的新视角合成框架。来源：[Fig. 2 原图 PNG](https://arxiv.org/html/2608.04701v1/pipeline.png)
+
+![UniWorld-View Fig. 2：遮挡感知点云条件与双流视频扩散框架](https://arxiv.org/html/2608.04701v1/pipeline.png)
+
 ### 当前挑战
 
 稀疏单目图像或视频无法覆盖大幅视角变化中新显露的区域。NeRF/3DGS 一类重建方法依赖密集多视图与逐场景优化；纯相机位姿条件的生成方法又缺少显式几何约束。已有点云条件方法虽然提供深度和相机先验，但大基线下会把前景纹理撕裂到背景、把背景错投到前景，并错误显示背向表面，给扩散模型输入相互矛盾的几何提示。
@@ -63,6 +67,10 @@ UniWorld-View 的实质差异不是再增加一种相机编码，而是先把单
 **可靠入口：** [arXiv](https://arxiv.org/abs/2607.09225)｜[HTML 全文](https://arxiv.org/html/2607.09225v1)｜[项目页](https://junyuandeng.github.io/Glob3r/)｜[官方代码仓库](https://github.com/aigc3d/Glob3R)｜[AlphaXiv](https://alphaxiv.org/abs/2607.09225)  
 **类别标签：** 全局 SfM, 3D foundation model, 稠密匹配, 长序列重建, bundle adjustment  
 **证据范围：** 已核验 arXiv v1 全文、附录失败案例与运行时表、官方项目页和官方仓库。
+
+**代表图：** Glob3R，Fig. 1，全局重建框架：几何先验与稠密 warp、跨窗口 tracks、全局关联图及优化。来源：[Fig. 1 原图 PNG](https://arxiv.org/html/2607.09225v1/pipeline_pdf.png)
+
+![Glob3R Fig. 1：全局 Structure-from-Motion 重建框架](https://arxiv.org/html/2607.09225v1/pipeline_pdf.png)
 
 ### 当前挑战
 
@@ -112,6 +120,10 @@ Glob3R 的贡献可概括为把学习到的稠密对应转译成经典全局 SfM
 **可靠入口：** [arXiv](https://arxiv.org/abs/2606.31388)｜[HTML 全文](https://arxiv.org/html/2606.31388v1)｜[项目页](https://onevideooneworld.github.io/)｜[官方代码](https://github.com/SparcAI-Inc/OVOW)｜[AlphaXiv](https://alphaxiv.org/abs/2606.31388)  
 **类别标签：** Video-to-4D, 实例级网格, 物理仿真, 单目重建, 场景分解  
 **证据范围：** 已核验 arXiv v1 全文、实验与失败案例附录、官方项目页、主代码仓库及其许可证/复现说明。
+
+**代表图：** One Video, One World，Fig. 2，单目视频经实例分解、网格重建和时空位姿恢复得到物理 4D 场景的前三阶段。来源：[Fig. 2 原图 PNG](https://arxiv.org/html/2606.31388v1/pipe_to_tracking.png)
+
+![One Video, One World Fig. 2：单目视频到实例级 4D 场景的处理流程](https://arxiv.org/html/2606.31388v1/pipe_to_tracking.png)
 
 ### 当前挑战
 

@@ -11,6 +11,10 @@
 **可靠入口：** [arXiv](https://arxiv.org/abs/2606.30308)｜[HTML 全文 v2](https://arxiv.org/html/2606.30308v2)｜[DOI](https://doi.org/10.48550/arXiv.2606.30308)｜[项目](https://vidihand.github.io/)｜[官方代码仓库](https://github.com/NTUYWANG103/ViDiHand)｜[Hugging Face Papers](https://huggingface.co/papers/2606.30308)｜[AlphaXiv](https://alphaxiv.org/abs/2606.30308)  
 **类别标签：** 4D hand reconstruction, egocentric vision, two-hand pose, hand-object interaction, video diffusion model, diffusion features, MANO, embodied AI
 
+**代表图：** The Surprising Effectiveness of Video Diffusion Models for Hand Motion Reconstruction，Fig. 2，ViDiHand 的 hand-aware 视频扩散适配、双分支解码器与推理流程。来源：[Fig. 2 原图 PNG](https://arxiv.org/html/2606.30308v2/main_pipeline.png)
+
+![ViDiHand Fig. 2：hand-aware 视频扩散与双分支 4D 手部重建流程](https://arxiv.org/html/2606.30308v2/main_pipeline.png)
+
 ### 当前挑战
 
 第一视角 4D 手部重建在真实交互中经常遇到手—物体、手—手遮挡、视野边缘截断、运动模糊和鱼眼畸变。逐帧图像方法依赖上游手部检测器，重遮挡下检测漏失会直接变成整帧重建缺失；已有视频方法虽然加入跨帧注意力或 3D 手轨迹 infiller，却主要从稀缺的手姿态标注学习时间先验，且常把手轨迹与物体和场景上下文分开建模。本文针对的具体缺口是：能否直接复用大规模视频生成模型内部已经形成的运动、几何、遮挡与交互表征，在不使用检测器、运动补全器或测试时优化的情况下恢复连续双手轨迹。

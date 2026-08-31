@@ -174,6 +174,10 @@ LLM 的常识可能与当前环境机制不一致。论文不让 LLM 凭语言�
 **发表：** ICLR 2024  
 **可靠入口：** [Google DeepMind 论文页](https://deepmind.google/research/publications/49666/)｜[ICLR 正式 PDF](https://proceedings.iclr.cc/paper_files/paper/2024/file/44a2b9f7bf9aec3f1fa333ad875b0ee0-Paper-Conference.pdf)｜[arXiv 2402.10877](https://arxiv.org/abs/2402.10877)
 
+**代表图：** Robust Agents Learn Causal World Models，Fig. 3，鲁棒适应所需的策略查询在 Pearl 因果层级中的位置。来源：[Fig. 3 原图 PNG](https://arxiv.org/html/2402.10877v7/figures/newfig.png)
+
+![Robust Agents Fig. 3：鲁棒策略查询与因果层级](https://arxiv.org/html/2402.10877v7/figures/newfig.png)
+
 ### Insight
 
 论文反转了常见问题：不是先给 agent 一个 causal model 看它是否鲁棒，而是问“如果策略能对足够丰富的机制变化保持低 regret，我们能否从策略行为中提取环境因果模型？”在一组 causal influence diagram 假设下，答案近似是肯定的。
@@ -214,6 +218,10 @@ environment family under local interventions
 **作者：** Zizhao Wang, Caroline Wang, Xuesu Xiao, Yuke Zhu, Peter Stone  
 **发表：** AAAI 2024，38(14):15778–15786  
 **可靠入口：** [AAAI 正式页面](https://ojs.aaai.org/index.php/AAAI/article/view/29507)｜[正式 PDF](https://ojs.aaai.org/index.php/AAAI/article/download/29507/30841)｜[arXiv 2401.12497](https://arxiv.org/abs/2401.12497)
+
+**代表图：** Building Minimal and Reusable Causal State Abstractions for Reinforcement Learning，Fig. 1，CBM 相对 CDL、TIA 与 Denoised MDP 的任务最小因果状态抽象。来源：[Fig. 1 原图 SVG](https://arxiv.org/html/2401.12497v1/aaai_intro_v2_copy.svg)
+
+![CBM Fig. 1：任务相关、最小且可复用的因果状态抽象](https://arxiv.org/html/2401.12497v1/aaai_intro_v2_copy.svg)
 
 ### Insight
 
@@ -347,6 +355,10 @@ RGB observation
 **作者：** Jingwen Sun, Wenyao Zhang, Zekun Qi, Shaojie Ren, Zezhi Liu, Hanxin Zhu, Guangzhong Sun, Xin Jin, Zhibo Chen  
 **年份与发表：** arXiv 2026；作者项目/仓库标注 ECCV 2026。ECCV 2026 将于 2026-09 举行，截至检索日 Springer/ECVA proceedings 尚未公开，因此正式出版页待补。  
 **可靠入口：** [arXiv 2602.10098](https://arxiv.org/abs/2602.10098)｜[HTML 全文](https://arxiv.org/html/2602.10098)｜[项目页](https://ginwind.github.io/VLA-JEPA/)｜[官方代码](https://github.com/ginwind/VLA-JEPA)｜[模型权重](https://huggingface.co/ginwind/VLA-JEPA/)
+
+**代表图：** VLA-JEPA，Fig. 1，使用未来 latent target 训练无信息泄漏的状态预测与机器人动作模型。来源：[Fig. 1 原图 SVG](https://arxiv.org/html/2602.10098v2/teaser1.svg)
+
+![VLA-JEPA Fig. 1：latent world model 与动作学习架构](https://arxiv.org/html/2602.10098v2/teaser1.svg)
 
 ### Insight
 

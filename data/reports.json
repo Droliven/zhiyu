@@ -1,5 +1,65 @@
 [
   {
+    "id": "report-a141624b1e",
+    "title": "知域每周论文更新：2026-08-30",
+    "date": "2026-08-30",
+    "tags": [
+      "3D/4D",
+      "Embodied In-context Learning",
+      "HOI",
+      "In-context Imitation Learning",
+      "VLA",
+      "World Action Model",
+      "世界模型",
+      "前馈重建",
+      "周报",
+      "因果建模",
+      "流式生成",
+      "第一视角",
+      "长时记忆"
+    ],
+    "summary": "本报告合并两份独立 agent 的 2026-08-30 周报，按 arXiv ID 和规范化标题去重，并补入用户指定的 One Video, One World 与 Towards in-the-wild Egocentric 3D Hand-Object Pose Estimation。最终形成 34 篇正式条目。",
+    "paper_ids": [
+      "arxiv-2606-30598",
+      "arxiv-2606-31388",
+      "arxiv-2608-22364",
+      "arxiv-2608-22403",
+      "arxiv-2608-22421",
+      "arxiv-2608-22449",
+      "arxiv-2608-22764",
+      "arxiv-2608-23189",
+      "arxiv-2608-23383",
+      "arxiv-2608-23486",
+      "arxiv-2608-23565",
+      "arxiv-2608-23720",
+      "arxiv-2608-23863",
+      "arxiv-2608-23927",
+      "arxiv-2608-24044",
+      "arxiv-2608-24101",
+      "arxiv-2608-24115",
+      "arxiv-2608-24199",
+      "arxiv-2608-24714",
+      "arxiv-2608-24882",
+      "arxiv-2608-24885",
+      "arxiv-2608-25479",
+      "arxiv-2608-25585",
+      "arxiv-2608-25798",
+      "arxiv-2608-25956",
+      "arxiv-2608-26103",
+      "arxiv-2608-26200",
+      "arxiv-2608-26239",
+      "arxiv-2608-26336",
+      "arxiv-2608-27033",
+      "arxiv-2608-27259",
+      "arxiv-2608-27328",
+      "arxiv-2608-27406",
+      "arxiv-2608-27407"
+    ],
+    "path": "content/reports/2026-08-30_weekly_paper_update.md",
+    "source_file": "2026-08-30_weekly_paper_update.md",
+    "content_sha1": "fe0dc647a4923d2da5d342fa5c78c558669d17b6"
+  },
+  {
     "id": "report-ea0469615f",
     "title": "ViDiHand：视频扩散表征用于第一视角 4D 双手运动重建",
     "date": "2026-08-29",
@@ -18,7 +78,7 @@
     ],
     "path": "content/reports/2026-08-29_curated_papers.md",
     "source_file": "2026-08-29_curated_papers.md",
-    "content_sha1": "0cc26ec4450fa266300a1fe925777f3aba9f3134"
+    "content_sha1": "71d116a23811039d5ad812091a436790e841931b"
   },
   {
     "id": "report-89efbb2378",
@@ -59,7 +119,7 @@
     ],
     "path": "content/reports/2026-08-26_3d_4d_curated_papers.md",
     "source_file": "2026-08-26_3d_4d_curated_papers.md",
-    "content_sha1": "044129c10add1a6428dc75891ff3fc101c749453"
+    "content_sha1": "9810b3f9eee57c76438e88b9683433a5c4ebed7c"
   },
   {
     "id": "report-f5f82689ca",
@@ -251,7 +311,7 @@
     ],
     "path": "content/reports/world_model_causality_counterfactual_survey_2026-08-20.md",
     "source_file": "world_model_causality_counterfactual_survey_2026-08-20.md",
-    "content_sha1": "dfc43f4fc0a36d1cfdf0b4117d1804d7dd691ab7"
+    "content_sha1": "6c0ddbbc149421732b9b40c7f79c562ff8015444"
   },
   {
     "id": "report-e81e6bd3a1",
