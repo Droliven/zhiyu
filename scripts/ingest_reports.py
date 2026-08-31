@@ -114,6 +114,7 @@ TAG_CANONICAL_CASE = {
     "vla": "VLA",
     "hoi": "HOI",
     "3d/4d": "3D/4D",
+    "videogeneration": "video generation",
 }
 
 
@@ -585,7 +586,9 @@ def merge_records(
             key: prefer_text(old_pipeline.get(key, ""), new_pipeline.get(key, ""))
             for key in ("input", "process", "output", "details")
         }
-        merged["figure"] = prefer_figure(old.get("figure"), new.get("figure"))
+        # A changed source report is an explicit review decision. Its figure
+        # must replace an equally well-formed but stale or broken old URL.
+        merged["figure"] = new.get("figure") or old.get("figure")
         merged["tags"] = merge_tags(old.get("tags", []), new.get("tags", []))
         if len(new.get("authors", [])) > len(merged.get("authors", [])):
             merged["authors"] = new["authors"]
@@ -617,6 +620,9 @@ def merge_records(
     # Existing links win; another unchanged report may still fill a missing
     # official project, code, data, or model entry.
     merged["links"] = {**new_links, **old_links}
+    for key in ("project", "code", "data", "model"):
+        if looks_like_image_url(merged["links"].get(key, "")):
+            merged["links"].pop(key)
     old_sources = list(old.get("source_reports") or [])
     combined_sources = set(old_sources) | set(new.get("source_reports") or [])
     merged["source_reports"] = sorted(combined_sources) if combined_sources != set(old_sources) else old_sources

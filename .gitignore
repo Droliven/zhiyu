@@ -54,3 +54,5 @@ dist/
 /paper_overrides.json
 
 test*
+!tests/
+!tests/test_*.py

@@ -13,7 +13,6 @@
     "doi": "",
     "links": {
       "paper": "https://arxiv.org/abs/2608.25956",
-      "model": "https://arxiv.org/html/2608.25956v1/figures/qualitative/future_prediction_examples.jpg",
       "alphaxiv": "https://alphaxiv.org/abs/2608.25956"
     },
     "tags": [
@@ -160,7 +159,6 @@
     "limitations": "- 理论/框架性工作，尚未证明实际视觉 world model 能满足其识别条件；\n- entity / relational representations 如何从真实图像自动学习仍是开放问题；\n- 对真实机器人和 3D/4D world state 没有实验验证。\n\n**阅读判断**：  \n如果你要写 Causal HOI World Model 的 motivation，这篇非常值得作为“概念基准”：它帮助你避免把普通 action-conditioned prediction 直接说成 causal inference。\n\n---",
     "links": {
       "paper": "https://arxiv.org/abs/2608.13456",
-      "model": "https://arxiv.org/html/2608.13456v1/figures/Causal_Ladder_of_World_Models.png",
       "alphaxiv": "https://alphaxiv.org/abs/2608.13456"
     },
     "pipeline": {
@@ -184,7 +182,7 @@
       "对象中心"
     ],
     "title": "A Unifying Perspective on Causal World Models: From Observations to Representations to Structure",
-    "updated_at": "2026-08-23",
+    "updated_at": "2026-08-31",
     "year": 2026
   },
   {
@@ -456,7 +454,6 @@
     "links": {
       "paper": "https://arxiv.org/abs/2608.27406",
       "project": "https://omni-clap.github.io",
-      "model": "https://arxiv.org/html/2608.27406v1/teaser.png",
       "alphaxiv": "https://alphaxiv.org/abs/2608.27406"
     },
     "tags": [
@@ -602,7 +599,6 @@
     "links": {
       "paper": "https://arxiv.org/abs/2512.17907",
       "project": "https://snuvclab.github.io/dwm/",
-      "model": "https://arxiv.org/html/2512.17907v1/overview_v2_fix.png",
       "alphaxiv": "https://alphaxiv.org/abs/2512.17907",
       "publication": "https://openaccess.thecvf.com/content/CVPR2026/html/Kim_Dexterous_World_Models_CVPR_2026_paper.html"
     },
@@ -626,7 +622,7 @@
       "视频生成"
     ],
     "title": "Dexterous World Models",
-    "updated_at": "2026-08-23",
+    "updated_at": "2026-08-31",
     "year": 2026,
     "discussion": "- 强项是 **3D scene prior + 2D video dynamics**。\n- 弱点是没有显式更新 object state；更像“3D-conditioned video world model”。\n- 可扩展方向：把 static 3D scene 改成 **dynamic 4D scene state**，做可累计交互。\n\n---"
   },
@@ -659,15 +655,15 @@
     "evidence_notes": "",
     "experiments": "NAVSIM v2 达 90.4 EPDMS；world generation 达 FID 6.6 / FVD 80.0；SFT 89.1，decision-conditioned 90.0，RL post-training 90.4。结论：统一 discrete vision-action space 不只用于视频生成，也能支撑 planning、counterfactual generation 和 RL refinement。\n\n---",
     "figure": {
+      "url": "https://arxiv.org/html/2606.05645v2/pic1_v5.png",
       "alt": "Discrete-WAM architecture",
-      "label": "Discrete-WAM 模型架构",
+      "label": "Discrete-WAM 模型架构。来源：原图",
       "paper_title": "Discrete-WAM: Unified Discrete Vision-Action Token Editing for World-Policy Learning",
-      "source_url": "https://arxiv.org/html/2606.05645v2/pic1_v5.png",
-      "url": "https://arxiv.org/html/2606.05645v2/pic1_v5.png"
+      "source_url": "https://arxiv.org/html/2606.05645v2/pic1_v5.png"
     },
     "id": "arxiv-2606-05645",
     "insight": "Discrete-WAM 认为 continuous world latent 与 continuous action 分处不同表示空间，使 world generation、policy learning、counterfactual reasoning 难以统一。因此它提出：**把 future vision 和 ego action 都离散成 token，在同一个 discrete generative / editing framework 中建模**。这样“换一组 action token 后世界如何变化”天然成为可编辑、可组合的问题。",
-    "limitations": "来源报告未单列可核验的局限、失败案例或开放问题；在补充原论文正文核验前，不对该工作的泛化性、因果性、复现性或 SOTA 结论作扩大解释。",
+    "limitations": "来源报告未单列可核验的局限、失败案例或开放问题；在补充原论文正文核验前，不对该工作的泛化性、因果性、复现性或 SOTA 结论作扩大解释。\n\n### 与知域的关系\n\n统一离散视觉与动作 token 后再做 RL refinement，把 R1/GRPO 路线从纯视频生成延伸到 world-policy learning。",
     "links": {
       "paper": "https://arxiv.org/abs/2606.05645",
       "alphaxiv": "https://alphaxiv.org/abs/2606.05645"
@@ -680,17 +676,26 @@
     },
     "publication": "arXiv 2026",
     "source_reports": [
+      "report-cedaa0825a",
       "report-e81e6bd3a1"
     ],
     "summary": "Discrete-WAM 认为 continuous world latent 与 continuous action 分处不同表示空间，使 world generation、policy learning、counterfactual reasoning 难以统一。因此它提出： 把 future vision 和 ego action 都离散成 token，在同一个 discrete generative / editing framework 中建模 。这样“换一组 action token 后世界如何变化”天然成为可编辑、可组合的问题。",
     "tags": [
+      "3D/4D",
+      "Flow-GRPO",
+      "GRPO",
+      "R1",
+      "Reward Optimization",
+      "Robot Policy",
+      "video generation",
       "World Action Model",
       "反事实推理",
+      "强化学习",
       "机器人学习",
       "预测表征"
     ],
     "title": "Discrete-WAM: Unified Discrete Vision-Action Token Editing for World-Policy Learning",
-    "updated_at": "2026-08-20",
+    "updated_at": "2026-08-31",
     "year": 2026
   },
   {
@@ -778,7 +783,6 @@
     "doi": "",
     "links": {
       "paper": "https://arxiv.org/abs/2608.23863",
-      "model": "https://arxiv.org/html/2608.23863v2/teaser.png",
       "alphaxiv": "https://alphaxiv.org/abs/2608.23863"
     },
     "tags": [
@@ -1050,7 +1054,6 @@
     "doi": "",
     "links": {
       "paper": "https://arxiv.org/abs/2608.23189",
-      "model": "https://arxiv.org/html/2608.23189v1/data_vis.png",
       "alphaxiv": "https://alphaxiv.org/abs/2608.23189"
     },
     "tags": [
@@ -1718,14 +1721,22 @@
       "alphaxiv": "https://alphaxiv.org/abs/2608.11739"
     },
     "tags": [
+      "3D/4D",
+      "Flow-GRPO",
+      "GRPO",
+      "R1",
+      "Reward Optimization",
+      "Robot Policy",
+      "video generation",
       "VLA",
       "World Action Model",
+      "强化学习",
       "机器人学习"
     ],
     "figure": {
       "url": "https://arxiv.org/html/2608.11739v1/teaser.png",
       "alt": "Galaxea G0.5 Fig. 1: reasoning and action in one autoregressive stream",
-      "label": "Galaxea G0.5，Fig. 1，reasoning and action in one autoregressive stream。来源：Fig. 1 原图 PNG",
+      "label": "Galaxea G0.5，Fig. 1，reasoning and action in one autoregressive stream。。来源：原图",
       "paper_title": "Galaxea G0.5: One Autoregressive Stream for Robot Reasoning and Action",
       "source_url": "https://arxiv.org/html/2608.11739v1/teaser.png"
     },
@@ -1740,13 +1751,14 @@
     "experiments": "**作者主张：** AR 主干在 7 个独立设定上匹配或超过最强 VLM-as-encoder、AR 和 WAM baseline；语言跟随和多阶段执行上优势更结构性。\n\n实验实际支持（数字均来自原文表格/正文）：\n\n- **真机 fine-tune（R1-Lite / R1-Pro，6 个 task–embodiment，各 15 episode，对齐 16×H20 墙钟）：** 平均成功率 **76.7%** vs \\(\\pi_{0.5}\\) 53.3%、GR00T-N1.7 24.4%；process score 129.2 vs 105.2 / 68.9。R1-Pro 搬箱堆叠是例外：\\(\\pi_{0.5}\\) 93.3% vs G0.5 80.0%。\n- **2025 BEHAVIOR Challenge（50 长时程家务，单 checkpoint）：** Task Success Score，G0.5 1 epoch **0.2904**、4 epoch **0.3136**；\\(\\pi_{0.5}\\) 4 epoch 0.2626；冠军 RLC 四 checkpoint 0.2605。作者强调这是单策略 vs 多 checkpoint 的不对等对照。\n- **DROID post-train 后环境/物体 zero-shot（10 任务×10 trial）：** 平均 **82.5%** vs \\(\\pi_{0.5}\\)-DROID 57.5%、MolmoAct2-DROID 52.0%。抽屉任务上，半透明柜体无高对比标记时 G0.5 仅 60%，贴橙色标记后到 100%；作者承认对低对比半透明表面更敏感。\n- **仿真：** LIBERO 平均 **98.9%**（Long 98.6）；RoboTwin 2.0 Clean/Rand/Avg **93.7 / 92.8 / 93.3**；SimplerEnv-Bridge 平均 **87.3%**（部分 baseline 数字编译自既有论文，不是全部同代码重跑）。\n- **PP Bench（64 次真机 trial）：** zero-shot 语言跟随 65.6%、任务成功 59.4%；50H post-train 分别为 84.4% / 75.0%，同设置下仍高于 \\(\\pi_{0.5}\\) 的 68.8% / 65.6%。单阶段任务上 CoT 几乎无增益；五阶段 Air Fryer / Cook Bacon 零样本探测中，AR+CoT 的 progress 从 2.4→3.8 与 1.5→3.4。作者把 prompt 措辞能改变 rollout 写成定性探针，**不是**定量结论。\n- **GRPO：** 每任务 1 条演示后，AR 比可选 FM 头收敛更快、终值更高、方差更低（Fig. 12）。这支持“AR 提供可直接用的 token log-prob”，不支持“FM 不能做 RL”。\n\n**证据未支持：** 提示词即可零样本控制系统性地调节粒度/时域/OOD；lower-body 被单独评测；AR 消除了感知失败。",
     "evidence_notes": "",
     "code_data_status": "- **代码：** [OpenGalaxea/GalaxeaVLA](https://github.com/OpenGalaxea/GalaxeaVLA) 含推理、fine-tune、LIBERO / DROID / RoboTwin / R1 部署入口。\n- **权重：** Hugging Face `OpenGalaxea/G05` 提供 g05-base、libero、droid、so101、robotwin20 及对应 ActionCodec。\n- **许可：** `LICENSE-G0.5` 为 **非商业 + 有限专利** 社区协议；Qwen3.5 另有独立许可。商业用途需另签协议。\n- **数据：** 预训练含内部多本体数据与自动标注；完整语料不能仅凭公开 checkpoint 复现。Galaxea Open-World Dataset 另有 HF 条目，但是否覆盖 G0.5 全文预训练 mix 需按数据卡核对。",
-    "limitations": "- 抽屉插入和半透明柜体是作者承认的感知失败，AR 本身不消除。\n- 视觉记忆只有数秒；lower-body 在统一动作空间里有槽位，但本文未单独评测。\n- 预训练长尾偏 pick-and-place，BEHAVIOR 上微波炉/热狗等容器交互弱于 \\(\\pi_{0.5}\\)。\n- Prompt 级动作调节目前只是定性探针，不是系统实验。\n- SimplerEnv 部分 baseline 来自文献汇编；BEHAVIOR 对照混有单/多 checkpoint。\n- 社区许可禁止商业使用；自动标注 CoT 质量依赖闭源 MLLM。\n\n---",
+    "limitations": "- 抽屉插入和半透明柜体是作者承认的感知失败，AR 本身不消除。\n- 视觉记忆只有数秒；lower-body 在统一动作空间里有槽位，但本文未单独评测。\n- 预训练长尾偏 pick-and-place，BEHAVIOR 上微波炉/热狗等容器交互弱于 \\(\\pi_{0.5}\\)。\n- Prompt 级动作调节目前只是定性探针，不是系统实验。\n- SimplerEnv 部分 baseline 来自文献汇编；BEHAVIOR 对照混有单/多 checkpoint。\n- 社区许可禁止商业使用；自动标注 CoT 质量依赖闭源 MLLM。\n\n### 与知域的关系\n\n展示自回归动作 token 可直接提供策略 log-prob，并以 GRPO 做机器人策略优化；属于机器人 R1/GRPO 侧，而非未来 RGB 世界生成模型。",
     "comments": "",
     "source_reports": [
-      "report-365c2cc93b"
+      "report-365c2cc93b",
+      "report-cedaa0825a"
     ],
     "deleted": false,
-    "updated_at": "2026-08-21",
+    "updated_at": "2026-08-31",
     "challenges": "领域长期问题是：通用机器人策略既要继承大规模 VLM 的语言/感知能力，又要在高频、跨本体、长时程控制上可部署。本文针对的具体缺口是当前主流 VLA 配方把这两件事拆开了。\n\n- **作者明确指出的失败模式：** 早期 RT-2 / OpenVLA 式自回归动作离散化，在控制频率、动作时域和动作维度上升后，逐步 token 数量爆炸，推理变慢、变贵。随后 \\(\\pi_0\\) / \\(\\pi_{0.5}\\) / GR00T 等把预训练 VLM 降为条件编码器，另训 flow-matching / diffusion action expert。VLM 不再是 actor，chain-of-thought、in-context learning 和 prompt 级动作调节只能穿过压缩条件瓶颈间接影响动作分布。\n- **知识隔离信号：** 当 expert 梯度回传到 VLM 时，会出现 anti-forgetting；Knowledge Insulation 干脆切断梯度，再用 AR 动作预测作辅助目标。作者把它读成：AR 动作监督恰恰是保护 VLM 能力的信号，而不是该被丢掉的瓶颈。\n- **分词缺口：** FAST 等对每个本体单独做固定 DCT pipeline；多数方法把整段动作压成一个向量再离散化，token 与形态结构不对齐，空闲关节仍占 token，语义相近动作的 Hamming 距离也大。\n- **记忆缺口：** 单帧观测在遮挡和失败重试时不够；直接堆历史视觉 token 则二次方变贵，且未见过的时间轨迹容易漂移。\n\n这些是架构与表征缺口，不是“再做一个更强的视频预测器”就能自动解决的问题。",
     "motivation": "核心 Insight：**不要把越来越复杂的 action expert 架在被降级的 VLM 上，而应让 VLM 继续做它被预训练成的自回归推理器，同时在同一 token 流里行动。**\n\n方法选择因此改变了三个接口：\n\n1. **动作接口：** 学习式、跨本体的 ActionCodec / RVQ，把异构连续动作压成共享离散词表，并用 active-part tokenization 丢掉空闲控制组。\n2. **推理接口：** Subtask / BBox / Trace / ActionHint 四种自描述 CoT 目标与动作码共用 decoder、上下文和 next-token 损失，而不是 bolt-on 规划模块。\n3. **记忆接口：** 在 ViT 中插入分解的时空注意力，把数秒视觉历史注入视觉编码器，而不是在 LLM 侧无限堆图像 token。\n\n与本知识库课题的关系：**强相关于机器人 VLA / 通用操作，与 World Action Model 是相邻对照而非同类。** G0.5 主实验把 Fast-WAM、LingBot-VA 等 WAM 当作成功率 baseline，但它本身不生成未来 RGB 世界，也不做 \\(do(\\cdot)\\) 或反事实。可借鉴点是：跨本体动作分词、原生 CoT 与动作共用目标、以及“VLM 应否继续当 actor”这一接口争论。",
     "technical_approach": "- **输入：** 多视角 RGB 短时窗、本体标识 \\(e\\)、自然语言指令 \\(\\ell\\)、本体感觉 \\(s_t\\)；可选外部裁剪目标图或坐标 token。\n- **过程：** 从 Qwen3.5-2B 初始化；全部序列化为一段 chat：条件段（图像 / 本体 / 任务 / 状态）+ 生成段（可选 CoT + 动作码）。单一 next-token 交叉熵只加在生成段，联合监督 CoT 与动作。动作码经冻结的跨本体 ActionCodec 解码到统一 27 维动作空间：left control 9 + gripper 1 + right control 9 + gripper 1 + lower body 7；空闲槽用 noop。CoT 从 8 种模板中采样（含 no-CoT），评估默认 no-CoT。视觉记忆每四层做分解时空注意力，训练时随机丢掉历史帧；可选附加 \\(\\pi_{0.5}\\) 式 flow-matching 头作推理加速，主文默认仍是 AR。\n- **输出：** 结构化离散动作码 → 连续电机指令；需要时同时输出子任务文本、物体框、2D gripper trace、动作提示。\n\n与最近 baseline 的实质差异：相对 \\(\\pi_{0.5}\\) / GR00T，VLM 不是条件编码器而是 actor；相对 OpenVLA / FAST，分词是学习式、按运动部件分组、只预测激活组；相对 ECoT，四种推理原语进入同一共享词表且可按 prompt 开关。预训练是单阶段混合：14 个本体的机器人数据 + web/embodied VQA；DROID 不进 foundation mix，评估时再 post-train。CoT 语言标注来自 Gemini 3 / Doubao 等自动标注，视觉框来自 MLLM + SAM3。",
@@ -1773,7 +1785,6 @@
     "links": {
       "paper": "https://arxiv.org/abs/2608.26200",
       "project": "https://yunncheng.github.io/GameWAM",
-      "model": "https://arxiv.org/html/2608.26200v1/gamewam_overview.png",
       "alphaxiv": "https://alphaxiv.org/abs/2608.26200"
     },
     "tags": [
@@ -1911,7 +1922,6 @@
     "links": {
       "paper": "https://arxiv.org/abs/2608.24714",
       "code": "https://github.com/TuojingAI/GaussianWAM",
-      "model": "https://arxiv.org/html/2608.24714v1/assets/Paradigms.drawio.png",
       "alphaxiv": "https://alphaxiv.org/abs/2608.24714"
     },
     "tags": [
@@ -1932,11 +1942,11 @@
       "长时记忆"
     ],
     "figure": {
-      "url": "https://arxiv.org/html/2608.24714v1/assets/Paradigms.drawio.png",
-      "alt": "GaussianWAM: Distilling Geometry and Semantics from 3D Gaussian Fields into World-Action Models 代表图",
-      "label": "Figure 1: Comparison of WAM enhancement paradigms. (a) Conventional WAMs learn world-action representations primarily in 2D video or latent space. (b) Previous geometry- or semantics-aware WAMs introduce dedicated spatial enhancement modules or structured representations into the modeling pipeline. (c) GaussianWAM instead uses a training-time 3D Gaussian teacher to inject geometry-, semantics-, and coverage-aware sup… 来源：论文图",
+      "url": "https://arxiv.org/html/2608.24714v1/assets/framework_gaussian4X.drawio.png",
+      "alt": "GaussianWAM Fig. 2：3D Gaussian teacher 到 WAM 的蒸馏框架",
+      "label": "GaussianWAM Fig. 2：训练期构建 3D Gaussian teacher，并向 WAM 蒸馏语义、深度、覆盖率和有效区域监督。来源：Fig. 2 原图",
       "paper_title": "GaussianWAM: Distilling Geometry and Semantics from 3D Gaussian Fields into World-Action Models",
-      "source_url": "https://arxiv.org/html/2608.24714v1/assets/Paradigms.drawio.png"
+      "source_url": "https://arxiv.org/html/2608.24714v1/assets/framework_gaussian4X.drawio.png"
     },
     "summary": "WAM 的视频潜在表示主要为视觉预测优化，不显式保持跨视角几何结构与空间局部的对象相关语义。GaussianWAM 的 Insight： 用 3D Gaussian field 作为组织几何与语义监督的中间载体 ——冻结几何/视觉基础模型提供深度、相机参数与密集语义特征，绑定到共享 Gaussian 基元上，渲染出空间对齐的语义、深度、覆盖目标，蒸馏进 WAM 的当前观测表示。所有教师模型、Gaussian 组件在训练后可丢弃，测试期不增开销。",
     "insight": "WAM 的视频潜在表示主要为视觉预测优化，不显式保持跨视角几何结构与空间局部的对象相关语义。GaussianWAM 的 Insight：**用 3D Gaussian field 作为组织几何与语义监督的中间载体**——冻结几何/视觉基础模型提供深度、相机参数与密集语义特征，绑定到共享 Gaussian 基元上，渲染出空间对齐的语义、深度、覆盖目标，蒸馏进 WAM 的当前观测表示。所有教师模型、Gaussian 组件在训练后可丢弃，测试期不增开销。",
@@ -2053,11 +2063,11 @@
     "evidence_notes": "",
     "experiments": "- GeoFlow 在 static / dynamic、simple / complex 四类设置下整体降低几何错误。\n- 它并非简单提升画质，而是针对几何与时序一致性有针对性改善。\n- 消融显示：几何结构奖励与 DINO semantic consistency reward 互补；只做 SFT 不足以稳定提升几何一致性。",
     "figure": {
+      "url": "https://geometryflow.github.io/assets/images/method.png",
       "alt": "GeoFlow Fig. 2: method overview",
-      "label": "GeoFlow，Fig. 2 \"GeoFlow method overview\"，来源：项目页 / arXiv HTML",
+      "label": "GeoFlow，Fig. 2 \"GeoFlow method overview\"，。来源：原图",
       "paper_title": "GeoFlow: Enforcing Implicit Geometric Consistency in Video Generation",
-      "source_url": "https://geometryflow.github.io/",
-      "url": "https://geometryflow.github.io/assets/images/method.png"
+      "source_url": "https://geometryflow.github.io/assets/images/method.png"
     },
     "id": "arxiv-2605-18365",
     "insight": "作者明确声称的问题：通用 text-to-video diffusion model 在 camera motion 和 object motion 下常出现对象形变、纹理漂移、背景非刚性抖动。GeoFlow 的核心 insight 是：\n\n> 几何一致的视频应满足两类近似条件：静态背景运动应能被相机运动诱导的刚性 flow 解释；独立运动物体沿其运动轨迹应保持语义/外观身份。\n\n因此 GeoFlow 不直接要求有 3D/4D ground truth，而是从生成视频自身出发，用 monocular depth/pose、optical flow、DINO feature correspondence 构造一个 geometry-consistency reward，再用 Flow-GRPO 对 video generator 做 RL fine-tuning。",
@@ -2077,17 +2087,25 @@
     },
     "publication": "2026",
     "source_reports": [
-      "report-1818b05f33"
+      "report-1818b05f33",
+      "report-cedaa0825a"
     ],
     "summary": "作者明确声称的问题：通用 text-to-video diffusion model 在 camera motion 和 object motion 下常出现对象形变、纹理漂移、背景非刚性抖动。GeoFlow 的核心 insight 是：",
     "tags": [
       "3D/4D",
+      "Flow-GRPO",
+      "GRPO",
       "HOI",
+      "R1",
+      "Reward Optimization",
+      "Robot Policy",
+      "video generation",
       "几何一致性",
+      "强化学习",
       "视频生成"
     ],
     "title": "GeoFlow: Enforcing Implicit Geometric Consistency in Video Generation",
-    "updated_at": "2026-08-20",
+    "updated_at": "2026-08-31",
     "year": 2026
   },
   {
@@ -2172,7 +2190,6 @@
     "links": {
       "paper": "https://arxiv.org/abs/2608.23486",
       "project": "https://yiren-lu.com/project_pages/geowam",
-      "model": "https://arxiv.org/html/2608.23486v2/GeoWAM_teaser.png",
       "alphaxiv": "https://alphaxiv.org/abs/2608.23486"
     },
     "tags": [
@@ -2401,7 +2418,6 @@
     "links": {
       "paper": "https://arxiv.org/abs/2608.23927",
       "code": "https://github.com/linhanwang/GlanceWAM",
-      "model": "https://arxiv.org/html/2608.23927v1/fig_teaser_v3.png",
       "alphaxiv": "https://alphaxiv.org/abs/2608.23927"
     },
     "tags": [
@@ -3177,7 +3193,6 @@
     "links": {
       "paper": "https://arxiv.org/abs/2608.24882",
       "project": "https://getterupper.github.io/LAWA",
-      "model": "https://arxiv.org/html/2608.24882v1/teaser.png",
       "alphaxiv": "https://alphaxiv.org/abs/2608.24882"
     },
     "tags": [
@@ -3252,7 +3267,6 @@
     "links": {
       "paper": "https://arxiv.org/abs/2608.22403",
       "code": "https://github.com/huggingface/lerobot",
-      "model": "https://arxiv.org/html/2608.22403v1/LD4WAM_Teaser_final.png",
       "alphaxiv": "https://alphaxiv.org/abs/2608.22403"
     },
     "tags": [
@@ -3589,7 +3603,6 @@
     "doi": "",
     "links": {
       "paper": "https://arxiv.org/abs/2608.22764",
-      "model": "https://arxiv.org/html/2608.22764v1/fig_piecewise_heatmap_r14c14.png",
       "alphaxiv": "https://alphaxiv.org/abs/2608.22764"
     },
     "tags": [
@@ -3680,7 +3693,6 @@
       "paper": "https://arxiv.org/abs/2604.19683",
       "publication": "https://openreview.net/pdf?id=CWerqtOXif",
       "code": "https://github.com/LYFCLOUDFAN/mask-world-model",
-      "model": "https://arxiv.org/html/2604.19683v2/mwm.png",
       "alphaxiv": "https://alphaxiv.org/abs/2604.19683"
     },
     "pipeline": {
@@ -3704,7 +3716,7 @@
       "机器人学习"
     ],
     "title": "Mask World Model: Predicting What Matters for Robust Robot Policy Learning",
-    "updated_at": "2026-08-23",
+    "updated_at": "2026-08-31",
     "year": 2026
   },
   {
@@ -3797,7 +3809,6 @@
     "links": {
       "paper": "https://arxiv.org/abs/2608.27407",
       "project": "https://ac5113.github.io/MILO",
-      "model": "https://arxiv.org/html/2608.27407v1/teaser.png",
       "alphaxiv": "https://alphaxiv.org/abs/2608.27407"
     },
     "tags": [
@@ -3871,7 +3882,6 @@
     "links": {
       "paper": "https://arxiv.org/abs/2605.30263",
       "code": "https://github.com/shengshu-ai/minWM",
-      "model": "https://arxiv.org/html/2605.30263v1/paper_pipeline.png",
       "alphaxiv": "https://alphaxiv.org/abs/2605.30263"
     },
     "tags": [
@@ -3905,7 +3915,7 @@
       "report-c7ced2c92d"
     ],
     "deleted": false,
-    "updated_at": "2026-08-21",
+    "updated_at": "2026-08-31",
     "challenges": "作者认为缺的不是又一篇蒸馏论文，而是 **可复现的全栈**：数据、可控微调、AR 训练、少步蒸馏、流式推理散落在不同仓库。交互世界模型还要求因果 rollout、相机（或其它动作）可控、延迟够低。\n\n本文针对的工程缺口：\n\n- 把 Wan2.1-T2V-1.3B（交叉注意力条件）和 HY1.5-TI2V-8B（MMDiT）两条异构骨干接到同一配方。\n- 也可把已有世界模型（HY-WorldPlay）迁到新数据/新延迟。\n- 需要可操作的训练经验：轨迹质量、可控性步数、最小 batch。\n\n它 **没有** 提出新的蒸馏理论，明确复用 Causal Forcing / Causal Forcing++。",
     "motivation": "核心 Insight：**先把双向基础模型微调成相机可控（PRoPE 把相对投影变换写进注意力），再把 CF/CF++ 的三阶段全部换成带相机条件的版本。** 改变的是控制接口与可复现性，不是新的生成损失。与本知识库课题 **直接相关**：这是开源实时视频世界模型配方，动作目前主要是相机轨迹，不是关节/操作 WAM，也不是反事实。",
     "technical_approach": "- **输入：** 文本，以及每帧相机内参 \\(K_i\\) 与 world-to-camera \\(T_i^{cw}\\)；可选图像（TI2V）。输出设定 480×832、77 帧，AR chunk = 4 latent 帧，蒸馏 4 步。\n- **过程：** PRoPE 构造 \\(4\\times 4\\) 提升投影矩阵，按 GTA 形式注入自注意力，使 token 对依赖相对位姿。然后 Stage 1 TF AR、Stage 2 因果 ODE 或因果 CD、Stage 3 不对称 DMD；student / \\(s_{\\text{real}}\\) / \\(s_{\\text{fake}}\\) 自 rollout 都吃同一相机条件。HY1.5：batch 32、lr \\(1\\times 10^{-5}\\)，双向 8K → AR 4K → Stage2 1.5K → DMD 500（8K 权重作 Stage 3 score，Stage 1 从 5K 初始化）。Wan2.1：lr \\(2\\times 10^{-6}\\)，双向 5K → 4K → 2K → 200。\n- **输出：** 相机可控的 few-step AR 视频。A800、不含 VAE 的首帧延迟：HY1.5 few-step AR **3.446 s**（相对多步双向 771 s，约 \\(224\\times\\)）；Wan2.1 few-step AR **1.137 s**（相对 269 s，约 \\(237\\times\\)）。\n\n与最近 baseline 的实质差异：相对 Causal Forcing++ 论文里的定性相机 demo，这里给出两条骨干的可运行脚本、分阶段 checkpoint 和数据消融；相对 HY-WorldPlay，强调可迁移而非从零宣称新 SOTA 质量。",
@@ -4343,7 +4353,6 @@
     "links": {
       "paper": "https://arxiv.org/abs/2608.23720",
       "project": "https://sellerbubble.github.io/platonic-representation-hypothesis-on-world-models/",
-      "model": "https://arxiv.org/html/2608.23720v2/images/good.jpg",
       "alphaxiv": "https://alphaxiv.org/abs/2608.23720"
     },
     "tags": [
@@ -4479,9 +4488,12 @@
     },
     "tags": [
       "3D/4D",
+      "Embodied ICL",
       "Embodied In-context Learning",
       "HOI",
       "In-context Imitation Learning",
+      "Robot Memory",
+      "Test-time Adaptation",
       "VLA",
       "World Action Model",
       "世界模型",
@@ -4497,7 +4509,7 @@
     "figure": {
       "url": "https://arxiv.org/html/2608.24115v1/figures/PP-Title.png",
       "alt": "PonderPounce: A Pretrained MLLM as an Episode Context Engine for Robot Control 代表图",
-      "label": "Figure 1: Pretrained MLLM context as scalable robot memory. Unlike designs processing context within the controller or through purpose-built memory, PonderPounce retains history in Ponder ’s context and asynchronously routes cognition to Pounce . This separation keeps context processing off the action path and lets System 2 scale without changing the controller architecture. 来源：论文图",
+      "label": "Figure 1: Pretrained MLLM context as scalable robot memory. Unlike designs processing context within the controller or through purpose-built memory, PonderPounce retains history in Ponder ’s context and asynchronously routes cognition to Pounce . This separation keeps context processing off the action path and lets System 2 scale without changing the controller architecture.。来源：原图",
       "paper_title": "PonderPounce: A Pretrained MLLM as an Episode Context Engine for Robot Control",
       "source_url": "https://arxiv.org/html/2608.24115v1/figures/PP-Title.png"
     },
@@ -4515,6 +4527,7 @@
     "limitations": "仅评测两个模拟 benchmark，缺少真实机器人验证；9B MLLM 加 3–3.6B controller 的训练和推理成本高；上下文限制为 16K token；RoboMME baseline 未获得同等推理监督，架构与监督因素纠缠；连续 cognition 与单独训练的文本子目标接口性能差异小于运行间波动。需要用相同监督预算、错配演示、历史反事实、长期上下文溢出和真实延迟测试来判断其 ICL 能力。\n\n### 与知域的关系\n\nPonderPounce 位于 ICL、具身记忆和 fast-slow VLA 的交叉点。与 Zero-WAM/RA-VLA 的部署前示范上下文不同，它强调执行期间持续更新的 episode context；与 RoboTTT 的部署时 fast-weight 更新不同，它在推理阶段保持模型参数不变，只更新 causal cache 和 cognition。因此知域应把“token/cache 状态适应”和“参数状态适应”分开索引。",
     "comments": "",
     "source_reports": [
+      "report-1950a5754f",
       "report-a141624b1e"
     ],
     "deleted": false,
@@ -4547,7 +4560,6 @@
     "links": {
       "paper": "https://arxiv.org/abs/2608.27328",
       "code": "https://github.com/AMAP-ML/R2MBench",
-      "model": "https://arxiv.org/html/2608.27328v1/overview_compressed.png",
       "alphaxiv": "https://alphaxiv.org/abs/2608.27328"
     },
     "tags": [
@@ -4617,9 +4629,12 @@
     },
     "tags": [
       "3D/4D",
+      "Embodied ICL",
       "Embodied In-context Learning",
       "HOI",
       "In-context Imitation Learning",
+      "Robot Memory",
+      "Test-time Adaptation",
       "VLA",
       "World Action Model",
       "世界模型",
@@ -4634,7 +4649,7 @@
     "figure": {
       "url": "https://arxiv.org/html/2608.25585v1/intro.png",
       "alt": "RA-VLA: Retrieval-Augmented VLA for Test-Time Adaptation 代表图",
-      "label": "Figure 1 : Adaptation bottleneck in existing ICIL frameworks. Existing ICIL methods (a) prioritize superficial visual similarity over functional intent in context retrieval, (b) fail to effectively leverage contextual guidance, and (c) exhibit significant computational overhead for larger contexts. While this overhead is plotted for RICL, other ICIL baselines follow a nearly identical trend. 来源：论文图",
+      "label": "Figure 1 : Adaptation bottleneck in existing ICIL frameworks. Existing ICIL methods (a) prioritize superficial visual similarity over functional intent in context retrieval, (b) fail to effectively leverage contextual guidance, and (c) exhibit significant computational overhead for larger contexts. While this overhead is plotted for RICL, other ICIL baselines follow a nearly identical trend.。来源：原图",
       "paper_title": "RA-VLA: Retrieval-Augmented VLA for Test-Time Adaptation",
       "source_url": "https://arxiv.org/html/2608.25585v1/intro.png"
     },
@@ -4652,6 +4667,7 @@
     "limitations": "DTW 正样本依赖训练演示动作，行为距离对不同 embodiment、速度和坐标系的稳健性尚未充分证明；LIBERO 的 suite-level 留出比随机任务留出严格，但仍是同一模拟生态；真实评测每任务仅 12 次；示范 buffer 的错误、恶意或次优轨迹会直接污染检索与控制。论文也指出 demonstration buffer 存在数据注入安全风险。后续应报告错误检索率、上下文错配校准、跨 embodiment 检索和大 buffer 的端到端延迟。\n\n### 与知域的关系\n\nRA-VLA 补上知域具身 ICL 中“检索增强 VLA”这一脉络，与 ICRT 的长序列 next-token ICL、RICL 的动作融合、Zero-WAM 的完整人类视频条件互补。它最值得复用的是行为相关检索与 context adherence 审计，可用于检查 WAM/VLA 是否只是依赖当前观察和训练先验。",
     "comments": "",
     "source_reports": [
+      "report-1950a5754f",
       "report-a141624b1e"
     ],
     "deleted": false,
@@ -4754,7 +4770,6 @@
     "links": {
       "paper": "https://arxiv.org/abs/2608.23565",
       "project": "https://zhifeichen097.github.io/ReWorld/",
-      "model": "https://arxiv.org/html/2608.23565v1/figures/wanworld_framework.png",
       "alphaxiv": "https://alphaxiv.org/abs/2608.23565"
     },
     "tags": [
@@ -4832,7 +4847,6 @@
       "paper": "https://arxiv.org/abs/2608.27033",
       "project": "https://riemann-dynamics.github.io/Riemann-1.0-Website",
       "data": "https://huggingface.co/datasets/GalaxeaAI/Galaxea-Open-World-Dataset",
-      "model": "https://arxiv.org/html/2608.27033v1/teaser.png",
       "alphaxiv": "https://alphaxiv.org/abs/2608.27033"
     },
     "tags": [
@@ -4900,7 +4914,6 @@
       "paper": "https://arxiv.org/abs/2607.22535",
       "project": "https://bjkim95.github.io/rofacto/",
       "code": "https://github.com/bjkim95/rofacto",
-      "model": "https://arxiv.org/html/2607.22535/x1.png",
       "alphaxiv": "https://alphaxiv.org/abs/2607.22535"
     },
     "tags": [
@@ -4936,7 +4949,7 @@
       "report-a77d9a7ad6"
     ],
     "deleted": false,
-    "updated_at": "2026-08-21",
+    "updated_at": "2026-08-31",
     "challenges": "直接条件化原始命令要求世界模型同时学习控制器如何实现动作；条件化日志中的未来关节状态则泄漏接触、延迟和纠错结果。长期挑战是动作条件视频的可部署性，本文具体缺口是缺少既反映机器人运动、又不偷看未来结果的中间变量。",
     "motivation": "作者提出“名义轨迹”：在无场景交互时，用部署可用的控制器与运动学把动作实现成轨迹，再渲染成相机对齐机器人几何。它将 action realization 和 embodiment geometry 移出网络，让模型专门预测环境响应，并首次清晰审计 logged future state leakage。",
     "technical_approach": "- **输入：** 当前场景 RGB/深度、动作、初始关节状态、控制器、URDF、相机轨迹和不泄漏结果的文本。\n- **过程：** 在无碰撞环境中重放动作得到名义关节轨迹，渲染机器人 RGB mesh 与末端深度；静态场景 RGB/深度和机器人几何经 VAE 后与噪声视频拼接。Wan2.1-Fun 14B inpainting 模型以 LoRA+flow matching 训练。\n- **输出：** 给定名义机器人运动后的交互视频；可组合未见机器人几何与重定向的人类动作。",
@@ -5090,19 +5103,26 @@
     "tags": [
       "3D/4D",
       "4D重建",
+      "Flow-GRPO",
+      "GRPO",
       "HOI",
+      "R1",
+      "Reward Optimization",
+      "Robot Policy",
+      "video generation",
       "World Action Model",
       "动作流",
       "周报",
       "因果建模",
       "因果推理",
+      "强化学习",
       "流式生成",
       "自我中心视觉"
     ],
     "figure": {
       "url": "https://arxiv.org/html/2608.19556v1/figure1_teaser.png",
       "alt": "Stream4D Fig. 1：静态 3D 奖励与动态 4D 奖励对比",
-      "label": "Stream4D，Fig. 1，静态 3D 奖励导致场景冻结，而动态 4D 奖励保留运动并改善长程一致性。来源：Fig. 1 原图 PNG",
+      "label": "Stream4D，Fig. 1，静态 3D 奖励导致场景冻结，而动态 4D 奖励保留运动并改善长程一致性。。来源：原图",
       "paper_title": "Stream4D: 4D-Consistency for Streaming Autoregressive Diffusion Video Models",
       "source_url": "https://arxiv.org/html/2608.19556v1/figure1_teaser.png"
     },
@@ -5120,10 +5140,11 @@
     "limitations": "- MoVieS 自身的重建误差和偏差会传递到奖励信号中，失败模式未讨论\n- 运动先验对\"自然运动量级\"的假设可能不适用于所有场景\n- 评估在 500 个运动突出提示词上进行，低运动/静态场景覆盖不明\n- 依赖 MoVieS 做 4D 重建，计算开销未报告\n\n### 与知域的关系\n\nStream4D 与知域关注的流式生成方向（Self-Forcing, Causal-Forcing, LongLive）直接相关。它不是新的生成骨干，而是这些骨干上的一致性奖励改进，对\"流式生成如何维持长程几何与运动一致性\"给出了比 World-R1/VideoGPA 更有针对性的方案。4D 重建奖励的思路对前馈重建方向也有间接参考。\n\n---",
     "comments": "",
     "source_reports": [
+      "report-cedaa0825a",
       "report-f5f82689ca"
     ],
     "deleted": false,
-    "updated_at": "2026-08-23",
+    "updated_at": "2026-08-31",
     "arxiv": {
       "published": "2026-08-20T01:54:26Z",
       "revised_at": "2026-08-20T01:54:26Z",
@@ -5641,11 +5662,11 @@
     "evidence_notes": "",
     "experiments": "- VGGRPO 在 static/dynamic scenes 中都改善 camera smoothness、geometry consistency 和整体质量。\n- LGM 相比“latent -> RGB -> geometry model”的路径更抗 latent perturbation，说明 latent-space reward 减少了 RGB decoding domain gap。\n- 附录中的 VBench 表显示，VGGRPO 相比 baseline / SFT / Epipolar-DPO / VideoGPA 在 subject/background consistency、motion smoothness、image quality 等维度整体更稳。",
     "figure": {
+      "url": "https://zhaochongan.github.io/projects/VGGRPO/VGGRPO_files/pipeline.png",
       "alt": "VGGRPO Fig. 2: method overview",
-      "label": "VGGRPO，Fig. 2 \"Method Overview\"，来源：项目页 / arXiv HTML",
+      "label": "VGGRPO，Fig. 2 \"Method Overview\"，。来源：原图",
       "paper_title": "VGGRPO: Towards World-Consistent Video Generation with 4D Latent Reward",
-      "source_url": "https://zhaochongan.github.io/projects/VGGRPO/",
-      "url": "https://zhaochongan.github.io/projects/VGGRPO/VGGRPO_files/pipeline.png"
+      "source_url": "https://zhaochongan.github.io/projects/VGGRPO/VGGRPO_files/pipeline.png"
     },
     "id": "arxiv-2603-26599",
     "insight": "VGGRPO 针对的是 RGB-space geometry reward 的成本和鲁棒性问题。作者认为：已有 alignment 方法常在 RGB 解码后再跑几何模型，导致反复 VAE decoding，计算贵；而 RGB-based reward 还容易受生成图像分布偏移影响。\n\n核心 insight：\n\n> 如果 video diffusion latent 已包含足够视觉信息，可以训练一个 Latent Geometry Model，把 diffusion latent 直接接到 4D geometry foundation model，从 latent 中解码 camera pose、depth、point map、scene flow，再在 latent space 做 GRPO reward。\n\n这使几何奖励不必每次回到 RGB pixel space，也能利用 4D reconstruction model 支持 dynamic scenes。",
@@ -5663,18 +5684,26 @@
     },
     "publication": "2026",
     "source_reports": [
-      "report-1818b05f33"
+      "report-1818b05f33",
+      "report-cedaa0825a"
     ],
     "summary": "VGGRPO 针对的是 RGB-space geometry reward 的成本和鲁棒性问题。作者认为：已有 alignment 方法常在 RGB 解码后再跑几何模型，导致反复 VAE decoding，计算贵；而 RGB-based reward 还容易受生成图像分布偏移影响。",
     "tags": [
       "3D/4D",
+      "Flow-GRPO",
+      "GRPO",
       "HOI",
+      "R1",
+      "Reward Optimization",
+      "Robot Policy",
+      "video generation",
       "几何一致性",
+      "强化学习",
       "视频生成",
       "重建"
     ],
     "title": "VGGRPO: Towards World-Consistent Video Generation with 4D Latent Reward",
-    "updated_at": "2026-08-20",
+    "updated_at": "2026-08-31",
     "year": 2026
   },
   {
@@ -5973,7 +6002,6 @@
     "doi": "",
     "links": {
       "paper": "https://arxiv.org/abs/2608.26239",
-      "model": "https://arxiv.org/html/2608.26239v1/overview.png",
       "alphaxiv": "https://alphaxiv.org/abs/2608.26239"
     },
     "tags": [
@@ -6038,7 +6066,6 @@
     "doi": "",
     "links": {
       "paper": "https://arxiv.org/abs/2608.22364",
-      "model": "https://arxiv.org/html/2608.22364v1/figures/wam_opd_method_v0.png",
       "alphaxiv": "https://alphaxiv.org/abs/2608.22364"
     },
     "tags": [
@@ -6181,7 +6208,6 @@
     "doi": "",
     "links": {
       "paper": "https://arxiv.org/abs/2608.22421",
-      "model": "https://arxiv.org/html/2608.22421v1/aaai_fig1_failure_discovery.png",
       "alphaxiv": "https://alphaxiv.org/abs/2608.22421"
     },
     "tags": [
@@ -6388,11 +6414,11 @@
     "evidence_notes": "",
     "experiments": "- World-R1-Small / Large 在 3D consistency benchmark 上显著优于 Wan2.1 / Wan2.2 / CogVideoX 等 baseline。\n- 官方技术页报告 World-R1-Large 达 27.67 PSNR / 0.865 SSIM / 0.162 LPIPS；World-R1-Small 相对 Wan2.1-1.3B 有 +10.23 dB PSNR 改善。\n- User study 中，World-R1 相对 Wan2.1 在 geometry/control/overall preference 上有优势。\n- 121-frame long-video evaluation 中，World-R1-Large 将 PSNR 从 18.32 提升到 26.32。\n\n需要注意：这些实验支持的是 **3D consistency / camera control / visual quality preservation**，不是严格意义上的物理仿真或可交互因果 world model。",
     "figure": {
+      "url": "https://microsoft.github.io/World-R1/assets/pipeline.jpg",
       "alt": "World-R1 Fig. 2: pipeline overview",
-      "label": "World-R1，Fig. 2 / Pipeline Overview，来源：官方技术页",
+      "label": "World-R1，Fig. 2 / Pipeline Overview，。来源：原图",
       "paper_title": "World-R1: Reinforcing 3D Constraints for Text-to-Video Generation",
-      "source_url": "https://microsoft.github.io/World-R1/tech.html",
-      "url": "https://microsoft.github.io/World-R1/assets/pipeline.jpg"
+      "source_url": "https://microsoft.github.io/World-R1/assets/pipeline.jpg"
     },
     "id": "arxiv-2604-24764",
     "insight": "World-R1 的出发点与 GeoFlow/VGGRPO 接近：video foundation model 已有强视觉合成能力，但缺内在 3D 几何约束。它反对在推理时加重型 3D control modules，主张通过 RL 后训练把几何一致性“内化”到模型中。\n\n核心 insight：\n\n> 用 3D foundation model 和 VLM 作为 reward providers，通过 Flow-GRPO 对 text-to-video 模型做后训练，可以在不改架构、不加推理期 3D 模块的情况下强化 3D consistency。\n\n它还引入 implicit camera conditioning：从 text 中解析 camera motion，将轨迹先验写入 initial latent noise，而不是增加额外控制网络。",
@@ -6412,19 +6438,27 @@
     },
     "publication": "2026",
     "source_reports": [
-      "report-1818b05f33"
+      "report-1818b05f33",
+      "report-cedaa0825a"
     ],
     "summary": "World-R1 的出发点与 GeoFlow/VGGRPO 接近：video foundation model 已有强视觉合成能力，但缺内在 3D 几何约束。它反对在推理时加重型 3D control modules，主张通过 RL 后训练把几何一致性“内化”到模型中。",
     "tags": [
       "3D/4D",
+      "Flow-GRPO",
+      "GRPO",
       "HOI",
+      "R1",
+      "Reward Optimization",
+      "Robot Policy",
+      "video generation",
       "几何一致性",
       "可供性",
+      "强化学习",
       "视频生成",
       "重建"
     ],
     "title": "World-R1: Reinforcing 3D Constraints for Text-to-Video Generation",
-    "updated_at": "2026-08-20",
+    "updated_at": "2026-08-31",
     "year": 2026
   },
   {
@@ -6448,7 +6482,6 @@
     "doi": "",
     "links": {
       "paper": "https://arxiv.org/abs/2608.24885",
-      "model": "https://arxiv.org/html/2608.24885v1/figure1.png",
       "alphaxiv": "https://alphaxiv.org/abs/2608.24885"
     },
     "tags": [
@@ -6593,14 +6626,16 @@
     "links": {
       "paper": "https://arxiv.org/abs/2608.26103",
       "project": "https://robbyant-research.github.io/Zero-WAM/",
-      "model": "https://arxiv.org/html/2608.26103v2/data_combine_v1.1.png",
       "alphaxiv": "https://alphaxiv.org/abs/2608.26103"
     },
     "tags": [
       "3D/4D",
+      "Embodied ICL",
       "Embodied In-context Learning",
       "HOI",
       "In-context Imitation Learning",
+      "Robot Memory",
+      "Test-time Adaptation",
       "VLA",
       "World Action Model",
       "世界模型",
@@ -6616,7 +6651,7 @@
     "figure": {
       "url": "https://arxiv.org/html/2608.26103v2/data_combine_v1.1.png",
       "alt": "Zero-WAM: In-Context World-Action Modeling from Human Videos for Open-Ended Task Generalization 代表图",
-      "label": "Figure 2 : Data construction and in-context human video generation. Top: Task-diverse VA data provide task-balanced robotic video-action pre-training data, while HumanGen contains Pre-train ICL (External), Pre-train ICL (In-house), Simulation ICL, and Real-world ICL pairs. Bottom: the in-context human video generation pipeline converts task-sampled robot videos into human video instructions. 来源：论文图",
+      "label": "Figure 2 : Data construction and in-context human video generation. Top: Task-diverse VA data provide task-balanced robotic video-action pre-training data, while HumanGen contains Pre-train ICL (External), Pre-train ICL (In-house), Simulation ICL, and Real-world ICL pairs. Bottom: the in-context human video generation pipeline converts task-sampled robot videos into human video instructions.。来源：原图",
       "paper_title": "Zero-WAM: In-Context World-Action Modeling from Human Videos for Open-Ended Task Generalization",
       "source_url": "https://arxiv.org/html/2608.26103v2/data_combine_v1.1.png"
     },
@@ -6634,6 +6669,7 @@
     "limitations": "训练耗时约 15,360 GPU 小时；HumanGen 依赖闭源或外部生成模型，语义一致性仍可能失真；模拟评测只有 7 个未见任务，真实实验每类 30 次试验且成功率仍有限；“zero-shot”是对测试任务无参数更新，不代表模型没有使用同类任务、目标物或机器人数据。人类视频是否被真正使用，应继续做错配视频、顺序反转视频、相同首帧不同目标视频等反事实测试，而不仅是去掉视频。\n\n### 与知域的关系\n\n这是具身 ICL 与 WAM 的直接交叉：它把人类视频从预训练数据提升为部署时任务接口，并把未来视觉预测作为跨 embodiment 的中介。可与 Vid2Robot、ICRT、ViVLA、SeeTraceAct、RICL 对照：Zero-WAM 更强调完整任务演化和未来世界状态，而不是直接复制示范动作或只提取静态技能向量。",
     "comments": "",
     "source_reports": [
+      "report-1950a5754f",
       "report-a141624b1e"
     ],
     "deleted": false,
@@ -7429,7 +7465,6 @@
     "links": {
       "paper": "https://arxiv.org/abs/2511.01177",
       "project": "https://alan-heoooh.github.io/dexwm.html",
-      "model": "https://arxiv.org/html/2511.01177/x1.png",
       "alphaxiv": "https://alphaxiv.org/abs/2511.01177"
     },
     "tags": [
@@ -7465,7 +7500,7 @@
       "report-a77d9a7ad6"
     ],
     "deleted": false,
-    "updated_at": "2026-08-21",
+    "updated_at": "2026-08-31",
     "challenges": "多指手的自由度、关节定义与控制空间不同，动作标签不能直接合并；接触丰富的刚体/可变形体操作还叠加高维控制与 sim-to-real gap。本文针对既有跨本体工作多局限于抓取、重定向或平行夹爪，缺少真正共享的状态—动作空间。",
     "motivation": "作者主张跨本体可共享的不是关节动作，而是对环境产生的物理交互。将人手、机器人手和物体统一成 3D 粒子，动作定义为末端粒子位移，就能把不同 DoF 的控制映射到同一几何接口，并用一个图世界模型加 MPC 部署。",
     "technical_approach": "- **输入：** 手与物体 3D 粒子、候选关节动作、目标物体点云。\n- **过程：** 前向运动学把动作变为粒子位移；DPI-Net 半径图进行局部消息传播并预测下一粒子状态，仿真用 MSE、无对应真实点云用 Chamfer/EMD。MPC 每次采样 500 个 horizon-4 序列、优化 10 次，执行 2 步后重规划。\n- **输出：** 物体粒子未来和目标机器人原生关节空间中的控制动作。",

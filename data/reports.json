@@ -1,5 +1,54 @@
 [
   {
+    "id": "report-1950a5754f",
+    "title": "具身 In-Context Learning 专题：视频示范、检索与 Episode Context",
+    "date": "2026-08-31",
+    "tags": [
+      "Embodied ICL",
+      "In-context Imitation Learning",
+      "Robot Memory",
+      "Test-time Adaptation",
+      "VLA",
+      "World Action Model"
+    ],
+    "summary": "从知域现有馆藏中抽取 3 篇直接研究具身 in-context learning 的工作，比较上下文是什么、如何注入策略、部署时是否更新参数，以及如何证明策略真的依赖上下文。",
+    "paper_ids": [
+      "arxiv-2608-24115",
+      "arxiv-2608-25585",
+      "arxiv-2608-26103"
+    ],
+    "path": "content/reports/2026-08-31_embodied_in_context_learning.md",
+    "source_file": "2026-08-31_embodied_in_context_learning.md",
+    "content_sha1": "5407d767c70da792950dc41b66087e203905123d"
+  },
+  {
+    "id": "report-cedaa0825a",
+    "title": "R1 / GRPO / 奖励优化专题：从视频几何一致性到机器人策略",
+    "date": "2026-08-31",
+    "tags": [
+      "3D/4D",
+      "Flow-GRPO",
+      "GRPO",
+      "R1",
+      "Reward Optimization",
+      "Robot Policy",
+      "video generation",
+      "强化学习"
+    ],
+    "summary": "严格收录知域中直接使用 R1-style、GRPO、RL post-training 或显式奖励优化的 6 篇工作；不因标题、机器人型号或 on-policy 字样做表面匹配。",
+    "paper_ids": [
+      "arxiv-2603-26599",
+      "arxiv-2604-24764",
+      "arxiv-2605-18365",
+      "arxiv-2606-05645",
+      "arxiv-2608-11739",
+      "arxiv-2608-19556"
+    ],
+    "path": "content/reports/2026-08-31_r1_grpo_reward_optimization.md",
+    "source_file": "2026-08-31_r1_grpo_reward_optimization.md",
+    "content_sha1": "f8699ccb9598d5d8200054d2524734594c403436"
+  },
+  {
     "id": "report-a141624b1e",
     "title": "知域每周论文更新：2026-08-30",
     "date": "2026-08-30",
@@ -57,7 +106,7 @@
     ],
     "path": "content/reports/2026-08-30_weekly_paper_update.md",
     "source_file": "2026-08-30_weekly_paper_update.md",
-    "content_sha1": "fe0dc647a4923d2da5d342fa5c78c558669d17b6"
+    "content_sha1": "2db4d5d397e8eff5a8d79b18d6695e71dd6e02cc"
   },
   {
     "id": "report-ea0469615f",

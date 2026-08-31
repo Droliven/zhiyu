@@ -287,9 +287,9 @@ Riemann-1.0 把多视角视觉观测、机器人状态、具身特定动作放�
 - **现有知域 ID**：无
 - **本次变化**：—
 
-- **代表图**：Figure 1: Comparison of WAM enhancement paradigms. (a) Conventional WAMs learn world-action representations primarily in 2D video or latent space. (b) Previous geometry- or semantics-aware WAMs introduce dedicated spatial enhancement modules or structured representations into the modeling pipeline. (c) GaussianWAM instead uses a training-time 3D Gaussian teacher to inject geometry-, semantics-, and coverage-aware sup… 来源：[论文图](https://arxiv.org/html/2608.24714v1/assets/Paradigms.drawio.png)
+- **代表图**：GaussianWAM Fig. 2：训练期构建 3D Gaussian teacher，并向 WAM 蒸馏语义、深度、覆盖率和有效区域监督。来源：[Fig. 2 原图](https://arxiv.org/html/2608.24714v1/assets/framework_gaussian4X.drawio.png)
 
-![GaussianWAM: Distilling Geometry and Semantics from 3D Gaussian Fields into World-Action Models 代表图](https://arxiv.org/html/2608.24714v1/assets/Paradigms.drawio.png)
+![GaussianWAM Fig. 2：3D Gaussian teacher 到 WAM 的蒸馏框架](https://arxiv.org/html/2608.24714v1/assets/framework_gaussian4X.drawio.png)
 
 ### 核心内容与 Insight
 WAM 的视频潜在表示主要为视觉预测优化，不显式保持跨视角几何结构与空间局部的对象相关语义。GaussianWAM 的 Insight：**用 3D Gaussian field 作为组织几何与语义监督的中间载体**——冻结几何/视觉基础模型提供深度、相机参数与密集语义特征，绑定到共享 Gaussian 基元上，渲染出空间对齐的语义、深度、覆盖目标，蒸馏进 WAM 的当前观测表示。所有教师模型、Gaussian 组件在训练后可丢弃，测试期不增开销。
