@@ -90,6 +90,13 @@ FORMAL_HOSTS = (
     "ieeexplore.ieee.org",
 )
 
+OFFICIAL_REPORT_LABELS = (
+    "官方技术报告",
+    "technical report",
+    "官方研究长文",
+    "official research article",
+)
+
 
 def read_json(path: Path, default: Any) -> Any:
     if not path.exists():
@@ -300,6 +307,8 @@ def classify_links(section: str, arxiv_id: str) -> dict[str, str]:
         lower_url = url.casefold()
         if "arxiv.org/abs/" in lower_url:
             links.setdefault("paper", url)
+        elif any(marker in lower_label for marker in OFFICIAL_REPORT_LABELS):
+            links.setdefault("paper", url)
         elif any(host in lower_url for host in FORMAL_HOSTS):
             links.setdefault("publication", url)
         elif "github.com" in lower_url or "code" in lower_label or "代码" in label:
@@ -404,7 +413,14 @@ def make_id(title: str, arxiv_id: str, doi: str = "") -> str:
 def parse_paper(title: str, section: str, profile: dict[str, Any], report_id: str) -> dict[str, Any] | None:
     if any(part.casefold() in title.casefold() for part in SKIP_TITLE_PARTS):
         return None
-    if not re.search(r"arxiv\.org/abs/|openreview\.net|proceedings\.|openaccess\.thecvf|ojs\.aaai", section):
+    official_report_pattern = "|".join(re.escape(label) for label in OFFICIAL_REPORT_LABELS)
+    official_report_source = re.search(
+        rf"\[[^]]*(?:{official_report_pattern})[^]]*\]\(https?://", section, re.I
+    )
+    if not official_report_source and not re.search(
+        r"arxiv\.org/abs/|openreview\.net|proceedings\.|openaccess\.thecvf|ojs\.aaai",
+        section,
+    ):
         return None
 
     arxiv_match = re.search(r"arxiv\.org/(?:abs|html)/(\d{4}\.\d{4,5})", section)
@@ -423,6 +439,11 @@ def parse_paper(title: str, section: str, profile: dict[str, Any], report_id: st
     pipeline_markdown = segments.get("pipeline", "")
     links = classify_links(section, arxiv_id)
     authors = field_value(section, ("作者", "Authors"))
+    category_tags = [
+        normalize_tag(tag)
+        for tag in re.split(r"[,，]", field_value(section, ("类别标签", "Tags")))
+        if normalize_tag(tag)
+    ]
     code_data = segments.get("code_data", "")
     if not code_data:
         status_parts = []
@@ -443,7 +464,11 @@ def parse_paper(title: str, section: str, profile: dict[str, Any], report_id: st
         "arxiv_id": arxiv_id,
         "doi": doi,
         "links": links,
-        "tags": merge_tags(infer_tags(title, section, profile["tags"])),
+        "tags": (
+            merge_tags(profile["tags"], category_tags)
+            if category_tags and official_report_source
+            else merge_tags(infer_tags(title, section, profile["tags"]))
+        ),
         "figure": extract_figure(section, title, arxiv_id),
         "summary": first_paragraph(insight or segments.get("challenges", "") or section),
         "insight": insight,
