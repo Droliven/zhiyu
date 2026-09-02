@@ -1,8 +1,8 @@
 [
   {
     "id": "report-1950a5754f",
-    "title": "具身 In-Context Learning 专题：视频示范、检索与 Episode Context",
-    "date": "2026-08-31",
+    "title": "具身 In-Context Learning 专题：视频提示、长上下文与测试时适应",
+    "date": "2026-09-02",
     "tags": [
       "Embodied ICL",
       "In-context Imitation Learning",
@@ -11,15 +11,41 @@
       "VLA",
       "World Action Model"
     ],
-    "summary": "从知域现有馆藏中抽取 3 篇直接研究具身 in-context learning 的工作，比较上下文是什么、如何注入策略、部署时是否更新参数，以及如何证明策略真的依赖上下文。",
+    "summary": "本专题以 Zero-WAM、RoboTTT、HOST、S1、GEN-1.5 和 Dyna-2 为主线，并保留 RA-VLA、PonderPounce 两项相关工作。统一比较上下文是什么、策略在测试时究竟改变了什么、实验探查了什么、证据实际支持什么。RoboTTT 与 HOST 有 arXiv 论文；S1、GEN-1.5 和 Dyna-2 目前只有机构官方研究长文或网页版技术报告，后者的结果均按“作者自报、未外部复现”处理。",
     "paper_ids": [
+      "arxiv-2607-15275",
+      "arxiv-2607-20033",
       "arxiv-2608-24115",
       "arxiv-2608-25585",
-      "arxiv-2608-26103"
+      "arxiv-2608-26103",
+      "paper-1d4c797b72",
+      "paper-5299527392",
+      "paper-d14a137e07"
     ],
     "path": "content/reports/2026-08-31_embodied_in_context_learning.md",
     "source_file": "2026-08-31_embodied_in_context_learning.md",
-    "content_sha1": "5407d767c70da792950dc41b66087e203905123d"
+    "content_sha1": "5cbcf668f2e0ee34230873895a91431734aef927"
+  },
+  {
+    "id": "report-f3ad8e6a32",
+    "title": "Dyna-2 技术报告精读：百万小时人类视频上的世界动作模型扩展律",
+    "date": "2026-09-02",
+    "tags": [
+      "cross-embodiment transfer",
+      "flow matching",
+      "scaling law",
+      "video generation",
+      "World Action Model",
+      "机器人学习",
+      "第一视角"
+    ],
+    "summary": "报告标签 ：World Action Model, scaling law, cross-embodiment transfer, 第一视角, 机器人学习, flow matching, video generation",
+    "paper_ids": [
+      "paper-1d4c797b72"
+    ],
+    "path": "content/reports/2026-09-02_dyna_2_technical_report.md",
+    "source_file": "2026-09-02_dyna_2_technical_report.md",
+    "content_sha1": "9da8ae6f0e2ec4c1f705c2fc777fe2cd4de136f0"
   },
   {
     "id": "report-cedaa0825a",
