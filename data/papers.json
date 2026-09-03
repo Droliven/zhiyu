@@ -368,8 +368,12 @@
     ],
     "summary": "将机器人策略拆成“想象未来视觉变化”和“从期望变化反推动作”两部分，并在统一自回归序列中交织 video/action tokens。KV cache 保留长历史，真实 observation 持续纠偏，异步推理把下一段预测与当前动作执行重叠。",
     "tags": [
+      "Causality",
+      "Counterfactual World Model",
+      "HOI",
       "VLA",
       "World Action Model",
+      "world model",
       "反事实推理",
       "因果世界模型",
       "因果推理",
@@ -377,8 +381,12 @@
       "机器人学习"
     ],
     "title": "Causal World Modeling for Robot Control",
-    "updated_at": "2026-08-23",
-    "year": 2026
+    "updated_at": "2026-09-02",
+    "year": 2026,
+    "challenges": "机器人 policy 与视频预测分离、闭环观测无法及时纠错，长时操作和推理时延受限。",
+    "motivation": "共享 vision/action latent，用自回归视频–动作模型同时预测未来与执行，并异步接收真实反馈。",
+    "technical_approach": "- **输入：** 多源机器人视频、语言指令、动作 tokens 与在线观测\n- **过程：** Mixture-of-Transformers 共享 latent；autoregressive diffusion；closed-loop refresh 与异步推理\n- **输出：** 未来视频/latent 和机器人动作",
+    "discussion": "“causal”主要指 action→future dynamics、temporal causal mask 和闭环顺序；没有 causal graph、SCM、干预识别或 counterfactual benchmark。它是强 action-conditioned baseline，不是严格 CWM。"
   },
   {
     "arxiv": {
@@ -431,14 +439,22 @@
     "summary": "论文： Causal-JEPA: Learning World Models through Object-Level Latent Masking 作者： Heejeong Nam et al. 年份： 2026，ICML 2026 入口： arXiv｜代码",
     "tags": [
       "3D/4D",
+      "Causality",
+      "Counterfactual World Model",
+      "HOI",
+      "world model",
       "反事实推理",
       "因果世界模型",
       "因果推理",
       "对象中心"
     ],
     "title": "Causal-JEPA: Learning World Models through Object-Level Latent Masking",
-    "updated_at": "2026-08-23",
-    "year": 2026
+    "updated_at": "2026-09-02",
+    "year": 2026,
+    "challenges": "对象中心表示仍可走单对象捷径，不必学习对象间互动。",
+    "motivation": "遮掉整个对象 latent，迫使模型从其他对象推断它，形成 interaction-aware causal inductive bias。",
+    "technical_approach": "- **输入：** 视频对象 slots、动作及对象级 mask\n- **过程：** JEPA 在 latent 空间预测被遮对象/未来；将 rollout 接入 Push-T latent MPC\n- **输出：** 对象 latent 预测、CLEVRER 问答特征和规划轨迹",
+    "discussion": "这是对象交互训练偏置的重要 novelty 邻居；masking 改变的是可观测性，不是物理环境节点，因此作者的 counterfactual-like 表述不应扩成 causal identification。"
   },
   {
     "id": "arxiv-2608-27406",
@@ -502,6 +518,72 @@
       "revised_at": "2026-08-27T17:35:10Z",
       "primary_category": "cs.RO"
     }
+  },
+  {
+    "id": "arxiv-2608-27549",
+    "title": "Code as Worlds: Agentic Discovery of Executable World Representations for Physical Reasoning",
+    "authors": [
+      "Hanyang Wang",
+      "Yimo Cai",
+      "Weiliang Chen",
+      "Jiawei Chi",
+      "Haowen Sun",
+      "Qiyu Dai",
+      "Yi-Hsin Hung",
+      "Xingzhuo Guo",
+      "Jinshan Ren",
+      "Runmao Yao",
+      "Ziwei Liu",
+      "Mingsheng Long",
+      "Yueqi Duan",
+      "Jun Gao",
+      "Jiangran Lyu",
+      "Fangfu Liu",
+      "Jialong Wu"
+    ],
+    "year": 2026,
+    "publication": "2026，arXiv preprint（v1，2026-08-27）；arXiv:2608.27549；正式 DOI 未见",
+    "arxiv_id": "2608.27549",
+    "doi": "",
+    "links": {
+      "paper": "https://arxiv.org/abs/2608.27549",
+      "project": "https://mirros-lab.github.io/code-as-world/",
+      "alphaxiv": "https://alphaxiv.org/abs/2608.27549"
+    },
+    "tags": [
+      "Physical World Model",
+      "Physics-Aware Video Generation",
+      "World Simulator"
+    ],
+    "figure": {
+      "url": "https://arxiv.org/html/2608.27549v1/pipeline-wjl.png",
+      "alt": "Code as Worlds Fig. 2",
+      "label": "Code as Worlds，Fig. 2，代理发现、执行并修正可执行世界表示的闭环。来源：Fig. 2 原图",
+      "paper_title": "Code as Worlds: Agentic Discovery of Executable World Representations for Physical Reasoning",
+      "source_url": "https://arxiv.org/html/2608.27549v1/pipeline-wjl.png"
+    },
+    "summary": "把世界表示成可执行代码，显式组织 scene composition、dynamics 和 appearance；通过 propose→execute→render→verify→refine 的 abductive loop，从文本或视频反推出可运行 hypothesis。",
+    "insight": "把世界表示成可执行代码，显式组织 scene composition、dynamics 和 appearance；通过 propose→execute→render→verify→refine 的 abductive loop，从文本或视频反推出可运行 hypothesis。",
+    "pipeline": {
+      "input": "自然语言描述或真实视频，以及可调用的代码执行/物理渲染环境",
+      "process": "agent 提议包含对象、参数、规则和相机的 world code，执行并渲染，与观测核对后迭代修正；验证后的世界再生成定量物理监督训练 VLM",
+      "output": "可检查和编辑的 executable world、模拟轨迹/视频，以及 Code-as-World-VL 推理模型",
+      "details": "- **输入：** 自然语言描述或真实视频，以及可调用的代码执行/物理渲染环境\n- **过程：** agent 提议包含对象、参数、规则和相机的 world code，执行并渲染，与观测核对后迭代修正；验证后的世界再生成定量物理监督训练 VLM\n- **输出：** 可检查和编辑的 executable world、模拟轨迹/视频，以及 Code-as-World-VL 推理模型"
+    },
+    "experiments": "QuantiPhy 上 4B/9B/27B 模型平均 MRA 为 50.6/55.4/58.6，论文报告 27B 超过所测 proprietary baselines。sim-to-real renderer 将 JEDi MMD 从 simulator render 的 3.000 降到 1.484，同时 trajectory ADE 基本保持 1.682→1.677，Accuracy@2%D 为 78.81%→77.49%。结果支持可执行监督与数值推理，但不能说明所有真实视频都能唯一恢复正确物理程序。",
+    "evidence_notes": "",
+    "code_data_status": "论文为 CC BY 许可，项目页提供 technical report、演示和 Code 入口；具体仓库、训练数据、执行沙箱与模型权重的完整发布状态需人工复核。",
+    "limitations": "- 程序搜索与反复渲染计算昂贵。\n- 单段观测通常不足以辨识质量、摩擦和隐藏力。\n- 可执行代码有安全风险，复现需隔离 sandbox。\n- QuantiPhy 成绩主要验证 quantitative reasoning，不等于机器人闭环成功。",
+    "comments": "",
+    "source_reports": [
+      "report-d2be249044"
+    ],
+    "deleted": false,
+    "updated_at": "2026-09-03",
+    "challenges": "VLM 能描述物理事件，却常缺少对象状态、数值参数和 governing dynamics，无法执行、检验或针对变量做干预。",
+    "motivation": "把世界表示成可执行代码，显式组织 scene composition、dynamics 和 appearance；通过 propose→execute→render→verify→refine 的 abductive loop，从文本或视频反推出可运行 hypothesis。",
+    "technical_approach": "- **输入：** 自然语言描述或真实视频，以及可调用的代码执行/物理渲染环境\n- **过程：** agent 提议包含对象、参数、规则和相机的 world code，执行并渲染，与观测核对后迭代修正；验证后的世界再生成定量物理监督训练 VLM\n- **输出：** 可检查和编辑的 executable world、模拟轨迹/视频，以及 Code-as-World-VL 推理模型",
+    "discussion": "这是列表中最显式的结构化/可干预世界表示。其 agentic search 属于模型选择与系统识别，但多解性、验证器偏差和程序先验会造成“能解释观测但机制错误”的等价解。"
   },
   {
     "id": "arxiv-2608-19085",
@@ -1277,14 +1359,21 @@
     "summary": "EgoHOI 明确反对“给未来物体轨迹等 privileged future state，再做条件视频生成”的捷径。它认为真正的 egocentric HOI world model 应该从 action signals 推断 hand-object dynamics。为此，它从 3D estimates 中蒸馏 physics-informed embeddings ：hand kinematic embeddings、ego-motion embeddings、object entity embeddings，用来约束 latent rollout 的物理合理性、手部运动学一致性、物体身份稳定性。",
     "tags": [
       "3D/4D",
+      "Causality",
+      "Counterfactual World Model",
       "HOI",
+      "world model",
       "几何一致性",
+      "反事实推理",
       "第一视角"
     ],
     "title": "Egocentric World Model for Photorealistic Hand-Object Interaction Synthesis",
-    "updated_at": "2026-08-23",
+    "updated_at": "2026-09-02",
     "year": 2026,
-    "discussion": "- 这是目前最贴近“HOI world model”的工作之一。\n- 它强在 **3D prior distillation into video world model**。\n- 仍可继续做的点：显式 object pose/state update、contact state transition、4D object representation，而不是只作为 embedding regularizer。\n\n---"
+    "discussion": "- 这是目前最贴近“HOI world model”的工作之一。\n- 它强在 **3D prior distillation into video world model**。\n- 仍可继续做的点：显式 object pose/state update、contact state transition、4D object representation，而不是只作为 embedding regularizer。\n\n---",
+    "challenges": "给定未来对象轨迹的条件生成泄漏了待预测状态；纯视频 latent 又容易出现手部、相机和对象身份漂移。",
+    "motivation": "从 3D estimates 蒸馏 hand kinematic、ego-motion 和 object entity embeddings，在不直接给未来对象状态的情况下约束 rollout。",
+    "technical_approach": "- **输入：** 初始第一视角场景、动作/手部控制与训练期 3D 估计\n- **过程：** video world model 联合 physics-informed embedding regularization，约束手、相机和对象一致性\n- **输出：** photorealistic egocentric HOI rollout"
   },
   {
     "arxiv": {
@@ -2980,9 +3069,12 @@
     },
     "tags": [
       "3D/4D",
+      "Causality",
+      "Counterfactual World Model",
       "cross-embodiment",
       "embodied AI",
       "geometry action",
+      "HOI",
       "visual action",
       "world model",
       "机器人学习"
@@ -3004,18 +3096,18 @@
     },
     "experiments": "八项真实长时任务混合成功/失败数据，π0.5 与 GigaBrain-0.5 各取早中晚 checkpoint，每评估组 30 episodes；先联合训练再逐任务微调，最终不是单一通用模型。iMaC 的 MSE/FID/PSNR/SSIM/FVD 为 0.028/36.96/16.39/0.735/489.51，Ctrl-World 为 0.030/48.64/16.22/0.730/591.47；去掉 contact images 的 FVD 523.94，说明接触场主要改善时序质量。\n\n世界模型分数与真实成功率的八任务 Pearson 为 0.956、0.931、0.678、0.915、0.428、0.870、0.856、0.833；两项涉及相机难观察的高度关系，明确暴露观测盲区。相关性只来自两个策略族×三个 checkpoint，且没有 CI、p 值或 Spearman。论文未披露数据规模、GPU、时延与训练成本。",
     "evidence_notes": "",
-    "code_data_status": "论文与项目页公开；未核验到完整代码、权重、训练数据或评测脚本。",
+    "code_data_status": "项目页公开；未核验到完整代码、权重、训练集和评测脚本，论文未充分披露 GPU、数据规模和时延。",
     "limitations": "- 依赖 URDF、精确标定和深度；DA3 误差会改变接触时序。\n- 相机盲区会生成视觉合理但物理错误的结果。\n- 分块生成仍会累积模糊与动作漂移。\n- 每任务单独微调，不是通用单模型。\n- 仅两个策略族，相关性的泛化与统计稳定性不足。",
     "comments": "",
     "source_reports": [
       "report-a77d9a7ad6"
     ],
     "deleted": false,
-    "updated_at": "2026-08-21",
+    "updated_at": "2026-09-02",
     "challenges": "离线策略评估要求世界模型区分厘米级动作差异导致的抓住、错过或碰撞。低维动作没有直接指明机器人将出现在哪里、与物体多远；仅渲染机器人运动仍无法消除 2D 重叠下的深度和接触歧义。",
     "motivation": "iMaC 把动作翻译成两类图像：motion image 给出未来机器人外观/位置，双向 contact image 给出未来机器人与当前场景的 3D 距离。核心 Insight 是让视频生成器显式读取“谁移动到哪里”和“哪里可能接触”，用于分钟级 rollout 与策略 checkpoint 排序。",
     "technical_approach": "- **输入：** 头部与双腕 RGB、语言、未来关节动作、URDF、关节状态、相机参数和 DA3 初始深度。\n- **过程：** 三视角拼 mosaic；控制器与正向运动学渲染未来机器人 motion images。移除当前机器人并构造场景点云，再计算 robot→scene 与 scene→gripper 最近距离场，投影为两路 contact images。三类控制 latent 注入 Wan2.2；模型联合预测 RGB/彩色深度，并以训练期生成参考缓解分块 rollout 的 exposure bias。\n- **输出：** 多视角 RGB/深度长视频，以及由 rollout 得到的策略成功分数与排序。",
-    "discussion": "iMaC 展示了接触几何条件对策略评估的潜力，但相机看不到关键高度时相关性会降至 0.428。它只能补充而不能替代真实评测；逐任务微调和未披露算力也限制规模化。",
+    "discussion": "iMaC 已占据“motion/contact images as action interface”。Contact 真正参与动态条件和消融，但仍由动作几何构造，不是从事实实例推断后可执行机制替换的 SCM 变量。",
     "arxiv": {
       "published": "2026-06-08T17:55:41Z",
       "revised_at": "2026-06-08T17:55:41Z",
@@ -4167,6 +4259,64 @@
     }
   },
   {
+    "id": "arxiv-2509-21309",
+    "title": "NewtonGen: Physics-Consistent and Controllable Text-to-Video Generation via Neural Newtonian Dynamics",
+    "authors": [
+      "Yu Yuan",
+      "Xijun Wang",
+      "Tharindu Wickremasinghe",
+      "Zeeshan Nadir",
+      "Bole Ma",
+      "Stanley H. Chan"
+    ],
+    "year": 2026,
+    "publication": "2026，ICLR 2026；arXiv:2509.21309；正式 DOI 未见",
+    "arxiv_id": "2509.21309",
+    "doi": "",
+    "links": {
+      "paper": "https://arxiv.org/abs/2509.21309",
+      "publication": "https://openreview.net/pdf?id=zcAwK50ft0",
+      "project": "https://yuyuanspace.com/NewtonGen/",
+      "code": "https://github.com/pandayuanyu/NewtonGen",
+      "alphaxiv": "https://alphaxiv.org/abs/2509.21309"
+    },
+    "tags": [
+      "Physical World Model",
+      "Physics-Aware Video Generation",
+      "World Simulator",
+      "视频生成"
+    ],
+    "figure": {
+      "url": "https://arxiv.org/html/2509.21309v2/framework.png",
+      "alt": "NewtonGen Fig. 2",
+      "label": "NewtonGen，Fig. 2，整体框架：神经牛顿动力学、物理控制与视频生成的组合。来源：Fig. 2 原图",
+      "paper_title": "NewtonGen: Physics-Consistent and Controllable Text-to-Video Generation via Neural Newtonian Dynamics",
+      "source_url": "https://arxiv.org/html/2509.21309v2/framework.png"
+    },
+    "summary": "以少量 physics-clean trajectories 训练 Neural Newtonian Dynamics（NND），先预测用户条件下的未来状态，再把轨迹交给运动控制视频模型渲染。物理模型负责 motion law，生成模型负责 appearance。",
+    "insight": "以少量 physics-clean trajectories 训练 Neural Newtonian Dynamics（NND），先预测用户条件下的未来状态，再把轨迹交给运动控制视频模型渲染。物理模型负责 motion law，生成模型负责 appearance。",
+    "pipeline": {
+      "input": "场景文本、运动类型和用户指定的初始位置/速度/加速度等条件",
+      "process": "物理编码器提取 latent state；线性 physics-informed Neural ODE 建模已知动力学，三层 MLP 残差拟合非线性/未知项；从任意初态积分未来轨迹，再条件化 motion-controlled T2V",
+      "output": "满足指定运动参数的合成视频及 latent physical trajectory",
+      "details": "- **输入：** 场景文本、运动类型和用户指定的初始位置/速度/加速度等条件\n- **过程：** 物理编码器提取 latent state；线性 physics-informed Neural ODE 建模已知动力学，三层 MLP 残差拟合非线性/未知项；从任意初态积分未来轨迹，再条件化 motion-controlled T2V\n- **输出：** 满足指定运动参数的合成视频及 latent physical trajectory"
+    },
+    "experiments": "论文比较 Sora、Veo3、CogVideoX-5B、Wan2.2、PhyT2V 等。匀速 PIS-v 为 0.9830，参考轨迹为 0.9972；匀加速 PIS-ax 为 0.6568，仍低于参考 0.8489。用 PISABench 真实下落视频训练时，PIS-vx/PIS-ay 为 0.8485/0.6008，低于模拟训练的 0.9803/0.8189，显示真实噪声与 domain gap。表中部分闭源模型结果依赖其服务输出，公平性受生成接口和随机性影响。",
+    "evidence_notes": "",
+    "code_data_status": "官方代码已公开，README 给出 CogVideoX-5B、Go-with-the-Flow LoRA 和已学习 ODE 权重依赖。许可证与 PISABench/预训练权重的组合条款需复现者自行核验。",
+    "limitations": "- 真实视频成绩明显低于模拟数据。\n- 运动族及状态参数由设计者定义，不是开放世界机制发现。\n- 视频 renderer 仍可能偏离正确 latent trajectory。\n- 未覆盖复杂多体接触、形变、遮挡后的状态估计和闭环控制。",
+    "comments": "",
+    "source_reports": [
+      "report-d2be249044"
+    ],
+    "deleted": false,
+    "updated_at": "2026-09-03",
+    "challenges": "文本到视频模型可能让物体向上坠落、速度或方向突变，也难按初速度、加速度等连续参数控制。仅从外观分布学习运动，缺少可外推的动力学状态。",
+    "motivation": "以少量 physics-clean trajectories 训练 Neural Newtonian Dynamics（NND），先预测用户条件下的未来状态，再把轨迹交给运动控制视频模型渲染。物理模型负责 motion law，生成模型负责 appearance。",
+    "technical_approach": "- **输入：** 场景文本、运动类型和用户指定的初始位置/速度/加速度等条件\n- **过程：** 物理编码器提取 latent state；线性 physics-informed Neural ODE 建模已知动力学，三层 MLP 残差拟合非线性/未知项；从任意初态积分未来轨迹，再条件化 motion-controlled T2V\n- **输出：** 满足指定运动参数的合成视频及 latent physical trajectory",
+    "discussion": "NewtonGen 的贡献是可学习 ODE 动力学与 T2V 解耦，并提供数值条件控制；它不是通用物理引擎，也没有从任意文本自动识别完整对象、接触和约束图。适用于低维、可参数化运动的可控生成。"
+  },
+  {
     "id": "arxiv-2608-24199",
     "title": "NVIDIA Cosmos-H-Dreams: Real-Time Generative Physics Simulation for Surgical Robotics",
     "authors": [
@@ -4417,7 +4567,7 @@
       "alphaxiv": "https://alphaxiv.org/abs/2512.01677"
     },
     "pipeline": {
-      "input": "observed image、task description。",
+      "input": "初始图像/视频、交互条件，以及伪标注的 hand/object contour、contact 与 depth",
       "process": "- 训练表示构建 ：VLM + SAM2 得到 hand/object masks；估计 contact region；估计 video depth；将 contact-augmented contours 与 depth 融合为 HOI representation。；- 生成模型 ：jointly generate RGB video 和 HOI representation；Hierarchical Joint Denoiser 在统一 latent space 中 co-denoise visual tokens 和 interaction tokens。",
       "output": "HOI video 及对应的结构/接触表示。",
       "details": "- **输入**：observed image、task description。\n- **训练表示构建**：VLM + SAM2 得到 hand/object masks；估计 contact region；估计 video depth；将 contact-augmented contours 与 depth 融合为 HOI representation。\n- **生成模型**：jointly generate RGB video 和 HOI representation；Hierarchical Joint Denoiser 在统一 latent space 中 co-denoise visual tokens 和 interaction tokens。\n- **输出**：HOI video 及对应的结构/接触表示。"
@@ -4429,14 +4579,20 @@
     "summary": "SCAR 指出 HOI video generation 面临 2D 与 3D 表示的两难：3D mesh/pose 保真但难规模化，2D mask/flow 易规模化但缺接触与结构。它提出 structure and contact-aware representation ：用 hand-object contour、contact region、depth map 等形成可规模化的交互监督，不依赖 3D annotation。",
     "tags": [
       "3D/4D",
+      "Causality",
+      "Counterfactual World Model",
       "HOI",
+      "world model",
       "第一视角",
       "视频生成"
     ],
     "title": "Open-world Hand-Object Interaction Video Generation Based on Structure and Contact-aware Representation",
-    "updated_at": "2026-08-23",
+    "updated_at": "2026-09-02",
     "year": 2026,
-    "discussion": "- 你说得对：它不是严格 3D/4D。\n- 但它提供了一个很实用的路线：**用可规模化的 2.5D/contact supervision 替代昂贵 3D annotation**。\n- 可扩展方向：把 SCAR 表示升级成 object-centric 3D point/pose/contact state。\n\n---"
+    "discussion": "- 你说得对：它不是严格 3D/4D。\n- 但它提供了一个很实用的路线：**用可规模化的 2.5D/contact supervision 替代昂贵 3D annotation**。\n- 可扩展方向：把 SCAR 表示升级成 object-centric 3D point/pose/contact state。\n\n---",
+    "challenges": "3D mesh/pose 精确但难规模化，2D mask/flow 易获取却丢失结构、深度与接触。",
+    "motivation": "以 hand/object contour、contact region 和 depth 构造 2.5D interaction token，联合生成 RGB 与结构表示。",
+    "technical_approach": "- **输入：** 初始图像/视频、交互条件，以及伪标注的 hand/object contour、contact 与 depth\n- **过程：** VLM/SAM2/深度模型构建表示；Hierarchical Joint Denoiser 在统一 latent 中联合去噪视觉与交互 tokens\n- **输出：** HOI 视频及同步结构/接触表示"
   },
   {
     "id": "arxiv-2606-04463",
@@ -4499,6 +4655,191 @@
       "revised_at": "2026-06-04T13:11:48Z",
       "primary_category": "cs.RO"
     }
+  },
+  {
+    "id": "arxiv-2607-28624",
+    "title": "PhiZero: A World Model Built Around Physical Language",
+    "authors": [
+      "Shuyao Shang",
+      "Yuqi Wang",
+      "Ruopeng Gao",
+      "Xu Chen",
+      "Tieniu Tan",
+      "Lue Fan",
+      "Zhaoxiang Zhang"
+    ],
+    "year": 2026,
+    "publication": "2026，arXiv preprint（2026-07-30）；arXiv:2607.28624；正式 DOI 未见",
+    "arxiv_id": "2607.28624",
+    "doi": "",
+    "links": {
+      "paper": "https://arxiv.org/abs/2607.28624",
+      "project": "https://phi-zero.github.io/",
+      "code": "https://github.com/yaoyao-jpg/PhiZero",
+      "model": "https://huggingface.co/ShuyaoShang/PhiZero",
+      "alphaxiv": "https://alphaxiv.org/abs/2607.28624"
+    },
+    "tags": [
+      "Physical World Model",
+      "Physics-Aware Video Generation",
+      "World Simulator",
+      "因果推理"
+    ],
+    "figure": {
+      "url": "https://arxiv.org/html/2607.28624v1/Pipeline.png",
+      "alt": "PhiZero Fig. 2",
+      "label": "PhiZero，Fig. 2，以物理语言为中间表示的训练与推理管线。来源：Fig. 2 原图",
+      "paper_title": "PhiZero: A World Model Built Around Physical Language",
+      "source_url": "https://arxiv.org/html/2607.28624v1/Pipeline.png"
+    },
+    "summary": "学习紧凑的离散“physical language”表示相邻 latent states 的 transition，先自回归推演物理 token，再由 diffusion decoder 渲染，即 reason-then-render。",
+    "insight": "学习紧凑的离散“physical language”表示相邻 latent states 的 transition，先自回归推演物理 token，再由 diffusion decoder 渲染，即 reason-then-render。",
+    "pipeline": {
+      "input": "第一帧、文本 action intent 与训练期无标注/模拟视频",
+      "process": "transition-level Q-Former 从相邻 Wan VAE states 提取 32 queries，FSQ 离散为 25K 词表中的 physical tokens；Qwen3-VL-4B 初始化 reasoner 预测 token sequence；Wan2.2-5B decoder 渲染",
+      "output": "物理语言序列、未来视频、likelihood-based 物理判断和可复用 motion transfer code",
+      "details": "- **输入：** 第一帧、文本 action intent 与训练期无标注/模拟视频\n- **过程：** transition-level Q-Former 从相邻 Wan VAE states 提取 32 queries，FSQ 离散为 25K 词表中的 physical tokens；Qwen3-VL-4B 初始化 reasoner 预测 token sequence；Wan2.2-5B decoder 渲染\n- **输出：** 物理语言序列、未来视频、likelihood-based 物理判断和可复用 motion transfer code"
+    },
+    "experiments": "数据由 50K 小时池筛至 10K 小时，并形成 5M 个四秒 clips 与 1M motion-rich clips。33 帧视频只用 256 tokens，对比 Wan VAE 44,800，重建 PSNR/SSIM/LPIPS 为 28.9/0.903/0.087。项目页报告 Physics-IQ、PhyGround、WorldModelBench 的所列物理指标领先；论文也在 IntPhys2、LikePhys、YoCausal 做 pairwise likelihood 判断。强压缩相对 VAE 会损失重建质量，物理 benchmark 的 judge/coverage 仍限制结论。",
+    "evidence_notes": "",
+    "code_data_status": "代码与 Apache-2.0 模型页已上线，模型页给出 reasoner/tokenizer 权重结构；但页面同时提示仓库需要获权认证，Wan2.2 基座不随权重提供。完整训练数据清单仍未开放，实际下载权限需人工确认。",
+    "limitations": "- 离散 token 可压缩但未保证可解释或可组合。\n- 训练数据规模大且含模拟/筛选管线，完整复现成本高。\n- 文本 action intent 不等于机器人低层动作。\n- motion transfer 的外观变化不验证新对象真实质量、摩擦或接触机制。",
+    "comments": "",
+    "source_reports": [
+      "report-d2be249044"
+    ],
+    "deleted": false,
+    "updated_at": "2026-09-03",
+    "challenges": "像素空间未来预测把动力学埋在高维生成器中，自然语言又太粗，难表达细粒度状态变化并复用于生成、理解和跨 embodiment transfer。",
+    "motivation": "学习紧凑的离散“physical language”表示相邻 latent states 的 transition，先自回归推演物理 token，再由 diffusion decoder 渲染，即 reason-then-render。",
+    "technical_approach": "- **输入：** 第一帧、文本 action intent 与训练期无标注/模拟视频\n- **过程：** transition-level Q-Former 从相邻 Wan VAE states 提取 32 queries，FSQ 离散为 25K 词表中的 physical tokens；Qwen3-VL-4B 初始化 reasoner 预测 token sequence；Wan2.2-5B decoder 渲染\n- **输出：** 物理语言序列、未来视频、likelihood-based 物理判断和可复用 motion transfer code",
+    "discussion": "PhiZero 的 novelty 是 transition-level discrete interface，而不是可读自然语言或显式方程。它能复用运动 token 做外观/embodiment transfer，但 token 语义未必对应可识别物理变量，不能把“reason”直接解释为符号因果推理。"
+  },
+  {
+    "id": "arxiv-2606-28128",
+    "title": "PhysisForcing: Physics Reinforced World Simulator for Robotic Manipulation",
+    "authors": [
+      "Peiwen Zhang",
+      "Yufan Deng",
+      "Shangkun Sun",
+      "Juncheng Ma",
+      "Duomin Wang",
+      "Jonas Du",
+      "Zilin Pan",
+      "Ye Huang",
+      "Hao Liang",
+      "Songyan Huang",
+      "Ruihua Zhang",
+      "Enze Xie",
+      "Ming-Yu Liu",
+      "Daquan Zhou"
+    ],
+    "year": 2026,
+    "publication": "2026，arXiv preprint（2026-06-26）；arXiv:2606.28128；正式 DOI 未见",
+    "arxiv_id": "2606.28128",
+    "doi": "",
+    "links": {
+      "paper": "https://arxiv.org/abs/2606.28128",
+      "project": "https://dagroup-pku.github.io/PhysisForcing.github.io/",
+      "code": "https://github.com/DAGroup-PKU/PhysisForcing",
+      "alphaxiv": "https://alphaxiv.org/abs/2606.28128"
+    },
+    "tags": [
+      "Physical World Model",
+      "Physics-Aware Video Generation",
+      "World Simulator",
+      "机器人学习"
+    ],
+    "figure": {
+      "url": "https://arxiv.org/html/2606.28128v1/figs/Fig2_Method.png",
+      "alt": "PhysisForcing Fig. 2",
+      "label": "PhysisForcing，Fig. 2，面向机器人操作的物理强化世界模拟器架构。来源：Fig. 2 原图",
+      "paper_title": "PhysisForcing: Physics Reinforced World Simulator for Robotic Manipulation",
+      "source_url": "https://arxiv.org/html/2606.28128v1/figs/Fig2_Method.png"
+    },
+    "summary": "不增加推理成本，在训练时把监督集中到 physics-informative regions：像素级轨迹约束局部运动，语义级关系约束 interacting entities 的时空关系。",
+    "insight": "不增加推理成本，在训练时把监督集中到 physics-informative regions：像素级轨迹约束局部运动，语义级关系约束 interacting entities 的时空关系。",
+    "pipeline": {
+      "input": "机器人操作视频、参考 point trajectories、物理关键区域和冻结视频理解编码器的 region relations",
+      "process": "在 DiT 中间特征同时优化 pixel-level trajectory alignment loss 与 semantic relational alignment loss；适配 Wan2.2 和 Cosmos3 backbones",
+      "output": "物理一致性更强的机器人视频 world model 及可供 inverse dynamics/policy 使用的 rollout",
+      "details": "- **输入：** 机器人操作视频、参考 point trajectories、物理关键区域和冻结视频理解编码器的 region relations\n- **过程：** 在 DiT 中间特征同时优化 pixel-level trajectory alignment loss 与 semantic relational alignment loss；适配 Wan2.2 和 Cosmos3 backbones\n- **输出：** 物理一致性更强的机器人视频 world model 及可供 inverse dynamics/policy 使用的 rollout"
+    },
+    "experiments": "作者报告 Wan2.2-I2V-A14B 和 Cosmos3-Nano 在 R-Bench 相对 base 提升 22.3%/9.2%，相对 vanilla finetuning 提升 7.1%/3.7%。WorldArena action-planner closed-loop success 从 16.0% 提至 24.0%，强 baseline WoW 为 20.5%。RoboTwin 下游六任务平均 success 68.2→72.8，但 shake_bottle 97.5→94.5、stack_bowls_two 69.5→63.0，说明不是所有任务改善。消融中 Wan5B ft 44.8，完整方法 47.5。",
+    "evidence_notes": "",
+    "code_data_status": "MIT 仓库公开 PF-Cosmos/PF-Wan 推理代码与权重；README 在核验时仍写 training code 和 auxiliary checkpoints coming soon，完整训练复现尚不充分。",
+    "limitations": "- 两项下游任务出现性能下降。\n- 轨迹/关系 teacher 的错误会传入 DiT。\n- 依赖 benchmark evaluator，接触力和对象状态未显式测量。\n- 训练代码尚未完整开放，数据与 GPU 成本需补核。",
+    "comments": "",
+    "source_reports": [
+      "report-d2be249044"
+    ],
+    "deleted": false,
+    "updated_at": "2026-09-03",
+    "challenges": "通用或机器人微调的视频模型仍会让运动物体变形，并在接触附近产生不连续轨迹、错误时空关系和不可信 robot–object response。",
+    "motivation": "不增加推理成本，在训练时把监督集中到 physics-informative regions：像素级轨迹约束局部运动，语义级关系约束 interacting entities 的时空关系。",
+    "technical_approach": "- **输入：** 机器人操作视频、参考 point trajectories、物理关键区域和冻结视频理解编码器的 region relations\n- **过程：** 在 DiT 中间特征同时优化 pixel-level trajectory alignment loss 与 semantic relational alignment loss；适配 Wan2.2 和 Cosmos3 backbones\n- **输出：** 物理一致性更强的机器人视频 world model 及可供 inverse dynamics/policy 使用的 rollout",
+    "discussion": "论文的价值在于把像素轨迹与对象关系监督连接到真实 manipulation planning；“physics reinforced”仍是 representation alignment，不是显式力学状态或因果识别。负增益任务应保留，避免只报告平均提升。"
+  },
+  {
+    "id": "arxiv-2601-11087",
+    "title": "PhysRVG: Physics-Aware Unified Reinforcement Learning for Video Generative Models",
+    "authors": [
+      "Qiyuan Zhang",
+      "Biao Gong",
+      "Shuai Tan",
+      "Zheng Zhang",
+      "Yujun Shen",
+      "Xing Zhu",
+      "Yuyuan Li",
+      "Kelu Yao",
+      "Chunhua Shen",
+      "Changqing Zou"
+    ],
+    "year": 2026,
+    "publication": "2026，ECCV 2026；arXiv:2601.11087；正式 DOI 待核",
+    "arxiv_id": "2601.11087",
+    "doi": "",
+    "links": {
+      "paper": "https://arxiv.org/abs/2601.11087",
+      "project": "https://lucaria-academy.github.io/PhysRVG/",
+      "code": "https://github.com/ant-research/PhysRVG",
+      "model": "https://huggingface.co/HappyP4nda/PhysRVG",
+      "alphaxiv": "https://alphaxiv.org/abs/2601.11087"
+    },
+    "tags": [
+      "Physical World Model",
+      "Physics-Aware Video Generation",
+      "World Simulator"
+    ],
+    "figure": {
+      "url": "https://arxiv.org/html/2601.11087v1/motiv.png",
+      "alt": "PhysRVG Fig. 2",
+      "label": "PhysRVG，Fig. 2，统一物理奖励强化学习的核心设计。来源：Fig. 2 原图",
+      "paper_title": "PhysRVG: Physics-Aware Unified Reinforcement Learning for Video Generative Models",
+      "source_url": "https://arxiv.org/html/2601.11087v1/motiv.png"
+    },
+    "summary": "设计基于对象 mask/轨迹与 collision detection 的可验证 reward，并以 Mimicry–Discovery Cycle 在稳定模仿与物理探索之间切换，避免纯 RL 崩溃。",
+    "insight": "设计基于对象 mask/轨迹与 collision detection 的可验证 reward，并以 Mimicry–Discovery Cycle 在稳定模仿与物理探索之间切换，避免纯 RL 崩溃。",
+    "pipeline": {
+      "input": "初始图像/视频、物理运动条件、对象 masks 与刚体轨迹/碰撞监督",
+      "process": "Stage 1 将 Wan2.2-5B TI2V 全参适配为 V2V；Stage 2 用 PEFT 的 MDcycle，Mimicry branch 稳定训练，Discovery branch 以 physics reward 探索；混合 SDE/ODE 采样",
+      "output": "碰撞、自由落体、摆动和滚动等物理一致视频",
+      "details": "- **输入：** 初始图像/视频、物理运动条件、对象 masks 与刚体轨迹/碰撞监督\n- **过程：** Stage 1 将 Wan2.2-5B TI2V 全参适配为 V2V；Stage 2 用 PEFT 的 MDcycle，Mimicry branch 稳定训练，Discovery branch 以 physics reward 探索；混合 SDE/ODE 采样\n- **输出：** 碰撞、自由落体、摆动和滚动等物理一致视频"
+    },
+    "experiments": "PhysRVGBench 上论文报告 PhysRVG IoU 0.64、trajectory offset 15.03；表中 Magi-1 为 0.27/113.42。VBench/VideoPhy2 多项视觉与物理指标同时报告。消融显示纯 RL 前 50 steps 不稳，MDcycle 收敛更平滑；16K FT+250 MD steps 达 0.64/15.03，继续到 30K FT 几乎不增益。训练使用 4×8 张 H20；作者指出即使 effective batch 640，全参数 RL 仍会崩溃。",
+    "evidence_notes": "",
+    "code_data_status": "训练/推理代码和 Hugging Face 权重已公开；模型页包含 DiT/LoRA 与 SAM2 依赖。Stage 1 使用开源与 proprietary video collections，完整数据可复现性仍受限制。",
+    "limitations": "- 训练成本高：32 张 H20，且高维 RL 仍不稳定。\n- 主要覆盖四类刚体运动，非刚体/流体/多接触未证明。\n- reward 依赖分割与轨迹估计，可被感知错误或捷径利用。\n- 物理指标改善不自动转化为机器人策略或反事实规划能力。",
+    "comments": "",
+    "source_reports": [
+      "report-d2be249044"
+    ],
+    "deleted": false,
+    "updated_at": "2026-09-03",
+    "challenges": "像素重建式 finetuning 会把正确物理约束当作众多条件之一；直接对高维视频做 RL 又因奖励稀疏、batch 小和早期低质采样而不稳定，碰撞尤其容易被错误轨迹蒙混。",
+    "motivation": "设计基于对象 mask/轨迹与 collision detection 的可验证 reward，并以 Mimicry–Discovery Cycle 在稳定模仿与物理探索之间切换，避免纯 RL 崩溃。",
+    "technical_approach": "- **输入：** 初始图像/视频、物理运动条件、对象 masks 与刚体轨迹/碰撞监督\n- **过程：** Stage 1 将 Wan2.2-5B TI2V 全参适配为 V2V；Stage 2 用 PEFT 的 MDcycle，Mimicry branch 稳定训练，Discovery branch 以 physics reward 探索；混合 SDE/ODE 采样\n- **输出：** 碰撞、自由落体、摆动和滚动等物理一致视频",
+    "discussion": "PhysRVG 的关键贡献是可验证刚体 reward 与稳定 video RL，而非通用世界模型。碰撞 reward 能减少消失和错误轨迹，但 reward 只编码覆盖到的运动族，可能出现 metric gaming 或对新机制失效。"
   },
   {
     "id": "arxiv-2608-23720",
@@ -4703,6 +5044,67 @@
     }
   },
   {
+    "id": "arxiv-2512-05564",
+    "title": "ProPhy: Progressive Physical Alignment for Dynamic World Simulation",
+    "authors": [
+      "Zijun Wang",
+      "Panwen Hu",
+      "Jing Wang",
+      "Terry Jingchen Zhang",
+      "Yuhao Cheng",
+      "Long Chen",
+      "Yiqiang Yan",
+      "Zutao Jiang",
+      "Hanhui Li",
+      "Xiaodan Liang"
+    ],
+    "year": 2026,
+    "publication": "2026，CVPR 2026 Oral；arXiv:2512.05564；正式 DOI 待核",
+    "arxiv_id": "2512.05564",
+    "doi": "",
+    "links": {
+      "publication": "https://openaccess.thecvf.com/content/CVPR2026/papers/Wang_ProPhy_Progressive_Physical_Alignment_for_Dynamic_World_Simulation_CVPR_2026_paper.pdf",
+      "paper": "https://arxiv.org/abs/2512.05564",
+      "project": "https://zijunwa.github.io/prophy/",
+      "code": "https://github.com/zijunwa/ProPhy",
+      "alphaxiv": "https://alphaxiv.org/abs/2512.05564"
+    },
+    "tags": [
+      "Physical World Model",
+      "Physics-Aware Video Generation",
+      "World Simulator"
+    ],
+    "figure": {
+      "url": "https://arxiv.org/html/2512.05564v2/framework.png",
+      "alt": "ProPhy Fig. 2",
+      "label": "ProPhy，Fig. 2，渐进式物理对齐的动态世界模拟框架。来源：Fig. 2 原图",
+      "paper_title": "ProPhy: Progressive Physical Alignment for Dynamic World Simulation",
+      "source_url": "https://arxiv.org/html/2512.05564v2/framework.png"
+    },
+    "summary": "以两阶段 Mixture-of-Physics-Experts 先路由语义物理类别，再在 token level 选择 refinement experts；从 VLM 蒸馏物理属性，使不同专家专门化于不同现象。",
+    "insight": "以两阶段 Mixture-of-Physics-Experts 先路由语义物理类别，再在 token level 选择 refinement experts；从 VLM 蒸馏物理属性，使不同专家专门化于不同现象。",
+    "pipeline": {
+      "input": "文本 prompt、视频，以及 Qwen2.5-VL-32B 生成的 token-level physical annotations",
+      "process": "Semantic Expert Block 学高层物理类别；Refinement Expert Block 做细粒度 token routing；relative/absolute alignment 与 load-balancing loss 将 VLM 判断迁移到 CogVideoX/Wan",
+      "output": "physics-aware text-to-video 结果及可操控的 expert activations",
+      "details": "- **输入：** 文本 prompt、视频，以及 Qwen2.5-VL-32B 生成的 token-level physical annotations\n- **过程：** Semantic Expert Block 学高层物理类别；Refinement Expert Block 做细粒度 token routing；relative/absolute alignment 与 load-balancing loss 将 VLM 判断迁移到 CogVideoX/Wan\n- **输出：** physics-aware text-to-video 结果及可操控的 expert activations"
+    },
+    "experiments": "训练从 WISA-80K 随机取 20K 视频，以 600 prompts 评 VideoPhy2/VBench。CogVideoX 加 ProPhy 后 VideoPhy2 Joint 指标报告提升 19.7%；Wan2.1-1.3B 的 PC/SA/Joint 从 57.8/30.0/24.8 提至 65.0/32.0/26.5。消融显示完整 PB+SEB+REB 最好。手工给对象路由错误 expert 会产生刚性车门像布料般变形，支持 experts 与物理属性相关；这仍不是因果变量可识别性的证明。",
+    "evidence_notes": "",
+    "code_data_status": "MIT 代码公开，包含 annotation 与 inference；官方 checkpoints 在 README 核验时仍标注 soon，训练依赖 WISA 数据和 Qwen2.5-VL-32B。",
+    "limitations": "- VLM 物理知识可能含系统偏差和 hallucination。\n- benchmark 依赖 VLM/语义判分，缺少数值轨迹真值。\n- 20K 视频覆盖有限，复杂组合物理未充分验证。\n- expert specialization 相关性不能直接解释为物理定律发现。",
+    "comments": "",
+    "source_reports": [
+      "report-d2be249044"
+    ],
+    "deleted": false,
+    "updated_at": "2026-09-03",
+    "challenges": "现有 T2V 对整段视频施加粗粒度物理条件，对局部物理事件响应近似各向同性，难处理碰撞、尘土、液体等不同区域和时刻的物理线索。",
+    "motivation": "以两阶段 Mixture-of-Physics-Experts 先路由语义物理类别，再在 token level 选择 refinement experts；从 VLM 蒸馏物理属性，使不同专家专门化于不同现象。",
+    "technical_approach": "- **输入：** 文本 prompt、视频，以及 Qwen2.5-VL-32B 生成的 token-level physical annotations\n- **过程：** Semantic Expert Block 学高层物理类别；Refinement Expert Block 做细粒度 token routing；relative/absolute alignment 与 load-balancing loss 将 VLM 判断迁移到 CogVideoX/Wan\n- **输出：** physics-aware text-to-video 结果及可操控的 expert activations",
+    "discussion": "ProPhy 占据“progressive semantic-to-token physical alignment”位置。它提升文本视频的局部物理表现，但任务不是 action-conditioned rollout，也没有显式 simulator state。"
+  },
+  {
     "id": "arxiv-2608-27328",
     "title": "R2M-Bench: Evaluating Revisit Memory via Relative Consistency in Interactive Video World Models",
     "authors": [
@@ -4841,6 +5243,66 @@
       "revised_at": "2026-08-26T09:52:30Z",
       "primary_category": "cs.RO"
     }
+  },
+  {
+    "id": "arxiv-2603-05449",
+    "title": "RealWonder: Real-Time Physical Action-Conditioned Video Generation",
+    "authors": [
+      "Wei Liu",
+      "Ziyu Chen",
+      "Zizhang Li",
+      "Yue Wang",
+      "Hong-Xing Yu",
+      "Jiajun Wu"
+    ],
+    "year": 2026,
+    "publication": "2026，arXiv preprint（2026-03-05）；arXiv:2603.05449；正式 DOI 未见",
+    "arxiv_id": "2603.05449",
+    "doi": "",
+    "links": {
+      "paper": "https://arxiv.org/abs/2603.05449",
+      "code": "https://liuwei283.github.io/RealWonder/",
+      "alphaxiv": "https://alphaxiv.org/abs/2603.05449"
+    },
+    "tags": [
+      "3D/4D",
+      "Physical World Model",
+      "Physics-Aware Video Generation",
+      "World Simulator",
+      "因果推理",
+      "机器人学习",
+      "视频生成",
+      "重建"
+    ],
+    "figure": {
+      "url": "https://arxiv.org/html/2603.05449v1/approach_eccv.png",
+      "alt": "RealWonder Fig. 2",
+      "label": "RealWonder，Fig. 2，实时物理动作条件视频生成框架。来源：Fig. 2 原图",
+      "paper_title": "RealWonder: Real-Time Physical Action-Conditioned Video Generation",
+      "source_url": "https://arxiv.org/html/2603.05449v1/approach_eccv.png"
+    },
+    "summary": "用 physics simulation 作为 action 与 video generator 的桥：模拟器把动作转成 optical flow 与 coarse RGB，再由四步蒸馏模型实时渲染。",
+    "insight": "用 physics simulation 作为 action 与 video generator 的桥：模拟器把动作转成 optical flow 与 coarse RGB，再由四步蒸馏模型实时渲染。",
+    "pipeline": {
+      "input": "单张图像、文本，以及力/力矩、机器人抓手轨迹或相机运动序列",
+      "process": "单图重建可模拟 3D 几何与材质；物理引擎处理刚体、形变体、流体和颗粒；渲染 flow/coarse RGB；四步 causal distilled generator 流式生成",
+      "output": "480×832 的 action-conditioned video stream",
+      "details": "- **输入：** 单张图像、文本，以及力/力矩、机器人抓手轨迹或相机运动序列\n- **过程：** 单图重建可模拟 3D 几何与材质；物理引擎处理刚体、形变体、流体和颗粒；渲染 flow/coarse RGB；四步 causal distilled generator 流式生成\n- **输出：** 480×832 的 action-conditioned video stream"
+    },
+    "experiments": "作者报告单 GPU 13.2 FPS、0.73 秒 latency；PhysGaussian、CogVideoX、Tora、RealWonder 的 PhysReal 分别为 0.468/0.624/0.578/0.705，RealWonder 的 consistency 为 0.265。运行速度对照中 Tora 0.107 FPS、CogVideoX-I2V 0.225、PhysGaussian 0.207。论文同时展示不同动作导致不同结果；这些指标仍以视觉/自动评测为主，不能等同于物理参数误差。",
+    "evidence_notes": "",
+    "code_data_status": "项目页提供代码与 checkpoints 入口。完整训练数据、第三方模型与仿真资产的许可证及硬件配置需按仓库说明复核。",
+    "limitations": "- 单图 3D/材质估计错误会系统性污染模拟。\n- renderer 可能添加 simulator 中不存在的动力学。\n- “causal”在架构中主要指时间生成与动作传递，不是因果识别。\n- 13.2 FPS 不代表端到端机器人感知、规划和执行延迟。",
+    "comments": "",
+    "source_reports": [
+      "report-d2be249044"
+    ],
+    "deleted": false,
+    "updated_at": "2026-09-03",
+    "challenges": "连续 3D force、robot action 和 camera control 与视频模型的像素/latent 接口不匹配；显式 simulator 有结构但渲染不逼真，扩散生成又太慢。",
+    "motivation": "用 physics simulation 作为 action 与 video generator 的桥：模拟器把动作转成 optical flow 与 coarse RGB，再由四步蒸馏模型实时渲染。",
+    "technical_approach": "- **输入：** 单张图像、文本，以及力/力矩、机器人抓手轨迹或相机运动序列\n- **过程：** 单图重建可模拟 3D 几何与材质；物理引擎处理刚体、形变体、流体和颗粒；渲染 flow/coarse RGB；四步 causal distilled generator 流式生成\n- **输出：** 480×832 的 action-conditioned video stream",
+    "discussion": "RealWonder 显著推进 PhysGen 的实时性和材料覆盖，并明确接受物理动作。论文也展示 generator 会给未模拟水动力的船补出波纹：这提高观感，却说明输出含生成先验“脑补”，不能直接当作 simulator ground truth。"
   },
   {
     "id": "arxiv-2606-13674",
@@ -6262,6 +6724,63 @@
     "year": 2026
   },
   {
+    "id": "arxiv-2604-02296",
+    "title": "VOID: Video Object and Interaction Deletion",
+    "authors": [
+      "Saman Motamed",
+      "William Harvey",
+      "Benjamin Klein",
+      "Luc Van Gool",
+      "Zhuoning Yuan",
+      "Ta-Ying Cheng"
+    ],
+    "year": 2026,
+    "publication": "2026，arXiv preprint（v1，2026-04-02）；arXiv:2604.02296；正式 DOI 未见",
+    "arxiv_id": "2604.02296",
+    "doi": "",
+    "links": {
+      "paper": "https://arxiv.org/abs/2604.02296",
+      "project": "https://void-model.github.io/",
+      "code": "https://github.com/Netflix/void-model",
+      "alphaxiv": "https://alphaxiv.org/abs/2604.02296"
+    },
+    "tags": [
+      "Physical World Model",
+      "Physics-Aware Video Generation",
+      "World Simulator",
+      "反事实推理"
+    ],
+    "figure": {
+      "url": "https://arxiv.org/html/2604.02296v1/void.jpg",
+      "alt": "VOID Fig. 3",
+      "label": "VOID，Fig. 3，方法总览：从目标对象定位、移除到交互补全与背景修复。来源：Fig. 3 原图",
+      "paper_title": "VOID: Video Object and Interaction Deletion",
+      "source_url": "https://arxiv.org/html/2604.02296v1/void.jpg"
+    },
+    "summary": "作者把对象删除改写为有成对监督的 counterfactual editing：保持其他初始条件不变，在模拟器中移除目标对象并重新运行。核心差异是同时删除对象及其 interaction effects。这里的“反事实”有明确的配对重模拟语义，但真实视频阶段没有事实反事实真值，依赖生成先验与 VLM 推断 affected regions。",
+    "insight": "作者把对象删除改写为有成对监督的 counterfactual editing：保持其他初始条件不变，在模拟器中移除目标对象并重新运行。核心差异是同时删除对象及其 interaction effects。这里的“反事实”有明确的配对重模拟语义，但真实视频阶段没有事实反事实真值，依赖生成先验与 VLM 推断 affected regions。",
+    "pipeline": {
+      "input": "原视频、用户点击得到的目标对象时序 mask",
+      "process": "用 Kubric/HUMOTO 构造有/无目标对象的配对视频；VLM 与分割模型扩展出 object/effect/overlap/unaffected 四区 quadmask；CogVideoX-Fun-5B 首轮生成替代轨迹，必要时以首轮 optical flow 构造 warped noise 做第二轮结构稳定",
+      "output": "删除目标对象及其下游物理交互后的 counterfactual video",
+      "details": "- **输入：** 原视频、用户点击得到的目标对象时序 mask\n- **过程：** 用 Kubric/HUMOTO 构造有/无目标对象的配对视频；VLM 与分割模型扩展出 object/effect/overlap/unaffected 四区 quadmask；CogVideoX-Fun-5B 首轮生成替代轨迹，必要时以首轮 optical flow 构造 warped noise 做第二轮结构稳定\n- **输出：** 删除目标对象及其下游物理交互后的 counterfactual video"
+    },
+    "experiments": "训练数据含约 1,900 对 Kubric 刚体视频和约 4,500 对 HUMOTO 人–物交互视频；测试含 75 个真实视频和 30 个合成视频。25 名参与者各评 5 个场景，共 125 次比较，VOID 获 64.8% 首选，Runway 为 18.4%，Generative Omnimatte 为 11.2%。三种 VLM judge 也把 VOID 总分列为最高。证据支持它优于所测 removal/editing baselines；真实数据没有 ground-truth counterfactual，不能将偏好分数解释成动力学准确率。",
+    "evidence_notes": "",
+    "code_data_status": "官方 Netflix 代码公开；仓库标明基于 CogVideoX-Fun、Generative Omnimatte、Kubric 和 HUMOTO。论文为 CC BY 4.0；代码仓库的具体许可证、训练对下载方式及第三方权重条款仍应在复现前逐项核对。",
+    "limitations": "- 真实视频无成对真值，VLM judge 与人类偏好可能奖励视觉合理而非真实因果结果。\n- 首轮新运动会弯曲、拉伸或漂移，第二轮只是缓解而非消除。\n- affected-region 推断错误会直接限制结果。\n- 训练干预主要是“删除对象”，不覆盖连续力、属性或机制干预。",
+    "comments": "",
+    "source_reports": [
+      "report-d2be249044"
+    ],
+    "deleted": false,
+    "updated_at": "2026-09-03",
+    "challenges": "传统 video object removal 能补背景、阴影和反射，却不会重写被删除对象造成的下游碰撞、支撑或人体操控。例如移除多米诺骨牌中段后，后续骨牌不应继续倒下；这要求生成新的动力学，而不是空间补洞。",
+    "motivation": "作者把对象删除改写为有成对监督的 counterfactual editing：保持其他初始条件不变，在模拟器中移除目标对象并重新运行。核心差异是同时删除对象及其 interaction effects。这里的“反事实”有明确的配对重模拟语义，但真实视频阶段没有事实反事实真值，依赖生成先验与 VLM 推断 affected regions。",
+    "technical_approach": "- **输入：** 原视频、用户点击得到的目标对象时序 mask\n- **过程：** 用 Kubric/HUMOTO 构造有/无目标对象的配对视频；VLM 与分割模型扩展出 object/effect/overlap/unaffected 四区 quadmask；CogVideoX-Fun-5B 首轮生成替代轨迹，必要时以首轮 optical flow 构造 warped noise 做第二轮结构稳定\n- **输出：** 删除目标对象及其下游物理交互后的 counterfactual video",
+    "discussion": "VOID 是列表中最明确使用 paired counterfactual supervision 的工作，也是与 HOI 因果编辑最直接的相邻论文。它能处理支撑消失、碰撞阻断和移除操作者，但反事实机制主要由模拟配对、VLM mask 和视频先验共同实现，没有显式恢复 SCM 或物理参数。"
+  },
+  {
     "id": "arxiv-2608-26239",
     "title": "WALL-SS: Scaling Long-horizon World Models via Next-Scale Autoregression",
     "authors": [
@@ -6485,6 +7004,58 @@
       "revised_at": "2026-08-20T03:54:51Z",
       "primary_category": "cs.RO"
     }
+  },
+  {
+    "id": "arxiv-2605-27589",
+    "title": "What-If World: A Causal Benchmark for General World Models in Embodied Scenarios",
+    "authors": [
+      "Kunlin Cai",
+      "Rui Song",
+      "Jinghuai Zhang",
+      "Kaiyuan Zhang",
+      "Pranav Bodapati",
+      "Alicia Yu",
+      "Fnu Suya",
+      "Mohammad Rostami",
+      "Jiaqi Ma",
+      "Yuan Tian"
+    ],
+    "year": 2026,
+    "publication": "2026，arXiv preprint；arXiv:2605.27589",
+    "arxiv_id": "2605.27589",
+    "doi": "",
+    "links": {
+      "paper": "https://arxiv.org/abs/2605.27589",
+      "alphaxiv": "https://alphaxiv.org/abs/2605.27589"
+    },
+    "tags": [
+      "Causality",
+      "Counterfactual World Model",
+      "HOI",
+      "world model",
+      "因果推理"
+    ],
+    "figure": null,
+    "summary": "固定共享场景，只改变一个物理细节，以成对输出同时审查 prompt adherence、physics、environment preservation 和 outcome difference。",
+    "insight": "固定共享场景，只改变一个物理细节，以成对输出同时审查 prompt adherence、physics、environment preservation 和 outcome difference。",
+    "pipeline": {
+      "input": "nuScenes/DROID 真实帧与仅一个物理变量不同的 319 对 prompts",
+      "process": "九个视频模型分别生成成对未来，以 APEO 四维 rubric 评分",
+      "output": "单视频与 paired causal/intervention-following 分数",
+      "details": "- **输入：** nuScenes/DROID 真实帧与仅一个物理变量不同的 319 对 prompts\n- **过程：** 九个视频模型分别生成成对未来，以 APEO 四维 rubric 评分\n- **输出：** 单视频与 paired causal/intervention-following 分数"
+    },
+    "experiments": "九个模型中最高 paired score 不超过 52%，开源模型约聚集在 28%；视觉不显著的干预最低约 14.2%，显著干预可达 40.4%。结果说明单条 plausibility 会掩盖 contrastive failure。",
+    "evidence_notes": "",
+    "code_data_status": "论文入口可核；319 对样本、评分脚本和模型输出的最终开放状态需人工复核。",
+    "limitations": "- prompt pair 与真实可执行干预存在差距。\n- APEO 含模型/人工判分成分，需审计 judge 偏差。\n- 变量 taxonomy 尚未覆盖精细 hand contact、力和对象部件状态。\n- paired intervention 仍不是完整个体反事实识别。",
+    "comments": "",
+    "source_reports": [],
+    "deleted": false,
+    "updated_at": "2026-09-02",
+    "challenges": "单条视频的逼真度无法判断模型是否对一个物理变量的微小变化产生正确差异。",
+    "motivation": "固定共享场景，只改变一个物理细节，以成对输出同时审查 prompt adherence、physics、environment preservation 和 outcome difference。",
+    "technical_approach": "- **输入：** nuScenes/DROID 真实帧与仅一个物理变量不同的 319 对 prompts\n- **过程：** 九个视频模型分别生成成对未来，以 APEO 四维 rubric 评分\n- **输出：** 单视频与 paired causal/intervention-following 分数",
+    "discussion": "它是重要负结果，但使用两次条件生成评估干预敏感性，未执行同一实例外生变量的 abduction，也不证明模型内部 SCM。对 HOI 选题而言，它设定了最低 paired-evaluation 门槛。"
   },
   {
     "id": "arxiv-2608-22421",
@@ -6781,11 +7352,14 @@
     },
     "tags": [
       "3D/4D",
+      "Causality",
+      "Counterfactual World Model",
       "Embodied In-context Learning",
       "HOI",
       "In-context Imitation Learning",
       "VLA",
       "World Action Model",
+      "world model",
       "世界模型",
       "前馈重建",
       "周报",
@@ -6805,26 +7379,30 @@
     "summary": "动作条件世界模型被当作学习模拟器，但\"生成的未来忠实反映任意合法动作\"是个未验证假设；既有评测局限在专家演示内，off-expert 动作服从未被评估。WorldEcho 用更宽动作分布 + 视觉完整性与 SE(3) 轨迹对齐来探测动作服从； 诊断显示：现有世界模型能执行专家动作，但面对多样化 off-expert 轨迹要么忽略命令、要么产出视觉无效 rollout 。WorldSync 从三个正交轴补强：分布覆盖（distributional coverage）、表示 grounding（representational grounding）、干预效果对齐（intervention-effect alignment）。",
     "insight": "动作条件世界模型被当作学习模拟器，但\"生成的未来忠实反映任意合法动作\"是个未验证假设；既有评测局限在专家演示内，off-expert 动作服从未被评估。WorldEcho 用更宽动作分布 + 视觉完整性与 SE(3) 轨迹对齐来探测动作服从；**诊断显示：现有世界模型能执行专家动作，但面对多样化 off-expert 轨迹要么忽略命令、要么产出视觉无效 rollout**。WorldSync 从三个正交轴补强：分布覆盖（distributional coverage）、表示 grounding（representational grounding）、干预效果对齐（intervention-effect alignment）。",
     "pipeline": {
-      "input": "状态/观测 + 动作（专家与 off-expert 分布）。",
+      "input": "RoboTwin 与真实机器人中的 expert/off-expert 动作及对应未来",
       "process": "WorldEcho 评测（动作查询构建、视觉完整性评估、end-effector 轨迹对齐、integrity-gated 评估协议）→ 诊断 → WorldSync 三轴对齐训练（coverage expansion、action-forcing、intervention-effect supervision）。",
-      "output": "更忠实服从动作的世界模型。",
+      "output": "action-following 指标、对齐后的 world model rollout 与迭代策略",
       "details": "**输入**：状态/观测 + 动作（专家与 off-expert 分布）。\n**过程**：WorldEcho 评测（动作查询构建、视觉完整性评估、end-effector 轨迹对齐、integrity-gated 评估协议）→ 诊断 → WorldSync 三轴对齐训练（coverage expansion、action-forcing、intervention-effect supervision）。\n**输出**：更忠实服从动作的世界模型。"
     },
     "experiments": "基准诊断报告 off-expert 性能缺口、失败分解、扩展评测；对齐后动作服从提升。证据等级：论文实验支持\"现有模型 off-expert 动作服从差\"与\"WorldSync 改善服从\"；各环境推广性待全文确认。",
     "evidence_notes": "",
-    "code_data_status": "未公开代码；评测集构建基于公开数据。",
+    "code_data_status": "论文公开；截至检索日未确认代码、完整训练数据与许可证。",
     "limitations": "- 评测协议的覆盖率仍取决于动作分布采样；\n- intervention-effect 对齐是否真正提升真实策略评估仍需下游验证。\n\n### 与知域的关系\n与知域 WorldSimProbe（模拟器忠实度诊断）直接互补，是\"世界模型评测方法论\"分支的关键新作；其 off-expert 视角值得并入知域评测专题。",
     "comments": "",
     "source_reports": [
       "report-a141624b1e"
     ],
     "deleted": false,
-    "updated_at": "2026-08-31",
+    "updated_at": "2026-09-02",
     "arxiv": {
       "published": "2026-08-25T17:59:49Z",
       "revised_at": "2026-08-25T17:59:49Z",
       "primary_category": "cs.RO"
-    }
+    },
+    "challenges": "专家 demonstration 内评测掩盖了模型对任意合法 off-expert 动作忽略、漂移或生成无效视频的问题。",
+    "motivation": "WorldEcho 扩大动作分布并测视觉完整性与 SE(3) 对齐；WorldSync 从数据覆盖、表示 grounding 和 intervention-effect alignment 三方面修正动作服从。",
+    "technical_approach": "- **输入：** RoboTwin 与真实机器人中的 expert/off-expert 动作及对应未来\n- **过程：** WorldEcho 诊断；Action-Forcing Expert 对齐中间表示；比较动作干预下预测变化与真实未来变化\n- **输出：** action-following 指标、对齐后的 world model rollout 与迭代策略",
+    "discussion": "WorldSync 的 intervention-effect alignment 比普通 action conditioning 更接近成对因果效应监督，但仍学习可观察差异，不提供 SCM identification 或同一实例外生变量推断。"
   },
   {
     "arxiv": {
@@ -6855,7 +7433,7 @@
       "Huajie Tan",
       "Shanghang Zhang"
     ],
-    "code_data_status": "代码链接已记录；数据链接已记录",
+    "code_data_status": "项目/代码入口已公开；各 evaluator 版本和完整输出应随仓库进一步核验。",
     "comments": "",
     "deleted": false,
     "doi": "",
@@ -6870,7 +7448,7 @@
     },
     "id": "arxiv-2608-09298",
     "insight": "WorldSimProbe 指出现有 world model benchmark 的核心问题：生成视频看起来合理、task outcome 正确，并不代表模型真的执行了给定 action。例如机器人动作没有按 action 走，但物体却“自己”到了目标位置，传统 video metric 仍可能给高分。因此它提出 **Observable Simulator Contract**：supplied action 必须导致对应 robot motion；environment response 必须由实际 motion/contact 导致。",
-    "limitations": "来源报告未单列可核验的局限、失败案例或开放问题；在补充原论文正文核验前，不对该工作的泛化性、因果性、复现性或 SOTA 结论作扩大解释。",
+    "limitations": "- 观察契约只覆盖可见结果，不识别隐藏机制。\n- benchmark 动作分布仍不能覆盖全部合法 HOI 干预。\n- 机器人夹爪交互不等于人手高自由度接触。\n- metric 与真实安全/策略长期收益的关系仍需扩展。",
     "links": {
       "paper": "https://arxiv.org/abs/2608.09298",
       "code": "https://evophys.com",
@@ -6878,7 +7456,7 @@
       "alphaxiv": "https://alphaxiv.org/abs/2608.09298"
     },
     "pipeline": {
-      "input": "当前状态 x t 与 action sequence a {t:t+H}。",
+      "input": "RoboTwin、ManiSkill、LIBERO 中局部/全局、跨来源和 OOD 动作轨迹",
       "process": "- 被测对象 ：ACWM 输出 future rollout。；- 五组测试 ：Local Action Calibration；Global Trajectory Coverage；Action-Source Behavior Preservation；Interaction Grounding；Interaction Dynamics。",
       "output": "- 覆盖范围 ：RoboTwin、ManiSkill、LIBERO，约 18K+ instances，测试 6 个开源 ACWM。",
       "details": "- **输入**：当前状态 x_t 与 action sequence a_{t:t+H}。\n- **被测对象**：ACWM 输出 future rollout。\n- **五组测试**：Local Action Calibration；Global Trajectory Coverage；Action-Source Behavior Preservation；Interaction Grounding；Interaction Dynamics。\n- **覆盖范围**：RoboTwin、ManiSkill、LIBERO，约 18K+ instances，测试 6 个开源 ACWM。"
@@ -6889,13 +7467,22 @@
     ],
     "summary": "WorldSimProbe 指出现有 world model benchmark 的核心问题：生成视频看起来合理、task outcome 正确，并不代表模型真的执行了给定 action。例如机器人动作没有按 action 走，但物体却“自己”到了目标位置，传统 video metric 仍可能给高分。因此它提出 Observable Simulator Contract ：supplied action 必须导致对应 robot motion；environment response 必须由实际 motion/contact 导致。",
     "tags": [
+      "Causality",
+      "Counterfactual World Model",
+      "HOI",
       "World Action Model",
+      "world model",
+      "反事实推理",
       "机器人学习",
       "预测表征"
     ],
     "title": "WorldSimProbe: Diagnosing Simulator Faithfulness in Action-Conditioned World Models for Embodied Manipulation",
-    "updated_at": "2026-08-20",
-    "year": 2026
+    "updated_at": "2026-09-02",
+    "year": 2026,
+    "challenges": "FVD、视觉质量和最终 task success 未直接检查动作是否实现、接触是否由实现的运动引起、环境响应是否正确。",
+    "motivation": "提出 Observable Simulator Contract，将 action→agent motion→interaction→environment dynamics 分解诊断。",
+    "technical_approach": "- **输入：** RoboTwin、ManiSkill、LIBERO 中局部/全局、跨来源和 OOD 动作轨迹\n- **过程：** 五个 controlled suites 分别测动作敏感性、轨迹一致、false interaction 与 primitive dynamics\n- **输出：** 模拟器忠实度诊断及与人工/下游策略结果的对应",
+    "discussion": "该工作直接支持“action-conditioned 不等于 physical intervention faithful”。它未学习因果模型，却为 HOI counterfactual WM 提供分层评测骨架。"
   },
   {
     "id": "arxiv-2608-26103",
@@ -7042,6 +7629,59 @@
     }
   },
   {
+    "id": "arxiv-2508-18269",
+    "title": "FlowVLA: Thinking in Motion with a Visual Chain of Thought",
+    "authors": [
+      "Zhide Zhong",
+      "Haodong Yan",
+      "Junfeng Li",
+      "Xiangchen Liu",
+      "Xin Gong",
+      "Wenxuan Song",
+      "Jiayi Chen",
+      "Haoang Li"
+    ],
+    "year": 2025,
+    "publication": "2025，arXiv preprint；arXiv:2508.18269",
+    "arxiv_id": "2508.18269",
+    "doi": "",
+    "links": {
+      "paper": "https://arxiv.org/abs/2508.18269",
+      "project": "https://irpn-lab.github.io/FlowVLA/",
+      "alphaxiv": "https://alphaxiv.org/abs/2508.18269"
+    },
+    "tags": [
+      "3D/4D",
+      "Causality",
+      "Counterfactual World Model",
+      "HOI",
+      "VLA",
+      "world model",
+      "反事实推理"
+    ],
+    "figure": null,
+    "summary": "先预测 optical flow 再预测未来图像，使 motion 成为显式瓶颈，并通过修改 flow 检查未来是否随中间运动变化。",
+    "insight": "先预测 optical flow 再预测未来图像，使 motion 成为显式瓶颈，并通过修改 flow 检查未来是否随中间运动变化。",
+    "pipeline": {
+      "input": "当前视觉观测、语言指令及机器人训练轨迹",
+      "process": "单一自回归 Transformer 执行 image→flow→future image ，再用于 VLA policy 学习；对 flow 做内部 intervention",
+      "output": "optical flow、未来帧与机器人动作",
+      "details": "- **输入：** 当前视觉观测、语言指令及机器人训练轨迹\n- **过程：** 单一自回归 Transformer 执行 `image→flow→future image`，再用于 VLA policy 学习；对 flow 做内部 intervention\n- **输出：** optical flow、未来帧与机器人动作"
+    },
+    "experiments": "论文在机器人操作 benchmark 报告相对基线更好的预测一致性、控制表现和样本效率；项目页展示固定观测下的 counterfactual flow intervention。因正式表格与统计细节需逐项复现，本报告不扩大其 SOTA 范围。",
+    "evidence_notes": "",
+    "code_data_status": "项目页公开，代码截至核验日标注 coming soon；使用公开机器人数据的具体版本以论文为准。",
+    "limitations": "- 2D flow 难表达遮挡后的 3D 接触与状态变化。\n- 内部 intervention 不等价于环境 `do` 操作。\n- 无 SCM、混杂审计或个体反事实。\n- 开放代码与计算成本仍待核。",
+    "comments": "",
+    "source_reports": [],
+    "deleted": false,
+    "updated_at": "2026-09-02",
+    "challenges": "直接 next-frame prediction 混合静态外观与运动，视觉合理的未来可能没有执行指令对应的运动。",
+    "motivation": "先预测 optical flow 再预测未来图像，使 motion 成为显式瓶颈，并通过修改 flow 检查未来是否随中间运动变化。",
+    "technical_approach": "- **输入：** 当前视觉观测、语言指令及机器人训练轨迹\n- **过程：** 单一自回归 Transformer 执行 `image→flow→future image`，再用于 VLA policy 学习；对 flow 做内部 intervention\n- **输出：** optical flow、未来帧与机器人动作",
+    "discussion": "Flow 是 Object Motion 的可操控代理，但不是对象状态或接触机制；改变内部 flow 后输出改变，只证明模型机制敏感性，不等于外部物理因果效应被识别。"
+  },
+  {
     "id": "arxiv-2412-07772",
     "title": "From Slow Bidirectional to Fast Autoregressive Video Diffusion Models",
     "authors": [
@@ -7134,7 +7774,7 @@
     },
     "id": "arxiv-2507-01737",
     "insight": "HOI-Dyn 把 HOI 生成建模为 **driver-responder system**：人体动作是 driver，物体运动是 responder。关键 insight：只联合生成 human motion 和 object motion 不够，必须显式约束“物体应如何响应人体动作”，否则会出现物体提前移动、漂浮、反应夸张等因果错误。",
-    "limitations": "来源报告未单列可核验的局限、失败案例或开放问题；在补充原论文正文核验前，不对该工作的泛化性、因果性、复现性或 SOTA 结论作扩大解释。",
+    "limitations": "- 生成轨迹与可执行物理之间仍有差距。\n- 接触指标不能证明正确的力与机制。\n- 未覆盖开放对象、灵巧手细粒度接触和真实干预。\n- dynamics loss 作为 causal consistency proxy 不能替代 SCM 验证。",
     "links": {
       "paper": "https://arxiv.org/abs/2507.01737",
       "project": "https://wulin97.github.io/hoi-dyn/",
@@ -7153,12 +7793,20 @@
     "summary": "HOI-Dyn 把 HOI 生成建模为 driver-responder system ：人体动作是 driver，物体运动是 responder。关键 insight：只联合生成 human motion 和 object motion 不够，必须显式约束“物体应如何响应人体动作”，否则会出现物体提前移动、漂浮、反应夸张等因果错误。",
     "tags": [
       "3D/4D",
+      "Causality",
+      "Counterfactual World Model",
       "HOI",
-      "交互世界模型"
+      "world model",
+      "交互世界模型",
+      "因果推理"
     ],
     "title": "HOI-Dyn: Learning Interaction Dynamics for Human-Object Motion Diffusion",
-    "updated_at": "2026-08-20",
-    "year": 2025
+    "updated_at": "2026-09-02",
+    "year": 2025,
+    "challenges": "联合生成 human/object motion 会出现对象提前移动、漂浮或反应过强，相关轨迹并未保证“人驱动物体响应”的时序结构。",
+    "motivation": "把人体设为 driver、对象设为 responder，并用 interaction dynamics loss 强化接触附近的对象响应。",
+    "technical_approach": "- **输入：** 人体动作、对象几何/状态和文本或任务条件\n- **过程：** motion diffusion 联合生成，加入 driver→responder dynamics 与接触相关约束\n- **输出：** 人体运动与对象 6DoF/交互运动序列",
+    "discussion": "它把 Object Motion 和 Contact 置于 dynamics loss 中，强于仅做条件生成；但 driver→responder 是归纳偏置/代理因果顺序，未识别隐藏意图、力或对象参数，也未执行反事实查询。"
   },
   {
     "arxiv": {
@@ -7198,7 +7846,7 @@
     },
     "pipeline": {
       "input": "BISCUIT 式 causal representation learner；causal transition model；causal mapper / state descriptor；LLaMA 3 + 修改的 RAP/MCTS",
-      "process": "解耦 latent causal variables；下一 latent state；可读状态描述；动作计划",
+      "process": "学习 causal latent factors 及 action-conditioned transition，进行多步 rollout，并将状态变化交给 LLM 规划",
       "output": "解耦 latent causal variables；下一 latent state；可读状态描述；动作计划",
       "details": "**输入**：\n\n- 当前图像 observation；\n- 自然语言 action description。\n\n**过程**：\n\n1. causal representation learner：\n   \\[\n   I_t\\rightarrow z_t^{causal}\n   \\]\n2. action encoder：\n   \\[\n   a_t^{text}\\rightarrow e(a_t)\n   \\]\n3. causal transition：\n   \\[\n   (z_t^{causal},a_t)\\rightarrow z_{t+1}^{causal}\n   \\]\n4. causal mapper 将 latent variables 映射到可理解的 state descriptors；\n5. LLM 使用 world model rollout 的 state descriptions 做 reasoning；\n6. planning 使用 LLM proposal + CWM simulation + RAP/MCTS-style search。\n\n**输出**：\n\n- next causal world state；\n- rollout state description；\n- 最终 action plan。\n\n## 因果假设\n\n论文依赖 BISCUIT 一类 identifiable causal representation learning 的假设，例如：\n\n- 不同 causal variables 应有可区分的 binary interaction patterns；\n- intervention pattern 随时间具有足够变化。\n\n这比 C-JEPA 的 “causal inductive bias” 更强，但也意味着方法对 intervention richness 有较强假设。"
     },
@@ -7211,6 +7859,10 @@
     "summary": "论文： Language Agents Meet Causality: Bridging LLMs and Causal World Models 作者： John Gkountouras et al. 发表： ICLR 2025 入口： ICLR｜arXiv｜代码",
     "tags": [
       "3D/4D",
+      "Causality",
+      "Counterfactual World Model",
+      "HOI",
+      "world model",
       "反事实推理",
       "因果世界模型",
       "因果推理",
@@ -7218,8 +7870,12 @@
       "机器人学习"
     ],
     "title": "Language Agents Meet Causality -- Bridging LLMs and Causal World Models",
-    "updated_at": "2026-08-23",
-    "year": 2025
+    "updated_at": "2026-09-02",
+    "year": 2025,
+    "challenges": "LLM 常识可能与当前环境机制不一致，普通预测 latent 又未必可解释或可用于替代结果查询。",
+    "motivation": "从交互数据学习环境特定 causal variables 与 transition，将 rollout 转成语言供 LLM 搜索，比纯语言猜测更可靠。",
+    "technical_approach": "- **输入：** GridWorld/iTHOR 图像、动作与交互轨迹\n- **过程：** 学习 causal latent factors 及 action-conditioned transition，进行多步 rollout，并将状态变化交给 LLM 规划\n- **输出：** 替代未来的 causal state、语言化结果与动作计划",
+    "discussion": "本期最接近 causal latent simulator+planning 的系统，但仍主要是群体层干预式 rollout；论文没有在真实 HOI 中验证同一实例的外生噪声后验。"
   },
   {
     "id": "arxiv-2507-13340",
@@ -7868,6 +8524,72 @@
     }
   },
   {
+    "id": "arxiv-2509-09737",
+    "title": "World Modeling with Probabilistic Structure Integration",
+    "authors": [
+      "Klemen Kotar",
+      "Wanhee Lee",
+      "Rahul Venkatesh",
+      "Honglin Chen",
+      "Daniel Bear",
+      "Jared Watrous",
+      "Simon Kim",
+      "Khai Loong Aw",
+      "Lilian Naing Chen",
+      "Stefan Stojanov",
+      "Kevin Feigelis",
+      "Imran Thobani",
+      "Alex Durango",
+      "Khaled Jedoui",
+      "Atlas Kazemian",
+      "Dan Yamins"
+    ],
+    "year": 2025,
+    "publication": "2025，arXiv preprint（v1，2025-09-10）；arXiv:2509.09737；正式 DOI 未见",
+    "arxiv_id": "2509.09737",
+    "doi": "",
+    "links": {
+      "paper": "https://arxiv.org/abs/2509.09737",
+      "alphaxiv": "https://alphaxiv.org/abs/2509.09737"
+    },
+    "tags": [
+      "3D/4D",
+      "Physical World Model",
+      "Physics-Aware Video Generation",
+      "World Simulator",
+      "因果推理"
+    ],
+    "figure": {
+      "url": "https://arxiv.org/html/2509.09737v1/concept_v2.png",
+      "alt": "World Modeling with Probabilistic Structure Integration Fig. 1",
+      "label": "World Modeling with Probabilistic Structure Integration，Fig. 1，概率结构整合的世界模型循环。来源：Fig. 1 原图",
+      "paper_title": "World Modeling with Probabilistic Structure Integration",
+      "source_url": "https://arxiv.org/html/2509.09737v1/concept_v2.png"
+    },
+    "summary": "PSI 提出“概率预测→结构提取→结构回灌”的循环：先学任意变量集合之间的条件分布，再通过模型内条件推断抽取低维结构，最后将这些结构作为新 token 类型加入训练。",
+    "insight": "PSI 提出“概率预测→结构提取→结构回灌”的循环：先学任意变量集合之间的条件分布，再通过模型内条件推断抽取低维结构，最后将这些结构作为新 token 类型加入训练。",
+    "pipeline": {
+      "input": "互联网视频切分的时空 tokens，以及后续抽取的 flow、depth、segmentation 等结构 tokens",
+      "process": "random-access autoregressive sequence model 学习广泛条件分布；通过条件/干预式 prompting 抽取中间结构；将结构作为条件和预测目标重新混入训练数据",
+      "output": "任意条件视频预测、零样本视觉结构、相机/对象控制与改进后的 world model",
+      "details": "- **输入：** 互联网视频切分的时空 tokens，以及后续抽取的 flow、depth、segmentation 等结构 tokens\n- **过程：** random-access autoregressive sequence model 学习广泛条件分布；通过条件/干预式 prompting 抽取中间结构；将结构作为条件和预测目标重新混入训练数据\n- **输出：** 任意条件视频预测、零样本视觉结构、相机/对象控制与改进后的 world model"
+    },
+    "experiments": "作者训练实例使用 1.4 万亿互联网视频 tokens，报告 optical flow、自监督 depth 和 object segmentation 的强结果，并完成一轮结构回灌后的预测改进。在 WildRGB-D novel-view synthesis 和 3DEditBench object manipulation 上，论文称优于所选专用/编辑基线。由于缺少公开训练语料、代码和可复现算力配置，本报告将这些视为作者自报告，而非独立确认。",
+    "evidence_notes": "",
+    "code_data_status": "论文公开，arXiv 标注相应许可；未核验到完整训练代码、1.4T-token 数据清单或权重，因此端到端复现性有限。",
+    "limitations": "- 训练规模巨大且数据构成不透明。\n- 条件分布丰富不等于因果方向或干预效应可识别。\n- 抽取结构可能继承预测模型的偏差。\n- 未给出机器人闭环、真实力学参数恢复或安全干预验证。",
+    "comments": "",
+    "source_reports": [
+      "report-d2be249044"
+    ],
+    "deleted": false,
+    "updated_at": "2026-09-03",
+    "challenges": "视觉模型通常只能沿固定方向预测，特定任务又需要单独监督的 depth、flow、segmentation 或 control encoder，难形成类似语言模型的通用查询接口。",
+    "motivation": "PSI 提出“概率预测→结构提取→结构回灌”的循环：先学任意变量集合之间的条件分布，再通过模型内条件推断抽取低维结构，最后将这些结构作为新 token 类型加入训练。",
+    "technical_approach": "- **输入：** 互联网视频切分的时空 tokens，以及后续抽取的 flow、depth、segmentation 等结构 tokens\n- **过程：** random-access autoregressive sequence model 学习广泛条件分布；通过条件/干预式 prompting 抽取中间结构；将结构作为条件和预测目标重新混入训练数据\n- **输出：** 任意条件视频预测、零样本视觉结构、相机/对象控制与改进后的 world model",
+    "discussion": "PSI 的“causal inference”主要指从完整条件分布做结构查询与提示；它提供灵活 control handles，但不自动满足环境 SCM 的可识别性。对世界模型研究的影响在于：新增单一 depth/flow/segmentation head 很难构成 novelty，必须证明结构回灌或任务机制上的额外价值。"
+  },
+  {
     "arxiv": {
       "published": "2024-01-23T05:43:15Z",
       "revised_at": "2024-01-23T05:43:15Z",
@@ -8055,6 +8777,61 @@
     }
   },
   {
+    "id": "arxiv-2409-18964",
+    "title": "PhysGen: Rigid-Body Physics-Grounded Image-to-Video Generation",
+    "authors": [
+      "Shaowei Liu",
+      "Zhongzheng Ren",
+      "Saurabh Gupta",
+      "Shenlong Wang"
+    ],
+    "year": 2024,
+    "publication": "2024，ECCV 2024；arXiv:2409.18964；正式 DOI 待核",
+    "arxiv_id": "2409.18964",
+    "doi": "",
+    "links": {
+      "paper": "https://arxiv.org/abs/2409.18964",
+      "project": "https://stevenlsw.github.io/physgen/",
+      "code": "https://github.com/stevenlsw/physgen",
+      "alphaxiv": "https://alphaxiv.org/abs/2409.18964"
+    },
+    "tags": [
+      "Physical World Model",
+      "Physics-Aware Video Generation",
+      "World Simulator",
+      "视频生成"
+    ],
+    "figure": {
+      "url": "https://arxiv.org/html/2409.18964v1/method_v1.png",
+      "alt": "PhysGen Fig. 2",
+      "label": "PhysGen，Fig. 2，刚体物理引导的图像到视频生成流程。来源：Fig. 2 原图",
+      "paper_title": "PhysGen: Rigid-Body Physics-Grounded Image-to-Video Generation",
+      "source_url": "https://arxiv.org/html/2409.18964v1/method_v1.png"
+    },
+    "summary": "PhysGen 采用“感知→显式模拟→生成渲染”：把物理正确性放在 image-space rigid-body simulation 中，用 diffusion refinement 补外观，而不是要求扩散模型自行发现牛顿动力学。",
+    "insight": "PhysGen 采用“感知→显式模拟→生成渲染”：把物理正确性放在 image-space rigid-body simulation 中，用 diffusion refinement 补外观，而不是要求扩散模型自行发现牛顿动力学。",
+    "pipeline": {
+      "input": "单张图像，以及施加到对象的力、力矩、初速度等条件",
+      "process": "基础视觉模型/GPT-4V 辅助分解可移动对象并估计几何、材质和物理参数；模拟刚体、碰撞、摩擦与弹性；将运动指导送入视频 diffusion renderer 并细化",
+      "output": "可按输入物理条件控制的短视频及中间物理轨迹",
+      "details": "- **输入：** 单张图像，以及施加到对象的力、力矩、初速度等条件\n- **过程：** 基础视觉模型/GPT-4V 辅助分解可移动对象并估计几何、材质和物理参数；模拟刚体、碰撞、摩擦与弹性；将运动指导送入视频 diffusion renderer 并细化\n- **输出：** 可按输入物理条件控制的短视频及中间物理轨迹"
+    },
+    "experiments": "10 张复杂开放世界图像、118 个可移动实例的感知评测在 IoU 0.5 下 precision 0.93、recall 0.82；论文还做视频基线比较和用户研究。单次生成约 3 分钟：感知约 1 分钟、120-step simulation 5 秒、render 1 分钟、generative refinement 35 秒。结果支持刚体场景的可控性，不覆盖通用材质与长期真实预测。",
+    "evidence_notes": "",
+    "code_data_status": "官方 PyTorch 代码和 Colab 可用；仓库包含 perception、simulation、rendering 与 evaluation 流程。第三方模型、GPT 服务与数据许可证需分别核验。",
+    "limitations": "- 聚焦刚体，形变、液体、断裂和复杂关节不在核心模型内。\n- 单图存在尺度、遮挡、质量和摩擦不可辨识性。\n- 约 3 分钟/视频，不适合实时闭环。\n- 生成 refinement 可能掩盖 simulator error。",
+    "comments": "",
+    "source_reports": [
+      "report-d2be249044"
+    ],
+    "deleted": false,
+    "updated_at": "2026-09-03",
+    "challenges": "纯数据驱动 I2V 难保证碰撞、摩擦、弹性和力响应；传统 simulator 又缺少从单张开放世界图像恢复场景并生成逼真视频的能力。",
+    "motivation": "PhysGen 采用“感知→显式模拟→生成渲染”：把物理正确性放在 image-space rigid-body simulation 中，用 diffusion refinement 补外观，而不是要求扩散模型自行发现牛顿动力学。",
+    "technical_approach": "- **输入：** 单张图像，以及施加到对象的力、力矩、初速度等条件\n- **过程：** 基础视觉模型/GPT-4V 辅助分解可移动对象并估计几何、材质和物理参数；模拟刚体、碰撞、摩擦与弹性；将运动指导送入视频 diffusion renderer 并细化\n- **输出：** 可按输入物理条件控制的短视频及中间物理轨迹",
+    "discussion": "PhysGen 是此列表的显式 simulator 基线。它能执行真正的力/初态干预，但结果取决于从单图估计的几何和参数；视频生成器的视觉合理性不能反向证明估计参数正确。"
+  },
+  {
     "arxiv": {
       "published": "2024-02-16T18:29:19Z",
       "revised_at": "2024-07-19T11:12:08Z",
@@ -8109,5 +8886,62 @@
     "title": "Robust agents learn causal world models",
     "updated_at": "2026-08-31",
     "year": 2024
+  },
+  {
+    "id": "arxiv-2312-06721",
+    "title": "Understanding Physical Dynamics with Counterfactual World Modeling",
+    "authors": [
+      "Rahul Venkatesh",
+      "Honglin Chen",
+      "Kevin Feigelis",
+      "Daniel M. Bear",
+      "Khaled Jedoui",
+      "Klemen Kotar",
+      "Felix Binder",
+      "Wanhee Lee",
+      "Sherry Liu",
+      "Kevin A. Smith",
+      "Judith E. Fan",
+      "Daniel L. K. Yamins"
+    ],
+    "year": 2024,
+    "publication": "2024，ECCV 2024；arXiv:2312.06721",
+    "arxiv_id": "2312.06721",
+    "doi": "",
+    "links": {
+      "paper": "https://arxiv.org/abs/2312.06721",
+      "project": "https://neuroailab.github.io/cwm-physics/",
+      "code": "https://github.com/neuroailab/cwm_dynamics",
+      "alphaxiv": "https://alphaxiv.org/abs/2312.06721"
+    },
+    "tags": [
+      "Causality",
+      "Counterfactual World Model",
+      "HOI",
+      "world model",
+      "反事实推理",
+      "因果推理"
+    ],
+    "figure": null,
+    "summary": "作者用 temporally-factored masking 让预测器接受对事实视频的局部改变，再以预测差异读取中层视觉结构；这里的 counterfactual 是 prompting 操作，不是 SCM 个体反事实。",
+    "insight": "作者用 temporally-factored masking 让预测器接受对事实视频的局部改变，再以预测差异读取中层视觉结构；这里的 counterfactual 是 prompting 操作，不是 SCM 个体反事实。",
+    "pipeline": {
+      "input": "视频帧及时间因子化遮挡/修改后的视觉 prompt",
+      "process": "自监督 masked video prediction；比较事实与修改输入的补全，提取 flow、mask、keypoint 等结构",
+      "output": "未来预测、可提示的视觉结构和 Physion 物理判断特征",
+      "details": "- **输入：** 视频帧及时间因子化遮挡/修改后的视觉 prompt\n- **过程：** 自监督 masked video prediction；比较事实与修改输入的补全，提取 flow、mask、keypoint 等结构\n- **输出：** 未来预测、可提示的视觉结构和 Physion 物理判断特征"
+    },
+    "experiments": "论文在 Physion 上报告当时领先的物理动态理解结果，并展示无需针对每种结构微调的抽取能力。该证据支持 representation utility，不支持环境干预识别或机器人控制。",
+    "evidence_notes": "",
+    "code_data_status": "官方代码公开；使用公开/已有视频与 Physion 设置，具体预训练复现成本需按仓库配置核对。",
+    "limitations": "- 首发预印本在 2023，正式出版在本报告时间范围内。\n- 无 action、`do` intervention、SCM 或 causal identification。\n- Physion 偏合成物理，开放真实 HOI 未验证。\n- “counterfactual prompting”不可扩大为 Pearl 式反事实推理。",
+    "comments": "",
+    "source_reports": [],
+    "deleted": false,
+    "updated_at": "2026-09-02",
+    "challenges": "监督式物理理解依赖任务标签，单一视频预测器如何抽取 flow、对象与动态结构仍不清楚。",
+    "motivation": "作者用 temporally-factored masking 让预测器接受对事实视频的局部改变，再以预测差异读取中层视觉结构；这里的 counterfactual 是 prompting 操作，不是 SCM 个体反事实。",
+    "technical_approach": "- **输入：** 视频帧及时间因子化遮挡/修改后的视觉 prompt\n- **过程：** 自监督 masked video prediction；比较事实与修改输入的补全，提取 flow、mask、keypoint 等结构\n- **输出：** 未来预测、可提示的视觉结构和 Physion 物理判断特征",
+    "discussion": "它证明 counterfactual-style input perturbation 能形成物理表征工具，是 HOI 结构抽取的上游候选；Hand、Contact 与 Object State 没有成为明确 dynamics 节点。"
   }
 ]

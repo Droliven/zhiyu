@@ -1,5 +1,31 @@
 [
   {
+    "id": "report-d2be249044",
+    "title": "物理世界模型与物理一致视频生成论文精读（2026-09-03）",
+    "date": "2026-09-03",
+    "tags": [
+      "Physical World Model",
+      "Physics-Aware Video Generation",
+      "World Simulator"
+    ],
+    "summary": "报告标签 ：Physical World Model, Physics-Aware Video Generation, World Simulator",
+    "paper_ids": [
+      "arxiv-2409-18964",
+      "arxiv-2509-09737",
+      "arxiv-2509-21309",
+      "arxiv-2512-05564",
+      "arxiv-2601-11087",
+      "arxiv-2603-05449",
+      "arxiv-2604-02296",
+      "arxiv-2606-28128",
+      "arxiv-2607-28624",
+      "arxiv-2608-27549"
+    ],
+    "path": "content/reports/2026-09-03_curated_papers.md",
+    "source_file": "2026-09-03_curated_papers.md",
+    "content_sha1": "7157fa16fc363a5b8839b1dd943714d13e36f280"
+  },
+  {
     "id": "report-1950a5754f",
     "title": "具身 In-Context Learning 专题：视频提示、长上下文与测试时适应",
     "date": "2026-09-02",
