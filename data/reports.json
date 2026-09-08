@@ -1,5 +1,51 @@
 [
   {
+    "id": "report-0d81d19c6c",
+    "title": "知域论文合并更新：2026-09-06",
+    "date": "2026-09-06",
+    "tags": [
+      "3D/4D Reconstruction",
+      "Causal Modeling",
+      "cross-embodiment",
+      "egocentric vision",
+      "Embodied In-context Learning",
+      "HOI",
+      "Physical Reasoning",
+      "Streaming Generation",
+      "World Action Model",
+      "world model",
+      "周报"
+    ],
+    "summary": "报告标签 ：周报, World Action Model, world model, Embodied In-context Learning, cross-embodiment, HOI, egocentric vision, 3D/4D Reconstruction, Streaming Generation, Causal Modeling, Physical Reasoning",
+    "paper_ids": [
+      "arxiv-2608-28549",
+      "arxiv-2608-28718",
+      "arxiv-2608-29242",
+      "arxiv-2608-29910",
+      "arxiv-2608-30237",
+      "arxiv-2608-30643",
+      "arxiv-2608-30692",
+      "arxiv-2608-30880",
+      "arxiv-2609-00161",
+      "arxiv-2609-00188",
+      "arxiv-2609-00610",
+      "arxiv-2609-01276",
+      "arxiv-2609-01596",
+      "arxiv-2609-01938",
+      "arxiv-2609-02159",
+      "arxiv-2609-02531",
+      "arxiv-2609-02886",
+      "arxiv-2609-03153",
+      "arxiv-2609-03199",
+      "arxiv-2609-03673",
+      "arxiv-2609-04196",
+      "arxiv-2609-04200"
+    ],
+    "path": "content/reports/2026-09-06_weekly_paper_update_merged.md",
+    "source_file": "2026-09-06_weekly_paper_update_merged.md",
+    "content_sha1": "a19f721bcf6a0f7426809c6140444f3b6acc4428"
+  },
+  {
     "id": "report-d2be249044",
     "title": "物理世界模型与物理一致视频生成论文精读（2026-09-03）",
     "date": "2026-09-03",
@@ -23,7 +69,7 @@
     ],
     "path": "content/reports/2026-09-03_curated_papers.md",
     "source_file": "2026-09-03_curated_papers.md",
-    "content_sha1": "7157fa16fc363a5b8839b1dd943714d13e36f280"
+    "content_sha1": "6ca9eeee7ad7ca85381f9d53ad7c0a279436c8d0"
   },
   {
     "id": "report-1950a5754f",
