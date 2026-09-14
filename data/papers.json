@@ -17,36 +17,44 @@
       "alphaxiv": "https://alphaxiv.org/abs/2609.11308"
     },
     "tags": [
-      "Agent Memory",
-      "Long-horizon Manipulation",
-      "RGB-Only",
-      "Steerable Action Model"
+      "VLA",
+      "视觉条件与提示",
+      "长时记忆"
     ],
-    "figure": null,
-    "summary": "2AM将所有任务记忆保留在高层 Agent 中，让动作模型在 episode 层面无历史。Agent把历史的当前后果压缩为子任务语言和可选的 2D grasp/place/move 提示；动作模型只根据当前 RGB、本体和提示执行局部动作。",
-    "insight": "2AM将所有任务记忆保留在高层 Agent 中，让动作模型在 episode 层面无历史。Agent把历史的当前后果压缩为子任务语言和可选的 2D grasp/place/move 提示；动作模型只根据当前 RGB、本体和提示执行局部动作。",
-    "pipeline": {
-      "input": "全局任务、Agent 维护的观测/命令/结果摘要、当前 agent-view 和 wrist RGB、机器人状态。",
-      "process": "Agent生成结构化 steering command；动作模型以带 dropout、空间噪声和时间抖动的提示监督训练；部署时所有任务相关运动均通过同一动作模型。",
-      "output": "固定长度绝对末端执行器动作块。",
-      "details": "**输入**：全局任务、Agent 维护的观测/命令/结果摘要、当前 agent-view 和 wrist RGB、机器人状态。\n\n**过程**：Agent生成结构化 steering command；动作模型以带 dropout、空间噪声和时间抖动的提示监督训练；部署时所有任务相关运动均通过同一动作模型。\n\n**输出**：固定长度绝对末端执行器动作块。"
+    "figure": {
+      "url": "content/images/2609.11308-representative.webp",
+      "alt": "Figure 1",
+      "label": "Figure 1",
+      "paper_title": "2AM: Grounding Agent-Side Memory as Guidance for Steerable Action Models in Long-Horizon Manipulation",
+      "source_url": "https://arxiv.org/html/2609.11308v1#S1.F1"
     },
-    "experiments": "在 LIBERO-Mem 上，2AM完成率 76.3%，相对最强报告基线 14.8% 提升 61.5 个百分点；相对对齐的 \\(\\pi_0\\) 复现，完成率提高 5.5 点、宽松成功率提高 25.6 点，而严格成功率相近。后一个受控比较更能支持接口设计，前一个跨系统差距不能完全归因于记忆机制。 [正文实验与表格](https://arxiv.org/html/2609.11308v1)。",
+    "summary": "贡献是把历史压缩成当前可执行的空间意图：Agent 输出子任务语言和可选的 grasp/place/move 二维提示；动作模型利用当前双视角 RGB 与机器人状态执行动作块。实验支持这种接口改善子目标推进和宽松成功，但 没有证明它解决了精确计数与停止：严格成功率 11.83%，略低于对齐复现基线的 12.25% 。因此，“记得过去”与“恰好完成并及时停止”应作为两个问题分别评估。",
+    "insight": "贡献是把历史压缩成当前可执行的空间意图：Agent 输出子任务语言和可选的 grasp/place/move 二维提示；动作模型利用当前双视角 RGB 与机器人状态执行动作块。实验支持这种接口改善子目标推进和宽松成功，但**没有证明它解决了精确计数与停止：严格成功率 11.83%，略低于对齐复现基线的 12.25%**。因此，“记得过去”与“恰好完成并及时停止”应作为两个问题分别评估。",
+    "pipeline": {
+      "input": "Agent 接收全局任务、当前全局 RGB，以及整理后的“观测—命令—结果”历史；动作模型接收当前全局与腕部 RGB、机器人本体状态及 Agent 命令，不接收整段任务历史。",
+      "process": "Agent 将目标身份、目的地、次数与阶段压缩为结构化命令。动作模型采用 Qwen3-VL-4B 视觉语言骨干与 flow-matching Action Expert，每次预测 16 步绝对末端执行器动作块。Agent 在执行短动作块后重新观察并更新历史摘要，形成闭环。论文实验的 Agent 名称写作 Qwen3.8-27B；模型发布及可获得性待独立核验。",
+      "output": "16 步动作块，包含末端执行器绝对位姿和夹爪控制。部署不使用深度、在线分割掩码、物体位姿、标定三维几何或规划器替代执行任务运动；该限制不意味着离线训练标签也不使用几何信息。",
+      "details": "**输入**：Agent 接收全局任务、当前全局 RGB，以及整理后的“观测—命令—结果”历史；动作模型接收当前全局与腕部 RGB、机器人本体状态及 Agent 命令，不接收整段任务历史。\n\n**过程**：Agent 将目标身份、目的地、次数与阶段压缩为结构化命令。动作模型采用 Qwen3-VL-4B 视觉语言骨干与 flow-matching Action Expert，每次预测 16 步绝对末端执行器动作块。Agent 在执行短动作块后重新观察并更新历史摘要，形成闭环。论文实验的 Agent 名称写作 Qwen3.8-27B；模型发布及可获得性待独立核验。\n\n**输出**：16 步动作块，包含末端执行器绝对位姿和夹爪控制。部署不使用深度、在线分割掩码、物体位姿、标定三维几何或规划器替代执行任务运动；该限制不意味着离线训练标签也不使用几何信息。\n\n#### 接口到底传什么\n\n提示点定义在当前 Agent 视角图像上，坐标归一化到 [0, 1000]²，原点在左上角。\n\n| 字段 | 传递的意图 | 有效期与边界 |\n| --- | --- | --- |\n| subtask language | 当前子任务与语义目标 | 提供动作语义，单独使用容易发生对象或目的地歧义 |\n| grasp_target | 当前应抓取的对象实例 | 抓住后应移除，避免过期抓取点将执行器拉回 |\n| place_target | 搬运后的目的地 | 可跨搬运过程保留，用于持续绑定目标位置 |\n| move_target | 近期夹爪移动方向的二维提示 | 不是完整轨迹、精确三维路点、姿态或持续时间指令 |\n\n#### 如何训练执行器读懂提示\n\n作者对示范轨迹进行离线标注：利用阶段、对象框或掩码、接触、对象运动和投影的末端执行器位置，确定性构造提示，不依赖 VLM 教师生成标签。grasp/place 用相关对象图像框中心；move 使用示范中未来 10–20 步的末端投影，临近轨迹结尾时截断。框中心是对象指向，不等于最佳物理接触点。\n\n训练动作窗口长 16 步，可以跨越子任务边界；使用非空条件 dropout（至少保留一种可用条件）、提示点空间高斯噪声和时间窗口抖动，以适应 Agent 漏给提示、位置不准和阶段切换不精确。论文没有通过完整的逐提示消融，将各项增强的独立贡献全部分离。[接口与训练：正文第 2–4 节](https://arxiv.org/html/2609.11308v1#S2)。"
+    },
+    "experiments": "LIBERO-Mem 共 10 个长程任务，包含重复动作、关系约束与遮挡。以下为论文表 3 的平均结果，单位均为百分比；“完成度”统计有序子目标推进比例，不是 episode 成功率。\n\n| 方法 | 严格成功率 Strict SR | 宽松成功率 Relaxed SR | 子目标完成度 Completion |\n| --- | ---: | ---: | ---: |\n| SlotSSM（已发表结果） | 0.00 | 未报告 | 14.80 |\n| 对齐复现基线（文中称 π0） | 12.25 | 37.42 | 70.79 |\n| 相同 Agent/动作模型，仅语言接口 | 7.25 | 19.42 | 53.72 |\n| 2AM | 11.83 | 63.00 | 76.29 |\n\nStrict SR 要求正确顺序、精确重复次数与及时停止：要求做三次却尝试第四次也算失败。Relaxed SR 允许在随后过度执行前已经达到完整有序目标；Completion 则允许只完成部分子目标。对齐复现使用相同 Qwen3-VL-4B 骨干、双 RGB 输入和 16 步动作块，不能把这一行写成官方原始 π0 权重的直接评测。\n\n相对对齐复现，2AM 的完成度提升 **5.50 个百分点**、宽松成功率提升 **25.58 点**，严格成功率却下降 **0.42 点**。相对同系统的仅语言接口，分别提升 **22.57、43.58、4.58 点**；这一控制更直接支持结构化空间提示的价值，仍不能单独归因于“记忆更强”。跨系统对比 SlotSSM 的 61.49 点完成度差距涉及更多配置差异。\n\n逐任务看，宽松成功率在 10/10 任务更高，完成度在 7/10 更高；对齐基线在重复运动任务 T1–T6 的严格成功更好，2AM 在关系/遮挡任务 T7–T10 更好。没有显著性检验依据时，不把平均数差异写成统计显著提升。[实验与表 3](https://arxiv.org/html/2609.11308v1#S6)。",
     "evidence_notes": "2026-09-14 已核对 arXiv 元数据、正文主要实验与对照；未运行复现实验。",
-    "code_data_status": "未发现官方代码、模型或扩展数据下载，Agent 记忆整理和提示生成的复现状态不明。",
-    "limitations": "2D 提示适合可见对象操作，但无法表达隐藏力状态、精确 3D 接触和复杂轨迹；Agent 的错误对象绑定会直接误导动作模型。方法是记忆压缩与分工，不是参数冻结下从少量示例学习新动力学。",
+    "code_data_status": "截至本次核验，未发现官方代码、模型权重或扩展标注数据下载。基准为 LIBERO-Mem；Agent 的完整记忆整理提示词、运行依赖和训练配置的可复现性仍需核验。本卡片依据论文正文，未运行复现实验。",
+    "limitations": "论文展示的失败包括抓取不精确、子任务选择错误与目的地绑定错误。二维提示无法直接表示遮挡后的力状态、精确三维接触和完整运动约束；Agent 错误会通过提示传给执行器。当前证据来自单一仿真基准，没有实机验证，也没有充分比较更强 Agent、各提示独立作用及更新频率—延迟权衡。\n\n严格成功率偏低表明停止条件和重复计数仍是瓶颈。方法证明的是 Agent 侧记忆与可引导执行器的一种可行接口，不是少样本学习新动力学、因果识别或通用长程操作已经解决。",
     "comments": "",
     "source_reports": [
       "report-37b94c4145"
     ],
     "deleted": false,
     "updated_at": "2026-09-14",
-    "discussion": "该工作为具身 ICL/WAM 提供“记忆只在 Agent，执行器保持短上下文”的系统对照，适合研究上下文接口而非单纯扩大模型窗口。",
+    "discussion": "值得借鉴的是“记忆的输出接口”，而非笼统地给动作模型增加历史。可将 2AM 的二维指向与 MaP-WAM 的视觉计划、MemCorr-DP 的几何条件并列，在同一 Agent、控制器、示例和计算预算下比较：对象身份保持、遮挡恢复、接触可达性以及精确终止。进一步加入持续 3D/4D 对应或接触状态是否有独立收益，属于阅读者提出的待检验假设，不能写成 2AM 已验证的结论。",
     "arxiv": {
       "published": "2026-09-10T09:35:56Z",
       "revised_at": "2026-09-10T09:35:56Z",
       "primary_category": "cs.RO"
-    }
+    },
+    "challenges": "长程操作需要记住目标对象、已完成阶段和重复次数。但高层 Agent 往往同时调用 VLA、几何工具和运动规划器，性能改善究竟来自记忆、额外传感器还是其他执行工具，很难归因；只给动作模型一句子任务语言，又可能无法明确“抓哪一个、放在哪里、往哪边移动”。",
+    "motivation": "2AM 检验一种受约束的分工：**任务记忆全部放在 Agent 侧，所有任务相关运动交给同一个动作模型，通过更明确的视觉指向接口连接两者。** 这里的 episodically stateless 指执行器不持有跨阶段的 episode 历史，不是没有当前视觉或机器人本体状态。",
+    "technical_approach": "**输入**：Agent 接收全局任务、当前全局 RGB，以及整理后的“观测—命令—结果”历史；动作模型接收当前全局与腕部 RGB、机器人本体状态及 Agent 命令，不接收整段任务历史。\n\n**过程**：Agent 将目标身份、目的地、次数与阶段压缩为结构化命令。动作模型采用 Qwen3-VL-4B 视觉语言骨干与 flow-matching Action Expert，每次预测 16 步绝对末端执行器动作块。Agent 在执行短动作块后重新观察并更新历史摘要，形成闭环。论文实验的 Agent 名称写作 Qwen3.8-27B；模型发布及可获得性待独立核验。\n\n**输出**：16 步动作块，包含末端执行器绝对位姿和夹爪控制。部署不使用深度、在线分割掩码、物体位姿、标定三维几何或规划器替代执行任务运动；该限制不意味着离线训练标签也不使用几何信息。\n\n#### 接口到底传什么\n\n提示点定义在当前 Agent 视角图像上，坐标归一化到 [0, 1000]²，原点在左上角。\n\n| 字段 | 传递的意图 | 有效期与边界 |\n| --- | --- | --- |\n| subtask language | 当前子任务与语义目标 | 提供动作语义，单独使用容易发生对象或目的地歧义 |\n| grasp_target | 当前应抓取的对象实例 | 抓住后应移除，避免过期抓取点将执行器拉回 |\n| place_target | 搬运后的目的地 | 可跨搬运过程保留，用于持续绑定目标位置 |\n| move_target | 近期夹爪移动方向的二维提示 | 不是完整轨迹、精确三维路点、姿态或持续时间指令 |\n\n#### 如何训练执行器读懂提示\n\n作者对示范轨迹进行离线标注：利用阶段、对象框或掩码、接触、对象运动和投影的末端执行器位置，确定性构造提示，不依赖 VLM 教师生成标签。grasp/place 用相关对象图像框中心；move 使用示范中未来 10–20 步的末端投影，临近轨迹结尾时截断。框中心是对象指向，不等于最佳物理接触点。\n\n训练动作窗口长 16 步，可以跨越子任务边界；使用非空条件 dropout（至少保留一种可用条件）、提示点空间高斯噪声和时间窗口抖动，以适应 Agent 漏给提示、位置不准和阶段切换不精确。论文没有通过完整的逐提示消融，将各项增强的独立贡献全部分离。[接口与训练：正文第 2–4 节](https://arxiv.org/html/2609.11308v1#S2)。"
   },
   {
     "id": "arxiv-2608-25956",
@@ -66,14 +74,12 @@
     },
     "tags": [
       "3D/4D",
-      "Embodied In-context Learning",
       "HOI",
-      "In-context Imitation Learning",
       "VLA",
       "World Action Model",
       "世界模型",
+      "具身上下文学习",
       "前馈重建",
-      "周报",
       "因果建模",
       "流式生成",
       "第一视角",
@@ -133,16 +139,13 @@
     },
     "tags": [
       "3D/4D",
-      "Embodied In-context Learning",
       "HOI",
-      "In-context Imitation Learning",
       "VLA",
       "World Action Model",
       "世界模型",
+      "具身上下文学习",
       "前馈重建",
-      "周报",
       "因果建模",
-      "因果推理",
       "流式生成",
       "第一视角",
       "视频生成",
@@ -227,7 +230,7 @@
       "3D/4D",
       "反事实推理",
       "因果世界模型",
-      "因果推理",
+      "因果建模",
       "对象中心"
     ],
     "title": "A Unifying Perspective on Causal World Models: From Observations to Representations to Structure",
@@ -260,13 +263,18 @@
       "alphaxiv": "https://alphaxiv.org/abs/2609.05892"
     },
     "tags": [
-      "4D Affordance",
-      "cross-embodiment",
       "HOI",
-      "Human-to-Robot",
-      "VLA Pretraining"
+      "可供性",
+      "跨本体迁移",
+      "预训练与扩展律"
     ],
-    "figure": null,
+    "figure": {
+      "url": "content/images/2609.05892-representative.webp",
+      "alt": "Figure 2",
+      "label": "Figure 2",
+      "paper_title": "A4A: Cross-Embodiment Transfer of Action-Oriented 4D Affordances from Human Demonstrations",
+      "source_url": "https://arxiv.org/html/2609.05892v1#S3.F2"
+    },
     "summary": "A4A把人类视频中可迁移的监督定义为“任务条件下交互相关 3D 点未来如何移动”，而不是人体关节或外观。该表示同时携带对象几何、运动方向和作用位置，并弱化人手与机器人末端执行器的形态差异。",
     "insight": "A4A把人类视频中可迁移的监督定义为“任务条件下交互相关 3D 点未来如何移动”，而不是人体关节或外观。该表示同时携带对象几何、运动方向和作用位置，并弱化人手与机器人末端执行器的形态差异。",
     "pipeline": {
@@ -323,21 +331,18 @@
     },
     "tags": [
       "3D/4D",
-      "3D/4D Reconstruction",
-      "Causal Modeling",
-      "cross-embodiment",
-      "egocentric vision",
-      "Embodied In-context Learning",
       "HOI",
-      "Physical Reasoning",
-      "Streaming Generation",
       "VLA",
       "World Action Model",
-      "world model",
+      "世界模型",
+      "具身上下文学习",
       "反事实推理",
-      "周报",
+      "因果建模",
       "机器人学习",
-      "第一视角"
+      "流式生成",
+      "物理建模",
+      "第一视角",
+      "跨本体迁移"
     ],
     "figure": {
       "url": "https://arxiv.org/html/2608.29242v2/method_figure_v2.png",
@@ -395,12 +400,18 @@
       "alphaxiv": "https://alphaxiv.org/abs/2609.12498"
     },
     "tags": [
-      "Articulated HOI",
-      "Category-Level Generalization",
-      "Dexterous In-Hand Manipulation",
-      "Sim-to-Real"
+      "HOI",
+      "仿真迁移",
+      "泛化与部分可观测性",
+      "灵巧操作"
     ],
-    "figure": null,
+    "figure": {
+      "url": "content/images/2609.12498-representative.webp",
+      "alt": "Figure 3",
+      "label": "Figure 3",
+      "paper_title": "ArtManip: Category-Level Articulated In-Hand Manipulation",
+      "source_url": "https://arxiv.org/html/2609.12498v1#S3.F3"
+    },
     "summary": "ArtManip研究单一策略在同类不同几何和初始抓取下持续开合铰接物体。系统自动生成程序化对象与任务导向抓取，以关节物理随机化和奖励课程训练特权教师，再将 latent 蒸馏到部分观测学生策略。",
     "insight": "ArtManip研究单一策略在同类不同几何和初始抓取下持续开合铰接物体。系统自动生成程序化对象与任务导向抓取，以关节物理随机化和奖励课程训练特权教师，再将 latent 蒸馏到部分观测学生策略。",
     "pipeline": {
@@ -442,12 +453,17 @@
       "alphaxiv": "https://alphaxiv.org/abs/2609.07126"
     },
     "tags": [
-      "Planning",
-      "Reliability Evaluation",
-      "Sensing Degradation",
-      "world model"
+      "世界模型",
+      "世界模型评测",
+      "规划与控制"
     ],
-    "figure": null,
+    "figure": {
+      "url": "content/images/2609.07126-representative.webp",
+      "alt": "Figure 1",
+      "label": "Figure 1",
+      "paper_title": "Beyond Task Success: Stage-Wise Reliability of World Model Planning under Sensing Degradation",
+      "source_url": "https://arxiv.org/html/2609.07126v1#S1.F1"
+    },
     "summary": "该工作把感知退化逐级追踪到表示、未来预测、动作偏好和最终结果。重要发现是误差影响不会按固定比例逐层传播，因此只看任务成功或 latent 距离都会遗漏规划脆弱点。",
     "insight": "该工作把感知退化逐级追踪到表示、未来预测、动作偏好和最终结果。重要发现是误差影响不会按固定比例逐层传播，因此只看任务成功或 latent 距离都会遗漏规划脆弱点。",
     "pipeline": {
@@ -492,12 +508,18 @@
       "alphaxiv": "https://alphaxiv.org/abs/2609.11172"
     },
     "tags": [
-      "Egocentric",
       "世界模型评测",
-      "基准",
-      "物理一致性"
+      "数据与基准",
+      "物理建模",
+      "第一视角"
     ],
-    "figure": null,
+    "figure": {
+      "url": "content/images/2609.11172-representative.webp",
+      "alt": "Figure 2",
+      "label": "Figure 2",
+      "paper_title": "Beyond Visual Quality: Evaluating Physical Consistency under Ego-Motion with EgoGenEval",
+      "source_url": "https://arxiv.org/html/2609.11172v1#S3.F2"
+    },
     "summary": "视觉生成器生成高保真图像但常在 ego-motion 下违反物理一致性，限制空间推理与具身规划使用。现有基准多聚焦孤立图像或单步质量。EgoGenEval 是几何接地、pose-free 的基准：1,400 例 / 2,360 目标视角，覆盖单步与多步 ego-motion；分别度量 Camera Motion Grounding（CMG）与 Scene State Preservation（SSP），双指标经盲人评判验证。16 个 pose-free 生成器 + 2 个 pose-conditioned 参考的评测发现：现有模型难以在执行相机运动的同时保持场景状态，没有系统能在两轴同时做好。并构建 EgoGen-Train（同几何来源）验证基准数据能否改进能力。",
     "insight": "视觉生成器生成高保真图像但常在 ego-motion 下违反物理一致性，限制空间推理与具身规划使用。现有基准多聚焦孤立图像或单步质量。EgoGenEval 是几何接地、pose-free 的基准：1,400 例 / 2,360 目标视角，覆盖单步与多步 ego-motion；分别度量 Camera Motion Grounding（CMG）与 Scene State Preservation（SSP），双指标经盲人评判验证。16 个 pose-free 生成器 + 2 个 pose-conditioned 参考的评测发现：现有模型难以在执行相机运动的同时保持场景状态，没有系统能在两轴同时做好。并构建 EgoGen-Train（同几何来源）验证基准数据能否改进能力。",
     "pipeline": {
@@ -542,18 +564,16 @@
       "alphaxiv": "https://alphaxiv.org/abs/2608.30692"
     },
     "tags": [
-      "3D/4D Reconstruction",
-      "Causal Modeling",
-      "cross-embodiment",
-      "egocentric vision",
-      "Embodied In-context Learning",
+      "3D/4D",
       "HOI",
-      "Physical Reasoning",
-      "Streaming Generation",
       "World Action Model",
-      "world model",
-      "周报",
-      "因果推理"
+      "世界模型",
+      "具身上下文学习",
+      "因果建模",
+      "流式生成",
+      "物理建模",
+      "第一视角",
+      "跨本体迁移"
     ],
     "figure": {
       "url": "https://arxiv.org/html/2608.30692v1/toy_s3_s5_exp.svg",
@@ -611,7 +631,7 @@
     },
     "tags": [
       "交互世界模型",
-      "因果推理",
+      "因果建模",
       "自回归扩散",
       "视频生成"
     ],
@@ -673,7 +693,7 @@
     },
     "tags": [
       "交互世界模型",
-      "因果推理",
+      "因果建模",
       "自回归扩散",
       "视频生成"
     ],
@@ -769,15 +789,13 @@
     ],
     "summary": "将机器人策略拆成“想象未来视觉变化”和“从期望变化反推动作”两部分，并在统一自回归序列中交织 video/action tokens。KV cache 保留长历史，真实 observation 持续纠偏，异步推理把下一段预测与当前动作执行重叠。",
     "tags": [
-      "Causality",
-      "Counterfactual World Model",
       "HOI",
       "VLA",
       "World Action Model",
-      "world model",
+      "世界模型",
       "反事实推理",
       "因果世界模型",
-      "因果推理",
+      "因果建模",
       "对象中心",
       "机器人学习"
     ],
@@ -840,13 +858,11 @@
     "summary": "论文： Causal-JEPA: Learning World Models through Object-Level Latent Masking 作者： Heejeong Nam et al. 年份： 2026，ICML 2026 入口： arXiv｜代码",
     "tags": [
       "3D/4D",
-      "Causality",
-      "Counterfactual World Model",
       "HOI",
-      "world model",
+      "世界模型",
       "反事实推理",
       "因果世界模型",
-      "因果推理",
+      "因果建模",
       "对象中心"
     ],
     "title": "Causal-JEPA: Learning World Models through Object-Level Latent Masking",
@@ -875,14 +891,12 @@
     },
     "tags": [
       "3D/4D",
-      "Embodied In-context Learning",
       "HOI",
-      "In-context Imitation Learning",
       "VLA",
       "World Action Model",
       "世界模型",
+      "具身上下文学习",
       "前馈重建",
-      "周报",
       "因果建模",
       "机器人学习",
       "流式生成",
@@ -952,9 +966,8 @@
       "alphaxiv": "https://alphaxiv.org/abs/2608.27549"
     },
     "tags": [
-      "Physical World Model",
-      "Physics-Aware Video Generation",
-      "World Simulator"
+      "世界模型",
+      "物理建模"
     ],
     "figure": {
       "url": "https://arxiv.org/html/2608.27549v1/pipeline-wjl.png",
@@ -1016,12 +1029,17 @@
       "alphaxiv": "https://alphaxiv.org/abs/2609.06852"
     },
     "tags": [
-      "Embodied In-context Learning",
-      "flow matching",
-      "One-Shot Demonstration",
-      "robot manipulation"
+      "具身上下文学习",
+      "扩散与流匹配",
+      "机器人学习"
     ],
-    "figure": null,
+    "figure": {
+      "url": "content/images/2609.06852-representative.webp",
+      "alt": "Figure 2 ",
+      "label": "Figure 2",
+      "paper_title": "ContextFlow: In-Context Flow Matching for Robot Manipulation",
+      "source_url": "https://arxiv.org/html/2609.06852v1#S2.F2"
+    },
     "summary": "ContextFlow让策略在推理时接收一条完整示例轨迹和当前任务观测，在不针对新任务更新参数的情况下生成动作。核心 Insight 是把“示例理解”和“动作生成”分别交给上下文专家与动作专家，并用压缩 token 建立跨时间对应关系，避免自回归离散动作建模的累积误差。",
     "insight": "ContextFlow让策略在推理时接收一条完整示例轨迹和当前任务观测，在不针对新任务更新参数的情况下生成动作。核心 Insight 是把“示例理解”和“动作生成”分别交给上下文专家与动作专家，并用压缩 token 建立跨时间对应关系，避免自回归离散动作建模的累积误差。",
     "pipeline": {
@@ -1065,12 +1083,18 @@
       "alphaxiv": "https://alphaxiv.org/abs/2609.06302"
     },
     "tags": [
-      "Action Leakage",
-      "Causal World Model",
-      "Embodied Tracking",
-      "MPC"
+      "世界模型评测",
+      "因果世界模型",
+      "泛化与部分可观测性",
+      "规划与控制"
     ],
-    "figure": null,
+    "figure": {
+      "url": "content/images/2609.06302-representative.webp",
+      "alt": "Figure 2",
+      "label": "Figure 2",
+      "paper_title": "CST-WM: A Causally Structured World Model for Embodied Visual Tracking",
+      "source_url": "https://arxiv.org/html/2609.06302v1#S3.F2"
+    },
     "summary": "CST-WM 针对 embodied tracking 的“因果幻觉”：模型可能把动作直接写入目标状态。它将 latent 拆为 target-evidence、robot、observation 三支，并阻断不合理的 action-to-target shortcut。",
     "insight": "CST-WM 针对 embodied tracking 的“因果幻觉”：模型可能把动作直接写入目标状态。它将 latent 拆为 target-evidence、robot、observation 三支，并阻断不合理的 action-to-target shortcut。",
     "pipeline": {
@@ -1118,16 +1142,14 @@
       "alphaxiv": "https://alphaxiv.org/abs/2608.19085"
     },
     "tags": [
-      "4D重建",
+      "3D/4D",
       "HOI",
       "World Action Model",
-      "动作流",
+      "动作表征",
       "反事实推理",
-      "周报",
       "因果建模",
-      "因果推理",
       "流式生成",
-      "自我中心视觉"
+      "第一视角"
     ],
     "figure": {
       "url": "https://arxiv.org/html/2608.19085v2/Figures/overview2.png",
@@ -1184,12 +1206,17 @@
       "alphaxiv": "https://alphaxiv.org/abs/2609.09119"
     },
     "tags": [
-      "Contact Dynamics",
-      "Dexterous HOI",
-      "Vision-Tactile-Language-Action",
-      "World Modeling"
+      "世界模型",
+      "灵巧操作",
+      "触觉与接触"
     ],
-    "figure": null,
+    "figure": {
+      "url": "content/images/2609.09119-representative.webp",
+      "alt": "Figure 2",
+      "label": "Figure 2",
+      "paper_title": "DeCAL: Towards Physically-Grounded Dexterous Vision-Language-Action Models via Contact-Aware Latent Co-Imagination",
+      "source_url": "https://arxiv.org/html/2609.09119v1#S4.F2"
+    },
     "summary": "DeCAL通过 MoT 为理解、想象和动作配置专门专家；接触门控在无接触时降低触觉影响，在接触阶段提高权重；视觉—触觉 latent 共想象联合预测未来外观与力变化，使动作专家获得接触动态线索。",
     "insight": "DeCAL通过 MoT 为理解、想象和动作配置专门专家；接触门控在无接触时降低触觉影响，在接触阶段提高权重；视觉—触觉 latent 共想象联合预测未来外观与力变化，使动作专家获得接触动态线索。",
     "pipeline": {
@@ -1242,12 +1269,18 @@
       "alphaxiv": "https://alphaxiv.org/abs/2609.07747"
     },
     "tags": [
-      "dexterous manipulation",
       "HOI",
-      "Human Video",
-      "Visual-Tactile Learning"
+      "人类视频学习",
+      "灵巧操作",
+      "触觉与接触"
     ],
-    "figure": null,
+    "figure": {
+      "url": "content/images/2609.07747-representative.webp",
+      "alt": "Figure 2",
+      "label": "Figure 2",
+      "paper_title": "Dex-X: Learning Visual-Tactile Dexterous Manipulation From Human Videos with Simulated Interaction",
+      "source_url": "https://arxiv.org/html/2609.07747v2#S2.F2"
+    },
     "summary": "DEX-X 把单目人类示范重建为仿真 hand-object interaction，再用仿真作为“触觉补全引擎”，为只有视觉的人类视频生成接触监督。",
     "insight": "DEX-X 把单目人类示范重建为仿真 hand-object interaction，再用仿真作为“触觉补全引擎”，为只有视觉的人类视频生成接触监督。",
     "pipeline": {
@@ -1388,16 +1421,11 @@
     "summary": "Discrete-WAM 认为 continuous world latent 与 continuous action 分处不同表示空间，使 world generation、policy learning、counterfactual reasoning 难以统一。因此它提出： 把 future vision 和 ego action 都离散成 token，在同一个 discrete generative / editing framework 中建模 。这样“换一组 action token 后世界如何变化”天然成为可编辑、可组合的问题。",
     "tags": [
       "3D/4D",
-      "Flow-GRPO",
-      "GRPO",
-      "R1",
-      "Reward Optimization",
-      "Robot Policy",
-      "video generation",
       "World Action Model",
       "反事实推理",
       "强化学习",
       "机器人学习",
+      "视频生成",
       "预测表征"
     ],
     "title": "Discrete-WAM: Unified Discrete Vision-Action Token Editing for World-Policy Learning",
@@ -1426,17 +1454,16 @@
       "alphaxiv": "https://alphaxiv.org/abs/2609.03673"
     },
     "tags": [
-      "3D/4D Reconstruction",
-      "Causal Modeling",
-      "cross-embodiment",
-      "egocentric vision",
-      "Embodied In-context Learning",
+      "3D/4D",
       "HOI",
-      "Physical Reasoning",
-      "Streaming Generation",
       "World Action Model",
-      "world model",
-      "周报"
+      "世界模型",
+      "具身上下文学习",
+      "因果建模",
+      "流式生成",
+      "物理建模",
+      "第一视角",
+      "跨本体迁移"
     ],
     "figure": {
       "url": "https://arxiv.org/html/2609.03673v1/Figures/teaser.jpg",
@@ -1496,15 +1523,12 @@
     },
     "tags": [
       "3D/4D",
-      "4D重建",
       "HOI",
       "World Action Model",
-      "动作流",
-      "周报",
+      "动作表征",
       "因果建模",
       "流式生成",
       "第一视角",
-      "自我中心视觉",
       "视频生成"
     ],
     "figure": {
@@ -1558,16 +1582,13 @@
     },
     "tags": [
       "3D/4D",
-      "Embodied In-context Learning",
       "HOI",
-      "In-context Imitation Learning",
       "VLA",
       "World Action Model",
       "世界模型",
+      "具身上下文学习",
       "前馈重建",
-      "周报",
       "因果建模",
-      "因果推理",
       "流式生成",
       "第一视角",
       "长时记忆"
@@ -1686,12 +1707,18 @@
       "alphaxiv": "https://alphaxiv.org/abs/2609.10506"
     },
     "tags": [
-      "7-DoF Planning",
-      "DINOv3",
-      "Latent World Model",
-      "Multi-View"
+      "世界模型",
+      "规划与控制",
+      "视觉条件与提示",
+      "预测表征"
     ],
-    "figure": null,
+    "figure": {
+      "url": "content/images/2609.10506-representative.webp",
+      "alt": "Fig. 2",
+      "label": "Fig. 2",
+      "paper_title": "DUET-DINO: Simultaneous Cross-View World Modeling for Latent Planning in Robot Manipulation",
+      "source_url": "https://arxiv.org/html/2609.10506v1#S3.F2"
+    },
     "summary": "DUET-DINO 同时建模侧视角全局场景和腕部局部几何，以 cross-attention 交换信息。关键发现是 frozen representation 影响细粒度动态：其设置中 DINOv3 比 V-JEPA 2 更能保留腕视角动作变化。",
     "insight": "DUET-DINO 同时建模侧视角全局场景和腕部局部几何，以 cross-attention 交换信息。关键发现是 frozen representation 影响细粒度动态：其设置中 DINOv3 比 V-JEPA 2 更能保留腕视角动作变化。",
     "pipeline": {
@@ -1731,21 +1758,18 @@
       "paper": "https://www.dyna.co/dyna-2"
     },
     "tags": [
-      "cross-embodiment transfer",
-      "egocentric human video",
-      "Embodied ICL",
-      "flow matching",
-      "Human Video Pretraining",
-      "In-context Imitation Learning",
-      "robot manipulation",
-      "Robot Memory",
-      "scaling law",
-      "Test-time Adaptation",
-      "video generation",
       "VLA",
       "World Action Model",
+      "人类视频学习",
+      "具身上下文学习",
+      "扩散与流匹配",
       "机器人学习",
-      "第一视角"
+      "测试时适应",
+      "第一视角",
+      "视频生成",
+      "跨本体迁移",
+      "长时记忆",
+      "预训练与扩展律"
     ],
     "figure": {
       "url": "https://www.dyna.co/assets/research/dyna2-fig16-one-step-geometry.jpg",
@@ -1839,7 +1863,6 @@
       "几何一致性",
       "机器人学习",
       "第一视角",
-      "重建",
       "预测表征"
     ],
     "title": "DynamicVGGT: Learning Dynamic Point Maps for 4D Scene Reconstruction in Autonomous Driving",
@@ -1866,12 +1889,10 @@
       "alphaxiv": "https://alphaxiv.org/abs/2605.06192"
     },
     "tags": [
-      "cross-embodiment",
-      "embodied AI",
-      "geometry action",
-      "visual action",
-      "world model",
-      "机器人学习"
+      "世界模型",
+      "动作表征",
+      "机器人学习",
+      "跨本体迁移"
     ],
     "figure": {
       "url": "https://arxiv.org/html/2605.06192v1/figure/fig2_copy_1.png",
@@ -1945,14 +1966,12 @@
     },
     "tags": [
       "3D/4D",
-      "Embodied In-context Learning",
       "HOI",
-      "In-context Imitation Learning",
       "VLA",
       "World Action Model",
       "世界模型",
+      "具身上下文学习",
       "前馈重建",
-      "周报",
       "因果建模",
       "流式生成",
       "第一视角",
@@ -2103,12 +2122,11 @@
     "summary": "EgoHOI 明确反对“给未来物体轨迹等 privileged future state，再做条件视频生成”的捷径。它认为真正的 egocentric HOI world model 应该从 action signals 推断 hand-object dynamics。为此，它从 3D estimates 中蒸馏 physics-informed embeddings ：hand kinematic embeddings、ego-motion embeddings、object entity embeddings，用来约束 latent rollout 的物理合理性、手部运动学一致性、物体身份稳定性。",
     "tags": [
       "3D/4D",
-      "Causality",
-      "Counterfactual World Model",
       "HOI",
-      "world model",
+      "世界模型",
       "几何一致性",
       "反事实推理",
+      "因果建模",
       "第一视角"
     ],
     "title": "Egocentric World Model for Photorealistic Hand-Object Interaction Synthesis",
@@ -2234,8 +2252,7 @@
     "tags": [
       "3D/4D",
       "HOI",
-      "第一视角",
-      "重建"
+      "第一视角"
     ],
     "title": "EgoGrasp: World-Space Hand-Object Interaction Estimation from Egocentric Videos",
     "updated_at": "2026-08-23",
@@ -2354,9 +2371,9 @@
     ],
     "summary": "EmbodiedVAE 关注更底层的 tokenizer / VAE 问题：WAM 常用 Video VAE 原本面向 natural video，其 latent 未必适合机器人。机器人视频具有明显结构：robot arm 运动丰富、需要 controllability；environment/background 时序冗余大。因此不应对整段视频使用统一 compression rate，而应做 robot / environment disentanglement + asymmetric compression 。",
     "tags": [
+      "3D/4D",
       "World Action Model",
       "机器人学习",
-      "重建",
       "预测表征"
     ],
     "title": "EmbodiedVAE: Disentangled Video VAE for Efficient and Controllable Embodied Manipulation",
@@ -2384,14 +2401,12 @@
     },
     "tags": [
       "3D/4D",
-      "Embodied In-context Learning",
       "HOI",
-      "In-context Imitation Learning",
       "VLA",
       "World Action Model",
       "世界模型",
+      "具身上下文学习",
       "前馈重建",
-      "周报",
       "因果建模",
       "流式生成",
       "第一视角",
@@ -2452,19 +2467,18 @@
       "alphaxiv": "https://alphaxiv.org/abs/2609.01596"
     },
     "tags": [
-      "3D/4D Reconstruction",
-      "Causal Modeling",
-      "cross-embodiment",
-      "egocentric vision",
-      "Embodied In-context Learning",
+      "3D/4D",
       "HOI",
-      "Physical Reasoning",
-      "Streaming Generation",
       "VLA",
       "World Action Model",
-      "world model",
-      "周报",
-      "机器人学习"
+      "世界模型",
+      "具身上下文学习",
+      "因果建模",
+      "机器人学习",
+      "流式生成",
+      "物理建模",
+      "第一视角",
+      "跨本体迁移"
     ],
     "figure": {
       "url": "https://arxiv.org/html/2609.01596v1/Teaser1.png",
@@ -2519,10 +2533,9 @@
       "alphaxiv": "https://alphaxiv.org/abs/2608.10232"
     },
     "tags": [
-      "JEPA",
       "VLA",
       "World Action Model",
-      "因果推理",
+      "因果建模",
       "机器人学习",
       "预测表征"
     ],
@@ -2583,12 +2596,17 @@
       "alphaxiv": "https://alphaxiv.org/abs/2609.11445"
     },
     "tags": [
-      "Causal History",
-      "Failure Detection",
-      "Frozen Representation",
-      "World Model Monitoring"
+      "世界模型评测",
+      "长时记忆",
+      "预测表征"
     ],
-    "figure": null,
+    "figure": {
+      "url": "content/images/2609.11445-representative.webp",
+      "alt": "Fig. 1",
+      "label": "Fig. 1",
+      "paper_title": "FARM: Reading Failure Signals from the Internal Predictive States of a Frozen Robotic World Model",
+      "source_url": "https://arxiv.org/html/2609.11445v1#S3.F1"
+    },
     "summary": "FARM不重新训练世界模型，只在冻结 VLA-JEPA 的内部预测状态上训练一个 33,985 参数读出头，输出逐步失败概率并沿仅包含过去的轨迹聚合风险。研究问题是预测 latent 是否已编码部署失败，而非再构造一个专用生成模型。",
     "insight": "FARM不重新训练世界模型，只在冻结 VLA-JEPA 的内部预测状态上训练一个 33,985 参数读出头，输出逐步失败概率并沿仅包含过去的轨迹聚合风险。研究问题是预测 latent 是否已编码部署失败，而非再构造一个专用生成模型。",
     "pipeline": {
@@ -2636,11 +2654,17 @@
       "alphaxiv": "https://alphaxiv.org/abs/2609.08848"
     },
     "tags": [
-      "Feedforward Reconstruction",
-      "Interactive 3D",
-      "Object-Centric Scene"
+      "交互世界模型",
+      "前馈重建",
+      "对象中心"
     ],
-    "figure": null,
+    "figure": {
+      "url": "content/images/2609.08848-representative.webp",
+      "alt": "Figure 2",
+      "label": "Figure 2",
+      "paper_title": "FIRE3D: Feed-forward Interactive 3D Scene Reconstruction Within A Minute",
+      "source_url": "https://arxiv.org/html/2609.08848v1#S2.F2"
+    },
     "summary": "FIRE3D 不只恢复可渲染表面，而是在一分钟内生成可模拟的对象级资产，显式输出每个对象的 6-DoF 位姿、包围盒、网格和纹理，使对象物理分离并可交互。",
     "insight": "FIRE3D 不只恢复可渲染表面，而是在一分钟内生成可模拟的对象级资产，显式输出每个对象的 6-DoF 位姿、包围盒、网格和纹理，使对象物理分离并可交互。",
     "pipeline": {
@@ -2700,14 +2724,12 @@
       "alphaxiv": "https://alphaxiv.org/abs/2607.13017"
     },
     "tags": [
-      "cross-embodiment",
-      "embodied AI",
-      "geometry action",
-      "visual action",
       "VLA",
       "World Action Model",
-      "world model",
-      "机器人学习"
+      "世界模型",
+      "动作表征",
+      "机器人学习",
+      "跨本体迁移"
     ],
     "figure": {
       "url": "https://arxiv.org/html/2607.13017v1/method.png",
@@ -2765,11 +2787,16 @@
     },
     "tags": [
       "HOI",
-      "object-centric",
-      "关系操作",
-      "数据效率"
+      "对象中心",
+      "预训练与扩展律"
     ],
-    "figure": null,
+    "figure": {
+      "url": "content/images/2609.08743-representative.webp",
+      "alt": "Figure 2",
+      "label": "Figure 2",
+      "paper_title": "FOCI Policy: Focus on Object-Centric Interactions for Relational Manipulation Policies",
+      "source_url": "https://arxiv.org/html/2609.08743v1#S3.F2"
+    },
     "summary": "object-centric 操作策略通过建模物体运动而非直接预测机器人动作来改善泛化，但现有表示要么过简（无法捕捉交互动态）要么过密（学习效率低）。观察：许多刚体关系操作任务由短交互阶段主导，期间任务相关物体间的相对运动受紧密约束。FOCI Policy 做两层抽象：(1) 时间上——从演示自动提取紧凑交互段；(2) 空间上——用任务相关物体间的相对 SE(3) 运动表示技能，对场景配置与机器人本体不变。",
     "insight": "object-centric 操作策略通过建模物体运动而非直接预测机器人动作来改善泛化，但现有表示要么过简（无法捕捉交互动态）要么过密（学习效率低）。观察：许多刚体关系操作任务由短交互阶段主导，期间任务相关物体间的相对运动受紧密约束。FOCI Policy 做两层抽象：(1) 时间上——从演示自动提取紧凑交互段；(2) 空间上——用任务相关物体间的相对 SE(3) 运动表示技能，对场景配置与机器人本体不变。",
     "pipeline": {
@@ -2817,12 +2844,17 @@
       "alphaxiv": "https://alphaxiv.org/abs/2609.08636"
     },
     "tags": [
-      "4D Interaction",
-      "Egocentric Video",
-      "flow matching",
-      "HOI Forecasting"
+      "HOI",
+      "扩散与流匹配",
+      "第一视角"
     ],
-    "figure": null,
+    "figure": {
+      "url": "content/images/2609.08636-representative.webp",
+      "alt": "Fig. 5",
+      "label": "Fig. 5",
+      "paper_title": "From Where to How: Continuous 4D Interaction Forecasting from Egocentric Video",
+      "source_url": "https://arxiv.org/html/2609.08636v1#S3.F5"
+    },
     "summary": "论文将“未来在哪里交互”和“身体如何运动”统一为连续 4D 预测。Coherent4D 约 233K 样本、三个域，每个样本把未来 3D 交互位置与全身姿态在同一坐标和时间轴对齐；HIGFlow 采用 where-to-how 级联。",
     "insight": "论文将“未来在哪里交互”和“身体如何运动”统一为连续 4D 预测。Coherent4D 约 233K 样本、三个域，每个样本把未来 3D 交互位置与全身姿态在同一坐标和时间轴对齐；HIGFlow 采用 where-to-how 级联。",
     "pipeline": {
@@ -2893,16 +2925,11 @@
     },
     "tags": [
       "3D/4D",
-      "Flow-GRPO",
-      "GRPO",
-      "R1",
-      "Reward Optimization",
-      "Robot Policy",
-      "video generation",
       "VLA",
       "World Action Model",
       "强化学习",
-      "机器人学习"
+      "机器人学习",
+      "视频生成"
     ],
     "figure": {
       "url": "https://arxiv.org/html/2608.11739v1/teaser.png",
@@ -2960,16 +2987,13 @@
     },
     "tags": [
       "3D/4D",
-      "Embodied In-context Learning",
       "HOI",
-      "In-context Imitation Learning",
       "VLA",
       "World Action Model",
       "世界模型",
+      "具身上下文学习",
       "前馈重建",
-      "周报",
       "因果建模",
-      "因果推理",
       "流式生成",
       "第一视角",
       "长时记忆"
@@ -3032,7 +3056,6 @@
     },
     "tags": [
       "3D/4D",
-      "JEPA",
       "World Action Model",
       "机器人学习",
       "预测表征"
@@ -3097,15 +3120,13 @@
     },
     "tags": [
       "3D/4D",
-      "Embodied In-context Learning",
       "HOI",
-      "In-context Imitation Learning",
       "VLA",
       "World Action Model",
       "世界模型",
+      "具身上下文学习",
       "几何一致性",
       "前馈重建",
-      "周报",
       "因果建模",
       "机器人学习",
       "流式生成",
@@ -3203,13 +3224,18 @@
       "alphaxiv": "https://alphaxiv.org/abs/2609.05588"
     },
     "tags": [
-      "cross-embodiment",
-      "Robotics",
       "World Action Model",
-      "扩展律",
-      "预训练"
+      "机器人学习",
+      "跨本体迁移",
+      "预训练与扩展律"
     ],
-    "figure": null,
+    "figure": {
+      "url": "content/images/2609.05588-representative.webp",
+      "alt": "Figure 1",
+      "label": "Figure 1",
+      "paper_title": "GE-Act 2.0: Pretraining and Scaling a World-Action Model for Robotic Manipulation",
+      "source_url": "https://arxiv.org/html/2609.05588v1#S3.F1"
+    },
     "summary": "GE-Act 2.0 声称是可规模化 WAM 预训练路线：生成与动作组件全部在操作数据上从零初始化（不继承视频生成先验），由三部分组成——控制导向自编码器（CoAE）、单步视觉规划器（SVP）与逆动力学模型（IDM）。CoAE 在激进压缩下保留动作与指令相关信息；SVP 可微单步生成完整未来状态，使视觉规划与逆动力学能在互补数据上分别预训练；之后用知识对齐选择性优化（KASO）联合训练，只选择与记录动作行为兼容的预测未来，减少错配监督。在 100 任务/20 技能组、held-out 场景/背景/光照/物体实例上直接评估预训练 checkpoint（无 per-task 微调）。共训数据从 300 小时扩到 30,000 小时，G1-OP 成功率 17.1%→44.1%，G2-90D 13.4%→31.1%；G2-90D 仅占共训数据不到 2% 却提升 17.7 点，作者解读为跨本体迁移信号。",
     "insight": "GE-Act 2.0 声称是可规模化 WAM 预训练路线：生成与动作组件全部在操作数据上从零初始化（不继承视频生成先验），由三部分组成——控制导向自编码器（CoAE）、单步视觉规划器（SVP）与逆动力学模型（IDM）。CoAE 在激进压缩下保留动作与指令相关信息；SVP 可微单步生成完整未来状态，使视觉规划与逆动力学能在互补数据上分别预训练；之后用知识对齐选择性优化（KASO）联合训练，只选择与记录动作行为兼容的预测未来，减少错配监督。在 100 任务/20 技能组、held-out 场景/背景/光照/物体实例上直接评估预训练 checkpoint（无 per-task 微调）。共训数据从 300 小时扩到 30,000 小时，G1-OP 成功率 17.1%→44.1%，G2-90D 13.4%→31.1%；G2-90D 仅占共训数据不到 2% 却提升 17.7 点，作者解读为跨本体迁移信号。",
     "pipeline": {
@@ -3249,16 +3275,14 @@
       "paper": "https://generalistai.com/blog/gen-1.5"
     },
     "tags": [
-      "Embodied ICL",
-      "Few-step Adaptation",
-      "In-context Imitation Learning",
-      "Physical Prompting",
-      "Robot Foundation Model",
-      "Robot Memory",
-      "Sim-to-Real",
-      "Test-time Adaptation",
       "VLA",
-      "World Action Model"
+      "World Action Model",
+      "仿真迁移",
+      "具身上下文学习",
+      "测试时适应",
+      "物理建模",
+      "长时记忆",
+      "预训练与扩展律"
     ],
     "figure": {
       "url": "https://generalistai.com/assets/pages/blog/gen-1.5/assets/images/generalist-gen1p5-og.jpg",
@@ -3312,13 +3336,11 @@
     },
     "tags": [
       "3D/4D",
-      "cross-embodiment",
-      "embodied AI",
-      "geometry action",
-      "visual action",
-      "world model",
-      "因果推理",
-      "机器人学习"
+      "世界模型",
+      "动作表征",
+      "因果建模",
+      "机器人学习",
+      "跨本体迁移"
     ],
     "figure": {
       "url": "https://arxiv.org/html/2608.06332/x1.png",
@@ -3407,15 +3429,10 @@
     "summary": "作者明确声称的问题：通用 text-to-video diffusion model 在 camera motion 和 object motion 下常出现对象形变、纹理漂移、背景非刚性抖动。GeoFlow 的核心 insight 是：",
     "tags": [
       "3D/4D",
-      "Flow-GRPO",
-      "GRPO",
       "HOI",
-      "R1",
-      "Reward Optimization",
-      "Robot Policy",
-      "video generation",
       "几何一致性",
       "强化学习",
+      "机器人学习",
       "视频生成"
     ],
     "title": "GeoFlow: Enforcing Implicit Geometric Consistency in Video Generation",
@@ -3508,15 +3525,13 @@
     },
     "tags": [
       "3D/4D",
-      "Embodied In-context Learning",
       "HOI",
-      "In-context Imitation Learning",
       "VLA",
       "World Action Model",
       "世界模型",
+      "具身上下文学习",
       "几何一致性",
       "前馈重建",
-      "周报",
       "因果建模",
       "流式生成",
       "第一视角",
@@ -3589,14 +3604,12 @@
     },
     "tags": [
       "3D/4D",
-      "4D重建",
       "HOI",
       "World Action Model",
-      "动作流",
-      "周报",
+      "动作表征",
       "因果建模",
       "流式生成",
-      "自我中心视觉"
+      "第一视角"
     ],
     "figure": {
       "url": "https://arxiv.org/html/2608.18234v1/overview.png",
@@ -3701,7 +3714,7 @@
     "summary": "延续 GigaWorld-Policy 的 Action-Centered World Modeling：future RGB 是 action 的密集监督，但不应成为 action 推理时的前置依赖。核心是让 Action - Future RGB ，而不是让 action 依赖 future RGB；训练获得 dense video supervision，推理可完全关闭 video generation。",
     "tags": [
       "World Action Model",
-      "因果推理",
+      "因果建模",
       "机器人学习",
       "视频生成",
       "预测表征"
@@ -3736,14 +3749,12 @@
     },
     "tags": [
       "3D/4D",
-      "Embodied In-context Learning",
       "HOI",
-      "In-context Imitation Learning",
       "VLA",
       "World Action Model",
       "世界模型",
+      "具身上下文学习",
       "前馈重建",
-      "周报",
       "因果建模",
       "流式生成",
       "第一视角",
@@ -3808,8 +3819,7 @@
     "tags": [
       "3D/4D",
       "几何一致性",
-      "视频生成",
-      "重建"
+      "视频生成"
     ],
     "figure": {
       "url": "https://arxiv.org/html/2607.09225v1/pipeline_pdf.png",
@@ -3871,12 +3881,18 @@
       "alphaxiv": "https://alphaxiv.org/abs/2609.10050"
     },
     "tags": [
-      "Dexterous HOI",
-      "Human-Object Reconstruction",
-      "Simulation Grounding",
-      "Video Planning"
+      "3D/4D",
+      "灵巧操作",
+      "物理建模",
+      "规划与控制"
     ],
-    "figure": null,
+    "figure": {
+      "url": "content/images/2609.10050-representative.webp",
+      "alt": "\\fnum@figure",
+      "label": "fnum@figure",
+      "paper_title": "Grounding Generated Video Plans in Simulation Towards Versatile Dexterous Controllers",
+      "source_url": "https://arxiv.org/html/2609.10050v1#S3.F3"
+    },
     "summary": "该工作不直接把生成视频像素映射为机器人动作，而是将视频计划重建为手指和物体的联合运动，再在物理模拟器中训练闭环跟踪器。关键 Insight 是：视觉计划只有同时保留代理运动与对象效果，并经过接触动力学验证，才更可能成为可执行控制目标。",
     "insight": "该工作不直接把生成视频像素映射为机器人动作，而是将视频计划重建为手指和物体的联合运动，再在物理模拟器中训练闭环跟踪器。关键 Insight 是：视觉计划只有同时保留代理运动与对象效果，并经过接触动力学验证，才更可能成为可执行控制目标。",
     "pipeline": {
@@ -4017,7 +4033,7 @@
       "HOI",
       "交互世界模型",
       "几何一致性",
-      "因果推理",
+      "因果建模",
       "第一视角",
       "视频生成"
     ],
@@ -4102,13 +4118,18 @@
       "alphaxiv": "https://alphaxiv.org/abs/2609.09941"
     },
     "tags": [
-      "RL",
       "VLA",
-      "world model",
-      "幻觉",
-      "策略优化"
+      "世界模型",
+      "世界模型评测",
+      "强化学习"
     ],
-    "figure": null,
+    "figure": {
+      "url": "content/images/2609.09941-representative.webp",
+      "alt": "Figure 2",
+      "label": "Figure 2",
+      "paper_title": "HaWMPO: Hallucination-Aware World Model-based Policy Optimization for Generalist Robot Policy",
+      "source_url": "https://arxiv.org/html/2609.09941v1#S3.F2"
+    },
     "summary": "通用机器人策略在复杂长程场景成功率受限；在线 RL 改善 VLA 但依赖昂贵物理交互、样本效率低且有安全风险。世界模型提供想象 rollout 的替代，但长程 rollout 的预测幻觉产生有偏状态转移，误导策略学习。HaWMPO 提出幻觉感知世界模型策略优化：action-conditioned 幻觉感知模型估计生成图像序列的可靠性，把幻觉分数并入组相对策略优化（GRPO）的 Reward-Soft 机制，训练中抑制不可靠动作块。LIBERO 上平均成功率最佳（超基线模型 15.0%、超最强 baseline 2.8%），G1 机器人真机验证。",
     "insight": "通用机器人策略在复杂长程场景成功率受限；在线 RL 改善 VLA 但依赖昂贵物理交互、样本效率低且有安全风险。世界模型提供想象 rollout 的替代，但长程 rollout 的预测幻觉产生有偏状态转移，误导策略学习。HaWMPO 提出幻觉感知世界模型策略优化：action-conditioned 幻觉感知模型估计生成图像序列的可靠性，把幻觉分数并入组相对策略优化（GRPO）的 Reward-Soft 机制，训练中抑制不可靠动作块。LIBERO 上平均成功率最佳（超基线模型 15.0%、超最强 baseline 2.8%），G1 机器人真机验证。",
     "pipeline": {
@@ -4215,12 +4236,17 @@
       "alphaxiv": "https://alphaxiv.org/abs/2609.06009"
     },
     "tags": [
-      "dexterous manipulation",
-      "Human Intervention",
-      "Safe RL",
-      "world model"
+      "世界模型",
+      "强化学习",
+      "灵巧操作"
     ],
-    "figure": null,
+    "figure": {
+      "url": "content/images/2609.06009-representative.webp",
+      "alt": "Figure 2",
+      "label": "Figure 2",
+      "paper_title": "How to Learn from What a Human Would Avoid? Intervention-Aware World Models with Real-World RL for Dexterous Manipulation",
+      "source_url": "https://arxiv.org/html/2609.06009v1#S1.F2"
+    },
     "summary": "WHIRL 不把人类接管只当纠错动作，而把“人何时会接管”建模为未来风险。接管事件编码操作者的隐式安全边界，世界模型预测未来接管概率，再作为 actor 的风险 shaping，提前避开高风险区域。",
     "insight": "WHIRL 不把人类接管只当纠错动作，而把“人何时会接管”建模为未来风险。接管事件编码操作者的隐式安全边界，世界模型预测未来接管概率，再作为 actor 的风险 shaping，提前避开高风险区域。",
     "pipeline": {
@@ -4269,12 +4295,18 @@
       "alphaxiv": "https://alphaxiv.org/abs/2609.10706"
     },
     "tags": [
-      "dexterous manipulation",
-      "Human Video",
-      "Robotization",
-      "VLA Pretraining"
+      "人类视频学习",
+      "灵巧操作",
+      "跨本体迁移",
+      "预训练与扩展律"
     ],
-    "figure": null,
+    "figure": {
+      "url": "content/images/2609.10706-representative.webp",
+      "alt": "Figure 2",
+      "label": "Figure 2",
+      "paper_title": "HuRo: Robotizing Human Videos for Scalable VLA Pretraining",
+      "source_url": "https://arxiv.org/html/2609.10706v2#S3.F2"
+    },
     "summary": "HuRo 把异构 egocentric 视频统一转为机器人观测—动作序列：估计手、相机和语言，做三维运动重定向，去除人臂并叠加机器人。关键证据是规模曲线，以及“视觉+动作端到端预训练”优于只迁移视觉。",
     "insight": "HuRo 把异构 egocentric 视频统一转为机器人观测—动作序列：估计手、相机和语言，做三维运动重定向，去除人臂并叠加机器人。关键证据是规模曲线，以及“视觉+动作端到端预训练”优于只迁移视觉。",
     "pipeline": {
@@ -4327,15 +4359,13 @@
     },
     "tags": [
       "3D/4D",
-      "4D重建",
       "HOI",
       "VLA",
       "World Action Model",
-      "动作流",
-      "周报",
+      "动作表征",
       "因果建模",
       "流式生成",
-      "自我中心视觉"
+      "第一视角"
     ],
     "figure": {
       "url": "https://arxiv.org/html/2608.18077v1/method_overview.png",
@@ -4388,12 +4418,18 @@
       "alphaxiv": "https://alphaxiv.org/abs/2609.07581"
     },
     "tags": [
-      "Embodied In-context Learning",
-      "Imitation Learning",
-      "Retrieval",
-      "VLA"
+      "VLA",
+      "具身上下文学习",
+      "模仿学习",
+      "长时记忆"
     ],
-    "figure": null,
+    "figure": {
+      "url": "content/images/2609.07581-representative.webp",
+      "alt": "Figure 2",
+      "label": "Figure 2",
+      "paper_title": "ICI-VLA: In-Context Imitation with Spatiotemporally Aligned Demonstrations for Vision-Language-Action Models",
+      "source_url": "https://arxiv.org/html/2609.07581v1#S3.F2"
+    },
     "summary": "ICI-VLA 让固定参数 VLA 在推理时读取检索到的短示范，不为每个新任务做梯度更新。长演示被切成语义 micro-demonstrations，上下文同时匹配任务阶段和几何状态。",
     "insight": "ICI-VLA 让固定参数 VLA 在推理时读取检索到的短示范，不为每个新任务做梯度更新。长演示被切成语义 micro-demonstrations，上下文同时匹配任务阶段和几何状态。",
     "pipeline": {
@@ -4435,12 +4471,17 @@
       "alphaxiv": "https://alphaxiv.org/abs/2609.09210"
     },
     "tags": [
-      "Adaptation",
-      "Intervention",
-      "Robot World Model",
-      "Structural Causal Model"
+      "世界模型",
+      "因果建模",
+      "测试时适应"
     ],
-    "figure": null,
+    "figure": {
+      "url": "content/images/2609.09210-representative.webp",
+      "alt": "Fig. 3",
+      "label": "Fig. 3",
+      "paper_title": "Identifying Habit, Physics, and Nuisance in Robot World Models",
+      "source_url": "https://arxiv.org/html/2609.09210v1#S5.F3"
+    },
     "summary": "论文用 SCM 区分操作者习惯、共享物理和观测干扰：a=g(h,z,u)、z'=f(z,a)、o=r(z,c)。多模态示范常来自选动作习惯，而非物理随机；若排除限制成立，应冻结共享 dynamics，只适配薄接口。",
     "insight": "论文用 SCM 区分操作者习惯、共享物理和观测干扰：\\(a=g(h,z,u)\\)、\\(z'=f(z,a)\\)、\\(o=r(z,c)\\)。多模态示范常来自选动作习惯，而非物理随机；若排除限制成立，应冻结共享 dynamics，只适配薄接口。",
     "pipeline": {
@@ -4493,15 +4534,13 @@
     },
     "tags": [
       "3D/4D",
-      "Causality",
-      "Counterfactual World Model",
-      "cross-embodiment",
-      "embodied AI",
-      "geometry action",
       "HOI",
-      "visual action",
-      "world model",
-      "机器人学习"
+      "世界模型",
+      "动作表征",
+      "反事实推理",
+      "因果建模",
+      "机器人学习",
+      "跨本体迁移"
     ],
     "figure": {
       "url": "https://arxiv.org/html/2606.09813/x1.png",
@@ -4564,18 +4603,17 @@
       "alphaxiv": "https://alphaxiv.org/abs/2609.00161"
     },
     "tags": [
-      "3D/4D Reconstruction",
-      "Causal Modeling",
-      "cross-embodiment",
-      "egocentric vision",
-      "Embodied In-context Learning",
+      "3D/4D",
       "HOI",
-      "Physical Reasoning",
-      "Streaming Generation",
       "World Action Model",
-      "world model",
-      "周报",
-      "视频生成"
+      "世界模型",
+      "具身上下文学习",
+      "因果建模",
+      "流式生成",
+      "物理建模",
+      "第一视角",
+      "视频生成",
+      "跨本体迁移"
     ],
     "figure": {
       "url": "https://arxiv.org/html/2609.00161v1/overview_v5.png",
@@ -4624,12 +4662,18 @@
       "alphaxiv": "https://alphaxiv.org/abs/2609.12441"
     },
     "tags": [
-      "Intervention Evidence",
-      "Physical Consistency",
-      "Rollout Selection",
-      "World Model Evaluation"
+      "世界模型评测",
+      "因果建模",
+      "物理建模",
+      "规划与控制"
     ],
-    "figure": null,
+    "figure": {
+      "url": "content/images/2609.12441-representative.webp",
+      "alt": "Figure 1",
+      "label": "Figure 1",
+      "paper_title": "IMPLY: Physically Anchored Consistency for World-Model Rollouts",
+      "source_url": "https://arxiv.org/html/2609.12441v1#S4.F1"
+    },
     "summary": "IMPLY指出，多次 rollout 彼此一致仍可能全部忽略当前物体。方法通过反演模拟器，读取每个推动结果隐含的质量和摩擦，并加入模型已观察到的两次校准推动，检查一个物理对象是否能同时解释所有 rollout。",
     "insight": "IMPLY指出，多次 rollout 彼此一致仍可能全部忽略当前物体。方法通过反演模拟器，读取每个推动结果隐含的质量和摩擦，并加入模型已观察到的两次校准推动，检查一个物理对象是否能同时解释所有 rollout。",
     "pipeline": {
@@ -4711,9 +4755,9 @@
       "HOI",
       "交互世界模型",
       "几何一致性",
-      "动作生成",
+      "动作表征",
       "可供性",
-      "因果推理",
+      "因果建模",
       "第一视角"
     ],
     "title": "InfiniteDance: Scalable 3D Dance Generation Towards in-the-wild Generalization",
@@ -4790,16 +4834,14 @@
       "paper": "https://skild.ai/blogs/s1"
     },
     "tags": [
-      "Embodied ICL",
-      "Human-to-Robot",
-      "In-context Imitation Learning",
-      "Long-horizon Manipulation",
-      "Robot Foundation Model",
-      "Robot Memory",
-      "Test-time Adaptation",
-      "Video Prompt",
       "VLA",
-      "World Action Model"
+      "World Action Model",
+      "具身上下文学习",
+      "测试时适应",
+      "视觉条件与提示",
+      "跨本体迁移",
+      "长时记忆",
+      "预训练与扩展律"
     ],
     "figure": {
       "url": "https://assets.skild.ai/site/v1/blog/sb-812a99baf442e4fb5939/cover-v2-poster.jpg",
@@ -4858,7 +4900,6 @@
       "alphaxiv": "https://alphaxiv.org/abs/2608.06799"
     },
     "tags": [
-      "JEPA",
       "World Action Model",
       "机器人学习",
       "预测表征"
@@ -4917,18 +4958,15 @@
     },
     "tags": [
       "3D/4D",
-      "Embodied In-context Learning",
       "HOI",
-      "In-context Imitation Learning",
       "VLA",
       "World Action Model",
       "世界模型",
+      "具身上下文学习",
       "几何一致性",
       "前馈重建",
       "反事实推理",
-      "周报",
       "因果建模",
-      "因果推理",
       "流式生成",
       "第一视角",
       "长时记忆"
@@ -4994,14 +5032,12 @@
     },
     "tags": [
       "3D/4D",
-      "Embodied In-context Learning",
       "HOI",
-      "In-context Imitation Learning",
       "VLA",
       "World Action Model",
       "世界模型",
+      "具身上下文学习",
       "前馈重建",
-      "周报",
       "因果建模",
       "流式生成",
       "第一视角",
@@ -5068,14 +5104,12 @@
     },
     "tags": [
       "3D/4D",
-      "Embodied In-context Learning",
       "HOI",
-      "In-context Imitation Learning",
       "VLA",
       "World Action Model",
       "世界模型",
+      "具身上下文学习",
       "前馈重建",
-      "周报",
       "因果建模",
       "机器人学习",
       "流式生成",
@@ -5187,11 +5221,17 @@
       "alphaxiv": "https://alphaxiv.org/abs/2609.05834"
     },
     "tags": [
-      "Counterfactual Reasoning",
-      "Intervention",
-      "Partial Observability"
+      "反事实推理",
+      "因果建模",
+      "泛化与部分可观测性"
     ],
-    "figure": null,
+    "figure": {
+      "url": "content/images/2609.05834-representative.webp",
+      "alt": "Figure 1",
+      "label": "Figure 1",
+      "paper_title": "Learning Counterfactual World Models for Embodied Reasoning under Partial Observability",
+      "source_url": "https://arxiv.org/html/2609.05834v1#S6.F1"
+    },
     "summary": "论文提出 counterfactual collapse：未来视觉上合理，却不能区分不同动作干预的后果。CLWM 使用 recurrent belief、action-conditioned latent dynamics 和 contrastive counterfactual objective，使同一历史下的不同 intervention futures 可分。",
     "insight": "论文提出 counterfactual collapse：未来视觉上合理，却不能区分不同动作干预的后果。CLWM 使用 recurrent belief、action-conditioned latent dynamics 和 contrastive counterfactual objective，使同一历史下的不同 intervention futures 可分。",
     "pipeline": {
@@ -5241,9 +5281,15 @@
     "tags": [
       "VLA",
       "World Action Model",
-      "执行进度"
+      "长时记忆"
     ],
-    "figure": null,
+    "figure": {
+      "url": "content/images/2609.06578-representative.webp",
+      "alt": "Fig. 3",
+      "label": "Fig. 3",
+      "paper_title": "Learning to Use Imagination: Progress-Conditioned Future Utilization for World Action Models",
+      "source_url": "https://arxiv.org/html/2609.06578v1#S4.F3"
+    },
     "summary": "WAM 把未来视觉动态并入动作生成，但现有 WAM 对想象未来的利用缺乏对执行进度的适应。作者识别出未来效用的两种非均匀性：(i) inter-progress——不同执行阶段控制需求变化，想象未来的效用随阶段变化；(ii) intra-progress——同一进度状态下个体未来潜在的相关性异构。ProWAM 引入执行进度作为显式中间表示，由两个耦合组件构成：SS-DTPE（自监督双时序进度编码器）耦合短期动作-观测交互建模与长期循环进度聚合；进度条件化想象利用模块（PUAM）根据进度表示自适应调度未来潜在。",
     "insight": "WAM 把未来视觉动态并入动作生成，但现有 WAM 对想象未来的利用缺乏对执行进度的适应。作者识别出未来效用的两种非均匀性：(i) inter-progress——不同执行阶段控制需求变化，想象未来的效用随阶段变化；(ii) intra-progress——同一进度状态下个体未来潜在的相关性异构。ProWAM 引入执行进度作为显式中间表示，由两个耦合组件构成：SS-DTPE（自监督双时序进度编码器）耦合短期动作-观测交互建模与长期循环进度聚合；进度条件化想象利用模块（PUAM）根据进度表示自适应调度未来潜在。",
     "pipeline": {
@@ -5288,14 +5334,12 @@
     },
     "tags": [
       "3D/4D",
-      "Embodied In-context Learning",
       "HOI",
-      "In-context Imitation Learning",
       "VLA",
       "World Action Model",
       "世界模型",
+      "具身上下文学习",
       "前馈重建",
-      "周报",
       "因果建模",
       "流式生成",
       "第一视角",
@@ -5364,14 +5408,12 @@
     },
     "tags": [
       "3D/4D",
-      "Embodied In-context Learning",
       "HOI",
-      "In-context Imitation Learning",
       "VLA",
       "World Action Model",
       "世界模型",
+      "具身上下文学习",
       "前馈重建",
-      "周报",
       "因果建模",
       "流式生成",
       "第一视角",
@@ -5442,7 +5484,7 @@
     "tags": [
       "VLA",
       "交互世界模型",
-      "因果推理",
+      "因果建模",
       "自回归扩散",
       "视频生成"
     ],
@@ -5502,16 +5544,13 @@
     },
     "tags": [
       "3D/4D",
-      "Embodied In-context Learning",
       "HOI",
-      "In-context Imitation Learning",
       "VLA",
       "World Action Model",
       "世界模型",
+      "具身上下文学习",
       "前馈重建",
-      "周报",
       "因果建模",
-      "因果推理",
       "流式生成",
       "第一视角",
       "长时记忆"
@@ -5606,7 +5645,7 @@
       "几何一致性",
       "反事实推理",
       "因果世界模型",
-      "因果推理",
+      "因果建模",
       "对象中心",
       "机器人学习"
     ],
@@ -5642,16 +5681,13 @@
       "alphaxiv": "https://alphaxiv.org/abs/2607.19343"
     },
     "tags": [
-      "cross-embodiment",
-      "embodied AI",
-      "geometry action",
-      "JEPA",
-      "visual action",
       "VLA",
       "World Action Model",
-      "world model",
+      "世界模型",
+      "动作表征",
       "反事实推理",
       "机器人学习",
+      "跨本体迁移",
       "预测表征"
     ],
     "figure": {
@@ -5725,20 +5761,17 @@
     },
     "tags": [
       "3D/4D",
-      "3D/4D Reconstruction",
-      "Causal Modeling",
-      "cross-embodiment",
-      "egocentric vision",
-      "Embodied In-context Learning",
       "HOI",
-      "Physical Reasoning",
-      "Streaming Generation",
       "World Action Model",
-      "world model",
+      "世界模型",
+      "具身上下文学习",
       "几何一致性",
-      "周报",
-      "因果推理",
-      "视频生成"
+      "因果建模",
+      "流式生成",
+      "物理建模",
+      "第一视角",
+      "视频生成",
+      "跨本体迁移"
     ],
     "figure": {
       "url": "https://arxiv.org/html/2608.29910v1/teaser_white_Riemann.png",
@@ -5790,11 +5823,17 @@
     },
     "tags": [
       "3D/4D",
-      "Counterfactual Evaluation",
-      "Diffusion Policy",
-      "Reference Conditioning"
+      "世界模型评测",
+      "模仿学习",
+      "视觉条件与提示"
     ],
-    "figure": null,
+    "figure": {
+      "url": "content/images/2609.06615-representative.webp",
+      "alt": "Figure 1",
+      "label": "Figure 1",
+      "paper_title": "MemCorr-DP: Counterfactual Correspondence Conditioning for a Diffusion Policy Guided by a Reference",
+      "source_url": "https://arxiv.org/html/2609.06615v1#S1.F1"
+    },
     "summary": "MemCorr-DP 把“选哪条示例”转化为当前场景与参考轨迹之间的显式 3D 对应条件，并用同状态、反向任务的成对训练迫使策略真正使用参考。核心价值是可干预的参考接口。",
     "insight": "MemCorr-DP 把“选哪条示例”转化为当前场景与参考轨迹之间的显式 3D 对应条件，并用同状态、反向任务的成对训练迫使策略真正使用参考。核心价值是可干预的参考接口。",
     "pipeline": {
@@ -5843,12 +5882,17 @@
       "alphaxiv": "https://alphaxiv.org/abs/2609.11561"
     },
     "tags": [
-      "Long-Horizon Memory",
-      "Progress Prediction",
-      "Visual Planning",
-      "World Action Model"
+      "World Action Model",
+      "规划与控制",
+      "长时记忆"
     ],
-    "figure": null,
+    "figure": {
+      "url": "content/images/2609.11561-representative.webp",
+      "alt": "Figure 2 ",
+      "label": "Figure 2",
+      "paper_title": "Memory as Plans: World-Action Modeling with Memory-Grounded Planning",
+      "source_url": "https://arxiv.org/html/2609.11561v1#S2.F2"
+    },
     "summary": "MaP-WAM把已完成片段的语言和稀疏视觉证据保存为 episodic memory，仅在规划阶段读取长历史；执行器接收压缩后的语言—视觉计划，从而避免每一步都扩展上下文。它还联合预测动作与进度，用真实观测校正计划位置。",
     "insight": "MaP-WAM把已完成片段的语言和稀疏视觉证据保存为 episodic memory，仅在规划阶段读取长历史；执行器接收压缩后的语言—视觉计划，从而避免每一步都扩展上下文。它还联合预测动作与进度，用真实观测校正计划位置。",
     "pipeline": {
@@ -5892,18 +5936,15 @@
     },
     "tags": [
       "3D/4D",
-      "Embodied In-context Learning",
       "HOI",
-      "In-context Imitation Learning",
       "VLA",
       "World Action Model",
       "世界模型",
+      "具身上下文学习",
       "前馈重建",
-      "周报",
       "因果建模",
       "流式生成",
       "第一视角",
-      "重建",
       "长时记忆"
     ],
     "figure": {
@@ -5958,13 +5999,18 @@
       "alphaxiv": "https://alphaxiv.org/abs/2609.04958"
     },
     "tags": [
-      "camera trajectory",
-      "egocentric vision",
-      "hand motion",
       "HOI",
-      "数据管线"
+      "动作表征",
+      "数据与基准",
+      "第一视角"
     ],
-    "figure": null,
+    "figure": {
+      "url": "content/images/2609.04958-representative.webp",
+      "alt": "\\fnum@figure",
+      "label": "fnum@figure",
+      "paper_title": "MINT: A Unified Model for World-Space Camera and Hand Motion Estimation from Scalable Egocentric Pipeline Supervision",
+      "source_url": "https://arxiv.org/html/2609.04958v2#S2.F2"
+    },
     "summary": "从 egocentric 视频恢复世界坐标下的相机与手部运动是活动理解、机器人学习与 AR 的关键能力。现有系统分阶段处理（相机运动、深度估计、手部重建、轨迹精化），计算开销大且无法联合建模。MINT 从单一共享时空视频表示，联合预测相机轨迹、视场角（FoV）、相机帧手部状态与逐帧手部可观测性，再通过显式坐标变换得到世界空间手部运动。训练数据稀缺的解法是开源标注管线 EGOPIPELINE：把大量公开 egocentric 视频转换为结构化相机与手部轨迹监督；MINT 先在大规模伪标签上预训练，再在小规模高质量标注上微调。",
     "insight": "从 egocentric 视频恢复世界坐标下的相机与手部运动是活动理解、机器人学习与 AR 的关键能力。现有系统分阶段处理（相机运动、深度估计、手部重建、轨迹精化），计算开销大且无法联合建模。MINT 从单一共享时空视频表示，联合预测相机轨迹、视场角（FoV）、相机帧手部状态与逐帧手部可观测性，再通过显式坐标变换得到世界空间手部运动。训练数据稀缺的解法是开源标注管线 EGOPIPELINE：把大量公开 egocentric 视频转换为结构化相机与手部轨迹监督；MINT 先在大规模伪标签上预训练，再在小规模高质量标注上微调。",
     "pipeline": {
@@ -6019,7 +6065,7 @@
     "tags": [
       "3D/4D",
       "交互世界模型",
-      "因果推理",
+      "因果建模",
       "自回归扩散",
       "视频生成"
     ],
@@ -6092,20 +6138,18 @@
       "alphaxiv": "https://alphaxiv.org/abs/2608.30237"
     },
     "tags": [
-      "3D/4D Reconstruction",
-      "Causal Modeling",
-      "cross-embodiment",
-      "egocentric vision",
-      "Embodied In-context Learning",
+      "3D/4D",
       "HOI",
-      "Physical Reasoning",
-      "Streaming Generation",
       "VLA",
       "World Action Model",
-      "world model",
-      "周报",
+      "世界模型",
+      "具身上下文学习",
+      "因果建模",
       "机器人学习",
-      "第一视角"
+      "流式生成",
+      "物理建模",
+      "第一视角",
+      "跨本体迁移"
     ],
     "figure": {
       "url": "https://arxiv.org/html/2608.30237v1/motus2_overview.png",
@@ -6171,13 +6215,11 @@
       "alphaxiv": "https://alphaxiv.org/abs/2512.13030"
     },
     "tags": [
-      "cross-embodiment",
-      "embodied AI",
-      "geometry action",
-      "visual action",
       "VLA",
-      "world model",
-      "机器人学习"
+      "世界模型",
+      "动作表征",
+      "机器人学习",
+      "跨本体迁移"
     ],
     "figure": {
       "url": "https://arxiv.org/html/2512.13030v2/x1.png",
@@ -6237,9 +6279,8 @@
       "alphaxiv": "https://alphaxiv.org/abs/2509.21309"
     },
     "tags": [
-      "Physical World Model",
-      "Physics-Aware Video Generation",
-      "World Simulator",
+      "世界模型",
+      "物理建模",
       "视频生成"
     ],
     "figure": {
@@ -6303,16 +6344,13 @@
     },
     "tags": [
       "3D/4D",
-      "Embodied In-context Learning",
       "HOI",
-      "In-context Imitation Learning",
       "VLA",
       "World Action Model",
       "世界模型",
+      "具身上下文学习",
       "前馈重建",
-      "周报",
       "因果建模",
-      "因果推理",
       "机器人学习",
       "流式生成",
       "第一视角",
@@ -6399,7 +6437,7 @@
       "3D/4D",
       "反事实推理",
       "因果世界模型",
-      "因果推理",
+      "因果建模",
       "对象中心"
     ],
     "title": "Object-Centric World Models for Causality-Aware Reinforcement Learning",
@@ -6427,18 +6465,17 @@
       "alphaxiv": "https://alphaxiv.org/abs/2609.01938"
     },
     "tags": [
-      "3D/4D Reconstruction",
-      "Causal Modeling",
-      "cross-embodiment",
-      "egocentric vision",
-      "Embodied In-context Learning",
+      "3D/4D",
       "HOI",
-      "Physical Reasoning",
-      "Streaming Generation",
       "World Action Model",
-      "world model",
+      "世界模型",
+      "具身上下文学习",
       "几何一致性",
-      "周报"
+      "因果建模",
+      "流式生成",
+      "物理建模",
+      "第一视角",
+      "跨本体迁移"
     ],
     "figure": {
       "url": "https://arxiv.org/html/2609.01938v2/splash_fig.png",
@@ -6498,20 +6535,17 @@
     },
     "tags": [
       "3D/4D",
-      "Embodied In-context Learning",
       "HOI",
-      "In-context Imitation Learning",
       "VLA",
       "World Action Model",
       "世界模型",
+      "具身上下文学习",
       "几何一致性",
       "前馈重建",
-      "周报",
       "因果建模",
       "流式生成",
       "第一视角",
       "视频生成",
-      "重建",
       "长时记忆"
     ],
     "figure": {
@@ -6605,10 +6639,10 @@
     "summary": "SCAR 指出 HOI video generation 面临 2D 与 3D 表示的两难：3D mesh/pose 保真但难规模化，2D mask/flow 易规模化但缺接触与结构。它提出 structure and contact-aware representation ：用 hand-object contour、contact region、depth map 等形成可规模化的交互监督，不依赖 3D annotation。",
     "tags": [
       "3D/4D",
-      "Causality",
-      "Counterfactual World Model",
       "HOI",
-      "world model",
+      "世界模型",
+      "反事实推理",
+      "因果建模",
       "第一视角",
       "视频生成"
     ],
@@ -6661,13 +6695,18 @@
       "alphaxiv": "https://alphaxiv.org/abs/2609.07398"
     },
     "tags": [
-      "cross-embodiment",
-      "Egocentric Video",
-      "Open Pretraining",
-      "Video-Action Joint Modeling",
-      "World Action Model"
+      "World Action Model",
+      "第一视角",
+      "跨本体迁移",
+      "预训练与扩展律"
     ],
-    "figure": null,
+    "figure": {
+      "url": "content/images/2609.07398-representative.webp",
+      "alt": "OpenWAM 双系统架构、预训练组成与统一动作空间",
+      "label": "OpenWAM 双系统架构、预训练组成与统一动作空间",
+      "paper_title": "OpenWAM: An Open, Modular Exploration Towards Systematic World-Action Model Pretraining",
+      "source_url": "https://openwam-official.github.io/"
+    },
     "summary": "OpenWAM试图把 WAM 从单项方法推进为开放、模块化的预训练体系：统一机器人动作接口，同时把机器人轨迹和第一视角人类视频纳入同一视频—动作生成框架。其价值主要在可拆分的数据、模型与评测组件，而非单一结构技巧。",
     "insight": "OpenWAM试图把 WAM 从单项方法推进为开放、模块化的预训练体系：统一机器人动作接口，同时把机器人轨迹和第一视角人类视频纳入同一视频—动作生成框架。其价值主要在可拆分的数据、模型与评测组件，而非单一结构技巧。",
     "pipeline": {
@@ -6713,12 +6752,10 @@
       "alphaxiv": "https://alphaxiv.org/abs/2606.04463"
     },
     "tags": [
-      "cross-embodiment",
-      "embodied AI",
-      "geometry action",
-      "visual action",
-      "world model",
-      "机器人学习"
+      "世界模型",
+      "动作表征",
+      "机器人学习",
+      "跨本体迁移"
     ],
     "figure": {
       "url": "https://arxiv.org/html/2606.04463/x1.png",
@@ -6782,12 +6819,18 @@
       "alphaxiv": "https://alphaxiv.org/abs/2609.12036"
     },
     "tags": [
-      "Action-Conditioned Video",
-      "cross-embodiment",
-      "embodied world model",
-      "Policy Optimization"
+      "世界模型",
+      "强化学习",
+      "视频生成",
+      "跨本体迁移"
     ],
-    "figure": null,
+    "figure": {
+      "url": "content/images/2609.12036-representative.webp",
+      "alt": "Figure 1",
+      "label": "Figure 1",
+      "paper_title": "Pelican-Sim 1.0: A General World Model Simulator for Embodied Intelligence",
+      "source_url": "https://arxiv.org/html/2609.12036v1#S0.F1"
+    },
     "summary": "Pelican-Sim 1.0把异构机器人的动作归一到 28 维数值接口，并把 URDF/相机渲染的动作视频作为连接动作和像素的中间条件。Sparse MoE吸收跨域动力学差异，因果适配与少步蒸馏将生成压缩为四步自回归 rollout。",
     "insight": "Pelican-Sim 1.0把异构机器人的动作归一到 28 维数值接口，并把 URDF/相机渲染的动作视频作为连接动作和像素的中间条件。Sparse MoE吸收跨域动力学差异，因果适配与少步蒸馏将生成压缩为四步自回归 rollout。",
     "pipeline": {
@@ -6837,10 +6880,9 @@
       "alphaxiv": "https://alphaxiv.org/abs/2607.28624"
     },
     "tags": [
-      "Physical World Model",
-      "Physics-Aware Video Generation",
-      "World Simulator",
-      "因果推理"
+      "世界模型",
+      "因果建模",
+      "物理建模"
     ],
     "figure": {
       "url": "https://arxiv.org/html/2607.28624v1/Pipeline.png",
@@ -6907,10 +6949,9 @@
       "alphaxiv": "https://alphaxiv.org/abs/2606.28128"
     },
     "tags": [
-      "Physical World Model",
-      "Physics-Aware Video Generation",
-      "World Simulator",
-      "机器人学习"
+      "世界模型",
+      "机器人学习",
+      "物理建模"
     ],
     "figure": {
       "url": "https://arxiv.org/html/2606.28128v1/figs/Fig2_Method.png",
@@ -6974,9 +7015,8 @@
       "alphaxiv": "https://alphaxiv.org/abs/2601.11087"
     },
     "tags": [
-      "Physical World Model",
-      "Physics-Aware Video Generation",
-      "World Simulator"
+      "世界模型",
+      "物理建模"
     ],
     "figure": {
       "url": "https://arxiv.org/html/2601.11087v1/motiv.png",
@@ -7034,14 +7074,12 @@
     },
     "tags": [
       "3D/4D",
-      "Embodied In-context Learning",
       "HOI",
-      "In-context Imitation Learning",
       "VLA",
       "World Action Model",
       "世界模型",
+      "具身上下文学习",
       "前馈重建",
-      "周报",
       "因果建模",
       "流式生成",
       "第一视角",
@@ -7100,14 +7138,12 @@
     },
     "tags": [
       "3D/4D",
-      "cross-embodiment",
-      "embodied AI",
-      "geometry action",
-      "visual action",
       "VLA",
-      "world model",
+      "世界模型",
       "几何一致性",
-      "机器人学习"
+      "动作表征",
+      "机器人学习",
+      "跨本体迁移"
     ],
     "figure": {
       "url": "https://arxiv.org/html/2606.03943/x1.png",
@@ -7165,21 +7201,16 @@
     },
     "tags": [
       "3D/4D",
-      "Embodied ICL",
-      "Embodied In-context Learning",
       "HOI",
-      "In-context Imitation Learning",
-      "Robot Memory",
-      "Test-time Adaptation",
       "VLA",
       "World Action Model",
       "世界模型",
+      "具身上下文学习",
       "前馈重建",
-      "周报",
       "因果建模",
-      "因果推理",
       "机器人学习",
       "流式生成",
+      "测试时适应",
       "第一视角",
       "长时记忆"
     ],
@@ -7234,18 +7265,17 @@
       "alphaxiv": "https://alphaxiv.org/abs/2609.04200"
     },
     "tags": [
-      "3D/4D Reconstruction",
-      "Causal Modeling",
-      "cross-embodiment",
-      "egocentric vision",
-      "Embodied In-context Learning",
+      "3D/4D",
       "HOI",
-      "Physical Reasoning",
-      "Streaming Generation",
       "World Action Model",
-      "world model",
-      "周报",
-      "视频生成"
+      "世界模型",
+      "具身上下文学习",
+      "因果建模",
+      "流式生成",
+      "物理建模",
+      "第一视角",
+      "视频生成",
+      "跨本体迁移"
     ],
     "figure": {
       "url": "https://arxiv.org/html/2609.04200v1/dataset_teaser3.png",
@@ -7305,12 +7335,17 @@
       "alphaxiv": "https://alphaxiv.org/abs/2609.10540"
     },
     "tags": [
-      "world model",
-      "交互",
-      "可编程状态",
+      "世界模型",
+      "交互世界模型",
       "视频生成"
     ],
-    "figure": null,
+    "figure": {
+      "url": "content/images/2609.10540-representative.webp",
+      "alt": "Figure 3",
+      "label": "Figure 3",
+      "paper_title": "Programmable World Model",
+      "source_url": "https://arxiv.org/html/2609.10540v1#S4.F3"
+    },
     "summary": "视频世界模型生成越来越真实的交互体验，但缺乏可靠机制在长交互中维持持久世界状态与执行可编程规则。Programmable World Model 把世界状态演化与视觉观测生成解耦：Agent 把 NL 指令翻译成可执行程序，指定实体状态与状态转移规则，直接控制个体实体及其交互；轻量引擎执行程序，更新并维护显式、持久的全局世界状态（包括屏外实体与非视觉属性）。为连接世界状态与视觉生成，引入 state-augmented 3D OBB 作为中间表示，与目标相机轨迹一起确定性编译成像素对齐的时空条件信号，供预训练视频模型（生成渲染器）使用。",
     "insight": "视频世界模型生成越来越真实的交互体验，但缺乏可靠机制在长交互中维持持久世界状态与执行可编程规则。Programmable World Model 把世界状态演化与视觉观测生成解耦：Agent 把 NL 指令翻译成可执行程序，指定实体状态与状态转移规则，直接控制个体实体及其交互；轻量引擎执行程序，更新并维护显式、持久的全局世界状态（包括屏外实体与非视觉属性）。为连接世界状态与视觉生成，引入 state-augmented 3D OBB 作为中间表示，与目标相机轨迹一起确定性编译成像素对齐的时空条件信号，供预训练视频模型（生成渲染器）使用。",
     "pipeline": {
@@ -7363,9 +7398,8 @@
       "alphaxiv": "https://alphaxiv.org/abs/2512.05564"
     },
     "tags": [
-      "Physical World Model",
-      "Physics-Aware Video Generation",
-      "World Simulator"
+      "世界模型",
+      "物理建模"
     ],
     "figure": {
       "url": "https://arxiv.org/html/2512.05564v2/framework.png",
@@ -7431,18 +7465,15 @@
     },
     "tags": [
       "3D/4D",
-      "3D/4D Reconstruction",
-      "Causal Modeling",
-      "cross-embodiment",
-      "egocentric vision",
-      "Embodied In-context Learning",
       "HOI",
-      "Physical Reasoning",
-      "Streaming Generation",
       "World Action Model",
-      "world model",
-      "周报",
-      "因果推理"
+      "世界模型",
+      "具身上下文学习",
+      "因果建模",
+      "流式生成",
+      "物理建模",
+      "第一视角",
+      "跨本体迁移"
     ],
     "figure": {
       "url": "https://arxiv.org/html/2609.04196v1/teaser_new_sub1_crop.png",
@@ -7501,14 +7532,12 @@
     },
     "tags": [
       "3D/4D",
-      "Embodied In-context Learning",
       "HOI",
-      "In-context Imitation Learning",
       "VLA",
       "World Action Model",
       "世界模型",
+      "具身上下文学习",
       "前馈重建",
-      "周报",
       "因果建模",
       "流式生成",
       "第一视角",
@@ -7566,20 +7595,16 @@
     },
     "tags": [
       "3D/4D",
-      "Embodied ICL",
-      "Embodied In-context Learning",
       "HOI",
-      "In-context Imitation Learning",
-      "Robot Memory",
-      "Test-time Adaptation",
       "VLA",
       "World Action Model",
       "世界模型",
+      "具身上下文学习",
       "前馈重建",
-      "周报",
       "因果建模",
       "机器人学习",
       "流式生成",
+      "测试时适应",
       "第一视角",
       "长时记忆"
     ],
@@ -7637,13 +7662,11 @@
     },
     "tags": [
       "3D/4D",
-      "Physical World Model",
-      "Physics-Aware Video Generation",
-      "World Simulator",
-      "因果推理",
+      "世界模型",
+      "因果建模",
       "机器人学习",
-      "视频生成",
-      "重建"
+      "物理建模",
+      "视频生成"
     ],
     "figure": {
       "url": "https://arxiv.org/html/2603.05449v1/approach_eccv.png",
@@ -7705,14 +7728,13 @@
       "alphaxiv": "https://alphaxiv.org/abs/2606.13674"
     },
     "tags": [
-      "latent action",
-      "robot learning",
-      "video generation",
-      "video representation",
+      "3D/4D",
       "World Action Model",
-      "因果推理",
+      "动作表征",
+      "因果建模",
       "机器人学习",
-      "重建"
+      "视频生成",
+      "预测表征"
     ],
     "figure": {
       "url": "https://arxiv.org/html/2606.13674v1/x1.png",
@@ -7776,14 +7798,12 @@
     },
     "tags": [
       "3D/4D",
-      "Embodied In-context Learning",
       "HOI",
-      "In-context Imitation Learning",
       "VLA",
       "World Action Model",
       "世界模型",
+      "具身上下文学习",
       "前馈重建",
-      "周报",
       "因果建模",
       "流式生成",
       "第一视角",
@@ -7853,16 +7873,13 @@
     },
     "tags": [
       "3D/4D",
-      "Embodied In-context Learning",
       "HOI",
-      "In-context Imitation Learning",
       "VLA",
       "World Action Model",
       "世界模型",
+      "具身上下文学习",
       "前馈重建",
-      "周报",
       "因果建模",
-      "因果推理",
       "机器人学习",
       "流式生成",
       "第一视角",
@@ -7924,19 +7941,16 @@
     },
     "tags": [
       "3D/4D",
-      "3D/4D Reconstruction",
-      "Causal Modeling",
-      "cross-embodiment",
-      "egocentric vision",
-      "Embodied In-context Learning",
       "HOI",
-      "Physical Reasoning",
-      "Streaming Generation",
       "World Action Model",
-      "world model",
-      "周报",
+      "世界模型",
+      "具身上下文学习",
+      "因果建模",
       "机器人学习",
-      "重建"
+      "流式生成",
+      "物理建模",
+      "第一视角",
+      "跨本体迁移"
     ],
     "figure": {
       "url": "https://arxiv.org/html/2608.28718v1/fig1.png",
@@ -7989,13 +8003,11 @@
       "alphaxiv": "https://alphaxiv.org/abs/2607.22535"
     },
     "tags": [
-      "cross-embodiment",
-      "embodied AI",
-      "geometry action",
-      "visual action",
-      "world model",
+      "世界模型",
       "几何一致性",
-      "机器人学习"
+      "动作表征",
+      "机器人学习",
+      "跨本体迁移"
     ],
     "figure": {
       "url": "https://arxiv.org/html/2607.22535/x1.png",
@@ -8056,19 +8068,16 @@
     },
     "tags": [
       "3D/4D",
-      "3D/4D Reconstruction",
-      "Causal Modeling",
-      "cross-embodiment",
-      "egocentric vision",
-      "Embodied In-context Learning",
       "HOI",
-      "Physical Reasoning",
-      "Streaming Generation",
       "World Action Model",
-      "world model",
-      "周报",
+      "世界模型",
+      "具身上下文学习",
+      "因果建模",
       "机器人学习",
-      "第一视角"
+      "流式生成",
+      "物理建模",
+      "第一视角",
+      "跨本体迁移"
     ],
     "figure": {
       "url": "https://arxiv.org/html/2609.03199v1/fig_qualitative_activities_keypoints_traj.png",
@@ -8128,13 +8137,12 @@
       "alphaxiv": "https://alphaxiv.org/abs/2607.20033"
     },
     "tags": [
-      "Embodied ICL",
-      "In-context Imitation Learning",
-      "Robot Memory",
-      "Test-time Adaptation",
       "VLA",
       "World Action Model",
-      "机器人学习"
+      "具身上下文学习",
+      "机器人学习",
+      "测试时适应",
+      "长时记忆"
     ],
     "figure": {
       "url": "https://arxiv.org/html/2607.20033v1/x2.png",
@@ -8193,13 +8201,12 @@
       "alphaxiv": "https://alphaxiv.org/abs/2607.15275"
     },
     "tags": [
-      "Embodied ICL",
-      "In-context Imitation Learning",
-      "Robot Memory",
-      "Test-time Adaptation",
       "VLA",
       "World Action Model",
-      "机器人学习"
+      "具身上下文学习",
+      "机器人学习",
+      "测试时适应",
+      "长时记忆"
     ],
     "figure": {
       "url": "https://arxiv.org/html/2607.15275v1/x2.png",
@@ -8251,12 +8258,18 @@
       "alphaxiv": "https://alphaxiv.org/abs/2609.12103"
     },
     "tags": [
-      "Action Selection",
-      "Contact-Rich Manipulation",
-      "Diffusion Policy",
-      "world model"
+      "世界模型",
+      "模仿学习",
+      "规划与控制",
+      "触觉与接触"
     ],
-    "figure": null,
+    "figure": {
+      "url": "content/images/2609.12103-representative.webp",
+      "alt": "Fig. 3",
+      "label": "Fig. 3",
+      "paper_title": "RodForesight: A World Model Enhanced Diffusion Policy for Slender and Material Agnostic Rod Insertion",
+      "source_url": "https://arxiv.org/html/2609.12103v1#S4.F3"
+    },
     "summary": "RodForesight 用低维杆尖—孔几何后果对候选动作排序：先用视觉伺服缩小初始状态范围，再让世界模型筛选扩散策略提出的接触敏感动作。它把“预测是否有用”落实为执行前的动作选择。",
     "insight": "RodForesight 用低维杆尖—孔几何后果对候选动作排序：先用视觉伺服缩小初始状态范围，再让世界模型筛选扩散策略提出的接触敏感动作。它把“预测是否有用”落实为执行前的动作选择。",
     "pipeline": {
@@ -8302,20 +8315,16 @@
     },
     "tags": [
       "3D/4D",
-      "3D/4D Reconstruction",
-      "Causal Modeling",
-      "cross-embodiment",
-      "egocentric vision",
-      "Embodied In-context Learning",
       "HOI",
-      "Physical Reasoning",
-      "Streaming Generation",
       "World Action Model",
-      "world model",
+      "世界模型",
+      "具身上下文学习",
       "几何一致性",
-      "周报",
+      "因果建模",
+      "流式生成",
+      "物理建模",
       "第一视角",
-      "重建"
+      "跨本体迁移"
     ],
     "figure": {
       "url": "https://arxiv.org/html/2609.01276v1/fig_teaser.png",
@@ -8503,19 +8512,17 @@
       "alphaxiv": "https://alphaxiv.org/abs/2609.02886"
     },
     "tags": [
-      "3D/4D Reconstruction",
-      "Causal Modeling",
-      "cross-embodiment",
-      "egocentric vision",
-      "Embodied In-context Learning",
+      "3D/4D",
       "HOI",
-      "Physical Reasoning",
-      "Streaming Generation",
       "World Action Model",
-      "world model",
-      "周报",
-      "因果推理",
-      "视频生成"
+      "世界模型",
+      "具身上下文学习",
+      "因果建模",
+      "流式生成",
+      "物理建模",
+      "第一视角",
+      "视频生成",
+      "跨本体迁移"
     ],
     "figure": {
       "url": "https://arxiv.org/html/2609.02886v1/pipeline_2.png",
@@ -8566,20 +8573,18 @@
     },
     "tags": [
       "3D/4D",
-      "3D/4D Reconstruction",
-      "Causal Modeling",
-      "cross-embodiment",
-      "egocentric vision",
-      "Embodied In-context Learning",
       "HOI",
-      "Physical Reasoning",
-      "Streaming Generation",
       "VLA",
       "World Action Model",
-      "world model",
+      "世界模型",
+      "具身上下文学习",
       "几何一致性",
-      "周报",
-      "机器人学习"
+      "因果建模",
+      "机器人学习",
+      "流式生成",
+      "物理建模",
+      "第一视角",
+      "跨本体迁移"
     ],
     "figure": {
       "url": "https://arxiv.org/html/2609.02531v1/ep_vs_sr_teaser_a200.svg",
@@ -8636,12 +8641,17 @@
       "alphaxiv": "https://alphaxiv.org/abs/2609.12549"
     },
     "tags": [
-      "dexterous manipulation",
-      "Sparse Tokens",
-      "Tactile Representation",
-      "VTLA"
+      "灵巧操作",
+      "触觉与接触",
+      "预测表征"
     ],
-    "figure": null,
+    "figure": {
+      "url": "content/images/2609.12549-representative.webp",
+      "alt": "Fig. 3",
+      "label": "Fig. 3",
+      "paper_title": "STAR: Sparse Tactile Representation Learning in Vision-Tactile-Language-Action Models for Dexterous Manipulation",
+      "source_url": "https://arxiv.org/html/2609.12549v1#S4.F3"
+    },
     "summary": "STAR针对灵巧手触觉在时间、空间和信息上的稀疏性，先以高遮蔽率做视觉—触觉联合预训练，再把局部接触 token 与全局触觉 token 分开建模，并用未来触觉预测增强接触阶段表示。",
     "insight": "STAR针对灵巧手触觉在时间、空间和信息上的稀疏性，先以高遮蔽率做视觉—触觉联合预训练，再把局部接触 token 与全局触觉 token 分开建模，并用未来触觉预测增强接触阶段表示。",
     "pipeline": {
@@ -8689,22 +8699,15 @@
     },
     "tags": [
       "3D/4D",
-      "4D重建",
-      "Flow-GRPO",
-      "GRPO",
       "HOI",
-      "R1",
-      "Reward Optimization",
-      "Robot Policy",
-      "video generation",
       "World Action Model",
-      "动作流",
-      "周报",
+      "动作表征",
       "因果建模",
-      "因果推理",
       "强化学习",
+      "机器人学习",
       "流式生成",
-      "自我中心视觉"
+      "第一视角",
+      "视频生成"
     ],
     "figure": {
       "url": "https://arxiv.org/html/2608.19556v1/figure1_teaser.png",
@@ -8765,14 +8768,12 @@
     },
     "tags": [
       "3D/4D",
-      "Embodied In-context Learning",
       "HOI",
-      "In-context Imitation Learning",
       "VLA",
       "World Action Model",
       "世界模型",
+      "具身上下文学习",
       "前馈重建",
-      "周报",
       "因果建模",
       "流式生成",
       "第一视角",
@@ -8829,19 +8830,16 @@
     },
     "tags": [
       "3D/4D",
-      "3D/4D Reconstruction",
-      "Causal Modeling",
-      "cross-embodiment",
-      "egocentric vision",
-      "Embodied In-context Learning",
       "HOI",
-      "Physical Reasoning",
-      "Streaming Generation",
       "World Action Model",
-      "world model",
-      "周报",
+      "世界模型",
+      "具身上下文学习",
+      "因果建模",
+      "流式生成",
+      "物理建模",
+      "第一视角",
       "视频生成",
-      "重建"
+      "跨本体迁移"
     ],
     "figure": {
       "url": "https://arxiv.org/html/2609.00610v1/pipeline.png",
@@ -8900,14 +8898,12 @@
     },
     "tags": [
       "3D/4D",
-      "Embodied In-context Learning",
       "HOI",
-      "In-context Imitation Learning",
       "VLA",
       "World Action Model",
       "世界模型",
+      "具身上下文学习",
       "前馈重建",
-      "周报",
       "因果建模",
       "流式生成",
       "第一视角",
@@ -8965,19 +8961,17 @@
     },
     "tags": [
       "3D/4D",
-      "3D/4D Reconstruction",
-      "Causal Modeling",
-      "cross-embodiment",
-      "egocentric vision",
-      "Embodied In-context Learning",
       "HOI",
-      "Physical Reasoning",
-      "Streaming Generation",
       "VLA",
       "World Action Model",
-      "world model",
-      "周报",
-      "机器人学习"
+      "世界模型",
+      "具身上下文学习",
+      "因果建模",
+      "机器人学习",
+      "流式生成",
+      "物理建模",
+      "第一视角",
+      "跨本体迁移"
     ],
     "figure": {
       "url": "https://arxiv.org/html/2608.30643v1/fig1.png",
@@ -9037,17 +9031,11 @@
     },
     "tags": [
       "3D/4D",
-      "4D hand reconstruction",
-      "diffusion features",
-      "egocentric vision",
-      "embodied AI",
-      "hand-object interaction",
       "HOI",
-      "MANO",
-      "video diffusion model",
+      "机器人学习",
       "第一视角",
       "视频生成",
-      "重建"
+      "预测表征"
     ],
     "figure": {
       "url": "https://arxiv.org/html/2606.30308v2/main_pipeline.png",
@@ -9105,12 +9093,18 @@
       "alphaxiv": "https://alphaxiv.org/abs/2609.04911"
     },
     "tags": [
-      "physics",
-      "video generation",
-      "world model",
-      "单图重建"
+      "3D/4D",
+      "世界模型",
+      "物理建模",
+      "视频生成"
     ],
-    "figure": null,
+    "figure": {
+      "url": "content/images/2609.04911-representative.webp",
+      "alt": "Figure 2",
+      "label": "Figure 2",
+      "paper_title": "TourPhysics: Bringing Physics to World Models for Exploration and Manipulation from a Single Image",
+      "source_url": "https://arxiv.org/html/2609.04911v2#S2.F2"
+    },
     "summary": "交互式视觉世界模型必须区分观测与物理干预：相机运动揭示新表面，干预改变物体运动、接触与形变。现有视频世界模型多由外观先验驱动，长程常丢失物理或空间一致性。TourPhysics 是从单张图初始化的在线框架（扩展自团队 ACM MM 2026 工作 PhysOmni），把确定性模拟与视频生成结合，为模拟器状态、几何证据、生成器控制与外观记忆分配独立角色。每个动作：模拟器先计算有限物理与相机轨迹，再生成对应观测；被接受的观测发布终端状态并更新外观记忆与后续生成器控制，已提交状态与模拟器几何在合成与重试期间保持不变。区分用于投影/可见性的模拟器几何与用于条件化生成器的相对深度；reference-anchored 记忆通过几何跨视角对应检索已接受的静态外观。",
     "insight": "交互式视觉世界模型必须区分观测与物理干预：相机运动揭示新表面，干预改变物体运动、接触与形变。现有视频世界模型多由外观先验驱动，长程常丢失物理或空间一致性。TourPhysics 是从单张图初始化的在线框架（扩展自团队 ACM MM 2026 工作 PhysOmni），把确定性模拟与视频生成结合，为模拟器状态、几何证据、生成器控制与外观记忆分配独立角色。每个动作：模拟器先计算有限物理与相机轨迹，再生成对应观测；被接受的观测发布终端状态并更新外观记忆与后续生成器控制，已提交状态与模拟器几何在合成与重试期间保持不变。区分用于投影/可见性的模拟器几何与用于条件化生成器的相对深度；reference-anchored 记忆通过几何跨视角对应检索已接受的静态外观。",
     "pipeline": {
@@ -9159,14 +9153,12 @@
     },
     "tags": [
       "3D/4D",
-      "Embodied In-context Learning",
       "HOI",
-      "In-context Imitation Learning",
       "VLA",
       "World Action Model",
       "世界模型",
+      "具身上下文学习",
       "前馈重建",
-      "周报",
       "因果建模",
       "流式生成",
       "第一视角",
@@ -9234,13 +9226,11 @@
     },
     "tags": [
       "3D/4D",
-      "cross-embodiment",
-      "embodied AI",
-      "geometry action",
-      "visual action",
-      "world model",
+      "世界模型",
       "几何一致性",
-      "机器人学习"
+      "动作表征",
+      "机器人学习",
+      "跨本体迁移"
     ],
     "figure": {
       "url": "https://arxiv.org/html/2511.21690/x1.png",
@@ -9299,14 +9289,12 @@
     },
     "tags": [
       "3D/4D",
-      "Embodied In-context Learning",
       "HOI",
-      "In-context Imitation Learning",
       "VLA",
       "World Action Model",
       "世界模型",
+      "具身上下文学习",
       "前馈重建",
-      "周报",
       "因果建模",
       "机器人学习",
       "流式生成",
@@ -9366,12 +9354,18 @@
       "alphaxiv": "https://alphaxiv.org/abs/2609.11875"
     },
     "tags": [
-      "flow matching",
-      "Future Prediction",
-      "Memory-Augmented VLA",
-      "World Action Model"
+      "World Action Model",
+      "扩散与流匹配",
+      "长时记忆",
+      "预测表征"
     ],
-    "figure": null,
+    "figure": {
+      "url": "content/images/2609.11875-representative.webp",
+      "alt": "Fig. 2",
+      "label": "Fig. 2",
+      "paper_title": "UniMPA: A Unified Memory-Prediction-Action Model via Action-Grounded Transition Modeling",
+      "source_url": "https://arxiv.org/html/2609.11875v1#S1.F2"
+    },
     "summary": "UniMPA将未来预测、经验检索和动作生成统一在“动作支撑的状态转移”上。持续 latent 流跟踪任务进度，像素流只在转移关键时刻启动；预测转移检索历史视觉—动作证据，反向记忆再提供动作原型，流匹配在当前场景中细化。",
     "insight": "UniMPA将未来预测、经验检索和动作生成统一在“动作支撑的状态转移”上。持续 latent 流跟踪任务进度，像素流只在转移关键时刻启动；预测转移检索历史视觉—动作证据，反向记忆再提供动作原型，流匹配在当前场景中细化。",
     "pipeline": {
@@ -9421,8 +9415,7 @@
     "tags": [
       "3D/4D",
       "几何一致性",
-      "视频生成",
-      "重建"
+      "视频生成"
     ],
     "figure": {
       "url": "https://arxiv.org/html/2608.04701v1/pipeline.png",
@@ -9485,18 +9478,16 @@
       "alphaxiv": "https://alphaxiv.org/abs/2609.03153"
     },
     "tags": [
-      "3D/4D Reconstruction",
-      "Causal Modeling",
-      "cross-embodiment",
-      "egocentric vision",
-      "Embodied In-context Learning",
+      "3D/4D",
       "HOI",
-      "Physical Reasoning",
-      "Streaming Generation",
       "World Action Model",
-      "world model",
-      "周报",
-      "因果推理"
+      "世界模型",
+      "具身上下文学习",
+      "因果建模",
+      "流式生成",
+      "物理建模",
+      "第一视角",
+      "跨本体迁移"
     ],
     "figure": {
       "url": "https://arxiv.org/html/2609.03153v1/figs/assets/ball_wall_studio_bg_v4.png",
@@ -9581,17 +9572,11 @@
     "summary": "VGGRPO 针对的是 RGB-space geometry reward 的成本和鲁棒性问题。作者认为：已有 alignment 方法常在 RGB 解码后再跑几何模型，导致反复 VAE decoding，计算贵；而 RGB-based reward 还容易受生成图像分布偏移影响。",
     "tags": [
       "3D/4D",
-      "Flow-GRPO",
-      "GRPO",
       "HOI",
-      "R1",
-      "Reward Optimization",
-      "Robot Policy",
-      "video generation",
       "几何一致性",
       "强化学习",
-      "视频生成",
-      "重建"
+      "机器人学习",
+      "视频生成"
     ],
     "title": "VGGRPO: Towards World-Consistent Video Generation with 4D Latent Reward",
     "updated_at": "2026-08-31",
@@ -9653,10 +9638,9 @@
       "VLA",
       "World Action Model",
       "几何一致性",
-      "因果推理",
+      "因果建模",
       "机器人学习",
       "视频生成",
-      "重建",
       "预测表征"
     ],
     "title": "Vid2WAM: Distilling Video Diffusion Priors into World Action Models",
@@ -9686,20 +9670,17 @@
     },
     "tags": [
       "3D/4D",
-      "3D/4D Reconstruction",
-      "Causal Modeling",
-      "cross-embodiment",
-      "egocentric vision",
-      "Embodied In-context Learning",
       "HOI",
-      "Physical Reasoning",
-      "Streaming Generation",
       "World Action Model",
-      "world model",
+      "世界模型",
+      "具身上下文学习",
       "几何一致性",
-      "周报",
+      "因果建模",
+      "流式生成",
+      "物理建模",
+      "第一视角",
       "视频生成",
-      "重建"
+      "跨本体迁移"
     ],
     "figure": {
       "url": "https://arxiv.org/html/2608.28549v1/fig2_final.png",
@@ -9820,12 +9801,11 @@
     },
     "tags": [
       "3D/4D",
-      "latent action",
-      "robot learning",
-      "video generation",
-      "video representation",
       "World Action Model",
-      "视频生成"
+      "动作表征",
+      "机器人学习",
+      "视频生成",
+      "预测表征"
     ],
     "figure": {
       "url": "https://arxiv.org/html/2607.14088v1/x1.png",
@@ -9918,7 +9898,7 @@
       "VLA",
       "反事实推理",
       "因果世界模型",
-      "因果推理",
+      "因果建模",
       "对象中心",
       "机器人学习"
     ],
@@ -9948,10 +9928,9 @@
       "alphaxiv": "https://alphaxiv.org/abs/2604.02296"
     },
     "tags": [
-      "Physical World Model",
-      "Physics-Aware Video Generation",
-      "World Simulator",
-      "反事实推理"
+      "世界模型",
+      "反事实推理",
+      "物理建模"
     ],
     "figure": {
       "url": "https://arxiv.org/html/2604.02296v1/void.jpg",
@@ -10028,14 +10007,12 @@
     },
     "tags": [
       "3D/4D",
-      "Embodied In-context Learning",
       "HOI",
-      "In-context Imitation Learning",
       "VLA",
       "World Action Model",
       "世界模型",
+      "具身上下文学习",
       "前馈重建",
-      "周报",
       "因果建模",
       "机器人学习",
       "流式生成",
@@ -10092,16 +10069,13 @@
     },
     "tags": [
       "3D/4D",
-      "Embodied In-context Learning",
       "HOI",
-      "In-context Imitation Learning",
       "VLA",
       "World Action Model",
       "世界模型",
+      "具身上下文学习",
       "前馈重建",
-      "周报",
       "因果建模",
-      "因果推理",
       "流式生成",
       "第一视角",
       "长时记忆"
@@ -10169,14 +10143,13 @@
       "alphaxiv": "https://alphaxiv.org/abs/2608.19613"
     },
     "tags": [
-      "latent action",
-      "robot learning",
-      "video generation",
-      "video representation",
       "VLA",
       "World Action Model",
-      "因果推理",
-      "机器人学习"
+      "动作表征",
+      "因果建模",
+      "机器人学习",
+      "视频生成",
+      "预测表征"
     ],
     "figure": {
       "url": "https://arxiv.org/html/2608.19613v1/main.png",
@@ -10237,11 +10210,10 @@
       "alphaxiv": "https://alphaxiv.org/abs/2605.27589"
     },
     "tags": [
-      "Causality",
-      "Counterfactual World Model",
       "HOI",
-      "world model",
-      "因果推理"
+      "世界模型",
+      "反事实推理",
+      "因果建模"
     ],
     "figure": null,
     "summary": "固定共享场景，只改变一个物理细节，以成对输出同时审查 prompt adherence、physics、environment preservation 和 outcome difference。",
@@ -10291,14 +10263,12 @@
     },
     "tags": [
       "3D/4D",
-      "Embodied In-context Learning",
       "HOI",
-      "In-context Imitation Learning",
       "VLA",
       "World Action Model",
       "世界模型",
+      "具身上下文学习",
       "前馈重建",
-      "周报",
       "因果建模",
       "流式生成",
       "第一视角",
@@ -10356,13 +10326,18 @@
       "alphaxiv": "https://alphaxiv.org/abs/2609.07002"
     },
     "tags": [
-      "dexterous",
       "HOI",
-      "in-hand manipulation",
-      "tactile",
-      "world model"
+      "世界模型",
+      "灵巧操作",
+      "触觉与接触"
     ],
-    "figure": null,
+    "figure": {
+      "url": "content/images/2609.07002-representative.webp",
+      "alt": "Figure 1",
+      "label": "Figure 1",
+      "paper_title": "WM-Craftnet: World Synesthesia Model for Generalizable and Robust Dexterous In-Hand Manipulation",
+      "source_url": "https://arxiv.org/html/2609.07002v1#S3.F1"
+    },
     "summary": "通用且鲁棒的 dexterous in-hand 操作需要从部分、噪声观测推断物体姿态、几何、接触与潜在滑动。WM-Craftnet 是 world-model-conditioned 框架：从本体感觉、深度、触觉与动作学习紧凑的 action-conditioned 潜在动态，由多模态重建与奖励预测监督。关键设计：world model 不用作潜在想象或策略优化，而是作为循环任务上下文（World Synesthesia Model, WSM）供非对称 actor-critic 策略使用。WSM 训练时从噪声深度重建干净深度目标，为真机部署提供去噪几何状态。消融显示预测性世界建模、干净深度监督与触觉接触线索共同塑造学习状态；9 物体预训练的 WSM 作为 49 物体下游策略的可复用先验。",
     "insight": "通用且鲁棒的 dexterous in-hand 操作需要从部分、噪声观测推断物体姿态、几何、接触与潜在滑动。WM-Craftnet 是 world-model-conditioned 框架：从本体感觉、深度、触觉与动作学习紧凑的 action-conditioned 潜在动态，由多模态重建与奖励预测监督。关键设计：world model 不用作潜在想象或策略优化，而是作为循环任务上下文（World Synesthesia Model, WSM）供非对称 actor-critic 策略使用。WSM 训练时从噪声深度重建干净深度目标，为真机部署提供去噪几何状态。消融显示预测性世界建模、干净深度监督与触觉接触线索共同塑造学习状态；9 物体预训练的 WSM 作为 49 物体下游策略的可复用先验。",
     "pipeline": {
@@ -10407,12 +10382,18 @@
       "alphaxiv": "https://alphaxiv.org/abs/2609.11548"
     },
     "tags": [
-      "Egocentric",
-      "Video World Model",
-      "交互式探索",
-      "训练自由"
+      "世界模型",
+      "交互世界模型",
+      "测试时适应",
+      "第一视角"
     ],
-    "figure": null,
+    "figure": {
+      "url": "content/images/2609.11548-representative.webp",
+      "alt": "Fig. 2",
+      "label": "Fig. 2",
+      "paper_title": "World in World: Explore the World with World Models",
+      "source_url": "https://arxiv.org/html/2609.11548v1#S2.F2"
+    },
     "summary": "自回归视频世界模型支持交互式长程探索，但灵活控制困难：从新视角探索源视频要求 rollout 与记录事件保持同步、在请求视角放置观测内容、合理补全新暴露区域、回访时恢复之前生成的外观。现有方法用任务专用模块或额外训练解决。World in World 提出训练自由的推理期接口：把异构控制证据（源视频观测、目标视角场景投影、引导新暴露区域补全的几何渲染、滚动缓存之外的检索生成状态）转换成相机与时间标注的干净视觉状态，通过冻结因果视频模型的原生 self-attention 读取。每个证据源携带 token 级支持与可用性调度；对应关系路由器处理持久点对应。",
     "insight": "自回归视频世界模型支持交互式长程探索，但灵活控制困难：从新视角探索源视频要求 rollout 与记录事件保持同步、在请求视角放置观测内容、合理补全新暴露区域、回访时恢复之前生成的外观。现有方法用任务专用模块或额外训练解决。World in World 提出训练自由的推理期接口：把异构控制证据（源视频观测、目标视角场景投影、引导新暴露区域补全的几何渲染、滚动缓存之外的检索生成状态）转换成相机与时间标注的干净视觉状态，通过冻结因果视频模型的原生 self-attention 读取。每个证据源携带 token 级支持与可用性调度；对应关系路由器处理持久点对应。",
     "pipeline": {
@@ -10528,10 +10509,7 @@
     "tags": [
       "3D/4D",
       "几何一致性",
-      "动态几何",
-      "单目三维重建",
-      "扩散模型",
-      "生成式几何"
+      "扩散与流匹配"
     ],
     "figure": {
       "url": "https://arxiv.org/html/2606.13652v1/model_v4.png",
@@ -10587,18 +10565,17 @@
       "alphaxiv": "https://alphaxiv.org/abs/2609.02159"
     },
     "tags": [
-      "3D/4D Reconstruction",
-      "Causal Modeling",
-      "cross-embodiment",
-      "egocentric vision",
-      "Embodied In-context Learning",
+      "3D/4D",
       "HOI",
-      "Physical Reasoning",
-      "Streaming Generation",
       "World Action Model",
-      "world model",
-      "周报",
-      "机器人学习"
+      "世界模型",
+      "具身上下文学习",
+      "因果建模",
+      "机器人学习",
+      "流式生成",
+      "物理建模",
+      "第一视角",
+      "跨本体迁移"
     ],
     "figure": {
       "url": "https://arxiv.org/html/2609.02159v1/hook_pilot.png",
@@ -10689,18 +10666,12 @@
     "summary": "World-R1 的出发点与 GeoFlow/VGGRPO 接近：video foundation model 已有强视觉合成能力，但缺内在 3D 几何约束。它反对在推理时加重型 3D control modules，主张通过 RL 后训练把几何一致性“内化”到模型中。",
     "tags": [
       "3D/4D",
-      "Flow-GRPO",
-      "GRPO",
       "HOI",
-      "R1",
-      "Reward Optimization",
-      "Robot Policy",
-      "video generation",
       "几何一致性",
       "可供性",
       "强化学习",
-      "视频生成",
-      "重建"
+      "机器人学习",
+      "视频生成"
     ],
     "title": "World-R1: Reinforcing 3D Constraints for Text-to-Video Generation",
     "updated_at": "2026-08-31",
@@ -10731,17 +10702,13 @@
     },
     "tags": [
       "3D/4D",
-      "Causality",
-      "Counterfactual World Model",
-      "Embodied In-context Learning",
       "HOI",
-      "In-context Imitation Learning",
       "VLA",
       "World Action Model",
-      "world model",
       "世界模型",
+      "具身上下文学习",
       "前馈重建",
-      "周报",
+      "反事实推理",
       "因果建模",
       "机器人学习",
       "流式生成",
@@ -10846,12 +10813,11 @@
     ],
     "summary": "WorldSimProbe 指出现有 world model benchmark 的核心问题：生成视频看起来合理、task outcome 正确，并不代表模型真的执行了给定 action。例如机器人动作没有按 action 走，但物体却“自己”到了目标位置，传统 video metric 仍可能给高分。因此它提出 Observable Simulator Contract ：supplied action 必须导致对应 robot motion；environment response 必须由实际 motion/contact 导致。",
     "tags": [
-      "Causality",
-      "Counterfactual World Model",
       "HOI",
       "World Action Model",
-      "world model",
+      "世界模型",
       "反事实推理",
+      "因果建模",
       "机器人学习",
       "预测表征"
     ],
@@ -10891,20 +10857,16 @@
     },
     "tags": [
       "3D/4D",
-      "Embodied ICL",
-      "Embodied In-context Learning",
       "HOI",
-      "In-context Imitation Learning",
-      "Robot Memory",
-      "Test-time Adaptation",
       "VLA",
       "World Action Model",
       "世界模型",
+      "具身上下文学习",
       "前馈重建",
-      "周报",
       "因果建模",
       "机器人学习",
       "流式生成",
+      "测试时适应",
       "第一视角",
       "视频生成",
       "长时记忆"
@@ -10969,20 +10931,18 @@
       "alphaxiv": "https://alphaxiv.org/abs/2608.30880"
     },
     "tags": [
-      "3D/4D Reconstruction",
-      "Causal Modeling",
-      "cross-embodiment",
-      "egocentric vision",
-      "Embodied In-context Learning",
+      "3D/4D",
       "HOI",
-      "Physical Reasoning",
-      "Streaming Generation",
       "VLA",
       "World Action Model",
-      "world model",
-      "周报",
-      "因果推理",
-      "机器人学习"
+      "世界模型",
+      "具身上下文学习",
+      "因果建模",
+      "机器人学习",
+      "流式生成",
+      "物理建模",
+      "第一视角",
+      "跨本体迁移"
     ],
     "figure": {
       "url": "https://arxiv.org/html/2608.30880v1/zeva_v2.png",
@@ -11049,20 +11009,18 @@
       "alphaxiv": "https://alphaxiv.org/abs/2609.00188"
     },
     "tags": [
-      "3D/4D Reconstruction",
-      "Causal Modeling",
-      "cross-embodiment",
-      "egocentric vision",
-      "Embodied In-context Learning",
+      "3D/4D",
       "HOI",
-      "Physical Reasoning",
-      "Streaming Generation",
       "VLA",
       "World Action Model",
-      "world model",
-      "周报",
+      "世界模型",
+      "具身上下文学习",
+      "因果建模",
       "机器人学习",
-      "第一视角"
+      "流式生成",
+      "物理建模",
+      "第一视角",
+      "跨本体迁移"
     ],
     "figure": {
       "url": "https://arxiv.org/html/2609.00188v1/teaser.svg",
@@ -11120,11 +11078,10 @@
     },
     "tags": [
       "3D/4D",
-      "cross-embodiment",
-      "embodied AI",
-      "geometry action",
-      "visual action",
-      "world model"
+      "世界模型",
+      "动作表征",
+      "机器人学习",
+      "跨本体迁移"
     ],
     "figure": {
       "url": "https://arxiv.org/html/2606.13769/x1.png",
@@ -11188,12 +11145,11 @@
     },
     "tags": [
       "3D/4D",
-      "Causality",
-      "Counterfactual World Model",
       "HOI",
       "VLA",
-      "world model",
-      "反事实推理"
+      "世界模型",
+      "反事实推理",
+      "因果建模"
     ],
     "figure": null,
     "summary": "先预测 optical flow 再预测未来图像，使 motion 成为显式瓶颈，并通过修改 flow 检查未来是否随中间运动变化。",
@@ -11249,7 +11205,7 @@
     "tags": [
       "3D/4D",
       "交互世界模型",
-      "因果推理",
+      "因果建模",
       "自回归扩散",
       "视频生成"
     ],
@@ -11334,12 +11290,11 @@
     "summary": "HOI-Dyn 把 HOI 生成建模为 driver-responder system ：人体动作是 driver，物体运动是 responder。关键 insight：只联合生成 human motion 和 object motion 不够，必须显式约束“物体应如何响应人体动作”，否则会出现物体提前移动、漂浮、反应夸张等因果错误。",
     "tags": [
       "3D/4D",
-      "Causality",
-      "Counterfactual World Model",
       "HOI",
-      "world model",
+      "世界模型",
       "交互世界模型",
-      "因果推理"
+      "反事实推理",
+      "因果建模"
     ],
     "title": "HOI-Dyn: Learning Interaction Dynamics for Human-Object Motion Diffusion",
     "updated_at": "2026-09-02",
@@ -11400,13 +11355,11 @@
     "summary": "论文： Language Agents Meet Causality: Bridging LLMs and Causal World Models 作者： John Gkountouras et al. 发表： ICLR 2025 入口： ICLR｜arXiv｜代码",
     "tags": [
       "3D/4D",
-      "Causality",
-      "Counterfactual World Model",
       "HOI",
-      "world model",
+      "世界模型",
       "反事实推理",
       "因果世界模型",
-      "因果推理",
+      "因果建模",
       "对象中心",
       "机器人学习"
     ],
@@ -11436,11 +11389,10 @@
       "alphaxiv": "https://alphaxiv.org/abs/2507.13340"
     },
     "tags": [
-      "cross-embodiment",
-      "embodied AI",
-      "geometry action",
-      "visual action",
-      "world model"
+      "世界模型",
+      "动作表征",
+      "机器人学习",
+      "跨本体迁移"
     ],
     "summary": "作者观察到不同本体执行相似技能时会产生相似视觉运动，因此用光流取代本体专属动作来预训练世界模型；目标本体只需少量数据把同一接口替换成归一化机器人动作。与 FlowWAM 的“预测 flow 再解码动作”不同，本工作把 flow 用作预训练期世界模型的输入动作，并在部署时通过世界模型给 BC 候选排序。",
     "insight": "作者观察到不同本体执行相似技能时会产生相似视觉运动，因此用光流取代本体专属动作来预训练世界模型；目标本体只需少量数据把同一接口替换成归一化机器人动作。与 FlowWAM 的“预测 flow 再解码动作”不同，本工作把 flow 用作预训练期世界模型的输入动作，并在部署时通过世界模型给 BC 候选排序。",
@@ -11560,7 +11512,7 @@
       "3D/4D",
       "VLA",
       "交互世界模型",
-      "因果推理",
+      "因果建模",
       "自回归扩散",
       "视频生成"
     ],
@@ -11654,7 +11606,7 @@
     },
     "tags": [
       "交互世界模型",
-      "因果推理",
+      "因果建模",
       "自回归扩散",
       "视频生成"
     ],
@@ -11743,7 +11695,7 @@
       "3D/4D",
       "HOI",
       "交互世界模型",
-      "动作生成",
+      "动作表征",
       "第一视角"
     ],
     "title": "MEgoHand: Multimodal Egocentric Hand-Object Interaction Motion Generation",
@@ -11803,7 +11755,7 @@
     "tags": [
       "HOI",
       "交互世界模型",
-      "动作生成"
+      "动作表征"
     ],
     "title": "MotionGPT3: Human Motion as a Second Modality",
     "updated_at": "2026-08-20",
@@ -11893,13 +11845,11 @@
     },
     "tags": [
       "3D/4D",
-      "cross-embodiment",
-      "embodied AI",
-      "geometry action",
-      "visual action",
-      "world model",
+      "世界模型",
+      "动作表征",
       "机器人学习",
-      "视频生成"
+      "视频生成",
+      "跨本体迁移"
     ],
     "figure": {
       "url": "https://arxiv.org/html/2508.13104/x1.png",
@@ -11961,12 +11911,11 @@
     },
     "tags": [
       "3D/4D",
-      "cross-embodiment",
-      "embodied AI",
-      "geometry action",
-      "visual action",
-      "world model",
-      "几何一致性"
+      "世界模型",
+      "几何一致性",
+      "动作表征",
+      "机器人学习",
+      "跨本体迁移"
     ],
     "figure": {
       "url": "https://arxiv.org/html/2511.01177/x1.png",
@@ -12025,7 +11974,7 @@
     },
     "tags": [
       "交互世界模型",
-      "因果推理",
+      "因果建模",
       "自回归扩散",
       "视频生成"
     ],
@@ -12095,10 +12044,9 @@
     },
     "tags": [
       "3D/4D",
-      "Physical World Model",
-      "Physics-Aware Video Generation",
-      "World Simulator",
-      "因果推理"
+      "世界模型",
+      "因果建模",
+      "物理建模"
     ],
     "figure": {
       "url": "https://arxiv.org/html/2509.09737v1/concept_v2.png",
@@ -12187,9 +12135,8 @@
       "3D/4D",
       "反事实推理",
       "因果世界模型",
-      "因果推理",
-      "对象中心",
-      "重建"
+      "因果建模",
+      "对象中心"
     ],
     "title": "Building Minimal and Reusable Causal State Abstractions for Reinforcement Learning",
     "updated_at": "2026-08-31",
@@ -12342,9 +12289,8 @@
       "alphaxiv": "https://alphaxiv.org/abs/2409.18964"
     },
     "tags": [
-      "Physical World Model",
-      "Physics-Aware Video Generation",
-      "World Simulator",
+      "世界模型",
+      "物理建模",
       "视频生成"
     ],
     "figure": {
@@ -12430,7 +12376,7 @@
     "tags": [
       "反事实推理",
       "因果世界模型",
-      "因果推理",
+      "因果建模",
       "对象中心",
       "机器人学习"
     ],
@@ -12466,12 +12412,10 @@
       "alphaxiv": "https://alphaxiv.org/abs/2312.06721"
     },
     "tags": [
-      "Causality",
-      "Counterfactual World Model",
       "HOI",
-      "world model",
+      "世界模型",
       "反事实推理",
-      "因果推理"
+      "因果建模"
     ],
     "figure": null,
     "summary": "作者用 temporally-factored masking 让预测器接受对事实视频的局部改变，再以预测差异读取中层视觉结构；这里的 counterfactual 是 prompting 操作，不是 SCM 个体反事实。",

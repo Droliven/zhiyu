@@ -1,6 +1,6 @@
 import unittest
 
-from scripts.ingest_reports import classify_links, merge_records, normalize_tag, parse_paper
+from scripts.ingest_reports import classify_links, extract_figure, merge_records, normalize_tag, parse_paper
 
 
 def record(figure_url: str, links: dict[str, str]) -> dict:
@@ -52,11 +52,26 @@ class MergeRecordsTest(unittest.TestCase):
 
 
 class NormalizeTagTest(unittest.TestCase):
+    def test_semantic_aliases_preserve_causal_boundary(self) -> None:
+        self.assertEqual(normalize_tag("Agent Memory"), "长时记忆")
+        self.assertEqual(normalize_tag("Causal History"), "长时记忆")
+        self.assertEqual(normalize_tag("Causal Modeling"), "因果建模")
+        self.assertEqual(normalize_tag("Counterfactual Reasoning"), "反事实推理")
+        self.assertEqual(normalize_tag("周报"), "")
+
     def test_video_generation_uses_existing_library_casing(self) -> None:
-        self.assertEqual(normalize_tag("Video Generation"), "video generation")
+        self.assertEqual(normalize_tag("Video Generation"), "视频生成")
 
 
 class ParsePaperTest(unittest.TestCase):
+    def test_embedded_figure_keeps_paper_source_link(self) -> None:
+        figure = extract_figure(
+            "![Figure 1](../images/paper.webp)\n来源：[论文图注](https://arxiv.org/html/2609.11308v1#S1.F1)",
+            "2AM", "2609.11308",
+        )
+        self.assertEqual(figure["url"], "content/images/paper.webp")
+        self.assertEqual(figure["source_url"], "https://arxiv.org/html/2609.11308v1#S1.F1")
+
     def test_arxiv_card_keeps_its_own_tags_and_evidence(self) -> None:
         parsed = parse_paper(
             "Memory Study",
@@ -70,7 +85,7 @@ class ParsePaperTest(unittest.TestCase):
             {"level": 2, "tags": ["HOI", "tactile"]},
             "report-memory",
         )
-        self.assertEqual(parsed["tags"], ["Memory", "Robot Manipulation"])
+        self.assertEqual(parsed["tags"], ["Memory", "机器人学习"])
         self.assertEqual(parsed["evidence_notes"], "正文表 3 已核验")
         self.assertEqual(parsed["arxiv"]["published"], "2026-09-10T09:35:56Z")
 
@@ -162,7 +177,7 @@ S1 使用单段视频示范作为提示，在不更新模型参数的情况下�
         self.assertEqual(parsed["links"]["paper"], "https://www.dyna.co/dyna-2")
         self.assertEqual(parsed["arxiv_id"], "")
         self.assertEqual(parsed["doi"], "")
-        self.assertEqual(parsed["tags"], ["scaling law", "World Action Model"])
+        self.assertEqual(parsed["tags"], ["World Action Model", "预训练与扩展律"])
 
 
 if __name__ == "__main__":

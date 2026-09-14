@@ -62,7 +62,14 @@
 - **数据**：官方说明使用 518.5M 帧、约 6,369 小时视频；独立完整数据下载状态未核验
 - **模型**：[Hugging Face](https://huggingface.co/OpenWAM)
 - **AlphaXiv**：[AlphaXiv](https://alphaxiv.org/abs/2609.07398)
-- **代表图链接**：[官方项目总览图：OpenWAM 数据—模型—评测框架](https://openwam-official.github.io/figs/overview.png)
+- **代表图**：OpenWAM 双系统架构、预训练组成与统一动作空间
+
+![OpenWAM 双系统架构、预训练组成与统一动作空间](../images/2609.07398-representative.webp)
+
+来源：[论文原文及图注](https://openwam-official.github.io/) · [原始图源](https://openwam-official.github.io/figs/architecture.png)
+
+> OpenWAM 双系统架构、预训练组成与统一动作空间
+
 - **类别标签**：World Action Model, Open Pretraining, Egocentric Video, Cross-Embodiment, Video-Action Joint Modeling
 - **证据等级**：2026-09-14 已核对 arXiv 元数据、官方项目实验面板、代码目录与模型组织页；未逐页审计 PDF 或运行复现。
 - **更新类型**：新论文
@@ -111,6 +118,17 @@ OpenWAM是本期最直接的大规模开放 WAM 工作，尤其符合“从人�
 - **数据**：未公开
 - **模型**：未公开
 - **AlphaXiv**：[AlphaXiv](https://alphaxiv.org/abs/2609.05588)
+- **代表图**：Figure 1
+
+![Figure 1](../images/2609.05588-representative.webp)
+
+来源：[论文原文及图注](https://arxiv.org/html/2609.05588v1#S3.F1) · [原始图源](https://arxiv.org/html/2609.05588v1/fig_system_v04.png)
+
+> Figure 1: GE-Act 2.0 system architecture. The SVP grounds the instruction
+in the current observation and fully denoises multi-view future visual latents in
+a single flow-generator pass; the IDM combines current and predicted latents
+with proprioception to produce dense and sparse action sequences.
+
 - **类别标签**：World Action Model, Robotics, 预训练, 扩展律, cross-embodiment
 - **证据等级**：2026-09-14 已核对 arXiv 元数据、正文主要实验与对照；未运行复现实验。
 - **更新类型**：新论文（边界日期收录）
@@ -154,6 +172,21 @@ WAM 预训练与扩展律的直接证据，与馆藏 Dyna-2（百万小时扩展
 - **数据**：未公开
 - **模型**：未公开
 - **AlphaXiv**：[AlphaXiv](https://alphaxiv.org/abs/2609.06578)
+- **代表图**：Fig. 3
+
+![Fig. 3](../images/2609.06578-representative.webp)
+
+来源：[论文原文及图注](https://arxiv.org/html/2609.06578v1#S4.F3) · [原始图源](https://arxiv.org/html/2609.06578v1/Fig/prowamv3.png)
+
+> Fig. 3: Overview of ProWAM. ProWAM comprises a Self-Supervised Dual-Temporal Progress Encoder (SS-DTPE)
+and Hierarchical Progress-Conditioned Imagination Modulation (HPIM).
+SS-DTPE integrates short-term action–observation evidence with long-term
+execution history to encode the current progress state. Conditioned on this
+representation, HPIM jointly models an inter-progress global gate d t d_{t} and
+intra-progress future-latent relevance ω t , f l \omega_{t,f}^{l} , and combines them
+with the layer-wise coefficient η l \eta_{l} to obtain the modulation weight β t , f l \beta_{t,f}^{l} . The resulting modulation is applied to the action-to-future attention pathway,
+enabling adaptive utilization of imagined future information.
+
 - **类别标签**：World Action Model, VLA, 执行进度
 - **证据等级**：2026-09-14 已核对 arXiv 元数据、正文主要实验与对照；未运行复现实验。
 - **更新类型**：新论文
@@ -198,7 +231,14 @@ WAM 内部机制方向，与 MaP-WAM（进度校准）、GE-Act 2.0（KASO 选�
 - **数据**：[ALOHA In-Context Dataset](https://huggingface.co/datasets/vo2yager/aloha_incontext)
 - **模型**：未发现独立权重页
 - **AlphaXiv**：[AlphaXiv](https://alphaxiv.org/abs/2609.06852)
-- **代表图链接**：[论文 Figure 1：单示例上下文驱动新任务执行](https://arxiv.org/html/2609.06852#S1.F1)
+- **代表图**：Figure 2
+
+![Figure 2 ](../images/2609.06852-representative.webp)
+
+来源：[论文原文及图注](https://arxiv.org/html/2609.06852v1#S2.F2) · [原始图源](https://arxiv.org/html/2609.06852v1/Fig_Pipeline.png)
+
+> Figure 2 : ContextFlow Model Architecture. We follow the mixture-of-experts design and employ two experts: the context expert and the action expert . The current observation, text prompt, and in-context demonstrations are first encoded and passed through multimodal context compressors , and the resulting compressed tokens are routed to the context expert, while the current proprioceptive state and action noise tokens are routed to the action expert. The context expert encodes the current observation and contextual information, while the action expert performs flow matching steps to predict the actions.
+
 - **类别标签**：Embodied In-Context Learning, Flow Matching, Robot Manipulation, One-Shot Demonstration
 - **证据等级**：2026-09-14 已核对 arXiv 元数据、正文主要实验与对照；未运行复现实验。
 - **更新类型**：新论文
@@ -245,6 +285,14 @@ LIBERO 使用 32 个训练任务、4 个未见任务，每任务 50 次评估；
 - **代码 / 模型**：未确认公开
 - **数据**：使用 LIBERO、RoboTwin 2.0 及实体任务
 - **AlphaXiv**：[AlphaXiv](https://alphaxiv.org/abs/2609.07581)
+- **代表图**：Figure 2
+
+![Figure 2](../images/2609.07581-representative.webp)
+
+来源：[论文原文及图注](https://arxiv.org/html/2609.07581v1#S3.F2) · [原始图源](https://arxiv.org/html/2609.07581v1/method.png)
+
+> Figure 2: Overview of ICI-VLA. (I) Library construction: long-horizon trajectories are decomposed into fixed-horizon micro-demonstrations. (II) Retrieval alignment: semantic filtering and DTW-based ranking mine contrastive triplets; at inference, the frozen RD-Encoder retrieves from observable inputs without target actions. (III) Policy training and inference: Qwen3-VL-4B is fine-tuned without an action-specific head, while Target Action Masking reduces reliance on exact numerical continuation. Both the policy and retriever remain fixed at inference, and adaptation occurs through retrieved context.
+
 - **类别标签**：Embodied In-Context Learning, VLA, Retrieval, Imitation Learning
 - **证据等级**：2026-09-14 已核对 arXiv 元数据、正文主要实验与对照；未运行复现实验。
 - **更新类型**：新论文
@@ -283,6 +331,14 @@ ICI-VLA 让固定参数 VLA 在推理时读取检索到的短示范，不为每�
 ## 6. MemCorr-DP: Counterfactual Correspondence Conditioning for a Diffusion Policy Guided by a Reference
 
 - **arXiv ID**：2609.06615
+- **代表图**：Figure 1
+
+![Figure 1](../images/2609.06615-representative.webp)
+
+来源：[论文原文及图注](https://arxiv.org/html/2609.06615v1#S1.F1) · [原始图源](https://arxiv.org/html/2609.06615v1/fig1_method_overview_labels.png)
+
+> Figure 1: End-to-end MemCorr-DP pipeline. Top: frozen RoMa v2 matches a fixed successful reference to the live query. Up to sixteen sampled reference points are matched and lifted into a shared 3D frame. Four future offsets per point produce a fixed 64 × 18 64\times 18 relation-token array; invalid slots are masked. Green, orange, purple, and blue vectors denote the live gripper, reference anchor, future motion, and scene displacement. The Transformer uses these tokens throughout 20 DDIM steps. Bottom: paired training shares state and noisy input z t z_{t} across opening and closing. Distinct references and clean action targets x 0 b x_{0}^{b} define the behavior-specific denoising targets. The policy predicts 16 actions, executes eight, and then rematches and replans.
+
 - **类别标签**：3D/4D, Diffusion Policy, Reference Conditioning, Counterfactual Evaluation
 - **更新类型**：新论文
 - **作者**：Tan Su, Haoxiang Yang, Ruxin Wang, Binghui Xie
@@ -335,7 +391,18 @@ MemCorr-DP 把“选哪条示例”转化为当前场景与参考轨迹之间的
 - **数据**：使用 RMBench 与真实机器人任务；未发现新数据下载页
 - **模型**：项目页未给出可确认的权重下载入口，待核验。
 - **AlphaXiv**：[AlphaXiv](https://alphaxiv.org/abs/2609.11561)
-- **代表图链接**：[论文 Figure 1：记忆机制比较与 MaP-WAM 框架](https://arxiv.org/html/2609.11561#S1.F1)
+- **代表图**：Figure 2
+
+![Figure 2 ](../images/2609.11561-representative.webp)
+
+来源：[论文原文及图注](https://arxiv.org/html/2609.11561v1#S2.F2) · [原始图源](https://arxiv.org/html/2609.11561v1/framework_cropped.png)
+
+> Figure 2 : Overview of MaP-WAM. Memory-grounded planning first predicts the next segment-level language plan l ^ k \hat{\text{l}}_{k} from the multimodal context, and then generates a visual plan G ^ k \hat{\text{G}}_{k} from the long-term visual context using a causal world model (CWM) as execution guidance.
+Conditioned on G ^ k \hat{\text{G}}_{k} and the progress condition p ^ t \hat{\text{p}}_{t} , the World-Action-Progress (WAP) model jointly models future visual dynamics, actions, and task progress.
+During deployment, the fixed plan prefix is cached and reused across action chunks until the predicted progress triggers the next planning stage.
+Plan-observation alignment further retrieves visual-plan frames near the predicted progress, matches them to the current observation, and uses the best-matching plan state to calibrate progress, mitigating error accumulation from recursive prediction over long executions.
+Upon segment transition, real execution observations are resampled into sparse visual evidence and appended to the episodic context.
+
 - **类别标签**：World Action Model, Long-Horizon Memory, Visual Planning, Progress Prediction
 - **证据等级**：2026-09-14 已核对 arXiv 元数据、正文主要实验与对照；未运行复现实验。
 - **更新类型**：新论文
@@ -385,7 +452,14 @@ RMBench 九项任务平均成功率 83.3%，对比 LingBot-VA 77.1%、Mem-0 42.0
 - **数据**：LIBERO-Mem；未发现独立发布
 - **模型**：未发现
 - **AlphaXiv**：[AlphaXiv](https://alphaxiv.org/abs/2609.11308)
-- **代表图链接**：[论文 Figure 1：Agent 记忆与无历史 Action Model 的接口](https://arxiv.org/html/2609.11308#S2.F1)
+- **代表图**：Figure 1
+
+![Figure 1](../images/2609.11308-representative.webp)
+
+来源：[论文原文及图注](https://arxiv.org/html/2609.11308v1#S1.F1) · [原始图源](https://arxiv.org/html/2609.11308v1/figures/teaser.png)
+
+> Figure 1: Agent-side memory, expressed through steering. The Agent Model consolidates task history and reasons about the next physical intention. A compositional command grounds that intention as subtask language plus optional grasp, place, and move cues. The Action Model receives this command with current RGB and robot state, but no task history. It then executes every task-relevant motion. Fresh RGB closes the loop for the Agent to update and re-steer.
+
 - **类别标签**：Long-Horizon Manipulation, Agent Memory, Steerable Action Model, RGB-Only
 - **证据等级**：2026-09-14 已核对 arXiv 元数据、正文主要实验与对照；未运行复现实验。
 - **更新类型**：新论文
@@ -394,33 +468,73 @@ RMBench 九项任务平均成功率 83.3%，对比 LingBot-VA 77.1%、Mem-0 42.0
 - **arXiv 主分类**：cs.RO
 - **正文**：[arXiv HTML v1](https://arxiv.org/html/2609.11308v1)
 
+### 当前挑战
+
+长程操作需要记住目标对象、已完成阶段和重复次数。但高层 Agent 往往同时调用 VLA、几何工具和运动规划器，性能改善究竟来自记忆、额外传感器还是其他执行工具，很难归因；只给动作模型一句子任务语言，又可能无法明确“抓哪一个、放在哪里、往哪边移动”。
+
+### 研究动机
+
+2AM 检验一种受约束的分工：**任务记忆全部放在 Agent 侧，所有任务相关运动交给同一个动作模型，通过更明确的视觉指向接口连接两者。** 这里的 episodically stateless 指执行器不持有跨阶段的 episode 历史，不是没有当前视觉或机器人本体状态。
+
 ### 核心内容与 Insight
 
-2AM将所有任务记忆保留在高层 Agent 中，让动作模型在 episode 层面无历史。Agent把历史的当前后果压缩为子任务语言和可选的 2D grasp/place/move 提示；动作模型只根据当前 RGB、本体和提示执行局部动作。
+贡献是把历史压缩成当前可执行的空间意图：Agent 输出子任务语言和可选的 grasp/place/move 二维提示；动作模型利用当前双视角 RGB 与机器人状态执行动作块。实验支持这种接口改善子目标推进和宽松成功，但**没有证明它解决了精确计数与停止：严格成功率 11.83%，略低于对齐复现基线的 12.25%**。因此，“记得过去”与“恰好完成并及时停止”应作为两个问题分别评估。
 
-### Pipeline
+### 技术方案
 
-**输入**：全局任务、Agent 维护的观测/命令/结果摘要、当前 agent-view 和 wrist RGB、机器人状态。
+**输入**：Agent 接收全局任务、当前全局 RGB，以及整理后的“观测—命令—结果”历史；动作模型接收当前全局与腕部 RGB、机器人本体状态及 Agent 命令，不接收整段任务历史。
 
-**过程**：Agent生成结构化 steering command；动作模型以带 dropout、空间噪声和时间抖动的提示监督训练；部署时所有任务相关运动均通过同一动作模型。
+**过程**：Agent 将目标身份、目的地、次数与阶段压缩为结构化命令。动作模型采用 Qwen3-VL-4B 视觉语言骨干与 flow-matching Action Expert，每次预测 16 步绝对末端执行器动作块。Agent 在执行短动作块后重新观察并更新历史摘要，形成闭环。论文实验的 Agent 名称写作 Qwen3.8-27B；模型发布及可获得性待独立核验。
 
-**输出**：固定长度绝对末端执行器动作块。
+**输出**：16 步动作块，包含末端执行器绝对位姿和夹爪控制。部署不使用深度、在线分割掩码、物体位姿、标定三维几何或规划器替代执行任务运动；该限制不意味着离线训练标签也不使用几何信息。
 
-### 实验与证据
+#### 接口到底传什么
 
-在 LIBERO-Mem 上，2AM完成率 76.3%，相对最强报告基线 14.8% 提升 61.5 个百分点；相对对齐的 \(\pi_0\) 复现，完成率提高 5.5 点、宽松成功率提高 25.6 点，而严格成功率相近。后一个受控比较更能支持接口设计，前一个跨系统差距不能完全归因于记忆机制。 [正文实验与表格](https://arxiv.org/html/2609.11308v1)。
+提示点定义在当前 Agent 视角图像上，坐标归一化到 [0, 1000]²，原点在左上角。
+
+| 字段 | 传递的意图 | 有效期与边界 |
+| --- | --- | --- |
+| subtask language | 当前子任务与语义目标 | 提供动作语义，单独使用容易发生对象或目的地歧义 |
+| grasp_target | 当前应抓取的对象实例 | 抓住后应移除，避免过期抓取点将执行器拉回 |
+| place_target | 搬运后的目的地 | 可跨搬运过程保留，用于持续绑定目标位置 |
+| move_target | 近期夹爪移动方向的二维提示 | 不是完整轨迹、精确三维路点、姿态或持续时间指令 |
+
+#### 如何训练执行器读懂提示
+
+作者对示范轨迹进行离线标注：利用阶段、对象框或掩码、接触、对象运动和投影的末端执行器位置，确定性构造提示，不依赖 VLM 教师生成标签。grasp/place 用相关对象图像框中心；move 使用示范中未来 10–20 步的末端投影，临近轨迹结尾时截断。框中心是对象指向，不等于最佳物理接触点。
+
+训练动作窗口长 16 步，可以跨越子任务边界；使用非空条件 dropout（至少保留一种可用条件）、提示点空间高斯噪声和时间窗口抖动，以适应 Agent 漏给提示、位置不准和阶段切换不精确。论文没有通过完整的逐提示消融，将各项增强的独立贡献全部分离。[接口与训练：正文第 2–4 节](https://arxiv.org/html/2609.11308v1#S2)。
+
+### 实验结果
+
+LIBERO-Mem 共 10 个长程任务，包含重复动作、关系约束与遮挡。以下为论文表 3 的平均结果，单位均为百分比；“完成度”统计有序子目标推进比例，不是 episode 成功率。
+
+| 方法 | 严格成功率 Strict SR | 宽松成功率 Relaxed SR | 子目标完成度 Completion |
+| --- | ---: | ---: | ---: |
+| SlotSSM（已发表结果） | 0.00 | 未报告 | 14.80 |
+| 对齐复现基线（文中称 π0） | 12.25 | 37.42 | 70.79 |
+| 相同 Agent/动作模型，仅语言接口 | 7.25 | 19.42 | 53.72 |
+| 2AM | 11.83 | 63.00 | 76.29 |
+
+Strict SR 要求正确顺序、精确重复次数与及时停止：要求做三次却尝试第四次也算失败。Relaxed SR 允许在随后过度执行前已经达到完整有序目标；Completion 则允许只完成部分子目标。对齐复现使用相同 Qwen3-VL-4B 骨干、双 RGB 输入和 16 步动作块，不能把这一行写成官方原始 π0 权重的直接评测。
+
+相对对齐复现，2AM 的完成度提升 **5.50 个百分点**、宽松成功率提升 **25.58 点**，严格成功率却下降 **0.42 点**。相对同系统的仅语言接口，分别提升 **22.57、43.58、4.58 点**；这一控制更直接支持结构化空间提示的价值，仍不能单独归因于“记忆更强”。跨系统对比 SlotSSM 的 61.49 点完成度差距涉及更多配置差异。
+
+逐任务看，宽松成功率在 10/10 任务更高，完成度在 7/10 更高；对齐基线在重复运动任务 T1–T6 的严格成功更好，2AM 在关系/遮挡任务 T7–T10 更好。没有显著性检验依据时，不把平均数差异写成统计显著提升。[实验与表 3](https://arxiv.org/html/2609.11308v1#S6)。
 
 ### 代码与数据
 
-未发现官方代码、模型或扩展数据下载，Agent 记忆整理和提示生成的复现状态不明。
+截至本次核验，未发现官方代码、模型权重或扩展标注数据下载。基准为 LIBERO-Mem；Agent 的完整记忆整理提示词、运行依赖和训练配置的可复现性仍需核验。本卡片依据论文正文，未运行复现实验。
 
 ### 局限、失败案例与开放问题
 
-2D 提示适合可见对象操作，但无法表达隐藏力状态、精确 3D 接触和复杂轨迹；Agent 的错误对象绑定会直接误导动作模型。方法是记忆压缩与分工，不是参数冻结下从少量示例学习新动力学。
+论文展示的失败包括抓取不精确、子任务选择错误与目的地绑定错误。二维提示无法直接表示遮挡后的力状态、精确三维接触和完整运动约束；Agent 错误会通过提示传给执行器。当前证据来自单一仿真基准，没有实机验证，也没有充分比较更强 Agent、各提示独立作用及更新频率—延迟权衡。
+
+严格成功率偏低表明停止条件和重复计数仍是瓶颈。方法证明的是 Agent 侧记忆与可引导执行器的一种可行接口，不是少样本学习新动力学、因果识别或通用长程操作已经解决。
 
 ### 总结讨论：与知域的关系
 
-该工作为具身 ICL/WAM 提供“记忆只在 Agent，执行器保持短上下文”的系统对照，适合研究上下文接口而非单纯扩大模型窗口。
+值得借鉴的是“记忆的输出接口”，而非笼统地给动作模型增加历史。可将 2AM 的二维指向与 MaP-WAM 的视觉计划、MemCorr-DP 的几何条件并列，在同一 Agent、控制器、示例和计算预算下比较：对象身份保持、遮挡恢复、接触可达性以及精确终止。进一步加入持续 3D/4D 对应或接触状态是否有独立收益，属于阅读者提出的待检验假设，不能写成 2AM 已验证的结论。
 
 ## 9. UniMPA: A Unified Memory-Prediction-Action Model via Action-Grounded Transition Modeling
 
@@ -435,7 +549,14 @@ RMBench 九项任务平均成功率 83.3%，对比 LingBot-VA 77.1%、Mem-0 42.0
 - **数据**：使用 LIBERO、LIBERO-Plus、RoboTwin 2.0、VLABench 与真实机器人任务
 - **模型**：未发现独立权重页
 - **AlphaXiv**：[AlphaXiv](https://alphaxiv.org/abs/2609.11875)
-- **代表图链接**：[官方项目总览：未来预测—双向记忆—动作生成](https://jiutian-vl.github.io/UniMPA-page/#method)
+- **代表图**：Fig. 2
+
+![Fig. 2](../images/2609.11875-representative.webp)
+
+来源：[论文原文及图注](https://arxiv.org/html/2609.11875v1#S1.F2) · [原始图源](https://arxiv.org/html/2609.11875v1/Figures/3-frameworkv4.png)
+
+> Fig. 2: Overall framework of UniMPA. UniMPA couples future-supervised transition modeling, bidirectional visual-action memory, and action generation through an action-grounded transition. 1) The World Expert transforms zero-initialized transition queries into latent transition tokens conditioned on the current context; training-only latent and trigger-gated pixel heads supervise these tokens with future outcomes. 2) The future-supervised transition representation queries the Visual-Action Memory Bank for action-grounded visual experience, while historical actions query the Action-Visual Memory Bank to construct executable action prototypes. 3) The retrieved prior biases the initial flow distribution and is subsequently refined by the action expert. 4) The memory banks are pretrained in Stage 1 and frozen during policy training in Stage 2. During inference, only the explicit latent/pixel decoding heads are removed; the World Expert and its transition tokens remain active and, together with the retrieved action-manifold prior, condition action generation.
+
 - **类别标签**：Memory-Augmented VLA, Future Prediction, World Action Model, Flow Matching
 - **证据等级**：2026-09-14 已核对 arXiv 元数据、正文主要实验与对照；未运行复现实验。
 - **更新类型**：新论文
@@ -483,6 +604,18 @@ UniMPA把具身 ICL 式经验检索与 WAM 的未来预测、动作生成紧密�
 - **项目**：[DUET-DINO](https://utn-air.github.io/DUET-DINO)
 - **数据**：DROID、RoboArena
 - **AlphaXiv**：[AlphaXiv](https://alphaxiv.org/abs/2609.10506)
+- **代表图**：Fig. 2
+
+![Fig. 2](../images/2609.10506-representative.webp)
+
+来源：[论文原文及图注](https://arxiv.org/html/2609.10506v1#S3.F2) · [原始图源](https://arxiv.org/html/2609.10506v1/DUET-DINO.png)
+
+> Fig. 2: Architecture and training of DUET-DINO.
+The pretrained encoder maps side- and wrist-view observations into latent space.
+Cross-attention blocks condition each view on complementary information from the other view in the latent space.
+The view-specific predictor heads then predict future latents conditioned on the action and end-effector state.
+The dual-view prediction loss ℒ pred ​ ( ϕ , ψ ) \mathcal{L}_{\mathrm{pred}}(\phi,\psi) combines the teacher-forcing loss computed over all one-step predictions in the clip with an autoregressive loss over the K K -step rollout predictions.
+
 - **类别标签**：Latent World Model, Multi-View, 7-DoF Planning, DINOv3
 - **证据等级**：2026-09-14 已核对 arXiv 元数据、正文主要实验与对照；未运行复现实验。
 - **更新类型**：新论文
@@ -531,6 +664,21 @@ CEM 昂贵，硬件减少搜索预算；侧视角对相机位姿敏感。视觉 
 - **数据**：未公开
 - **模型**：未公开
 - **AlphaXiv**：[AlphaXiv](https://alphaxiv.org/abs/2609.11548)
+- **代表图**：Fig. 2
+
+![Fig. 2](../images/2609.11548-representative.webp)
+
+来源：[论文原文及图注](https://arxiv.org/html/2609.11548v1#S2.F2) · [原始图源](https://arxiv.org/html/2609.11548v1/pipeline.png)
+
+> Fig. 2 : Overview of the World in World pipeline. Target-view
+projections, rendered geometry, and retrieved historical states
+provide temporary visual evidence. Correspondence-guided attention
+routing connects queries to matching source-video tokens, and
+evidence-wise attention CFG regulates each channel’s additional
+contribution. Temporary evidence blocks are removed after each
+chunk; finalized outputs enter the rolling cache, and their visual
+features are archived after eviction.
+
 - **类别标签**：video world model, 交互式探索, 训练自由, egocentric
 - **证据等级**：2026-09-14 已核对 arXiv 元数据、正文主要实验与对照；未运行复现实验。
 - **更新类型**：新论文
@@ -574,6 +722,17 @@ CEM 昂贵，硬件减少搜索预算；侧视角对相机位姿敏感。视觉 
 - **数据**：未公开
 - **模型**：未公开
 - **AlphaXiv**：[AlphaXiv](https://alphaxiv.org/abs/2609.09941)
+- **代表图**：Figure 2
+
+![Figure 2](../images/2609.09941-representative.webp)
+
+来源：[论文原文及图注](https://arxiv.org/html/2609.09941v1#S3.F2) · [原始图源](https://arxiv.org/html/2609.09941v1/hm_model.png)
+
+> Figure 2: Architecture of HAM. Predicted video frames, the current
+observation, the initial anchor image, and conditioning actions
+are encoded and fused to predict a chunk-level hallucination
+score. Higher scores indicate less reliable predictions.
+
 - **类别标签**：world model, RL, VLA, 幻觉, 策略优化
 - **证据等级**：2026-09-14 已核对 arXiv 元数据、正文主要实验与对照；未运行复现实验。
 - **更新类型**：新论文
@@ -617,6 +776,14 @@ CEM 昂贵，硬件减少搜索预算；侧视角对相机位姿敏感。视觉 
 - **数据**：未公开
 - **模型**：未公开
 - **AlphaXiv**：[AlphaXiv](https://alphaxiv.org/abs/2609.10540)
+- **代表图**：Figure 3
+
+![Figure 3](../images/2609.10540-representative.webp)
+
+来源：[论文原文及图注](https://arxiv.org/html/2609.10540v1#S4.F3) · [原始图源](https://arxiv.org/html/2609.10540v1/framework.png)
+
+> Figure 3 : Architecture of the programmable world model. (1) Agent-orchestrated world programming starts from natural-language specifications to instantiate an executable canonical world state, which is maintained and advanced by a lightweight engine according to player actions and world rules. (2) Control compilation projects state-augmented 3D OBBs under the target camera into pixel-aligned identity, semantic, and motion-direction controls. (3) Generative rendering conditions a pretrained camera-controlled video generation model on these structured controls and visual history to synthesize the next video chunk. Completed chunks are incorporated into temporal and geometry-aligned spatial memories to support long-horizon generation.
+
 - **类别标签**：world model, 可编程状态, 视频生成, 交互
 - **证据等级**：2026-09-14 已核对 arXiv 元数据、正文主要实验与对照；未运行复现实验。
 - **更新类型**：新论文
@@ -661,6 +828,14 @@ CEM 昂贵，硬件减少搜索预算；侧视角对相机位姿敏感。视觉 
 - **数据**：未公开
 - **模型**：未公开
 - **AlphaXiv**：[AlphaXiv](https://alphaxiv.org/abs/2609.04911)
+- **代表图**：Figure 2
+
+![Figure 2](../images/2609.04911-representative.webp)
+
+来源：[论文原文及图注](https://arxiv.org/html/2609.04911v2#S2.F2) · [原始图源](https://arxiv.org/html/2609.04911v2/framework.png)
+
+> Figure 2: Overview of TourPhysics. (1) Scene Lifting (One-time Preprocessing) combines the input image with a declarative user configuration, including material models, force and velocity keyframes, and camera commands, to construct a persistent scene hypothesis comprising instance masks, a background plate, per-object 3D meshes, calibrated foreground and background geometry, a reference camera, and cached simulator assets. (2) Coupled Physical and Epistemic Transitions advances one action window. The orange Physical transition block fixes the multi-material physical and camera segment before synthesis; the read-only geometric record 𝒢 n \mathcal{G}_{n} supplies simulator-consistent depth, cameras, masks, and motion; and the observation model combines these controls with generator-facing depth 𝒟 𝒲 n gen \mathcal{D}_{\mathcal{W}_{n}}^{\mathrm{gen}} , the real-image anchor I 0 I_{0} , and committed appearance memory 𝒦 n \mathcal{K}_{n} to produce Y 𝒲 n Y_{\mathcal{W}_{n}} . A quality gate publishes the accepted state and appearance atomically; only after acceptance do reference-anchored memory and novel-view depth adaptation affect subsequent appearance controls. (3) Long-Horizon Tour-and-Manipulate Video (Output) chains the accepted windows into a persistent sequence that supports free-viewpoint exploration, physically faithful manipulation, and photorealistic long-horizon consistency, while the generated RGB never replaces simulator renderings or writes back to the physical state or simulator geometry.
+
 - **类别标签**：world model, physics, video generation, 单图重建
 - **证据等级**：2026-09-14 已核对 arXiv 元数据、正文主要实验与对照；未运行复现实验。
 - **更新类型**：新论文（v1 提交于 2026-09-04，v2 提交于 2026-09-07，窗口内有实质性修订）
@@ -704,7 +879,14 @@ CEM 昂贵，硬件减少搜索预算；侧视角对相机位姿敏感。视觉 
 - **数据**：约 100 万条真实与仿真轨迹；未发现完整数据下载页
 - **模型**：项目/仓库状态待核验
 - **AlphaXiv**：[AlphaXiv](https://alphaxiv.org/abs/2609.12036)
-- **代表图链接**：[论文 Figure 1：统一世界模拟器及四类下游用途](https://arxiv.org/html/2609.12036#S1.F1)
+- **代表图**：Figure 1
+
+![Figure 1](../images/2609.12036-representative.webp)
+
+来源：[论文原文及图注](https://arxiv.org/html/2609.12036v1#S0.F1) · [原始图源](https://arxiv.org/html/2609.12036v1/teaser.png)
+
+> Figure 1: Overview of Pelican-Sim 1.0. Top: Trained on approximately one million real-world and simulated trajectories, Pelican-Sim 1.0 predicts future observations from an initial RGB image, unified 28-dimensional action values, and camera-aligned action videos using a Video DiT with sparse MoE layers. Four downstream applications are illustrated: data generation for policy training, policy evaluation and ranking, action selection, and policy improvement. A fine-tuned VLM evaluator supplies success estimates, candidate scores, and rewards for the latter three applications, respectively; policy improvement uses closed-loop imagined interaction. Middle: Qualitative examples illustrate generalization across five dimensions: reversed trajectories, edited scenes and object variants, held-out robot embodiments, and novel viewpoints. Bottom: Adapted EWMBench overall scores summarize generation performance. Separate RoboTwin studies evaluate data generation through demonstration augmentation (Data Generation), action selection, and policy improvement against their respective baselines.
+
 - **类别标签**：Embodied World Model, Action-Conditioned Video, Cross-Embodiment, Policy Optimization
 - **证据等级**：2026-09-14 已核对 arXiv 元数据、正文主要实验与对照；未运行复现实验。
 - **更新类型**：新论文
@@ -754,7 +936,14 @@ Pelican-Sim 1.0把异构机器人的动作归一到 28 维数值接口，并把 
 - **数据**：10-task benchmark 与 PIPER X、SO-101、Franka 真实机器人数据；未发现独立下载
 - **模型**：使用冻结 VLA-JEPA；未新增公开权重
 - **AlphaXiv**：[AlphaXiv](https://alphaxiv.org/abs/2609.11445)
-- **代表图链接**：[论文 Figure 1：冻结预测状态上的失败读出](https://arxiv.org/html/2609.11445#S3.F1)
+- **代表图**：Fig. 1
+
+![Fig. 1](../images/2609.11445-representative.webp)
+
+来源：[论文原文及图注](https://arxiv.org/html/2609.11445v1#S3.F1) · [原始图源](https://arxiv.org/html/2609.11445v1/figures/method.png)
+
+> Fig. 1: FARM reads the WM state H t W ​ M ∈ ℝ 768 × 1024 H_{t}^{WM}\in\mathbb{R}^{768\times 1024} . A shared token projection, attention pooling, and lightweight MLP produce z t F ∈ ℝ 32 z_{t}^{F}\in\mathbb{R}^{32} and the step-wise failure score s t s_{t} ; q t = max τ ≤ t ⁡ s τ q_{t}=\max_{\tau\leq t}s_{\tau} aggregates only observed scores into causal trajectory risk.
+
 - **类别标签**：World Model Monitoring, Failure Detection, Frozen Representation, Causal History
 - **证据等级**：2026-09-14 已核对 arXiv 元数据、正文主要实验与对照；未运行复现实验。
 - **更新类型**：新论文
@@ -804,7 +993,14 @@ FARM为 WAM/VLA-JEPA 增加部署可靠性维度，可与 Causal-JEPA 类表示�
 - **数据**：使用 CALIPER 对象与 V-JEPA 2-AC 场景适配实验
 - **模型**：不适用
 - **AlphaXiv**：[AlphaXiv](https://alphaxiv.org/abs/2609.12441)
-- **代表图链接**：[论文 Figure 1：自一致性与物理锚定一致性的受控比较](https://arxiv.org/html/2609.12441#S4.F1)
+- **代表图**：Figure 1
+
+![Figure 1](../images/2609.12441-representative.webp)
+
+来源：[论文原文及图注](https://arxiv.org/html/2609.12441v1#S4.F1) · [原始图源](https://arxiv.org/html/2609.12441v1/validation.svg)
+
+> Figure 1: Controlled validation on 200 objects. (a) Self and anchored disagreement per stand-in model; the object-blind model is invisible to self-consistency and exposed by anchoring. (b) Anchored AUROC against the oracle as readout noise grows.
+
 - **类别标签**：World Model Evaluation, Physical Consistency, Intervention Evidence, Rollout Selection
 - **证据等级**：2026-09-14 已核对 arXiv 元数据、正文主要实验与对照；未运行复现实验。
 - **更新类型**：新论文
@@ -854,6 +1050,14 @@ IMPLY为世界模型的因果/反事实讨论提供重要边界：它使用干�
 - **数据**：EgoGenEval 基准 + EgoGen-Train 训练集
 - **模型**：不适用（基准）
 - **AlphaXiv**：[AlphaXiv](https://alphaxiv.org/abs/2609.11172)
+- **代表图**：Figure 2
+
+![Figure 2](../images/2609.11172-representative.webp)
+
+来源：[论文原文及图注](https://arxiv.org/html/2609.11172v1#S3.F2) · [原始图源](https://arxiv.org/html/2609.11172v1/pipeline_composition.png)
+
+> Figure 2: Benchmark construction and composition. (a) The construction pipeline mines geometry-grounded view transitions, instantiates language-conditioned atomic/chain/cycle protocols, and applies quality filtering and quota-balanced sampling. (b) The benchmark covers four atomic, three chain, and two cycle subtypes, each allocating K = 1 , 2 , 3 , 4 K{=}1,2,3,4 cases in a 50 : 35 : 10 : 5 50{:}35{:}10{:}5 ratio.
+
 - **类别标签**：世界模型评测, egocentric, 物理一致性, 基准
 - **证据等级**：2026-09-14 已核对 arXiv 元数据、正文主要实验与对照；未运行复现实验。
 - **更新类型**：新论文
@@ -895,6 +1099,14 @@ pose-free 与 pose-conditioned 系统的输入权限不同，论文将后者单�
 - **项目**：[WHIRL](https://whirl-dexterous.github.io/)
 - **代码 / 数据 / 模型**：未确认公开
 - **AlphaXiv**：[AlphaXiv](https://alphaxiv.org/abs/2609.06009)
+- **代表图**：Figure 2
+
+![Figure 2](../images/2609.06009-representative.webp)
+
+来源：[论文原文及图注](https://arxiv.org/html/2609.06009v1#S1.F2) · [原始图源](https://arxiv.org/html/2609.06009v1/figures6/overview_0529.png)
+
+> Figure 2: WHIRL overview: takeovers become predictive risk. During online execution, a frozen behavior prior and residual policy compose arm–hand actions while HIL takeovers create labeled replay. The intervention-aware world model then predicts dynamics, reward, termination, and next-step intervention probability; the first three heads support critic learning, while the intervention head supplies actor-side risk shaping.
+
 - **类别标签**：Dexterous Manipulation, World Model, Human Intervention, Safe RL
 - **证据等级**：2026-09-14 已核对 arXiv 元数据、正文主要实验与对照；未运行复现实验。
 - **更新类型**：新论文
@@ -939,6 +1151,14 @@ WHIRL 不把人类接管只当纠错动作，而把“人何时会接管”建�
 - **代码 / 模型**：未确认公开
 - **数据**：EVT-Bench、Habitat 3.0
 - **AlphaXiv**：[AlphaXiv](https://alphaxiv.org/abs/2609.06302)
+- **代表图**：Figure 2
+
+![Figure 2](../images/2609.06302-representative.webp)
+
+来源：[论文原文及图注](https://arxiv.org/html/2609.06302v1#S3.F2) · [原始图源](https://arxiv.org/html/2609.06302v1/pipelinenew.png)
+
+> Figure 2 : Overall pipeline of CST-WM. (a) Structured state construction. The egocentric observation O ℓ O_{\ell} yields a target-evidence token H ℓ H_{\ell} (GroundingDINO confidence and normalized target area) and a visual latent Z ℓ Z_{\ell} (frozen VAE); the robot state x ℓ x_{\ell} is integrated from the action history. They form S ℓ = [ H ℓ , Z ℓ , x ℓ ] S_{\ell}=[H_{\ell},Z_{\ell},x_{\ell}] . (b) Causally structured diffusion transition. The three branches are denoised in a fixed order under architectural masking: H ℓ + 1 H_{\ell+1} is updated without reading a ℓ a_{\ell} ; x ℓ + 1 x_{\ell+1} absorbs the current action and forms the sole action carrier R ℓ + 1 R_{\ell+1} ; the observation branch then fuses both to produce Z ℓ + 1 Z_{\ell+1} . The causal graph contains no direct edge from a ℓ a_{\ell} to H ℓ + 1 H_{\ell+1} . (c) Model-predictive planning with CEM. Starting from S 0 S_{0} , N N candidate sequences are rolled out, scored by the planning objective, and used to update the sampling distribution; after M M iterations the first action of the best top- K K sequence is executed in receding-horizon form.
+
 - **类别标签**：Causal World Model, Embodied Tracking, Action Leakage, MPC
 - **证据等级**：2026-09-14 已核对 arXiv 元数据、正文主要实验与对照；未运行复现实验。
 - **更新类型**：新论文
@@ -985,6 +1205,14 @@ CST-WM 针对 embodied tracking 的“因果幻觉”：模型可能把动作直
 - **代码 / 模型**：未确认公开
 - **数据**：Occluded Push、Aliased Maze、Deferred Kitchen 等任务
 - **AlphaXiv**：[AlphaXiv](https://alphaxiv.org/abs/2609.05834)
+- **代表图**：Figure 1
+
+![Figure 1](../images/2609.05834-representative.webp)
+
+来源：[论文原文及图注](https://arxiv.org/html/2609.05834v1#S6.F1) · [原始图源](https://arxiv.org/html/2609.05834v1#S6.F1)
+
+> Figure 1 : Counterfactual separability tracks downstream planning success. Across the five baseline model classes—none of which optimizes CFS—the correlation between CFS and success is r = 0.94 r=0.94 (Occluded Push) and r = 0.95 r=0.95 (Aliased Maze). The dashed line is a least-squares fit to the ten baseline points. CLWM (rightmost point in each series) directly optimizes counterfactual structure, so its points illustrate consistency with the trend rather than independent validation of the metric.
+
 - **类别标签**：Counterfactual Reasoning, Partial Observability, Intervention
 - **证据等级**：2026-09-14 已核对 arXiv 元数据、正文主要实验与对照；未运行复现实验。
 - **更新类型**：新论文
@@ -1030,6 +1258,14 @@ CST-WM 针对 embodied tracking 的“因果幻觉”：模型可能把动作直
 - **代码 / 模型**：未确认公开
 - **数据**：StackCube、DROID、RH20T
 - **AlphaXiv**：[AlphaXiv](https://alphaxiv.org/abs/2609.09210)
+- **代表图**：Fig. 3
+
+![Fig. 3](../images/2609.09210-representative.webp)
+
+来源：[论文原文及图注](https://arxiv.org/html/2609.09210v1#S5.F3) · [原始图源](https://arxiv.org/html/2609.09210v1/fig_ladder.svg)
+
+> Fig. 3: Compact status summary of the main diagnosis and transfer checks.
+
 - **类别标签**：Structural Causal Model, Robot World Model, Intervention, Adaptation
 - **证据等级**：2026-09-14 已核对 arXiv 元数据、正文主要实验与对照；未运行复现实验。
 - **更新类型**：新论文
@@ -1068,6 +1304,14 @@ StackCube 错误动作使误差约增 10.4 倍，16-shot 下 freeze+interface �
 ## 23. RodForesight: A World Model Enhanced Diffusion Policy for Slender and Material Agnostic Rod Insertion
 
 - **arXiv ID**：2609.12103
+- **代表图**：Fig. 3
+
+![Fig. 3](../images/2609.12103-representative.webp)
+
+来源：[论文原文及图注](https://arxiv.org/html/2609.12103v1#S4.F3) · [原始图源](https://arxiv.org/html/2609.12103v1/Figure3.png)
+
+> Fig. 3: Stage 2 inference. Paired semantic histories condition the diffusion policy and world model. The policy generates eight proposals of 16 actions. Selection uses the geometry predicted after four actions, giving priority to tilt and using radial error to resolve equal tilt values. The selected prefix is executed before reobservation and replanning. Insets illustrate the alignment errors.
+
 - **类别标签**：World Model, Diffusion Policy, Contact-Rich Manipulation, Action Selection
 - **更新类型**：新论文
 - **作者**：Chuanbo Yu, Mingyu Yue, Yan Lyu, Chuhan Song, Peng Wang
@@ -1110,6 +1354,15 @@ RodForesight 用低维杆尖—孔几何后果对候选动作排序：先用视�
 ## 24. Beyond Task Success: Stage-Wise Reliability of World Model Planning under Sensing Degradation
 
 - **arXiv ID**：2609.07126
+- **代表图**：Figure 1
+
+![Figure 1](../images/2609.07126-representative.webp)
+
+来源：[论文原文及图注](https://arxiv.org/html/2609.07126v1#S1.F1) · [原始图源](https://arxiv.org/html/2609.07126v1/figure1_final.png)
+
+> Figure 1: (a) Visual and temporal sensing conditions in the primary evaluation.
+(b) Stage 1–4 track changes in representation, prediction, planning, and task outcome. Degradation is applied to the observation/history while the goal observation remains clean.
+
 - **类别标签**：World Model, Reliability Evaluation, Planning, Sensing Degradation
 - **更新类型**：新论文
 - **作者**：Geonmyeong Lee, Byoung-Tak Zhang
@@ -1162,6 +1415,14 @@ RodForesight 用低维杆尖—孔几何后果对候选动作排序：先用视�
 - **数据**：发布 1,021 小时 egocentric 轨迹数据集
 - **模型**：将开源（作者声明）
 - **AlphaXiv**：[AlphaXiv](https://alphaxiv.org/abs/2609.04958)
+- **代表图**：\fnum@figure
+
+![\fnum@figure](../images/2609.04958-representative.webp)
+
+来源：[论文原文及图注](https://arxiv.org/html/2609.04958v2#S2.F2) · [原始图源](https://arxiv.org/html/2609.04958v2/egopipeline.png)
+
+> \fnum@figure : Overview of EgoPipeline . Egocentric videos are first pre-filtered by hand detection. The retained clips are then processed by GeoCalib for camera intrinsics, MoGe-2 for monocular depth, MegaSaM for camera pose, and HaWoR for bimanual hand reconstruction. A final post-processing stage stabilizes the recovered trajectories and composes the camera-frame hand states with the camera trajectory to produce world-space bimanual motion supervision.
+
 - **类别标签**：egocentric vision, hand motion, camera trajectory, 数据管线, HOI
 - **证据等级**：2026-09-14 已核对 arXiv 元数据、正文主要实验与对照；未运行复现实验。
 - **更新类型**：新论文（v1 上周期边界，v2 窗口内；馆藏无此记录）
@@ -1202,6 +1463,14 @@ UKF 改善时间平滑但引入后处理；世界坐标输出依赖相机和尺�
 - **正式出版**：未在 arXiv 记录中列出正式出版链接；会议接收信息见年份与发表。
 - **项目**：[From Where to How](https://corrineqiu.github.io/from-where-to-how/)
 - **AlphaXiv**：[AlphaXiv](https://alphaxiv.org/abs/2609.08636)
+- **代表图**：Fig. 5
+
+![Fig. 5](../images/2609.08636-representative.webp)
+
+来源：[论文原文及图注](https://arxiv.org/html/2609.08636v1#S3.F5) · [原始图源](https://arxiv.org/html/2609.08636v1/framework.png)
+
+> Fig. 5: Overview of HIGFlow. The first stage forecasts the locations of future interactions from egocentric context, and the second stage forecasts temporally aligned full-body poses conditioned on the predicted location sequence.
+
 - **类别标签**：Egocentric Video, 4D Interaction, HOI Forecasting, Flow Matching
 - **证据等级**：2026-09-14 已核对 arXiv 元数据、正文主要实验与对照；未运行复现实验。
 - **更新类型**：新论文
@@ -1250,7 +1519,14 @@ UKF 改善时间平滑但引入后处理；世界坐标输出依赖相机和尺�
 - **数据**：构建超过 80,000 段 4D affordance 视频，其中约 30,000 段为自采 RGB-D；未发现独立下载页
 - **模型**：未发现
 - **AlphaXiv**：[AlphaXiv](https://alphaxiv.org/abs/2609.05892)
-- **代表图链接**：[论文 Figure 1：Action-Oriented 4D Affordance 概念与跨 embodiment 迁移](https://arxiv.org/html/2609.05892#S1.F1)
+- **代表图**：Figure 2
+
+![Figure 2](../images/2609.05892-representative.webp)
+
+来源：[论文原文及图注](https://arxiv.org/html/2609.05892v1#S3.F2) · [原始图源](https://arxiv.org/html/2609.05892v1/pipeline.png)
+
+> Figure 2: Affordance-to-action representation transfer. Guided by the short-horizon geometric alignment between interaction-relevant 4D point motion and robot end-effector motion, A4A pretrains a vision–language policy to predict future 3D point trajectories and transfers the learned representation to robot control through the policy’s native state and action interfaces.
+
 - **类别标签**：Human-to-Robot, 4D Affordance, VLA Pretraining, HOI, Cross-Embodiment
 - **证据等级**：2026-09-14 已核对 arXiv 元数据、正文主要实验与对照；未运行复现实验。
 - **更新类型**：新论文
@@ -1300,6 +1576,16 @@ LIBERO-Object 10 个任务使用 500 条演示、每任务 50 次评估。平均
 - **数据**：超过 1,500 段生成视频计划被重建并物理落地；未发现独立数据下载页
 - **模型**：未发现
 - **AlphaXiv**：[AlphaXiv](https://alphaxiv.org/abs/2609.10050)
+- **代表图**：\fnum@figure
+
+![\fnum@figure](../images/2609.10050-representative.webp)
+
+来源：[论文原文及图注](https://arxiv.org/html/2609.10050v1#S3.F3) · [原始图源](https://arxiv.org/html/2609.10050v1/figures/hoi_reconstruction_overview.jpg)
+
+> \fnum@figure : HOI reconstruction pipeline. First-frame depth metric-aligns
+generated-video depth. Object masks, initial hand and object motion, and
+contact intervals then guide joint optimization to produce final estimates.
+
 - **类别标签**：Dexterous HOI, Video Planning, Simulation Grounding, Human-Object Reconstruction
 - **证据等级**：2026-09-14 已核对 arXiv 元数据、正文主要实验与对照；未运行复现实验。
 - **更新类型**：新论文
@@ -1346,6 +1632,14 @@ LIBERO-Object 10 个任务使用 500 条演示、每任务 50 次评估。平均
 - **正式出版**：未在 arXiv 记录中列出正式出版链接；会议接收信息见年份与发表。
 - **项目**：[FIRE3D](https://xiahongchi.github.io/Fire3D/)
 - **AlphaXiv**：[AlphaXiv](https://alphaxiv.org/abs/2609.08848)
+- **代表图**：Figure 2
+
+![Figure 2](../images/2609.08848-representative.webp)
+
+来源：[论文原文及图注](https://arxiv.org/html/2609.08848v1#S2.F2) · [原始图源](https://arxiv.org/html/2609.08848v1/method_v4.png)
+
+> Figure 2: Overview of FIRE3D network: Given the input posed RGB-D observations, FIRE3D first performs instance-aware 3D scene perception, and then generates the compact latents of each object conditioned on the predicted instance point clouds. Finally, the complete textured meshes are decoded with the hierarchical VAEs and assembled into a 3D scene with the predicted object 3D poses.
+
 - **类别标签**：Feedforward Reconstruction, Interactive 3D, Object-Centric Scene
 - **证据等级**：2026-09-14 已核对 arXiv 元数据、正文主要实验与对照；未运行复现实验。
 - **更新类型**：新论文
@@ -1393,6 +1687,14 @@ FIRE3D 不只恢复可渲染表面，而是在一分钟内生成可模拟的对�
 - **正式出版**：未在 arXiv 记录中列出正式出版链接；会议接收信息见年份与发表。
 - **项目**：[HuRo](https://3587jjh.github.io/HuRo)
 - **AlphaXiv**：[AlphaXiv](https://alphaxiv.org/abs/2609.10706)
+- **代表图**：Figure 2
+
+![Figure 2](../images/2609.10706-representative.webp)
+
+来源：[论文原文及图注](https://arxiv.org/html/2609.10706v2#S3.F2) · [原始图源](https://arxiv.org/html/2609.10706v2/Fig2.10.png)
+
+> Figure 2: Overview of HuRo dataset construction pipeline. Human videos are annotated, retargeted into robot actions, and visually converted into robotized observations to form HuRo episodes.
+
 - **类别标签**：Human Video, Robotization, VLA Pretraining, Dexterous Manipulation
 - **证据等级**：2026-09-14 已核对 arXiv 元数据、正文主要实验与对照；未运行复现实验。
 - **更新类型**：新论文
@@ -1439,6 +1741,14 @@ HuRo 把异构 egocentric 视频统一转为机器人观测—动作序列：估
 - **项目**：[DEX-X](https://dexx-code.github.io/dexx-code/)
 - **代码 / 数据 / 模型**：项目页开放状态待核验
 - **AlphaXiv**：[AlphaXiv](https://alphaxiv.org/abs/2609.07747)
+- **代表图**：Figure 2
+
+![Figure 2](../images/2609.07747-representative.webp)
+
+来源：[论文原文及图注](https://arxiv.org/html/2609.07747v2#S2.F2) · [原始图源](https://arxiv.org/html/2609.07747v2/pipeline_2.png)
+
+> Figure 2: Training Framework of Dex-X . After transferring human demonstrations into simulation, we train a privileged state-based expert using RL with demonstration references, object states, and tactile contact information. The expert is then distilled into a multi-task visual-tactile policy operating on a unified contact point cloud representation, which embeds fingertip tactile feedback into the scene geometry and fuses vision, force, and proprioception for policy learning. The resulting policy transfers zero-shot to diverse real-world dexterous manipulation tasks.
+
 - **类别标签**：Human Video, Dexterous Manipulation, Visual-Tactile Learning, HOI
 - **证据等级**：2026-09-14 已核对 arXiv 元数据、正文主要实验与对照；未运行复现实验。
 - **更新类型**：新论文
@@ -1486,7 +1796,14 @@ DEX-X 把单目人类示范重建为仿真 hand-object interaction，再用仿�
 - **数据**：六项真实接触任务，每项 100 条高质量演示；未公开下载
 - **模型**：未发现
 - **AlphaXiv**：[AlphaXiv](https://alphaxiv.org/abs/2609.09119)
-- **代表图链接**：[官方项目方法图：接触门控与视觉—触觉 latent 共想象](https://aureleopku.github.io/DeCAL/#method)
+- **代表图**：Figure 2
+
+![Figure 2](../images/2609.09119-representative.webp)
+
+来源：[论文原文及图注](https://arxiv.org/html/2609.09119v1#S4.F2) · [原始图源](https://arxiv.org/html/2609.09119v1/pipeline.png)
+
+> Figure 2: DeCAL is built upon a MoT architecture that unifies scene understanding, visuo-tactile dynamics foresight, and action generation. The Action Expert employs Factorized Flow Matching to decouple arm and hand motion, enabling better coordination and dexterous manipulation.
+
 - **类别标签**：Dexterous HOI, Vision-Tactile-Language-Action, Contact Dynamics, World Modeling
 - **证据等级**：2026-09-14 已核对 arXiv 元数据、正文主要实验与对照；未运行复现实验。
 - **更新类型**：新论文
@@ -1536,6 +1853,14 @@ DeCAL把接触后果显式加入灵巧 HOI/WAM，可为 StreamingHOI 或 4D HOI 
 - **数据**：未公开
 - **模型**：未公开
 - **AlphaXiv**：[AlphaXiv](https://alphaxiv.org/abs/2609.07002)
+- **代表图**：Figure 1
+
+![Figure 1](../images/2609.07002-representative.webp)
+
+来源：[论文原文及图注](https://arxiv.org/html/2609.07002v1#S3.F1) · [原始图源](https://arxiv.org/html/2609.07002v1/pipeline.png)
+
+> Figure 1: Overview of WM-Craftnet. A Dreamer-style recurrent state-space model (RSSM) learns a denoised recurrent state from multimodal observations and provides it as predictive context for the manipulation policy.
+
 - **类别标签**：HOI, dexterous, tactile, world model, in-hand manipulation
 - **证据等级**：2026-09-14 已核对 arXiv 元数据、正文主要实验与对照；未运行复现实验。
 - **更新类型**：新论文
@@ -1580,7 +1905,14 @@ clean-depth 训练目标来自模拟器，存在特权监督和 sim-to-real 差�
 - **数据**：约 200 小时、10,576 条轨迹、65 项任务；公开状态待核验
 - **模型**：未发现
 - **AlphaXiv**：[AlphaXiv](https://alphaxiv.org/abs/2609.12549)
-- **代表图链接**：[论文 Figure 3：STAR 触觉预训练与策略训练流程](https://arxiv.org/html/2609.12549#S4.F3)
+- **代表图**：Fig. 3
+
+![Fig. 3](../images/2609.12549-representative.webp)
+
+来源：[论文原文及图注](https://arxiv.org/html/2609.12549v1#S4.F3) · [原始图源](https://arxiv.org/html/2609.12549v1/pipeline1_new.png)
+
+> Fig. 3: Training Recipe . a) We jointly predict the masked tokens of RGB and tactile images for both intra- and inter-modal tactile pre-training. b) We construct the sparse-global tactile token representation for policy training by retaining activated spatial tactile tokens and per-hand global tactile tokens. c) During policy pre-training, we add sparse future tactile prediction to model informative future contact dynamics.
+
 - **类别标签**：Dexterous Manipulation, Tactile Representation, VTLA, Sparse Tokens
 - **证据等级**：2026-09-14 已核对 arXiv 元数据、正文主要实验与对照；未运行复现实验。
 - **更新类型**：新论文
@@ -1630,7 +1962,14 @@ STAR与 DeCAL共同形成触觉 HOI/WAM 板块，强调世界模型不应只预�
 - **数据**：程序化铰接物体与任务导向抓取资产；未发现公开下载
 - **模型**：未发现
 - **AlphaXiv**：[AlphaXiv](https://alphaxiv.org/abs/2609.12498)
-- **代表图链接**：[论文 Figure 1：类别级铰接手内操作任务与系统概览](https://arxiv.org/html/2609.12498#S1.F1)
+- **代表图**：Figure 3
+
+![Figure 3](../images/2609.12498-representative.webp)
+
+来源：[论文原文及图注](https://arxiv.org/html/2609.12498v1#S3.F3) · [原始图源](https://arxiv.org/html/2609.12498v1/fig_pipeline_full.png)
+
+> Figure 3: Policy training pipeline. A teacher policy learns with privileged object information encoded into a latent representation. The student encoder is trained to predict this latent from observable proprioceptive history and initial observation, while the base policy is copied and frozen for deployment under partial observations.
+
 - **类别标签**：Articulated HOI, Dexterous In-Hand Manipulation, Sim-to-Real, Category-Level Generalization
 - **证据等级**：2026-09-14 已核对 arXiv 元数据、正文主要实验与对照；未运行复现实验。
 - **更新类型**：新论文
@@ -1680,6 +2019,14 @@ ArtManip扩展了 HOI 从单次抓取/重建到长时铰接接触控制，可为
 - **数据**：未公开
 - **模型**：未公开
 - **AlphaXiv**：[AlphaXiv](https://alphaxiv.org/abs/2609.08743)
+- **代表图**：Figure 2
+
+![Figure 2](../images/2609.08743-representative.webp)
+
+来源：[论文原文及图注](https://arxiv.org/html/2609.08743v1#S3.F2) · [原始图源](https://arxiv.org/html/2609.08743v1/figure_method.png)
+
+> Figure 2: Overview of Foci Policy . Given point clouds of task-relevant objects and a language instruction, the policy first predicts an object-centric relative motion. Then, the desired end-effector trajectory is recovered by (a) GOI tasks: composing the predicted relative poses with the estimated target object pose. (b) OOI tasks: composing the predicted interaction with the grasp offset.
+
 - **类别标签**：object-centric, HOI, 关系操作, 数据效率
 - **证据等级**：2026-09-14 已核对 arXiv 元数据、正文主要实验与对照；未运行复现实验。
 - **更新类型**：新论文

@@ -130,11 +130,21 @@ def tag_identity(tag: str) -> str:
     return re.sub(r"[-‐‑‒–—\s]+", "", tag).casefold()
 
 
+# Reviewed broad library topics; the source Markdown retains detailed keywords.
+TAG_TOPIC_ALIASES = {
+    tag_identity(alias): canonical
+    for canonical, aliases in json.loads(
+        Path(__file__).with_name("tag_taxonomy.json").read_text(encoding="utf-8")
+    ).items()
+    for alias in [canonical, *aliases]
+}
+
+
 def normalize_tag(tag: str) -> str:
     """Normalize human-authored list syntax and stable tag casing."""
     tag = re.sub(r"^[\s\[\]【】]+|[\s\[\]【】]+$", "", tag)
     tag = re.sub(r"\s+", " ", tag).strip()
-    return TAG_CANONICAL_CASE.get(tag_identity(tag), tag)
+    return TAG_TOPIC_ALIASES.get(tag_identity(tag), TAG_CANONICAL_CASE.get(tag_identity(tag), tag))
 
 
 IMAGE_URL_RE = re.compile(r"\.(?:png|jpe?g|gif|webp|svg)(?:\?|#|$)", re.I)
@@ -380,8 +390,6 @@ def extract_figure(section: str, title: str, arxiv_id: str = "") -> dict[str, st
     label = field_value(section, ("代表图",))
     source_match = re.search(r"来源[：:]\s*\[([^]]+)\]\((https?://[^)]+)\)", section)
     source_url = source_match.group(2) if source_match else ""
-    if source_url and not looks_like_image_url(source_url) and looks_like_image_url(url):
-        source_url = url
     if not source_url and url.startswith("http"):
         source_url = url
     return {

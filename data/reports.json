@@ -5,16 +5,15 @@
     "date": "2026-09-14",
     "tags": [
       "3D/4D",
-      "causal evaluation",
-      "egocentric vision",
-      "Embodied In-context Learning",
       "HOI",
-      "tactile",
       "World Action Model",
-      "world model",
-      "专题"
+      "世界模型",
+      "世界模型评测",
+      "具身上下文学习",
+      "第一视角",
+      "触觉与接触"
     ],
-    "summary": "报告标签 ：专题, World Action Model, world model, HOI, 3D/4D, egocentric vision, Embodied In-context Learning, causal evaluation, tactile",
+    "summary": "OpenWAM 双系统架构、预训练组成与统一动作空间",
     "paper_ids": [
       "arxiv-2609-04911",
       "arxiv-2609-04958",
@@ -55,24 +54,23 @@
     ],
     "path": "content/reports/2026-09-14_predictive_to_executable_world_models.md",
     "source_file": "2026-09-14_predictive_to_executable_world_models.md",
-    "content_sha1": "5e0c9f4061de19442484350792cd6a856a72c949"
+    "content_sha1": "301f77f4f1a9bb4cf4dc274772f0633b907613b2"
   },
   {
     "id": "report-0d81d19c6c",
     "title": "知域论文合并更新：2026-09-06",
     "date": "2026-09-06",
     "tags": [
-      "3D/4D Reconstruction",
-      "Causal Modeling",
-      "cross-embodiment",
-      "egocentric vision",
-      "Embodied In-context Learning",
+      "3D/4D",
       "HOI",
-      "Physical Reasoning",
-      "Streaming Generation",
       "World Action Model",
-      "world model",
-      "周报"
+      "世界模型",
+      "具身上下文学习",
+      "因果建模",
+      "流式生成",
+      "物理建模",
+      "第一视角",
+      "跨本体迁移"
     ],
     "summary": "报告标签 ：周报, World Action Model, world model, Embodied In-context Learning, cross-embodiment, HOI, egocentric vision, 3D/4D Reconstruction, Streaming Generation, Causal Modeling, Physical Reasoning",
     "paper_ids": [
@@ -108,9 +106,8 @@
     "title": "物理世界模型与物理一致视频生成论文精读（2026-09-03）",
     "date": "2026-09-03",
     "tags": [
-      "Physical World Model",
-      "Physics-Aware Video Generation",
-      "World Simulator"
+      "世界模型",
+      "物理建模"
     ],
     "summary": "报告标签 ：Physical World Model, Physics-Aware Video Generation, World Simulator",
     "paper_ids": [
@@ -134,12 +131,11 @@
     "title": "具身 In-Context Learning 专题：视频提示、长上下文与测试时适应",
     "date": "2026-09-02",
     "tags": [
-      "Embodied ICL",
-      "In-context Imitation Learning",
-      "Robot Memory",
-      "Test-time Adaptation",
       "VLA",
-      "World Action Model"
+      "World Action Model",
+      "具身上下文学习",
+      "测试时适应",
+      "长时记忆"
     ],
     "summary": "本专题以 Zero-WAM、RoboTTT、HOST、S1、GEN-1.5 和 Dyna-2 为主线，并保留 RA-VLA、PonderPounce 两项相关工作。统一比较上下文是什么、策略在测试时究竟改变了什么、实验探查了什么、证据实际支持什么。RoboTTT 与 HOST 有 arXiv 论文；S1、GEN-1.5 和 Dyna-2 目前只有机构官方研究长文或网页版技术报告，后者的结果均按“作者自报、未外部复现”处理。",
     "paper_ids": [
@@ -161,13 +157,13 @@
     "title": "Dyna-2 技术报告精读：百万小时人类视频上的世界动作模型扩展律",
     "date": "2026-09-02",
     "tags": [
-      "cross-embodiment transfer",
-      "flow matching",
-      "scaling law",
-      "video generation",
       "World Action Model",
+      "扩散与流匹配",
       "机器人学习",
-      "第一视角"
+      "第一视角",
+      "视频生成",
+      "跨本体迁移",
+      "预训练与扩展律"
     ],
     "summary": "报告标签 ：World Action Model, scaling law, cross-embodiment transfer, 第一视角, 机器人学习, flow matching, video generation",
     "paper_ids": [
@@ -183,13 +179,9 @@
     "date": "2026-08-31",
     "tags": [
       "3D/4D",
-      "Flow-GRPO",
-      "GRPO",
-      "R1",
-      "Reward Optimization",
-      "Robot Policy",
-      "video generation",
-      "强化学习"
+      "强化学习",
+      "机器人学习",
+      "视频生成"
     ],
     "summary": "严格收录知域中直接使用 R1-style、GRPO、RL post-training 或显式奖励优化的 6 篇工作；不因标题、机器人型号或 on-policy 字样做表面匹配。",
     "paper_ids": [
@@ -210,14 +202,12 @@
     "date": "2026-08-30",
     "tags": [
       "3D/4D",
-      "Embodied In-context Learning",
       "HOI",
-      "In-context Imitation Learning",
       "VLA",
       "World Action Model",
       "世界模型",
+      "具身上下文学习",
       "前馈重建",
-      "周报",
       "因果建模",
       "流式生成",
       "第一视角",
@@ -269,13 +259,12 @@
     "title": "ViDiHand：视频扩散表征用于第一视角 4D 双手运动重建",
     "date": "2026-08-29",
     "tags": [
-      "4D hand reconstruction",
-      "diffusion features",
-      "egocentric vision",
-      "embodied AI",
-      "hand-object interaction",
-      "MANO",
-      "video diffusion model"
+      "3D/4D",
+      "HOI",
+      "机器人学习",
+      "第一视角",
+      "视频生成",
+      "预测表征"
     ],
     "summary": "报告标签 ：4D hand reconstruction, egocentric vision, hand-object interaction, video diffusion model, diffusion features, MANO, embodied AI",
     "paper_ids": [
@@ -290,11 +279,11 @@
     "title": "视频表征、潜在动作与世界动作模型论文整理",
     "date": "2026-08-26",
     "tags": [
-      "latent action",
-      "robot learning",
-      "video generation",
-      "video representation",
-      "World Action Model"
+      "World Action Model",
+      "动作表征",
+      "机器人学习",
+      "视频生成",
+      "预测表征"
     ],
     "summary": "报告标签 ：video representation, latent action, world action model, robot learning, video generation",
     "paper_ids": [
@@ -313,8 +302,7 @@
     "tags": [
       "3D/4D",
       "几何一致性",
-      "视频生成",
-      "重建"
+      "视频生成"
     ],
     "summary": "本报告逐篇核验三项指定工作，覆盖原文方法与实验、官方项目页、代码开放状态及可复现边界。",
     "paper_ids": [
@@ -331,14 +319,13 @@
     "title": "知域每周论文更新：2026-08-23",
     "date": "2026-08-23",
     "tags": [
-      "4D重建",
+      "3D/4D",
       "HOI",
       "World Action Model",
-      "动作流",
-      "周报",
+      "动作表征",
       "因果建模",
       "流式生成",
-      "自我中心视觉"
+      "第一视角"
     ],
     "summary": "报告标签 ：周报, World-Action-Model, HOI, 流式生成, 4D重建, 因果建模, 动作流, 自我中心视觉",
     "paper_ids": [
@@ -384,10 +371,7 @@
     "date": "2026-08-21",
     "tags": [
       "3D/4D",
-      "动态几何",
-      "单目三维重建",
-      "扩散模型",
-      "生成式几何"
+      "扩散与流匹配"
     ],
     "summary": "阅读总判断：World Tracing 的核心贡献不是把单目深度估计再做大，而是把“可见表面重建”和“遮挡后几何生成”统一为输入像素射线上的有序多层相机坐标点。公开实验支持它在作者设定的对象、场景与短动态片段上兼顾像素对齐和几何完整性；但 best-of-8 选样、内部场景测试集、合成深度剥离监督和固定六层表示限制了结论外推。",
     "paper_ids": [
@@ -402,11 +386,10 @@
     "title": "Visual Action / Geometry Action：以视觉与几何形式统一跨本体动作",
     "date": "2026-08-21",
     "tags": [
-      "cross-embodiment",
-      "embodied AI",
-      "geometry action",
-      "visual action",
-      "world model"
+      "世界模型",
+      "动作表征",
+      "机器人学习",
+      "跨本体迁移"
     ],
     "summary": "报告标签 ：visual action, geometry action, world model, cross-embodiment, embodied AI",
     "paper_ids": [
@@ -452,7 +435,6 @@
     "title": "FACT、PSG-JEPA、Gaussian-JEPA 与 Masked Visual Actions：失败条件世界模型与 JEPA 表征整理",
     "date": "2026-08-21",
     "tags": [
-      "JEPA",
       "World Action Model",
       "机器人学习",
       "预测表征"
