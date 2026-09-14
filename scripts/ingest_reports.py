@@ -305,6 +305,8 @@ def classify_links(section: str, arxiv_id: str) -> dict[str, str]:
     for label, url in re.findall(r"\[([^]]+)\]\((https?://[^)]+)\)", section):
         lower_label = label.casefold()
         lower_url = url.casefold()
+        if looks_like_image_url(url) or "arxiv.org/html/" in lower_url:
+            continue
         if "arxiv.org/abs/" in lower_url:
             links.setdefault("paper", url)
         elif any(marker in lower_label for marker in OFFICIAL_REPORT_LABELS):
@@ -465,8 +467,8 @@ def parse_paper(title: str, section: str, profile: dict[str, Any], report_id: st
         "doi": doi,
         "links": links,
         "tags": (
-            merge_tags(profile["tags"], category_tags)
-            if category_tags and official_report_source
+            merge_tags(category_tags)
+            if category_tags
             else merge_tags(infer_tags(title, section, profile["tags"]))
         ),
         "figure": extract_figure(section, title, arxiv_id),
@@ -474,7 +476,7 @@ def parse_paper(title: str, section: str, profile: dict[str, Any], report_id: st
         "insight": insight,
         "pipeline": extract_pipeline(pipeline_markdown),
         "experiments": segments.get("experiments", ""),
-        "evidence_notes": segments.get("evidence", ""),
+        "evidence_notes": segments.get("evidence", "") or field_value(section, ("证据等级",)),
         "code_data_status": code_data,
         "limitations": segments.get("limitations", ""),
         "comments": "",
@@ -486,6 +488,13 @@ def parse_paper(title: str, section: str, profile: dict[str, Any], report_id: st
         value = segments.get(key, "")
         if value:
             record[key] = value
+    arxiv_metadata = {
+        "published": field_value(section, ("首次提交",)),
+        "revised_at": field_value(section, ("最近修订",)),
+        "primary_category": field_value(section, ("arXiv 主分类",)),
+    }
+    if any(arxiv_metadata.values()):
+        record["arxiv"] = arxiv_metadata
     return record
 
 
@@ -621,6 +630,9 @@ def merge_records(
         # Unchanged reports may fill genuinely empty fields, but never rewrite
         # reviewed content already present in the generated collection.
         for key in LEGACY_TEXT_FIELDS:
+            # Re-parsing an old evidence label is not a fresh paper audit.
+            if key == "evidence_notes":
+                continue
             if not merged.get(key) and new.get(key):
                 merged[key] = new[key]
         for key in OPTIONAL_NARRATIVE_FIELDS:
@@ -636,7 +648,11 @@ def merge_records(
             merged["figure"] = new["figure"]
         if not merged.get("authors") and new.get("authors"):
             merged["authors"] = new["authors"]
-    merged["tags"] = merge_tags(old.get("tags", []), new.get("tags", []))
+    merged["tags"] = (
+        merge_tags(old.get("tags", []), new.get("tags", []))
+        if allow_text_replace or not old.get("tags")
+        else merge_tags(old["tags"])
+    )
     for key in ("authors", "year", "publication", "arxiv_id", "doi"):
         if not merged.get(key) and new.get(key):
             merged[key] = new[key]
@@ -717,6 +733,9 @@ def build() -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
     papers = list(existing)
     for paper in papers:
         paper["tags"] = merge_tags(paper.get("tags", []))
+    tag_spellings = {
+        tag_identity(tag): tag for paper in papers for tag in paper.get("tags", [])
+    }
     key_to_index: dict[str, int] = {}
     for index, paper in enumerate(papers):
         for key in identity_keys(paper):
@@ -749,6 +768,9 @@ def build() -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
             candidate = parse_paper(paper_title, section, profile, report_id)
             if not candidate:
                 continue
+            candidate["tags"] = merge_tags(
+                [tag_spellings.setdefault(tag_identity(tag), tag) for tag in candidate["tags"]]
+            )
             matches = [key_to_index[key] for key in identity_keys(candidate) if key in key_to_index]
             if matches:
                 index = matches[0]

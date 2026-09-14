@@ -1,6 +1,6 @@
 import unittest
 
-from scripts.ingest_reports import merge_records, normalize_tag, parse_paper
+from scripts.ingest_reports import classify_links, merge_records, normalize_tag, parse_paper
 
 
 def record(figure_url: str, links: dict[str, str]) -> dict:
@@ -20,6 +20,17 @@ def record(figure_url: str, links: dict[str, str]) -> dict:
 
 
 class MergeRecordsTest(unittest.TestCase):
+    def test_unchanged_report_preserves_reviewed_tags(self) -> None:
+        old = record("", {})
+        old["tags"] = ["World Action Model"]
+        old["evidence_notes"] = ""
+        new = record("", {})
+        new["tags"] = ["tactile"]
+        new["evidence_notes"] = "Old source evidence, not a new audit"
+        merged = merge_records(old, new, allow_text_replace=False)
+        self.assertEqual(merged["tags"], ["World Action Model"])
+        self.assertEqual(merged["evidence_notes"], "")
+
     def test_changed_report_replaces_equal_quality_figure(self) -> None:
         old = record("https://example.com/broken.png", {})
         new = record("https://example.com/replacement.png", {})
@@ -46,6 +57,32 @@ class NormalizeTagTest(unittest.TestCase):
 
 
 class ParsePaperTest(unittest.TestCase):
+    def test_arxiv_card_keeps_its_own_tags_and_evidence(self) -> None:
+        parsed = parse_paper(
+            "Memory Study",
+            """- **论文**：[arXiv](https://arxiv.org/abs/2609.11308)
+- **类别标签**：Memory, Robot Manipulation
+- **证据等级**：正文表 3 已核验
+- **首次提交**：2026-09-10T09:35:56Z
+- **最近修订**：2026-09-10T09:35:56Z
+- **arXiv 主分类**：cs.RO
+""",
+            {"level": 2, "tags": ["HOI", "tactile"]},
+            "report-memory",
+        )
+        self.assertEqual(parsed["tags"], ["Memory", "Robot Manipulation"])
+        self.assertEqual(parsed["evidence_notes"], "正文表 3 已核验")
+        self.assertEqual(parsed["arxiv"]["published"], "2026-09-10T09:35:56Z")
+
+    def test_figure_caption_does_not_create_a_model_download(self) -> None:
+        links = classify_links(
+            """[World Model overview](https://arxiv.org/html/2609.11308#S2.F1)
+[Model architecture](https://example.com/model.png)
+[模型](https://huggingface.co/example/weights)
+""", "2609.11308"
+        )
+        self.assertEqual(links["model"], "https://huggingface.co/example/weights")
+
     def test_official_research_article_is_an_ingestable_primary_source(self) -> None:
         section = """
 **作者：** Skild AI
