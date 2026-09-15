@@ -24,6 +24,17 @@ DATA_DIR = ROOT / "data"
 PAPERS_PATH = DATA_DIR / "papers.json"
 REPORTS_PATH = DATA_DIR / "reports.json"
 
+DISPLAY_ONLY_REPORTS = [
+    {
+        "id": "report-wam-depth-talk-20260918",
+        "title": "3D/4D Geometric World Action Model",
+        "date": "2026-09-18",
+        "tags": ["3D/4D", "World Action Model", "机器人学习"],
+        "summary": "论文分享：围绕几何监督、未来状态、运动接口与跨本体迁移，梳理 15 篇主题论文，并附 27 篇分类参考文献。",
+        "path": "docs/talks/2026-09-15_wam_depth/3D-4D Geometric World Action Model_汇报正文.md",
+    },
+]
+
 PROFILES = {
     "world_model_causality_counterfactual_survey_2026-08-20.md": {
         "level": 2,
@@ -736,6 +747,23 @@ def fill_completeness_status(paper: dict[str, Any]) -> None:
         )
 
 
+def display_only_reports(papers: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """List existing presentation documents without importing their paper text."""
+    reports = []
+    for entry in DISPLAY_ONLY_REPORTS:
+        path = ROOT / entry["path"]
+        body = path.read_text(encoding="utf-8").split("## 参考文献", 1)[0]
+        arxiv_ids = set(re.findall(r"arxiv\.org/(?:abs|html|pdf)/(\d{4}\.\d{4,5})", body))
+        reports.append({
+            **entry,
+            "source_file": path.name,
+            "paper_ids": sorted(
+                paper["id"] for paper in papers if paper.get("arxiv_id") in arxiv_ids
+            ),
+        })
+    return reports
+
+
 def build() -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
     existing = read_json(PAPERS_PATH, [])
     papers = list(existing)
@@ -810,6 +838,7 @@ def build() -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
     for paper in papers:
         fill_completeness_status(paper)
     papers.sort(key=lambda item: (-(item.get("year") or 0), item["title"].casefold()))
+    reports.extend(display_only_reports(papers))
     reports.sort(key=lambda item: (item["date"], item["title"]), reverse=True)
     return papers, reports
 

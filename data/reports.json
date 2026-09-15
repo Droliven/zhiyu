@@ -1,5 +1,26 @@
 [
   {
+    "id": "report-wam-depth-talk-20260918",
+    "title": "3D/4D Geometric World Action Model",
+    "date": "2026-09-18",
+    "tags": [
+      "3D/4D",
+      "World Action Model",
+      "机器人学习"
+    ],
+    "summary": "论文分享：围绕几何监督、未来状态、运动接口与跨本体迁移，梳理 15 篇主题论文，并附 27 篇分类参考文献。",
+    "path": "docs/talks/2026-09-15_wam_depth/3D-4D Geometric World Action Model_汇报正文.md",
+    "source_file": "3D-4D Geometric World Action Model_汇报正文.md",
+    "paper_ids": [
+      "arxiv-2606-03943",
+      "arxiv-2606-13769",
+      "arxiv-2607-05468",
+      "arxiv-2608-24101",
+      "arxiv-2608-29242",
+      "arxiv-2609-05892"
+    ]
+  },
+  {
     "id": "report-37b94c4145",
     "title": "从可预测到可执行：世界模型的记忆、物理约束与 4D 交互接口",
     "date": "2026-09-14",
