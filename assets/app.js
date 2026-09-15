@@ -235,6 +235,7 @@ function bindEvents() {
     const button = event.target.closest("[data-open-report]");
     if (button) openReport(button.dataset.openReport);
   });
+  elements.reportDialogContent.addEventListener("click", navigateReportToc);
 
   document.querySelector("[data-close-dialog]").addEventListener("click", () => {
     elements.paperDialog.close();
@@ -784,8 +785,20 @@ function shortAuthors(authors) {
   return `${authors.slice(0, 3).join(", ")} et al.`;
 }
 
+function navigateReportToc(event) {
+  const link = event.target.closest("[data-report-heading]");
+  if (!link) return;
+  const heading = elements.reportDialogContent.querySelector(`#${link.dataset.reportHeading}`);
+  if (!heading) return;
+  event.preventDefault();
+  heading.scrollIntoView({ block: "start" });
+  heading.focus({ preventScroll: true });
+}
+
 function renderMarkdown(markdown, basePath = "") {
   const lines = String(markdown || "").replace(/\r\n/g, "\n").split("\n");
+  const tocRequested = lines.some((line) => /^\[toc\]$/i.test(line.trim()));
+  const headings = [];
   const html = [];
   let index = 0;
 
@@ -809,10 +822,19 @@ function renderMarkdown(markdown, basePath = "") {
       continue;
     }
 
+    if (/^\[toc\]$/i.test(line.trim())) {
+      html.push("<!-- markdown-toc -->");
+      index += 1;
+      continue;
+    }
+
     const heading = line.match(/^(#{1,5})\s+(.+)$/);
     if (heading) {
       const level = Math.min(heading[1].length, 4);
-      html.push(`<h${level}>${inlineMarkdown(heading[2], basePath)}</h${level}>`);
+      const id = `report-heading-${index}`;
+      if (level > 1) headings.push({ id, level, text: heading[2] });
+      const anchor = tocRequested ? ` id="${id}" tabindex="-1"` : "";
+      html.push(`<h${level}${anchor}>${inlineMarkdown(heading[2], basePath)}</h${level}>`);
       index += 1;
       continue;
     }
@@ -871,6 +893,7 @@ function renderMarkdown(markdown, basePath = "") {
       !/^\s*>/.test(lines[index]) &&
       !/^\s*(-|\*|\d+\.)\s+/.test(lines[index]) &&
       !lines[index].trim().startsWith("```") &&
+      !/^\[toc\]$/i.test(lines[index].trim()) &&
       !(lines[index].trim().startsWith("|") && index + 1 < lines.length && /^\s*\|?[\s:|-]+\|/.test(lines[index + 1]))
     ) {
       paragraph.push(lines[index].trim());
@@ -878,7 +901,11 @@ function renderMarkdown(markdown, basePath = "") {
     }
     html.push(`<p>${inlineMarkdown(paragraph.join(" "), basePath)}</p>`);
   }
-  return html.join("");
+  const toc = tocRequested ? `<details class="report-toc" open><summary>目录</summary><nav aria-label="报告目录"><ol>${headings.map(({ id, level, text }) => {
+    const label = text.replace(/!?\[([^\]]*)\]\([^)]+\)/g, "$1").replace(/[*`]/g, "");
+    return `<li class="toc-level-${level}"><a href="#${id}" data-report-heading="${id}">${escapeHtml(label)}</a></li>`;
+  }).join("")}</ol></nav></details>` : "";
+  return html.join("").replaceAll("<!-- markdown-toc -->", toc);
 }
 
 function inlineMarkdown(text, basePath) {

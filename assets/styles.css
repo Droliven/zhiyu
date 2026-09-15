@@ -1327,6 +1327,42 @@ dialog::backdrop {
   padding: 34px 44px 70px;
 }
 
+.report-toc {
+  margin: 24px 0;
+  padding: 16px 20px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.report-toc summary {
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.report-toc nav {
+  max-height: 22rem;
+  overflow-y: auto;
+  margin-top: 12px;
+}
+
+.report-article .report-toc ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.report-article .report-toc li {
+  margin: 6px 0;
+  line-height: 1.5;
+}
+
+.report-toc .toc-level-3 { padding-left: 1.25rem; }
+.report-toc .toc-level-4 { padding-left: 2.5rem; }
+
+.report-article [id^="report-heading-"] {
+  scroll-margin-top: 76px;
+}
+
 .paper-detail h1,
 .report-article > h1 {
   margin: 0;
