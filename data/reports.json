@@ -21,6 +21,40 @@
     ]
   },
   {
+    "id": "report-1b1ffacf7d",
+    "title": "从视频预测到结构化世界状态：WAM、3D/4D 与具身交互新进展",
+    "date": "2026-09-16",
+    "tags": [
+      "3D/4D",
+      "HOI",
+      "World Action Model",
+      "人类视频",
+      "具身导航",
+      "前馈重建",
+      "因果审计",
+      "流式世界模型"
+    ],
+    "summary": "<!-- suggested filename: 2026-09-16 weekly paper update.md --",
+    "paper_ids": [
+      "arxiv-2609-06955",
+      "arxiv-2609-12155",
+      "arxiv-2609-13733",
+      "arxiv-2609-13812",
+      "arxiv-2609-13851",
+      "arxiv-2609-14462",
+      "arxiv-2609-14561",
+      "arxiv-2609-14833",
+      "arxiv-2609-15005",
+      "arxiv-2609-15870",
+      "arxiv-2609-16737",
+      "arxiv-2609-17372",
+      "arxiv-2609-17524"
+    ],
+    "path": "content/reports/2026-09-16_weekly_paper_update.md",
+    "source_file": "2026-09-16_weekly_paper_update.md",
+    "content_sha1": "b37d79b5c5d8c4a3ae1e90925e0bad1f776467cd"
+  },
+  {
     "id": "report-37b94c4145",
     "title": "从可预测到可执行：世界模型的记忆、物理约束与 4D 交互接口",
     "date": "2026-09-14",

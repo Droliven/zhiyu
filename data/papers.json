@@ -301,6 +301,68 @@
     }
   },
   {
+    "id": "arxiv-2609-14462",
+    "title": "AlayaVista: Streaming World Modeling from Panoramic States to Perspective Video",
+    "authors": [
+      "Jiaming Tan",
+      "Mingliang Zhai",
+      "Zhen Li",
+      "Yuwei Wu",
+      "Chuanhao Li",
+      "Kaipeng Zhang"
+    ],
+    "year": 2026,
+    "publication": "2026，arXiv v1，2026-09-13 提交",
+    "arxiv_id": "2609.14462",
+    "doi": "10.48550/arXiv.2609.14462",
+    "links": {
+      "paper": "https://arxiv.org/abs/2609.14462",
+      "project": "https://alaya-lab.github.io/AlayaVista/",
+      "code": "https://github.com/AlayaLab/AlayaVista",
+      "alphaxiv": "https://alphaxiv.org/abs/2609.14462"
+    },
+    "tags": [
+      "panoramic state",
+      "世界模型",
+      "流式生成",
+      "视频生成"
+    ],
+    "figure": {
+      "url": "https://arxiv.org/html/2609.14462v1/teaser.png",
+      "alt": "AlayaVista Fig. 1",
+      "label": "AlayaVista，Fig. 1，由全景 latent state 查询并渲染当前透视视口。来源：Fig. 1 原图 PNG",
+      "paper_title": "AlayaVista: Streaming World Modeling from Panoramic States to Perspective Video",
+      "source_url": "https://arxiv.org/html/2609.14462v1/teaser.png"
+    },
+    "summary": "AlayaVista针对流式交互视频中的 off-screen memory 问题，将“世界状态”和“当前视口”解耦：由单张透视图先扩展出 360° scene prior，随后在 panoramic latent space 中持续更新世界，再根据相机轨迹查询当前 perspective viewport。",
+    "insight": "AlayaVista针对流式交互视频中的 off-screen memory 问题，将“世界状态”和“当前视口”解耦：由单张透视图先扩展出 360° scene prior，随后在 panoramic latent space 中持续更新世界，再根据相机轨迹查询当前 perspective viewport。\n\n这避免了始终生成完整高分辨率全景视频，同时又让离开视野的场景内容保留在全局 latent 中。",
+    "pipeline": {
+      "input": "单张 perspective image 与后续相机控制。",
+      "process": "预训练 panorama expansion 构造 360° ERP prior；camera-conditioned panoramic latent generator 持续更新世界状态；latent viewport renderer从全局状态抽取当前视野；deterministic latent upsampler 与 perspective generative refiner恢复细节。生成器采用 chunk-autoregressive/causal 机制，并使用 few-step distillation 降低流式推理成本。",
+      "output": "相机可控、连续的 perspective RGB video。",
+      "details": "**输入**：单张 perspective image 与后续相机控制。\n\n**过程**：预训练 panorama expansion 构造 360° ERP prior；camera-conditioned panoramic latent generator 持续更新世界状态；latent viewport renderer从全局状态抽取当前视野；deterministic latent upsampler 与 perspective generative refiner恢复细节。生成器采用 chunk-autoregressive/causal 机制，并使用 few-step distillation 降低流式推理成本。\n\n**输出**：相机可控、连续的 perspective RGB video。"
+    },
+    "experiments": "论文构建 MUGEN：约 1,318 小时、至少 4K 分辨率、6,446 段来源视频，并附加相机、深度和实例等标注。评测使用 200 个 MUGEN-HQ case、每个 81 帧、1024×576。AlayaVista报告 SSIM 0.4616、LPIPS 0.5321、一致性 0.9240、质量 0.5579、动态性 0.9200、PSNR 14.10，rotation error 2.132；大多数感知/一致性指标占优，但 translation error 0.03312 并非所有比较中最佳。",
+    "evidence_notes": "全文已核验",
+    "code_data_status": "论文 HTML 的官方资源区提供 AlayaLab/AlayaVista GitHub 仓库入口，因此代码入口可确认。",
+    "limitations": "论文没有集中列出完整 limitations section。根据架构可明确识别的一项风险是：初始 perspective-to-panorama expansion 必然需要生成不可见区域，因此世界状态起点包含 hallucinated content。另一个需后续核验的问题是 MUGEN/MUGEN-HQ 的视频级训练—评测去重方式；本报告没有发现泄漏证据，因此这里只作为审计问题，不作为负面结论。",
+    "comments": "",
+    "source_reports": [
+      "report-1b1ffacf7d"
+    ],
+    "deleted": false,
+    "updated_at": "2026-09-16",
+    "challenges": "透视视频流只能观察当前视口；相机离开后，视野外内容容易从模型状态中消失，而持续生成完整高分辨率全景又带来过高计算成本。",
+    "motivation": "AlayaVista针对流式交互视频中的 off-screen memory 问题，将“世界状态”和“当前视口”解耦：由单张透视图先扩展出 360° scene prior，随后在 panoramic latent space 中持续更新世界，再根据相机轨迹查询当前 perspective viewport。\n\n这避免了始终生成完整高分辨率全景视频，同时又让离开视野的场景内容保留在全局 latent 中。",
+    "technical_approach": "**输入**：单张 perspective image 与后续相机控制。\n\n**过程**：预训练 panorama expansion 构造 360° ERP prior；camera-conditioned panoramic latent generator 持续更新世界状态；latent viewport renderer从全局状态抽取当前视野；deterministic latent upsampler 与 perspective generative refiner恢复细节。生成器采用 chunk-autoregressive/causal 机制，并使用 few-step distillation 降低流式推理成本。\n\n**输出**：相机可控、连续的 perspective RGB video。",
+    "discussion": "它与 StreamingHOI 的任务对象不同，但对“流式世界状态如何长期保存”非常 relevant。尤其值得尝试把 panoramic latent 的思想替换为 object-centric / interaction-centric 4D memory，再按当前手物交互区域生成高频局部状态。",
+    "arxiv": {
+      "published": "2026-09-13T12:13:51Z",
+      "revised_at": "2026-09-13T12:13:51Z",
+      "primary_category": "cs.CV"
+    }
+  },
+  {
     "id": "arxiv-2608-29242",
     "title": "AnyWorld: Factorized Egocentric World Models for Cross-Embodiment Generalization",
     "authors": [
@@ -2633,6 +2695,70 @@
     }
   },
   {
+    "id": "arxiv-2609-13733",
+    "title": "FFVO: A Feedforward Pose Decoder for Long-Horizon Visual Odometry",
+    "authors": [
+      "Meng-Li Shih",
+      "Shih-Yang Su",
+      "Yuliang Zou",
+      "Hao Xiang",
+      "Haidong Zhu",
+      "Vincent Casser",
+      "Brian Curless",
+      "Dmitry Kalenichenko",
+      "Mingxing Tan",
+      "Dragomir Anguelov"
+    ],
+    "year": 2026,
+    "publication": "2026，arXiv v1，2026-09-12 提交",
+    "arxiv_id": "2609.13733",
+    "doi": "10.48550/arXiv.2609.13733",
+    "links": {
+      "paper": "https://arxiv.org/abs/2609.13733",
+      "alphaxiv": "https://alphaxiv.org/abs/2609.13733"
+    },
+    "tags": [
+      "3D/4D",
+      "long-horizon",
+      "visual odometry",
+      "前馈重建"
+    ],
+    "figure": {
+      "url": "https://arxiv.org/html/2609.13733v1/images/method_overview.png",
+      "alt": "FFVO Fig. 3",
+      "label": "FFVO，Fig. 3，冻结 π³ 骨干与可训练 camera-token / local-to-global pose decoder。来源：Fig. 3 原图 PNG",
+      "paper_title": "FFVO: A Feedforward Pose Decoder for Long-Horizon Visual Odometry",
+      "source_url": "https://arxiv.org/html/2609.13733v1/images/method_overview.png"
+    },
+    "summary": "FFVO将 feedforward joint reconstruction backbone 专门改造成长时程 camera-pose decoder。它使用紧凑 camera tokens 避免对长视频中全部 image tokens 做昂贵全局聚合，并将时间建模拆为 local motion aggregation 与 global sequence integration。",
+    "insight": "FFVO将 feedforward joint reconstruction backbone 专门改造成长时程 camera-pose decoder。它使用紧凑 camera tokens 避免对长视频中全部 image tokens 做昂贵全局聚合，并将时间建模拆为 local motion aggregation 与 global sequence integration。",
+    "pipeline": {
+      "input": "长视频单目图像序列。",
+      "process": "feedforward reconstruction backbone提取视觉/几何表示；compact camera token 汇总每帧相机状态；hierarchical local-to-global temporal decoder处理短程运动和长程一致性；中间 trajectory supervision 稳定训练。",
+      "output": "完整长序列相机轨迹。",
+      "details": "**输入**：长视频单目图像序列。\n\n**过程**：feedforward reconstruction backbone提取视觉/几何表示；compact camera token 汇总每帧相机状态；hierarchical local-to-global temporal decoder处理短程运动和长程一致性；中间 trajectory supervision 稳定训练。\n\n**输出**：完整长序列相机轨迹。"
+    },
+    "experiments": "在作者消融中，finetuned \\(\\pi^3\\) 的 ATE/RPE-translation/RPE-rotation 约为 15.989 / 8.452 / 0.596；加入 camera token 后为 11.776 / 5.509 / 0.379；再加 auxiliary supervision 为 11.195 / 5.354 / 0.373；使用 local temporal structure 后降至 7.070 / 1.090 / 0.289，增加 token 数后进一步小幅改善至 7.060 / 1.070 / 0.281。",
+    "evidence_notes": "全文已核验",
+    "code_data_status": "论文使用 WOD、KITTI 与 13,140 个 100-frame proprietary sequences；本次未核验到官方代码或模型权重发布。",
+    "limitations": "论文明确讨论高速超过约 55 mph、极端天气和低光环境困难；FFVO-Long仍因显存限制采用 segment-wise post-optimization。Sim(3)-aligned ATE 与连续 RPE 也可能低估尺度不一致和长期漂移；正文没有给出足够完整的 latency/throughput/memory benchmark。",
+    "comments": "",
+    "source_reports": [
+      "report-1b1ffacf7d"
+    ],
+    "deleted": false,
+    "updated_at": "2026-09-16",
+    "challenges": "前馈联合重建模型扩展到长视频时，全局聚合全部图像 token 的开销迅速增长，逐帧位姿回归又难同时保持局部运动精度与长程轨迹一致性。",
+    "motivation": "FFVO将 feedforward joint reconstruction backbone 专门改造成长时程 camera-pose decoder。它使用紧凑 camera tokens 避免对长视频中全部 image tokens 做昂贵全局聚合，并将时间建模拆为 local motion aggregation 与 global sequence integration。",
+    "technical_approach": "**输入**：长视频单目图像序列。\n\n**过程**：feedforward reconstruction backbone提取视觉/几何表示；compact camera token 汇总每帧相机状态；hierarchical local-to-global temporal decoder处理短程运动和长程一致性；中间 trajectory supervision 稳定训练。\n\n**输出**：完整长序列相机轨迹。",
+    "discussion": "FFVO不是生成式 world model，但直接属于 Feedforward Reconstruction 基础路线。对 DynamicVGGT/Gen3R 类模型向长视频或 4D 扩展时，它的 hierarchical temporal pose decoder 是值得比较的基础组件。",
+    "arxiv": {
+      "published": "2026-09-12T05:56:52Z",
+      "revised_at": "2026-09-12T05:56:52Z",
+      "primary_category": "cs.CV"
+    }
+  },
+  {
     "id": "arxiv-2609-08848",
     "title": "FIRE3D: Feed-forward Interactive 3D Scene Reconstruction Within A Minute",
     "authors": [
@@ -3440,6 +3566,65 @@
     "year": 2026
   },
   {
+    "id": "arxiv-2609-13812",
+    "title": "GeomVLA: Unifying Scene, Motion, and Action in 3D",
+    "authors": [
+      "Ziyin Xiong",
+      "Nikos Gkanatsios",
+      "Moritz Reuss",
+      "Katerina Fragkiadaki"
+    ],
+    "year": 2026,
+    "publication": "2026，arXiv；作者页面标注 CoRL 2026",
+    "arxiv_id": "2609.13812",
+    "doi": "10.48550/arXiv.2609.13812",
+    "links": {
+      "paper": "https://arxiv.org/abs/2609.13812",
+      "project": "https://ziyin-xiong.github.io/geomvla.io/",
+      "alphaxiv": "https://alphaxiv.org/abs/2609.13812"
+    },
+    "tags": [
+      "3D VLA",
+      "3D/4D",
+      "scene motion",
+      "World Action Model"
+    ],
+    "figure": {
+      "url": "https://arxiv.org/html/2609.13812v1/teaser_new4.png",
+      "alt": "GeomVLA Fig. 1",
+      "label": "GeomVLA，Fig. 1，在共享 3D 空间连接感知、未来场景运动与机器人控制。来源：Fig. 1 原图 PNG",
+      "paper_title": "GeomVLA: Unifying Scene, Motion, and Action in 3D",
+      "source_url": "https://arxiv.org/html/2609.13812v1/teaser_new4.png"
+    },
+    "summary": "GeomVLA把视觉、未来场景运动和动作统一到显式 3D 坐标系。视觉语言特征先通过 depth 与 calibration lift 到 3D；随后 task-conditioned 3D Scene Trajectory Denoiser 预测场景点的未来运动，其 latent 再条件化机器人 action denoiser。",
+    "insight": "GeomVLA把视觉、未来场景运动和动作统一到显式 3D 坐标系。视觉语言特征先通过 depth 与 calibration lift 到 3D；随后 task-conditioned 3D Scene Trajectory Denoiser 预测场景点的未来运动，其 latent 再条件化机器人 action denoiser。\n\n关键区别在于中间 prediction target 不是 RGB，也不是抽象隐藏状态，而是具有物理坐标语义的未来 3D motion。",
+    "pipeline": {
+      "input": "多视角或相机观测、深度/标定、语言任务和机器人状态。",
+      "process": "视觉/VLM 特征 lift 到 3D；预测未来 3D scene trajectory；将预测 motion latent 注入 3D flow-based action denoiser。",
+      "output": "任务相关的未来 3D 场景运动以及机器人控制动作。",
+      "details": "**输入**：多视角或相机观测、深度/标定、语言任务和机器人状态。\n\n**过程**：视觉/VLM 特征 lift 到 3D；预测未来 3D scene trajectory；将预测 motion latent 注入 3D flow-based action denoiser。\n\n**输出**：任务相关的未来 3D 场景运动以及机器人控制动作。"
+    },
+    "experiments": "官方结果包括 CALVIN 4.624、LIBERO 98.4% 以及 RoboTwin/真实任务结果。在更有解释价值的 matched 2D-JA 与 3D-JA 对照中，CALVIN 分别约 4.195 与 4.508，五任务 RoboTwin 为 66.2% 与 81.6%，真实机器人为 28.8% 与 59.4%，直接支持显式 3D 表示在这些设置中的作用。\n\n但不同表格的训练任务范围不完全一致：完整 GeomVLA与 \\(\\pi_{0.5}\\) 使用 50 个 RoboTwin 任务训练，而某些消融只使用五任务数据，因此不应将所有数字混合成严格同条件架构比较。",
+    "evidence_notes": "全文已核验",
+    "code_data_status": "官方项目页存在，但本次核验时项目中的代码链接返回 404，因此当前不能认定代码已经可用。",
+    "limitations": "模型依赖 depth 与 calibration，输入几何误差会直接传播到 3D representation。当前实验仍集中在 benchmark-scale robot demonstrations，尚未验证大规模人类视频、强 cross-embodiment 或长期 object permanence。",
+    "comments": "",
+    "source_reports": [
+      "report-1b1ffacf7d"
+    ],
+    "deleted": false,
+    "updated_at": "2026-09-16",
+    "challenges": "以 2D 图像特征连接视觉、未来运动与机器人动作时，跨视角几何和场景点运动缺少统一坐标语义，容易造成世界预测与动作生成之间的表示错位。",
+    "motivation": "GeomVLA把视觉、未来场景运动和动作统一到显式 3D 坐标系。视觉语言特征先通过 depth 与 calibration lift 到 3D；随后 task-conditioned 3D Scene Trajectory Denoiser 预测场景点的未来运动，其 latent 再条件化机器人 action denoiser。\n\n关键区别在于中间 prediction target 不是 RGB，也不是抽象隐藏状态，而是具有物理坐标语义的未来 3D motion。",
+    "technical_approach": "**输入**：多视角或相机观测、深度/标定、语言任务和机器人状态。\n\n**过程**：视觉/VLM 特征 lift 到 3D；预测未来 3D scene trajectory；将预测 motion latent 注入 3D flow-based action denoiser。\n\n**输出**：任务相关的未来 3D 场景运动以及机器人控制动作。",
+    "discussion": "这是本期最直接对应“结合 3D/4D 信息的具身 WAM/VLA”的论文之一。它显著提高了未来研究的 baseline：后续仅称“3D-aware VLA”已经不够，应进一步体现 temporal persistence、interaction/contact 或跨 embodiment 4D state 的新价值。",
+    "arxiv": {
+      "published": "2026-09-12T08:51:52Z",
+      "revised_at": "2026-09-12T08:51:52Z",
+      "primary_category": "cs.RO"
+    }
+  },
+  {
     "arxiv": {
       "published": "2026-06-02T05:48:02Z",
       "revised_at": "2026-06-02T05:48:02Z",
@@ -3722,6 +3907,68 @@
     "title": "GigaWorld-Policy-0.5: A Faster and Stronger WAM Empowered by AutoResearch",
     "updated_at": "2026-08-20",
     "year": 2026
+  },
+  {
+    "id": "arxiv-2609-14561",
+    "title": "GLAM: Training a Latent World Model over Global Spatiotemporal Memory for Active Exploration and Navigation",
+    "authors": [
+      "I-Tak Ieong",
+      "Ruizhi Feng",
+      "Zhaoyang Lu",
+      "Yifei Cao",
+      "Jiayao Zhao",
+      "Leon Li",
+      "Senhua Zhu",
+      "Wenbo Ding"
+    ],
+    "year": 2026,
+    "publication": "2026，arXiv v1，2026-09-13 提交",
+    "arxiv_id": "2609.14561",
+    "doi": "10.48550/arXiv.2609.14561",
+    "links": {
+      "paper": "https://arxiv.org/abs/2609.14561",
+      "alphaxiv": "https://alphaxiv.org/abs/2609.14561"
+    },
+    "tags": [
+      "active exploration",
+      "navigation",
+      "世界模型",
+      "长时记忆"
+    ],
+    "figure": {
+      "url": "https://arxiv.org/html/2609.14561v1/figs/GLaM_Nav.png",
+      "alt": "GLAM Fig. 2",
+      "label": "GLAM，Fig. 2，基于全局时空记忆的 latent world model 导航架构。来源：Fig. 2 原图 PNG",
+      "paper_title": "GLAM: Training a Latent World Model over Global Spatiotemporal Memory for Active Exploration and Navigation",
+      "source_url": "https://arxiv.org/html/2609.14561v1/figs/GLaM_Nav.png"
+    },
+    "summary": "GLAM将世界模型的预测对象从 RGB 改成 global spatiotemporal map memory。给定历史 map tokens、目标和当前 pose，模型同时预测 future map representation 与 robot-centric waypoint latent；采用 JEPA-like latent prediction，而非像素重建。",
+    "insight": "GLAM将世界模型的预测对象从 RGB 改成 global spatiotemporal map memory。给定历史 map tokens、目标和当前 pose，模型同时预测 future map representation 与 robot-centric waypoint latent；采用 JEPA-like latent prediction，而非像素重建。",
+    "pipeline": {
+      "input": "历史 global map tokens、navigation goal、当前机器人 pose。",
+      "process": "latent world model预测未来地图状态和 waypoint representation；预训练 waypoint encoder/decoder负责将规划 latent 映射回可执行导航 waypoint。",
+      "output": "未来空间记忆 latent 和机器人导航 waypoint。",
+      "details": "**输入**：历史 global map tokens、navigation goal、当前机器人 pose。\n\n**过程**：latent world model预测未来地图状态和 waypoint representation；预训练 waypoint encoder/decoder负责将规划 latent 映射回可执行导航 waypoint。\n\n**输出**：未来空间记忆 latent 和机器人导航 waypoint。"
+    },
+    "experiments": "训练轨迹来自 Habitat HM3D v0.2 上的 ObjectNav expert replay，并切成多时间尺度 prediction samples。在论文的 50% HM3D subset reproduction 设置中，BSC-Nav约为 78.50% SR / 47.70 SPL，GLAM NAV约为 86.89% SR / 48.35 SPL。成功率提升明显，但 SPL 提升较小，因此不能仅据此声称路径效率获得同幅度改善。",
+    "evidence_notes": "全文已核验",
+    "code_data_status": "本次未核验到新的官方代码或模型发布。",
+    "limitations": "目前主要量化实验是 benchmark 子集复现；尚缺乏充分组件消融来单独隔离 future-map prediction 的贡献。真实办公室展示具有可行性，但不是多建筑、多本体统计评测。",
+    "comments": "",
+    "source_reports": [
+      "report-1b1ffacf7d"
+    ],
+    "deleted": false,
+    "updated_at": "2026-09-16",
+    "challenges": "主动探索和导航依赖跨时间累积的全局空间状态，当前 RGB 或局部地图不足以表达未来可达区域和长期目标，像素预测又不是规划所需的最直接接口。",
+    "motivation": "GLAM将世界模型的预测对象从 RGB 改成 global spatiotemporal map memory。给定历史 map tokens、目标和当前 pose，模型同时预测 future map representation 与 robot-centric waypoint latent；采用 JEPA-like latent prediction，而非像素重建。",
+    "technical_approach": "**输入**：历史 global map tokens、navigation goal、当前机器人 pose。\n\n**过程**：latent world model预测未来地图状态和 waypoint representation；预训练 waypoint encoder/decoder负责将规划 latent 映射回可执行导航 waypoint。\n\n**输出**：未来空间记忆 latent 和机器人导航 waypoint。",
+    "discussion": "GLAM对 egocentric world model 的价值在于长期 memory representation。若把 global map token 替换成 object/contact-centric 3D/4D memory，可能形成更接近 manipulation world model 的持续状态表示。",
+    "arxiv": {
+      "published": "2026-09-13T14:47:33Z",
+      "revised_at": "2026-09-13T14:47:33Z",
+      "primary_category": "cs.RO"
+    }
   },
   {
     "id": "arxiv-2608-23927",
@@ -4578,6 +4825,62 @@
     }
   },
   {
+    "id": "arxiv-2609-15005",
+    "title": "IMPACT-VLA: Interaction-aware Multimodal Propagation Attribution via Counterfactual Trajectories for Vision-Language-Action Policies",
+    "authors": [
+      "Jinwoong Kim",
+      "Sangjin Park"
+    ],
+    "year": 2026,
+    "publication": "2026，arXiv v1，2026-09-14 提交",
+    "arxiv_id": "2609.15005",
+    "doi": "10.48550/arXiv.2609.15005",
+    "links": {
+      "paper": "https://arxiv.org/abs/2609.15005",
+      "alphaxiv": "https://alphaxiv.org/abs/2609.15005"
+    },
+    "tags": [
+      "counterfactual attribution",
+      "VLA",
+      "因果审计",
+      "因果建模"
+    ],
+    "figure": {
+      "url": "https://arxiv.org/html/2609.15005v1/figures/fig1_framework.png",
+      "alt": "IMPACT-VLA Fig. 1",
+      "label": "IMPACT-VLA，Fig. 1，基于闭环反事实轨迹的阶段化多模态归因框架。来源：Fig. 1 原图 PNG",
+      "paper_title": "IMPACT-VLA: Interaction-aware Multimodal Propagation Attribution via Counterfactual Trajectories for Vision-Language-Action Policies",
+      "source_url": "https://arxiv.org/html/2609.15005v1/figures/fig1_framework.png"
+    },
+    "summary": "IMPACT-VLA研究的不是训练更强策略，而是解释视觉、语言和 proprioception 在 哪个执行阶段 对任务成功真正重要。它先从成功参考轨迹中建立 behavioral phases，再把 phase × modality 作为 attribution block，通过闭环重新执行替换后的输入，观察改变如何沿后续状态和动作传播。",
+    "insight": "IMPACT-VLA研究的不是训练更强策略，而是解释视觉、语言和 proprioception 在**哪个执行阶段**对任务成功真正重要。它先从成功参考轨迹中建立 behavioral phases，再把 phase × modality 作为 attribution block，通过闭环重新执行替换后的输入，观察改变如何沿后续状态和动作传播。",
+    "pipeline": {
+      "input": "成功参考 rollout、待解释 policy、视觉/语言/本体感知等模态。",
+      "process": "按 action transition 分割 behavioral phase；与 policy query boundary 对齐；对 phase-modality block 做 closed-loop replacement；执行新的轨迹；以 sampled Shapley 和 cross-phase interaction 分析各 block 对最终成功的影响，并区分 behavioral recovery 与 functional recovery。",
+      "output": "阶段化模态贡献、跨阶段交互以及干预后的 counterfactual trajectory。",
+      "details": "**输入**：成功参考 rollout、待解释 policy、视觉/语言/本体感知等模态。\n\n**过程**：按 action transition 分割 behavioral phase；与 policy query boundary 对齐；对 phase-modality block 做 closed-loop replacement；执行新的轨迹；以 sampled Shapley 和 cross-phase interaction 分析各 block 对最终成功的影响，并区分 behavioral recovery 与 functional recovery。\n\n**输出**：阶段化模态贡献、跨阶段交互以及干预后的 counterfactual trajectory。"
+    },
+    "experiments": "在 30 个 LIBERO manipulation tasks、OpenVLA-OFT 上，25/30 个任务即 83.3% 出现 dominant-modality transition。对负交互 pair，早期 block 被替换时，后期 block 的 marginal gain 约提高 3.3×；作者还报告不同 intervention kernel 下的 attribution ranking 具有一定稳定性。",
+    "evidence_notes": "全文已核验",
+    "code_data_status": "本次没有核验到官方代码或项目发布。",
+    "limitations": "论文采用真实闭环重新执行，因此属于有意义的 intervention-based attribution；但它不是 causal identification，也没有结构因果模型。输入替换可能造成策略训练分布之外的状态，且 sampled permutations 的 rollout 随机性限制了对很小 attribution 差异的解释。",
+    "comments": "",
+    "source_reports": [
+      "report-1b1ffacf7d"
+    ],
+    "deleted": false,
+    "updated_at": "2026-09-16",
+    "challenges": "静态特征敏感性或单步遮蔽无法反映多模态信息在闭环执行中的跨阶段传播、恢复和交互，因而难以定位视觉、语言与本体感知何时真正影响成功。",
+    "motivation": "IMPACT-VLA研究的不是训练更强策略，而是解释视觉、语言和 proprioception 在**哪个执行阶段**对任务成功真正重要。它先从成功参考轨迹中建立 behavioral phases，再把 phase × modality 作为 attribution block，通过闭环重新执行替换后的输入，观察改变如何沿后续状态和动作传播。",
+    "technical_approach": "**输入**：成功参考 rollout、待解释 policy、视觉/语言/本体感知等模态。\n\n**过程**：按 action transition 分割 behavioral phase；与 policy query boundary 对齐；对 phase-modality block 做 closed-loop replacement；执行新的轨迹；以 sampled Shapley 和 cross-phase interaction 分析各 block 对最终成功的影响，并区分 behavioral recovery 与 functional recovery。\n\n**输出**：阶段化模态贡献、跨阶段交互以及干预后的 counterfactual trajectory。",
+    "discussion": "它适合加入知域“因果/反事实世界模型”的**审计工具层**，但应与 Causal-JEPA、SCM、intervention identification 等模型层工作分开。其最大价值是提供一种检查多模态 VLA temporal dependency 的实验协议。",
+    "arxiv": {
+      "published": "2026-09-14T04:13:17Z",
+      "revised_at": "2026-09-14T04:13:17Z",
+      "primary_category": "cs.RO"
+    }
+  },
+  {
     "id": "arxiv-2609-00161",
     "title": "IMPACT: Attention Is the Interaction Map for Scalable Interaction-Aware World Model Training",
     "authors": [
@@ -5000,6 +5303,64 @@
       "published": "2026-08-25T04:07:07Z",
       "revised_at": "2026-08-28T10:39:50Z",
       "primary_category": "cs.LG"
+    }
+  },
+  {
+    "id": "arxiv-2609-06955",
+    "title": "Joint-Conditioned Stereo Surface Reasoning for Interaction Field Estimation",
+    "authors": [
+      "Yanlin Jin",
+      "Yifan Yang",
+      "Bowen Yang",
+      "Kai Zhu"
+    ],
+    "year": 2026,
+    "publication": "2026，arXiv v1，2026-09-07 提交",
+    "arxiv_id": "2609.06955",
+    "doi": "10.48550/arXiv.2609.06955",
+    "links": {
+      "paper": "https://arxiv.org/abs/2609.06955",
+      "alphaxiv": "https://alphaxiv.org/abs/2609.06955"
+    },
+    "tags": [
+      "3D HOI",
+      "contact reasoning",
+      "interaction field",
+      "stereo geometry"
+    ],
+    "figure": {
+      "url": "https://arxiv.org/html/2609.06955v1/jssr.png",
+      "alt": "JSSR Fig. 1",
+      "label": "JSSR，Fig. 1，关节条件的双目表面候选搜索与 interaction field 估计。来源：Fig. 1 原图 PNG",
+      "paper_title": "Joint-Conditioned Stereo Surface Reasoning for Interaction Field Estimation",
+      "source_url": "https://arxiv.org/html/2609.06955v1/jssr.png"
+    },
+    "summary": "JSSR把 interaction field 重新表述为：对每个 hand joint，找到其最近 object-surface endpoint。不同关节需要自己的 endpoint，但同一只手的关节可以共享局部 surface evidence。因此模型把 learned direct prediction 与显式 stereo geometry candidate search 结合。",
+    "insight": "JSSR把 interaction field 重新表述为：对每个 hand joint，找到其最近 object-surface endpoint。不同关节需要自己的 endpoint，但同一只手的关节可以共享局部 surface evidence。因此模型把 learned direct prediction 与显式 stereo geometry candidate search 结合。",
+    "pipeline": {
+      "input": "七个时间步的同步 stereo image pairs，以及相机 calibration。",
+      "process": "DINOv3 backbone联合预测 3D joints、direct interaction field 和各视图 surface endpoint evidence；沿校准相机射线采样深度候选；结合 joint-specific image compatibility 与 cross-view matching评分；同手关节共享 candidate support，并用 residual gate决定是否采用 geometric correction。",
+      "output": "每个 hand joint 到最近 object surface 的 3D interaction-field vector / endpoint。",
+      "details": "**输入**：七个时间步的同步 stereo image pairs，以及相机 calibration。\n\n**过程**：DINOv3 backbone联合预测 3D joints、direct interaction field 和各视图 surface endpoint evidence；沿校准相机射线采样深度候选；结合 joint-specific image compatibility 与 cross-view matching评分；同手关节共享 candidate support，并用 residual gate决定是否采用 geometric correction。\n\n**输出**：每个 hand joint 到最近 object surface 的 3D interaction-field vector / endpoint。"
+    },
+    "experiments": "论文去除 535 个不一致 annotation 后，使用 72,307 个训练样本和 12,201 个 clip-held-out evaluation 样本，避免 temporal overlap。消融中 ResNet基线 mean ADE约 29.172 mm、Acc@10 26.91%；DINO direct prediction约 16.278 / 50.04%；加入完整 JSSR后约 15.740 / 51.23。完整 stereo reasoning相对 temporal endpoint baseline的 mean ADE进一步改善约 0.454 mm。\n\n论文系统在 SHOW3D Interaction Field Challenge 中排名第三，但作者明确指出 leaderboard 数字与消融 checkpoint 使用的训练设置不同，因此不能直接把 challenge score 和主表模型逐项等同。",
+    "evidence_notes": "全文已核验",
+    "code_data_status": "本次未核验到官方代码或独立模型发布。",
+    "limitations": "这里所谓“surface reasoning”是共享的 stereo-validated endpoint support；模型不恢复完整 object mesh、CAD model 或完整 object pose。因此它解决了 contact-neighborhood geometry，但距离 object-centric 4D interaction world representation 还有明显差距。",
+    "comments": "",
+    "source_reports": [
+      "report-1b1ffacf7d"
+    ],
+    "deleted": false,
+    "updated_at": "2026-09-16",
+    "challenges": "仅靠单目或直接回归难以稳定估计每个手部关节最近的物体表面点，遮挡、深度歧义和逐关节独立预测会削弱接触邻域的几何一致性。",
+    "motivation": "JSSR把 interaction field 重新表述为：对每个 hand joint，找到其最近 object-surface endpoint。不同关节需要自己的 endpoint，但同一只手的关节可以共享局部 surface evidence。因此模型把 learned direct prediction 与显式 stereo geometry candidate search 结合。",
+    "technical_approach": "**输入**：七个时间步的同步 stereo image pairs，以及相机 calibration。\n\n**过程**：DINOv3 backbone联合预测 3D joints、direct interaction field 和各视图 surface endpoint evidence；沿校准相机射线采样深度候选；结合 joint-specific image compatibility 与 cross-view matching评分；同手关节共享 candidate support，并用 residual gate决定是否采用 geometric correction。\n\n**输出**：每个 hand joint 到最近 object surface 的 3D interaction-field vector / endpoint。",
+    "discussion": "这是本期最直接的 3D HOI 感知论文之一。它可以作为 4D HOI 世界模型的低层监督：未来研究可以不只预测 hand trajectory，还同时预测每个关节未来接触 surface endpoint 及其随物体运动产生的 4D trajectory。",
+    "arxiv": {
+      "published": "2026-09-07T02:47:45Z",
+      "revised_at": "2026-09-07T02:47:45Z",
+      "primary_category": "cs.CV"
     }
   },
   {
@@ -6105,6 +6466,65 @@
     }
   },
   {
+    "id": "arxiv-2609-17524",
+    "title": "Modality-Autoregressive World-Action Models",
+    "authors": [
+      "Adam Hung",
+      "Bardienus P. Duisterhof",
+      "Deva Ramanan",
+      "Jeffrey Ichnowski"
+    ],
+    "year": 2026,
+    "publication": "2026，arXiv v1，2026-09-15 提交",
+    "arxiv_id": "2609.17524",
+    "doi": "10.48550/arXiv.2609.17524",
+    "links": {
+      "paper": "https://arxiv.org/abs/2609.17524",
+      "project": "https://adamhung60.github.io/ModAR/",
+      "alphaxiv": "https://alphaxiv.org/abs/2609.17524"
+    },
+    "tags": [
+      "3D/几何",
+      "World Action Model",
+      "人类视频",
+      "多模态预测"
+    ],
+    "figure": {
+      "url": "content/images/2609.17524-representative.webp",
+      "alt": "ModAR Fig. 1",
+      "label": "ModAR，Fig. 1，按模态顺序预测未来观测后再预测动作。arXiv HTML 无 PNG 直链，图下载自论文源文件 figures/teaser.pdf 。来源：Fig. 1 本地 WebP",
+      "paper_title": "Modality-Autoregressive World-Action Models",
+      "source_url": ""
+    },
+    "summary": "ModAR直接挑战“WAM 应该先生成未来 RGB”的默认设计。模型按顺序预测 point tracks、DINO feature、depth 等未来模态，后面的模态条件在前面已经生成的结构信息上，最后才预测动作。作者的实验结论是：tracks、DINO 和 depth 在其设定中均有贡献，但加入未来 RGB 没有稳定额外收益。",
+    "insight": "ModAR直接挑战“WAM 应该先生成未来 RGB”的默认设计。模型按顺序预测 point tracks、DINO feature、depth 等未来模态，后面的模态条件在前面已经生成的结构信息上，最后才预测动作。作者的实验结论是：tracks、DINO 和 depth 在其设定中均有贡献，但加入未来 RGB 没有稳定额外收益。",
+    "pipeline": {
+      "input": "视觉观测、任务信息及 action-labeled / actionless demonstrations。",
+      "process": "以 modality-autoregressive diffusion/denoising 顺序生成结构化未来模态，例如 point tracks → DINO feature → depth，再基于这些预测状态生成动作；不同模态可以使用不同监督数据。",
+      "output": "多个未来世界模态和机器人动作。",
+      "details": "**输入**：视觉观测、任务信息及 action-labeled / actionless demonstrations。\n\n**过程**：以 modality-autoregressive diffusion/denoising 顺序生成结构化未来模态，例如 point tracks → DINO feature → depth，再基于这些预测状态生成动作；不同模态可以使用不同监督数据。\n\n**输出**：多个未来世界模态和机器人动作。"
+    },
+    "experiments": "六个 RoboTwin 任务分别研究 50、250、1250 条总演示，其中基础 robot action-labeled 数据保持为 50 条，其余可加入 actionless 数据。在 250 条数据规模下，ModAR平均成功率 75%，Flex-\\(\\pi\\) 为 72%。不过作者明确把该结果定义为系统级比较：ModAR约 30.1M 参数，而 Flex-\\(\\pi\\) 约 6B，并存在约 20× 训练 FLOPs 差异。\n\n完整模态版本平均为 75%；去除 context noise 后 63%，反转模态顺序约 65%，移除 tracks 约 61%，移除 DINO feature 约 65%，移除 depth 约 70%，去掉 RGB 则没有下降。完整推理约 147.9 ms，即约 6.76 Hz，测试硬件为 RTX 5090。\n\n三个真实双臂任务上，100 robot demos 的平均结果约 70%；加入 200 个 in-domain human demos 后为 81.1%，再加入约 1000 个 EgoDex OOD human demos 后为 83.3%。",
+    "evidence_notes": "全文已核验",
+    "code_data_status": "官方项目页存在，但代码当前标记为 “coming soon”；本期不将其记为已开源。",
+    "limitations": "论文明确指出任务数量有限、任务标签仍是离散类别、模态顺序需要更系统探索，且 sequential modality generation 带来延迟；当前数据规模也不足以回答互联网级人类视频扩展性。",
+    "comments": "",
+    "source_reports": [
+      "report-1b1ffacf7d"
+    ],
+    "deleted": false,
+    "updated_at": "2026-09-16",
+    "challenges": "现有 WAM 常默认先生成未来 RGB，但高成本像素预测未必保留最有利于控制的运动、几何和语义信息，也难利用缺少完整模态标注的异构数据。",
+    "motivation": "ModAR直接挑战“WAM 应该先生成未来 RGB”的默认设计。模型按顺序预测 point tracks、DINO feature、depth 等未来模态，后面的模态条件在前面已经生成的结构信息上，最后才预测动作。作者的实验结论是：tracks、DINO 和 depth 在其设定中均有贡献，但加入未来 RGB 没有稳定额外收益。",
+    "technical_approach": "**输入**：视觉观测、任务信息及 action-labeled / actionless demonstrations。\n\n**过程**：以 modality-autoregressive diffusion/denoising 顺序生成结构化未来模态，例如 point tracks → DINO feature → depth，再基于这些预测状态生成动作；不同模态可以使用不同监督数据。\n\n**输出**：多个未来世界模态和机器人动作。",
+    "discussion": "这是对 WAM“世界状态应该是什么”的直接实验。对计划研究 3D/4D WAM 的路线而言，它意味着必须把 tracks/depth/semantic feature 作为强 baseline，而不能只和 RGB-video WAM 比较。",
+    "arxiv": {
+      "published": "2026-09-15T17:56:24Z",
+      "revised_at": "2026-09-15T17:56:24Z",
+      "primary_category": "cs.RO"
+    }
+  },
+  {
     "id": "arxiv-2608-30237",
     "title": "Motus2: A Self-Evolving General World Model for Dexterous Manipulation",
     "authors": [
@@ -6506,6 +6926,64 @@
       "published": "2026-09-01T23:04:35Z",
       "revised_at": "2026-09-03T16:45:27Z",
       "primary_category": "cs.RO"
+    }
+  },
+  {
+    "id": "arxiv-2609-14833",
+    "title": "One Model, Two Physical Stories: Auditing Misalignment in Multi-Modal World Modeling",
+    "authors": [
+      "Geigh Zollicoffer",
+      "Minh Vu",
+      "Rajiv Ranasinghe",
+      "Manish Bhattarai"
+    ],
+    "year": 2026,
+    "publication": "2026，arXiv v1，2026-09-13 提交",
+    "arxiv_id": "2609.14833",
+    "doi": "10.48550/arXiv.2609.14833",
+    "links": {
+      "paper": "https://arxiv.org/abs/2609.14833",
+      "alphaxiv": "https://alphaxiv.org/abs/2609.14833"
+    },
+    "tags": [
+      "counterfactual audit",
+      "世界模型",
+      "因果建模",
+      "物理建模"
+    ],
+    "figure": {
+      "url": "https://arxiv.org/html/2609.14833v1/figures/fig1_illustration_paper.png",
+      "alt": "One Model, Two Physical Stories Fig. 1",
+      "label": "One Model, Two Physical Stories，Fig. 1，同一场景下文本物理、视频生成与仿真参考的不一致。来源：Fig. 1 原图 PNG",
+      "paper_title": "One Model, Two Physical Stories: Auditing Misalignment in Multi-Modal World Modeling",
+      "source_url": "https://arxiv.org/html/2609.14833v1/figures/fig1_illustration_paper.png"
+    },
+    "summary": "论文指出多模态 world model 可能同时讲出“两套物理故事”：文本推理得到正确的弹跳、碰撞或运动关系，但同一模型的视频生成却违反该关系。作者定义 internal misalignment——模型自己的语言/物理 contract 与视频不一致，以及 external misalignment——视频与解析/模拟物理环境不一致。",
+    "insight": "论文指出多模态 world model 可能同时讲出“两套物理故事”：文本推理得到正确的弹跳、碰撞或运动关系，但同一模型的视频生成却违反该关系。作者定义 internal misalignment——模型自己的语言/物理 contract 与视频不一致，以及 external misalignment——视频与解析/模拟物理环境不一致。",
+    "pipeline": {
+      "input": "物理初始条件、模型文本预测、模型视频生成和解析/模拟物理参考。",
+      "process": "把机制拆成 event、magnitude、timing contract；构造由弱到强的 intervention ladder；逐步向模型提供自身 contract 或修正的 physical contract；检查视频行为是否随干预回到一致物理结果。",
+      "output": "内部/外部物理一致性测量以及干预后变化。",
+      "details": "**输入**：物理初始条件、模型文本预测、模型视频生成和解析/模拟物理参考。\n\n**过程**：把机制拆成 event、magnitude、timing contract；构造由弱到强的 intervention ladder；逐步向模型提供自身 contract 或修正的 physical contract；检查视频行为是否随干预回到一致物理结果。\n\n**输出**：内部/外部物理一致性测量以及干预后变化。"
+    },
+    "experiments": "实验覆盖四种 physical mechanisms 和 20 个 settings。论文报告 22/22 个文本 physics probes 得到与参考环境一致的回答，但 neutral video 经常与这些文本答案或模拟物理不一致。这直接支持“语言物理知识正确 ≠ 视频 world model 执行相同物理规律”。",
+    "evidence_notes": "全文已核验",
+    "code_data_status": "本次未核验到公开代码或独立数据集。",
+    "limitations": "作者明确指出，Isaac/PhysX 环境并不等同于真实硬件物理；实验只覆盖一个模型系列、四类机制和有限随机种子。因此当前结果支持“存在可复现的跨模态 misalignment”，而不是所有多模态模型都必然存在同样幅度的物理错误。",
+    "comments": "",
+    "source_reports": [
+      "report-1b1ffacf7d"
+    ],
+    "deleted": false,
+    "updated_at": "2026-09-16",
+    "challenges": "多模态模型可能在文本中正确描述物理规律，却生成违反同一规律的视频；仅分别评测语言推理或视频质量无法发现这种模型内部跨模态不一致。",
+    "motivation": "论文指出多模态 world model 可能同时讲出“两套物理故事”：文本推理得到正确的弹跳、碰撞或运动关系，但同一模型的视频生成却违反该关系。作者定义 internal misalignment——模型自己的语言/物理 contract 与视频不一致，以及 external misalignment——视频与解析/模拟物理环境不一致。",
+    "technical_approach": "**输入**：物理初始条件、模型文本预测、模型视频生成和解析/模拟物理参考。\n\n**过程**：把机制拆成 event、magnitude、timing contract；构造由弱到强的 intervention ladder；逐步向模型提供自身 contract 或修正的 physical contract；检查视频行为是否随干预回到一致物理结果。\n\n**输出**：内部/外部物理一致性测量以及干预后变化。",
+    "discussion": "对世界模型路线很重要，因为它提供了比 PSNR/FVD 更直接的**物理一致性审计**。它使用 intervention，但不是 causal identification。后续可以将类似 contract test 扩展到 HOI 中的接触、摩擦、遮挡后物体状态和反事实动作。",
+    "arxiv": {
+      "published": "2026-09-13T22:56:58Z",
+      "revised_at": "2026-09-13T22:56:58Z",
+      "primary_category": "cs.AI"
     }
   },
   {
@@ -7772,6 +8250,66 @@
     }
   },
   {
+    "id": "arxiv-2609-13851",
+    "title": "ReWeight: Leveraging Human Data for VLA Post-Training via Demonstration Retrieval and Sample Weighting",
+    "authors": [
+      "Chenwei Wang",
+      "Dianye Huang",
+      "Match W. L. Ko",
+      "Chenjia Bai",
+      "Zhongliang Jiang"
+    ],
+    "year": 2026,
+    "publication": "2026，arXiv v1，2026-09-12 提交",
+    "arxiv_id": "2609.13851",
+    "doi": "10.48550/arXiv.2609.13851",
+    "links": {
+      "paper": "https://arxiv.org/abs/2609.13851",
+      "project": "https://reweight-vla.github.io/",
+      "alphaxiv": "https://alphaxiv.org/abs/2609.13851"
+    },
+    "tags": [
+      "post-training",
+      "VLA",
+      "人类视频",
+      "跨本体迁移"
+    ],
+    "figure": {
+      "url": "https://arxiv.org/html/2609.13851v1/figures/fig1.png",
+      "alt": "ReWeight Fig. 1",
+      "label": "ReWeight，Fig. 1，检索人类示范并为 VLA post-training 分配样本权重。来源：Fig. 1 原图 PNG",
+      "paper_title": "ReWeight: Leveraging Human Data for VLA Post-Training via Demonstration Retrieval and Sample Weighting",
+      "source_url": "https://arxiv.org/html/2609.13851v1/figures/fig1.png"
+    },
+    "summary": "论文的出发点不是“更多人类数据一定更好”，而是 cross-embodiment mismatch 会让随机混入的人类数据伤害或限制 policy post-training。ReWeight先学习包含 visual observation 与 future action 的跨本体 visuomotor representation，再通过 optimal transport 找到与目标机器人数据行为相近的人类 demonstrations，并给 discrepancy 较小的 sample 更大训练权重。",
+    "insight": "论文的出发点不是“更多人类数据一定更好”，而是 cross-embodiment mismatch 会让随机混入的人类数据伤害或限制 policy post-training。ReWeight先学习包含 visual observation 与 future action 的跨本体 visuomotor representation，再通过 optimal transport 找到与目标机器人数据行为相近的人类 demonstrations，并给 discrepancy 较小的 sample 更大训练权重。",
+    "pipeline": {
+      "input": "目标机器人 demonstrations、候选 egocentric human demonstrations、VLA policy。",
+      "process": "编码未来行为相关的跨本体 visuomotor representation；使用 optimal transport 做 demonstration retrieval；根据人类—机器人 sample discrepancy 分配 loss weight；对 VLA 做 post-training。",
+      "output": "利用筛选后人类经验增强的目标机器人策略。",
+      "details": "**输入**：目标机器人 demonstrations、候选 egocentric human demonstrations、VLA policy。\n\n**过程**：编码未来行为相关的跨本体 visuomotor representation；使用 optimal transport 做 demonstration retrieval；根据人类—机器人 sample discrepancy 分配 loss weight；对 VLA 做 post-training。\n\n**输出**：利用筛选后人类经验增强的目标机器人策略。"
+    },
+    "experiments": "在八个 RoboTwin 2.0 仿真任务中，\\(\\pi_{0.5}\\) robot-only 平均成功率 39%，随机 human+robot mix 为 44%，ReWeight 为 57%。四个真实 DoBot 双臂任务上，ReWeight 平均成功率 68.8%；在加入随机化、光照和干扰因素的设置中仍显著优于基线。",
+    "evidence_notes": "全文已核验",
+    "code_data_status": "项目页可访问，但本次没有核验到官方代码、数据或权重下载入口。",
+    "limitations": "当前证据说明 retrieval/weighting 在作者测试的任务与机器人中有效，但“相似度”仍依赖目标机器人数据来定义。如何在目标机器人 demonstrations 极少甚至为零时判断人类行为的可迁移性，是比继续扩大视频池更关键的问题。",
+    "comments": "",
+    "source_reports": [
+      "report-1b1ffacf7d"
+    ],
+    "deleted": false,
+    "updated_at": "2026-09-16",
+    "challenges": "人类与机器人在形态、视角和动作可达性上存在系统差异，随机混合人类示范可能引入不可执行行为，数据规模增加并不必然改善目标机器人策略。",
+    "motivation": "论文的出发点不是“更多人类数据一定更好”，而是 cross-embodiment mismatch 会让随机混入的人类数据伤害或限制 policy post-training。ReWeight先学习包含 visual observation 与 future action 的跨本体 visuomotor representation，再通过 optimal transport 找到与目标机器人数据行为相近的人类 demonstrations，并给 discrepancy 较小的 sample 更大训练权重。",
+    "technical_approach": "**输入**：目标机器人 demonstrations、候选 egocentric human demonstrations、VLA policy。\n\n**过程**：编码未来行为相关的跨本体 visuomotor representation；使用 optimal transport 做 demonstration retrieval；根据人类—机器人 sample discrepancy 分配 loss weight；对 VLA 做 post-training。\n\n**输出**：利用筛选后人类经验增强的目标机器人策略。",
+    "discussion": "这篇对“从人类视频学习”路线很有实用价值，也可与 A4A/WLA³互补：A4A寻找 geometry-level transferable target，WLA³学习 transition latent，ReWeight则解决**哪些 human samples 值得进入训练**。三者组合是值得实验的路线。",
+    "arxiv": {
+      "published": "2026-09-12T10:09:06Z",
+      "revised_at": "2026-09-12T10:09:06Z",
+      "primary_category": "cs.RO"
+    }
+  },
+  {
     "id": "arxiv-2608-23565",
     "title": "ReWorld: An Interactive World Model with Long-Horizon Memory",
     "authors": [
@@ -8358,6 +8896,68 @@
     }
   },
   {
+    "id": "arxiv-2609-16737",
+    "title": "Seeing What Matters: Visual Cue Guided Video Planning for Generalizable Robot Navigation",
+    "authors": [
+      "Hojin Lee",
+      "Sizhe Lester Li",
+      "Maximilian Hilger",
+      "Susie Lu",
+      "Achim J. Lilienthal",
+      "Vincent Sitzmann",
+      "Daniel A. Duecker"
+    ],
+    "year": 2026,
+    "publication": "2026，arXiv v1，2026-09-15 提交",
+    "arxiv_id": "2609.16737",
+    "doi": "10.48550/arXiv.2609.16737",
+    "links": {
+      "paper": "https://arxiv.org/abs/2609.16737",
+      "project": "https://cuenav.github.io/",
+      "alphaxiv": "https://alphaxiv.org/abs/2609.16737"
+    },
+    "tags": [
+      "embodied navigation",
+      "世界模型",
+      "规划与控制",
+      "跨本体迁移"
+    ],
+    "figure": {
+      "url": "https://arxiv.org/html/2609.16737v1/Fig2.png",
+      "alt": "CueNav Fig. 2",
+      "label": "CueNav，Fig. 2，视觉 cue 引导的视频规划与本体相关 inverse dynamics。来源：Fig. 2 原图 PNG",
+      "paper_title": "Seeing What Matters: Visual Cue Guided Video Planning for Generalizable Robot Navigation",
+      "source_url": "https://arxiv.org/html/2609.16737v1/Fig2.png"
+    },
+    "summary": "CueNav继续沿“用生成视频作为 plan，再把视觉未来翻译为动作”的路线推进，但增加两个 cue：BEV map给视频模型全局任务上下文，保留机器人身体的一部分则提供 embodiment information。最终动作并不是从视频直接读取几何 waypoint，而是由 embodiment-specific inverse dynamics model 根据生成视频中的 dense flow 解码。",
+    "insight": "CueNav继续沿“用生成视频作为 plan，再把视觉未来翻译为动作”的路线推进，但增加两个 cue：BEV map给视频模型全局任务上下文，保留机器人身体的一部分则提供 embodiment information。最终动作并不是从视频直接读取几何 waypoint，而是由 embodiment-specific inverse dynamics model 根据生成视频中的 dense flow 解码。",
+    "pipeline": {
+      "input": "近期 egocentric visual observation、文本/语义目标、BEV/global cue，以及可见的机器人 embodiment cue。",
+      "process": "video planner生成短时未来视觉计划；从预测视频提取 dense optical flow；针对每个机器人本体训练的 IDM将 visual motion翻译成连续控制；系统持续闭环重新规划。",
+      "output": "未来视频计划和实际导航控制命令。",
+      "details": "**输入**：近期 egocentric visual observation、文本/语义目标、BEV/global cue，以及可见的机器人 embodiment cue。\n\n**过程**：video planner生成短时未来视觉计划；从预测视频提取 dense optical flow；针对每个机器人本体训练的 IDM将 visual motion翻译成连续控制；系统持续闭环重新规划。\n\n**输出**：未来视频计划和实际导航控制命令。"
+    },
+    "experiments": "狭窄通道实验中，CueNav在 1 m 宽度条件下达到约 70% 成功率，并在 1.5 m 条件完成全部测试。maze navigation训练轨迹来自 3×3 布局，评测扩展到 6×6；在 6×6 设置中，使用 BEV cue 的成功率约 55%，无 BEV约 30%。作者还在 Husky A300 与 Unitree Go2 上复用同一个 video planner，仅替换 embodiment-specific IDM，作为跨本体部署证据。",
+    "evidence_notes": "全文已核验",
+    "code_data_status": "虽然 arXiv 摘要称额外结果和代码位于项目网站，但本次直接核验项目页时，Code 区仍标为 “coming soon”，因此本报告按**代码尚未公开可用**处理。",
+    "limitations": "主要限制是视频生成推理成本和闭环 replanning rate；预测仍是短 horizon，历史上下文有限，长程环境需要外部 visual cue 补充。作者也将更长记忆与模型蒸馏列为后续扩展方向。",
+    "comments": "",
+    "source_reports": [
+      "report-1b1ffacf7d"
+    ],
+    "deleted": false,
+    "updated_at": "2026-09-16",
+    "challenges": "短时第一视角视频规划缺少长程全局任务信息，生成的视觉未来也不能直接转换为不同机器人本体可执行的连续控制，限制了导航泛化与闭环效率。",
+    "motivation": "CueNav继续沿“用生成视频作为 plan，再把视觉未来翻译为动作”的路线推进，但增加两个 cue：BEV map给视频模型全局任务上下文，保留机器人身体的一部分则提供 embodiment information。最终动作并不是从视频直接读取几何 waypoint，而是由 embodiment-specific inverse dynamics model 根据生成视频中的 dense flow 解码。",
+    "technical_approach": "**输入**：近期 egocentric visual observation、文本/语义目标、BEV/global cue，以及可见的机器人 embodiment cue。\n\n**过程**：video planner生成短时未来视觉计划；从预测视频提取 dense optical flow；针对每个机器人本体训练的 IDM将 visual motion翻译成连续控制；系统持续闭环重新规划。\n\n**输出**：未来视频计划和实际导航控制命令。",
+    "discussion": "CueNav不是 manipulation WAM，但它很好地暴露了 Video/WAM 的一个接口问题：**生成的未来视频怎样变成不同机器人真正可执行的动作**。其 embodiment-specific IDM 与 WLA³的共享 latent action、A4A的 4D affordance形成三种不同答案，值得作为跨本体 action grounding 的对照路线。",
+    "arxiv": {
+      "published": "2026-09-15T07:11:21Z",
+      "revised_at": "2026-09-15T07:11:21Z",
+      "primary_category": "cs.RO"
+    }
+  },
+  {
     "arxiv": {
       "published": "2026-08-02T17:25:08Z",
       "revised_at": "2026-08-02T17:25:08Z",
@@ -8416,6 +9016,69 @@
     "title": "SG-WAM: Self-Guided World Modeling in Geometry-Aware Policy Space",
     "updated_at": "2026-08-20",
     "year": 2026
+  },
+  {
+    "id": "arxiv-2609-12155",
+    "title": "Single-Query Person-Centric Bimanual Hand-Object Interaction Detection",
+    "authors": [
+      "Jonghyun Kim",
+      "Junho Roh",
+      "Yubin Yoon",
+      "Hyotae Lee",
+      "Jongkuk Park",
+      "Taehwan Hwang",
+      "Jaechul Kim",
+      "Jungho Lee"
+    ],
+    "year": 2026,
+    "publication": "2026，arXiv；arXiv comment 标注 Accepted to ECCV 2026",
+    "arxiv_id": "2609.12155",
+    "doi": "10.48550/arXiv.2609.12155",
+    "links": {
+      "paper": "https://arxiv.org/abs/2609.12155",
+      "project": "https://lgecto-ail-vil.github.io/SingleQuery-BHOI/",
+      "alphaxiv": "https://alphaxiv.org/abs/2609.12155"
+    },
+    "tags": [
+      "HOI",
+      "person-centric",
+      "structured detection",
+      "双手交互"
+    ],
+    "figure": {
+      "url": "https://arxiv.org/html/2609.12155v1/figures/oih_architecture.jpg",
+      "alt": "Single-Query Bimanual HOI Fig. 2",
+      "label": "Single-Query Bimanual HOI，Fig. 2，person-centric query 同时预测人体、双手与交互目标。来源：Fig. 2 原图 JPG",
+      "paper_title": "Single-Query Person-Centric Bimanual Hand-Object Interaction Detection",
+      "source_url": "https://arxiv.org/html/2609.12155v1/figures/oih_architecture.jpg"
+    },
+    "summary": "传统 hand-centric HOI detector把每只手独立检测，容易在多人场景中丢失“左右手属于哪个人”的关系。该工作改成 one-query-per-person：单个 query同时输出 human box、body pose、左右手框与状态，并为每只手关联 interaction target。",
+    "insight": "传统 hand-centric HOI detector把每只手独立检测，容易在多人场景中丢失“左右手属于哪个人”的关系。该工作改成 one-query-per-person：单个 query同时输出 human box、body pose、左右手框与状态，并为每只手关联 interaction target。",
+    "pipeline": {
+      "input": "单张包含一个或多个人的 RGB 图像。",
+      "process": "person query通过 part-aware deformable attention访问人体、手和姿态区域；同一 query预测 person/pose/hand structure；hand-to-query relationship matrix 让每只手从已检测 person/object query 及 off token 中选择交互目标。",
+      "output": "完整 person-centric 双手结构、hand state 及 hand-object target association。",
+      "details": "**输入**：单张包含一个或多个人的 RGB 图像。\n\n**过程**：person query通过 part-aware deformable attention访问人体、手和姿态区域；同一 query预测 person/pose/hand structure；hand-to-query relationship matrix 让每只手从已检测 person/object query 及 off token 中选择交互目标。\n\n**输出**：完整 person-centric 双手结构、hand state 及 hand-object target association。"
+    },
+    "experiments": "论文构建 COCO-based 数据，并与 Hands23 等来源对齐；约 2K COCO validation 图像增加人工 person-centric annotation。对训练标签，作者进行了 VLM-assisted verification 与人工 audit：770 个样本检查中规则错误率由约 2.5% 降至 2.1%，500 个 double-label 样本人工一致率约 98.4%。\n\n在无 pose 的直接比较中，相比 DirectBox，检测 mAP大致接近（49.1 vs 48.8），但中等严格度 interaction 指标约从 44.9 提升到 60.8，hard 指标从 12.6 提升到 28.9，支持 person-centric relation modeling 对完整双手交互关系的贡献。",
+    "evidence_notes": "全文已核验",
+    "code_data_status": "项目页已公开，但本次没有核验到可用的官方训练代码或权重发布。",
+    "limitations": "失败仍集中在模糊、小尺度、严重遮挡和深度关系困难的手/物体；训练标签部分来自规则与 VLM 辅助，因此存在残余伪标注误差。更重要的是，该工作解决的是 2D structured interaction detection，不是 metric 3D/4D HOI。",
+    "comments": "",
+    "source_reports": [
+      "report-1b1ffacf7d"
+    ],
+    "deleted": false,
+    "updated_at": "2026-09-16",
+    "challenges": "逐手检测在多人和双手交互场景中容易丢失人体归属、左右手结构以及每只手的交互对象，局部检测正确也不保证完整 person-centric 关系正确。",
+    "motivation": "传统 hand-centric HOI detector把每只手独立检测，容易在多人场景中丢失“左右手属于哪个人”的关系。该工作改成 one-query-per-person：单个 query同时输出 human box、body pose、左右手框与状态，并为每只手关联 interaction target。",
+    "technical_approach": "**输入**：单张包含一个或多个人的 RGB 图像。\n\n**过程**：person query通过 part-aware deformable attention访问人体、手和姿态区域；同一 query预测 person/pose/hand structure；hand-to-query relationship matrix 让每只手从已检测 person/object query 及 off token 中选择交互目标。\n\n**输出**：完整 person-centric 双手结构、hand state 及 hand-object target association。",
+    "discussion": "它为 HarmoHOI/StreamingHOI 类长期交互建模提供了一个更合理的结构单位：**person + two hands + targets**，而不是独立 hand track。后续可进一步增加跨帧 identity、3D contact 和 object motion。",
+    "arxiv": {
+      "published": "2026-09-10T19:41:28Z",
+      "revised_at": "2026-09-10T19:41:28Z",
+      "primary_category": "cs.CV"
+    }
   },
   {
     "arxiv": {
@@ -10306,6 +10969,68 @@
     }
   },
   {
+    "id": "arxiv-2609-15870",
+    "title": "WLA³: World Latent Action Modeling for Semantics, Dynamics, and Kinematics",
+    "authors": [
+      "Peidong Liu",
+      "Zhiyuan Xiang",
+      "Mingyang Li",
+      "Wenhao Li",
+      "Jiale Zhang",
+      "Jiahao Sun",
+      "Jiawei Li"
+    ],
+    "year": 2026,
+    "publication": "2026，arXiv v1，2026-09-14 提交",
+    "arxiv_id": "2609.15870",
+    "doi": "10.48550/arXiv.2609.15870",
+    "links": {
+      "paper": "https://arxiv.org/abs/2609.15870",
+      "project": "https://wla-3.github.io/",
+      "alphaxiv": "https://alphaxiv.org/abs/2609.15870"
+    },
+    "tags": [
+      "World Action Model",
+      "人类视频",
+      "动作表征",
+      "跨本体迁移"
+    ],
+    "figure": {
+      "url": "https://arxiv.org/html/2609.15870v1/overview.png",
+      "alt": "WLA³ Fig. 1",
+      "label": "WLA³，Fig. 1，方法总览：从异构世界状态转移学习紧凑 latent action。来源：Fig. 1 原图 PNG",
+      "paper_title": "WLA³: World Latent Action Modeling for Semantics, Dynamics, and Kinematics",
+      "source_url": "https://arxiv.org/html/2609.15870v1/overview.png"
+    },
+    "summary": "核心问题是异构机器人数据和海量人类第一视角视频缺少统一、低噪声的动作标签。WLA³不尝试把所有 embodiment 的原生 action 映射到同一个机械动作空间，而是把局部时间窗口中的 世界状态变化 编码为共享 latent action，再让机器人控制头把这种共享表示与本体动作共同预测。",
+    "insight": "核心问题是异构机器人数据和海量人类第一视角视频缺少统一、低噪声的动作标签。WLA³不尝试把所有 embodiment 的原生 action 映射到同一个机械动作空间，而是把局部时间窗口中的**世界状态变化**编码为共享 latent action，再让机器人控制头把这种共享表示与本体动作共同预测。\n\n最值得关注的是：它把 human-video scaling 的接口从“动作伪标签”转向“transition representation”。这与传统 action tokenizer 不同，因为 supervision 可以来自同步视觉变化以及可用的 embodiment-state change，而机器人轨迹负责把共享 latent grounding 到可执行动作。",
+    "pipeline": {
+      "input": "同步相机观测、人类第一视角视频，以及数据中可用的机器人/身体状态变化。",
+      "process": "WLAM编码局部 world transition，形成紧凑的 32D local latent action 和更丰富的 transition feature；使用 partial-modality reconstruction 与 overlapping-window consistency 约束表示。随后这些表示分别进入 latent-action-conditioned dynamics、SLA 语义监督以及联合预测 latent action 与原生机器人控制的 action expert。",
+      "output": "跨本体 latent action、世界转移表征以及对应机器人的可执行动作。",
+      "details": "**输入**：同步相机观测、人类第一视角视频，以及数据中可用的机器人/身体状态变化。\n\n**过程**：WLAM编码局部 world transition，形成紧凑的 32D local latent action 和更丰富的 transition feature；使用 partial-modality reconstruction 与 overlapping-window consistency 约束表示。随后这些表示分别进入 latent-action-conditioned dynamics、SLA 语义监督以及联合预测 latent action 与原生机器人控制的 action expert。\n\n**输出**：跨本体 latent action、世界转移表征以及对应机器人的可执行动作。"
+    },
+    "experiments": "论文摘要报告 LARYBench 32D latent action 平均分类准确率 67.89%；六个 AgiBot G1 真实桌面任务中，WLA³平均成功率为 81.9%，\\(\\pi_{0.5}\\) 为 66.2%。训练数据从约 5K 小时增加到 20K 小时时，实机平均成功率由 57.6% 上升到 81.9%；累计消融中，基础版本 72.1%，加入 LAC-WM 后 76.3%，进一步加入 LARA 为 79.8%，最终加入 SLA 达 81.9%。\n\n官方项目还列出约 84.1K 小时聚合数据，包括约 53,874 小时 human、14,151 小时 real robot、11,676 小时 simulation 和 4,393 小时 UMI 数据。需要注意，项目页面当前显示 LARYBench headline 为 70.75%，与 arXiv 摘要的 67.89% 不一致，应等待作者澄清具体 checkpoint/评测版本。",
+    "evidence_notes": "全文已核验",
+    "code_data_status": "项目页已公开，但本次未核验到稳定的官方训练代码、可下载数据集或模型权重入口。项目页面的资源状态不应被等同于完整可复现发布。",
+    "limitations": "实机证据集中在六个桌面操作任务，尚不足以证明 latent action 对广泛机器人本体、移动操作、长程任务或互联网规模人类视频都具有相同可迁移性。项目页和论文摘要的 latent-action 数字不一致也是当前复核时需要保留的版本风险。",
+    "comments": "",
+    "source_reports": [
+      "report-1b1ffacf7d"
+    ],
+    "deleted": false,
+    "updated_at": "2026-09-16",
+    "challenges": "异构机器人、人类第一视角视频与 UMI 数据使用不同动作空间，缺少可跨本体共享且噪声可控的动作监督，直接映射原生机械动作难以扩展。",
+    "motivation": "核心问题是异构机器人数据和海量人类第一视角视频缺少统一、低噪声的动作标签。WLA³不尝试把所有 embodiment 的原生 action 映射到同一个机械动作空间，而是把局部时间窗口中的**世界状态变化**编码为共享 latent action，再让机器人控制头把这种共享表示与本体动作共同预测。\n\n最值得关注的是：它把 human-video scaling 的接口从“动作伪标签”转向“transition representation”。这与传统 action tokenizer 不同，因为 supervision 可以来自同步视觉变化以及可用的 embodiment-state change，而机器人轨迹负责把共享 latent grounding 到可执行动作。",
+    "technical_approach": "**输入**：同步相机观测、人类第一视角视频，以及数据中可用的机器人/身体状态变化。\n\n**过程**：WLAM编码局部 world transition，形成紧凑的 32D local latent action 和更丰富的 transition feature；使用 partial-modality reconstruction 与 overlapping-window consistency 约束表示。随后这些表示分别进入 latent-action-conditioned dynamics、SLA 语义监督以及联合预测 latent action 与原生机器人控制的 action expert。\n\n**输出**：跨本体 latent action、世界转移表征以及对应机器人的可执行动作。",
+    "discussion": "这是本期对“**从人类视频学习具身 WAM**”最直接的工作之一。它与 A4A 的 4D affordance 路线形成有意义对照：A4A显式使用未来 3D 点运动，WLA³使用更抽象的 world-transition latent。后续研究可以直接比较这种抽象 latent 与显式 3D/4D interaction state 在跨本体可执行性上的差异。",
+    "arxiv": {
+      "published": "2026-09-14T16:59:00Z",
+      "revised_at": "2026-09-14T16:59:00Z",
+      "primary_category": "cs.RO"
+    }
+  },
+  {
     "id": "arxiv-2609-07002",
     "title": "WM-Craftnet: World Synesthesia Model for Generalizable and Robust Dexterous In-Hand Manipulation",
     "authors": [
@@ -10828,6 +11553,76 @@
     "motivation": "提出 Observable Simulator Contract，将 action→agent motion→interaction→environment dynamics 分解诊断。",
     "technical_approach": "- **输入：** RoboTwin、ManiSkill、LIBERO 中局部/全局、跨来源和 OOD 动作轨迹\n- **过程：** 五个 controlled suites 分别测动作敏感性、轨迹一致、false interaction 与 primitive dynamics\n- **输出：** 模拟器忠实度诊断及与人工/下游策略结果的对应",
     "discussion": "该工作直接支持“action-conditioned 不等于 physical intervention faithful”。它未学习因果模型，却为 HOI counterfactual WM 提供分层评测骨架。"
+  },
+  {
+    "id": "arxiv-2609-17372",
+    "title": "XPACE: Joint World and Action Modeling from Heterogeneous Experience",
+    "authors": [
+      "Jiacheng Wei",
+      "Jerry Bai",
+      "Xiaoyu Yue",
+      "Zidong Wang",
+      "Xiaoyang Guo",
+      "Cheng Chen",
+      "Fanqi Pu",
+      "Fan Wu",
+      "Zhixu Yue",
+      "Yizhuo Li",
+      "Feng Qiu",
+      "Bo Liu",
+      "Yuying Ge",
+      "Hui Zhou",
+      "Chenyi Chen",
+      "Yixiao Ge"
+    ],
+    "year": 2026,
+    "publication": "2026，arXiv v1，2026-09-15 提交",
+    "arxiv_id": "2609.17372",
+    "doi": "10.48550/arXiv.2609.17372",
+    "links": {
+      "paper": "https://arxiv.org/abs/2609.17372",
+      "alphaxiv": "https://alphaxiv.org/abs/2609.17372"
+    },
+    "tags": [
+      "self-improvement",
+      "World Action Model",
+      "世界模型",
+      "人类视频"
+    ],
+    "figure": {
+      "url": "https://arxiv.org/html/2609.17372v1/teaser.png",
+      "alt": "XPACE Fig. 1",
+      "label": "XPACE，Fig. 1，统一 world-action policy 与 action-conditioned simulator。来源：Fig. 1 原图 PNG",
+      "paper_title": "XPACE: Joint World and Action Modeling from Heterogeneous Experience",
+      "source_url": "https://arxiv.org/html/2609.17372v1/teaser.png"
+    },
+    "summary": "XPACE把 world-action policy 与 world simulator 合并进共享视频 backbone。无动作视频负责学习视觉动态；带动作的人类和机器人轨迹共同提供视频与动作 supervision。模型随后不只预测动作，还能以给定动作模拟视觉后果，并利用自己的 simulator 构造偏离专家轨迹后的 recovery experience。",
+    "insight": "XPACE把 world-action policy 与 world simulator 合并进共享视频 backbone。无动作视频负责学习视觉动态；带动作的人类和机器人轨迹共同提供视频与动作 supervision。模型随后不只预测动作，还能以给定动作模拟视觉后果，并利用自己的 simulator 构造偏离专家轨迹后的 recovery experience。\n\n关键 Insight 是把 world model 从辅助 loss 提升为**可生成新 policy training data 的闭环组件**。",
+    "pipeline": {
+      "input": "无动作视频、带动作的人类演示、机器人演示，以及部署时当前视觉/任务上下文。",
+      "process": "先以大规模视频学习 visual dynamics，再联合训练 future video 与 robot action；采用 coarse-to-fine curriculum逐渐提高机器人控制比重。world simulator进一步适配自己的 generated context，在专家轨迹附近生成 deviation-recovery rollout，过滤后用于 policy fine-tuning。",
+      "output": "可执行机器人动作，以及指定动作条件下的未来视频模拟。",
+      "details": "**输入**：无动作视频、带动作的人类演示、机器人演示，以及部署时当前视觉/任务上下文。\n\n**过程**：先以大规模视频学习 visual dynamics，再联合训练 future video 与 robot action；采用 coarse-to-fine curriculum逐渐提高机器人控制比重。world simulator进一步适配自己的 generated context，在专家轨迹附近生成 deviation-recovery rollout，过滤后用于 policy fine-tuning。\n\n**输出**：可执行机器人动作，以及指定动作条件下的未来视频模拟。"
+    },
+    "experiments": "XPENG IRON 真实机器人实验中，论文报告 XPACE 平均成功率 68.3%，DreamZero 为 40.0%，GR00T 为 6.7%；对应 progress 指标约 0.84、0.68、0.36。需要注意，监督机器人/人类 corpus虽进行了匹配，但 XPACE额外使用 Stage-I video adaptation，因此该表支持的是完整系统方案，而非纯 architecture-controlled 胜负。\n\n使用 simulator 生成恢复数据进行 self-improvement 后，平均 progress 从 0.81 提升至 0.93，成功率从 61.7% 提升到 86.7%；其中 water-pouring 任务由 50% 提升到 95%。",
+    "evidence_notes": "全文已核验",
+    "code_data_status": "本次未核验到稳定官方代码、模型或数据下载入口，因此不根据第三方索引声称其已经开源。",
+    "limitations": "完整方案同时变化数据、预训练和架构，导致部分对比难以隔离“共享 world/action architecture”本身的贡献。simulation-generated recovery 是否会在更长 horizon 下累积模型偏差、过滤器如何处理错误但视觉上合理的 trajectory，也仍是核心开放问题。",
+    "comments": "",
+    "source_reports": [
+      "report-1b1ffacf7d"
+    ],
+    "deleted": false,
+    "updated_at": "2026-09-16",
+    "challenges": "无动作视频、带动作的人类轨迹与机器人示范通常由不同模型或训练阶段割裂处理，世界预测难以直接反哺策略，并容易在偏离专家分布后失效。",
+    "motivation": "XPACE把 world-action policy 与 world simulator 合并进共享视频 backbone。无动作视频负责学习视觉动态；带动作的人类和机器人轨迹共同提供视频与动作 supervision。模型随后不只预测动作，还能以给定动作模拟视觉后果，并利用自己的 simulator 构造偏离专家轨迹后的 recovery experience。\n\n关键 Insight 是把 world model 从辅助 loss 提升为**可生成新 policy training data 的闭环组件**。",
+    "technical_approach": "**输入**：无动作视频、带动作的人类演示、机器人演示，以及部署时当前视觉/任务上下文。\n\n**过程**：先以大规模视频学习 visual dynamics，再联合训练 future video 与 robot action；采用 coarse-to-fine curriculum逐渐提高机器人控制比重。world simulator进一步适配自己的 generated context，在专家轨迹附近生成 deviation-recovery rollout，过滤后用于 policy fine-tuning。\n\n**输出**：可执行机器人动作，以及指定动作条件下的未来视频模拟。",
+    "discussion": "XPACE与 Dyna、OpenWAM、FlowWAM 等路线高度相关，但增加了一个重要闭环：**世界模型自己生成 recovery supervision**。它值得与显式 3D/4D simulator 或 contact-aware world model结合，以研究视频上看似合理的恢复轨迹是否真的物理可执行。",
+    "arxiv": {
+      "published": "2026-09-15T16:07:34Z",
+      "revised_at": "2026-09-15T16:07:34Z",
+      "primary_category": "cs.RO"
+    }
   },
   {
     "id": "arxiv-2608-26103",
