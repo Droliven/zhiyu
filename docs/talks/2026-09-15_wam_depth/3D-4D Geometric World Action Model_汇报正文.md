@@ -34,8 +34,8 @@
 
 ### 1.1 EgoWAM
 
-**论文标题：** [EgoWAM: World Action Models Beyond Pixels with In-the-Wild Egocentric Human Data](https://egowam.github.io/)  
-**来源：** 作者项目页，标注 CoRL 2026 在审。
+**CoRL 2026, 佐治亚理工：** [EgoWAM: World Action Models Beyond Pixels with In-the-Wild Egocentric Human Data](https://egowam.github.io/)  
+
 
 ![EgoWAM](assets/paper_cards/egowam.png)
 
@@ -75,7 +75,7 @@
 
 ### 2.1 Spatial Forcing
 
-**论文标题：** [Spatial Forcing: Implicit Spatial Representation Alignment for Vision-language-action Model](https://arxiv.org/abs/2510.12276)  
+**ICLR 2026, 港科广：** [Spatial Forcing: Implicit Spatial Representation Alignment for Vision-language-action Model](https://arxiv.org/abs/2510.12276)  
 
 
 ![Spatial Forcing 表示对齐与深度探测](assets/paper_cards/spatial_forcing_f1.png)
@@ -100,7 +100,7 @@ Table 2 在相同 150K 训练步数、全量数据的组件实验中，对比无
 
 ### 2.2 Track4Action
 
-**论文标题：** [Track4Action: Distilling World-Centric 3D Tracker into Vision-Language-Action Policies](https://arxiv.org/abs/2608.03727)  
+**Arxiv 2608, 上交卢策吾：** [Track4Action: Distilling World-Centric 3D Tracker into Vision-Language-Action Policies](https://arxiv.org/abs/2608.03727)  
 
 
 ![Track4Action 教师与学生方法图](assets/paper_cards/track4action_f2.png)
@@ -131,7 +131,7 @@ Table 2 在相同 150K 训练步数、全量数据的组件实验中，对比无
 
 ### 2.3 WAM4D ✨
 
-**论文标题：** [WAM4D: Fast 4D World Action Model via Spatial Register Tokens](https://arxiv.org/abs/2606.14048)  
+**Arxiv 2606, 北大：** [WAM4D: Fast 4D World Action Model via Spatial Register Tokens](https://arxiv.org/abs/2606.14048)  
 
 
 ![WAM4D 模型与注意力可见性](assets/paper_cards/wam4d_f2.png)
@@ -167,7 +167,7 @@ Table 8 支持“先验与读出方式影响辅助目标能否转化为控制收
 
 ### 2.4 MECo-WAM
 
-**论文标题：** [Learning 4D Geometric Priors for Inference-Efficient World Action Models（MECo-WAM）](https://arxiv.org/abs/2607.05468)  
+**Arxiv 2607, 同济：** [Learning 4D Geometric Priors for Inference-Efficient World Action Models（MECo-WAM）](https://arxiv.org/abs/2607.05468)  
 
 
 ![MECo-WAM 训练与推理总览](assets/paper_cards/meco_wam_f2.png)
@@ -192,7 +192,7 @@ Table 4 中，Fast-WAM 为 91.83%，单独增加 4D expert 为 91.87%，完整 M
 
 ### 2.5 GEM-4D
 
-**论文标题：** [GEM-4D: Geometry-Enhanced Video World Models for Robot Manipulation](https://arxiv.org/abs/2605.22882)  
+**ECCV 2026，哈佛：** [GEM-4D: Geometry-Enhanced Video World Models for Robot Manipulation](https://arxiv.org/abs/2605.22882)  
 
 
 ![GEM-4D 视频与几何联合训练](assets/paper_cards/gem4d_f2.png)
@@ -225,14 +225,42 @@ Table 3 比较深度监督、VGGT 特征与完整几何监督：真实视频域�
 
 | 论文 | 未来表示 | 预测条件 | 动作求解方式 | 关键对照 |
 | --- | --- | --- | --- | --- |
-| [GAM](https://arxiv.org/abs/2606.17046)   | 几何骨干中的未来 token | 观测与任务上下文 | 几何深层特征连接动作解码 | 预训练／损失／直接动作监督 |
-| [Structured 4D](https://arxiv.org/abs/2607.01166)   | 结构化 3D latent 与解码几何 | 当前场景＋语言任务 | 几何子目标→逆动力学 | 三维一致性与任务成功率分别评价 |
-| [X-WAM](https://arxiv.org/abs/2604.26694)   | 多视角 RGB-D 与动作 | 观测、任务、本体状态 | 联合建模、异步动作去噪 | 深度分支与采样调度的消融 |
+| [X-WAM ✨](https://arxiv.org/abs/2604.26694)   | 多视角 RGB-D 与动作 | 观测、任务、本体状态 | 联合建模、异步动作去噪 | 深度分支与采样调度的消融 |
+| [GAM ✨](https://arxiv.org/abs/2606.17046)   | 几何骨干中的未来 token | 观测与任务上下文 | 几何深层特征连接动作解码 | 预训练／损失／直接动作监督 |
 | [PointWorld](https://arxiv.org/abs/2601.03782)   | 全场景 3D point flow | 当前点云＋候选机器人动作 | 预测后果→MPC | 夹爪／全身 flow 与低维动作条件 |
+| [Structured 4D](https://arxiv.org/abs/2607.01166)   | 结构化 3D latent 与解码几何 | 当前场景＋语言任务 | 几何子目标→逆动力学 | 三维一致性与任务成功率分别评价 |
 
-### 3.1 Geometric Action Model（GAM） ✨
 
-**论文标题：** [Geometric Action Model for Robot Policy Learning](https://arxiv.org/abs/2606.17046)  
+### 3.1 X-WAM ✨
+
+**Arxiv 2604, 清华刘华平：** [Unified 4D World Action Modeling from Video Priors with Asynchronous Denoising（X-WAM）](https://arxiv.org/abs/2604.26694)  
+
+
+![X-WAM 模型与异步采样](assets/paper_cards/xwam_f2.png)
+
+*原论文 Figure 2：左侧为交错深度分支，右侧比较训练噪声采样与动作先完成去噪的推理调度。[原图与图注](https://arxiv.org/html/2604.26694v2#S3.F2)*
+
+**核心 insight**
+
+联合预测 RGB-D 与动作，需要同时安排几何学习和动作何时可以被执行。X-WAM 将深度结构与异步去噪共同设计。
+
+**方法概括**
+
+- **输入：** 多视角 RGB、语言、本体状态和噪声动作。
+- **过程：** 以视频模型初始化 DiT，加入交错深度分支；Asynchronous Noise Sampling 对齐训练与推理的模态噪声关系。
+- **输出／部署：** 联合生成 RGB-D 和动作，动作先完成去噪并被发送，视频继续生成。
+
+**实验**
+
+Table 4 的深度结构消融中，无深度为 63.0% / 1033 ms，交错分支为 67.8% / 1033 ms，序列拼接为 68.7% / 1888 ms。调度对照中，同步训练与推理为 66.4% / 4665 ms，ANS＋异步为 67.8% / 1033 ms。这组实验体现几何效果与延迟的取舍；数值属于同文消融协议，不与其他论文延迟直接比较。[Table 4](https://arxiv.org/html/2604.26694v2)
+
+**与主线的关系：** 几何进入联合生成后，还需要为控制安排计算预算与输出时机。
+
+
+### 3.2 Geometric Action Model（GAM） ✨
+
+
+**ECCV 2026, KAIST：** [Geometric Action Model for Robot Policy Learning](https://arxiv.org/abs/2606.17046)  
 
 
 ![GAM 几何骨干内部的未来预测与动作解码](assets/paper_cards/gam_f3.png)
@@ -262,59 +290,10 @@ Table 3 比较深度监督、VGGT 特征与完整几何监督：真实视频域�
 
 **与主线的关系：** 对照 Spatial Forcing 的外部教师路线，几何在此成为模型内部执行预测与解码的骨干。
 
-### 3.2 Structured 4D Latent Predictive Model
 
-**论文标题：** [Structured 4D Latent Predictive Model for Robot Planning](https://arxiv.org/abs/2607.01166)  
+### 3.3 PointWorld
 
-
-![Structured 4D 从多视角几何到目标条件逆动力学](assets/paper_cards/structured4d_f2.png)
-
-*原论文 Figure 2：多视角重建初始 3D latent，预测未来结构，解码后交给逆动力学模块。[原图与图注](https://arxiv.org/html/2607.01166v1#S2.F2)*
-
-**核心 insight**
-
-将任务目标表达成三维场景的未来结构，使“希望到达什么状态”与“怎样执行”通过几何子目标衔接。
-
-**方法概括**
-
-- **输入：** 多视角观测与语言任务。
-- **过程：** 稀疏体素组织 3D latent；结构动态与 latent 生成模块预测未来；将解码点云等几何交给目标条件逆动力学模块。
-- **输出／部署：** 未来几何子目标及趋近该目标的机器人动作。
-
-**实验**
-
-Table 1 中，相比 TesserAct，Chamfer 指标从 42.79 降到 5.95，但图像 SSIM 从 0.86 降到 0.79，表明三维一致性与图像指标并非同步。Table 2 的 ManiSkill3 三任务平均成功率为 61.3%，高于 DP 的 55.7%，但插销任务为 16%，低于 DP 的 24%。该协议使用四个全局相机，插销容差放宽至 0.01 m。这支持整体三维预测和部分控制任务的收益，也保留了任务差异。[Tables 1–2](https://arxiv.org/html/2607.01166v1)
-
-**与主线的关系：** 它预测任务所需的子目标；PointWorld 则预测指定机器人动作的后果，两者的条件和求解方向不同。
-
-### 3.3 X-WAM
-
-**论文标题：** [Unified 4D World Action Modeling from Video Priors with Asynchronous Denoising（X-WAM）](https://arxiv.org/abs/2604.26694)  
-
-
-![X-WAM 模型与异步采样](assets/paper_cards/xwam_f2.png)
-
-*原论文 Figure 2：左侧为交错深度分支，右侧比较训练噪声采样与动作先完成去噪的推理调度。[原图与图注](https://arxiv.org/html/2604.26694v2#S3.F2)*
-
-**核心 insight**
-
-联合预测 RGB-D 与动作，需要同时安排几何学习和动作何时可以被执行。X-WAM 将深度结构与异步去噪共同设计。
-
-**方法概括**
-
-- **输入：** 多视角 RGB、语言、本体状态和噪声动作。
-- **过程：** 以视频模型初始化 DiT，加入交错深度分支；Asynchronous Noise Sampling 对齐训练与推理的模态噪声关系。
-- **输出／部署：** 联合生成 RGB-D 和动作，动作先完成去噪并被发送，视频继续生成。
-
-**实验**
-
-Table 4 的深度结构消融中，无深度为 63.0% / 1033 ms，交错分支为 67.8% / 1033 ms，序列拼接为 68.7% / 1888 ms。调度对照中，同步训练与推理为 66.4% / 4665 ms，ANS＋异步为 67.8% / 1033 ms。这组实验体现几何效果与延迟的取舍；数值属于同文消融协议，不与其他论文延迟直接比较。[Table 4](https://arxiv.org/html/2604.26694v2)
-
-**与主线的关系：** 几何进入联合生成后，还需要为控制安排计算预算与输出时机。
-
-### 3.4 PointWorld ✨
-
-**论文标题：** [PointWorld: Scaling 3D World Models for In-The-Wild Robotic Manipulation](https://arxiv.org/abs/2601.03782)  
+**CVPR 2026 Highlight, 李飞飞：** [PointWorld: Scaling 3D World Models for In-The-Wild Robotic Manipulation](https://arxiv.org/abs/2601.03782)  
 
 
 ![PointWorld 动作点运动与场景点运动](assets/paper_cards/pointworld_f2.png)
@@ -343,6 +322,33 @@ Table 4 的深度结构消融中，无深度为 63.0% / 1033 ms，交错分支�
 
 **与主线的关系：** 这条链路明确是“候选动作→场景后果→选择”。机器人点流描述动作，场景点流描述后果，二者不能混为同一监督对象。
 
+
+### 3.4 Structured 4D Latent Predictive Model
+
+**ICLR 2026, MIT:** [Structured 4D Latent Predictive Model for Robot Planning](https://arxiv.org/abs/2607.01166)  
+
+
+![Structured 4D 从多视角几何到目标条件逆动力学](assets/paper_cards/structured4d_f2.png)
+
+*原论文 Figure 2：多视角重建初始 3D latent，预测未来结构，解码后交给逆动力学模块。[原图与图注](https://arxiv.org/html/2607.01166v1#S2.F2)*
+
+**核心 insight**
+
+将任务目标表达成三维场景的未来结构，使“希望到达什么状态”与“怎样执行”通过几何子目标衔接。
+
+**方法概括**
+
+- **输入：** 多视角观测与语言任务。
+- **过程：** 稀疏体素组织 3D latent；结构动态与 latent 生成模块预测未来；将解码点云等几何交给目标条件逆动力学模块。
+- **输出／部署：** 未来几何子目标及趋近该目标的机器人动作。
+
+**实验**
+
+Table 1 中，相比 TesserAct，Chamfer 指标从 42.79 降到 5.95，但图像 SSIM 从 0.86 降到 0.79，表明三维一致性与图像指标并非同步。Table 2 的 ManiSkill3 三任务平均成功率为 61.3%，高于 DP 的 55.7%，但插销任务为 16%，低于 DP 的 24%。该协议使用四个全局相机，插销容差放宽至 0.01 m。这支持整体三维预测和部分控制任务的收益，也保留了任务差异。[Tables 1–2](https://arxiv.org/html/2607.01166v1)
+
+**与主线的关系：** 它预测任务所需的子目标；PointWorld 则预测指定机器人动作的后果，两者的条件和求解方向不同。
+
+
 ### 本章小结
 
 GAM／X-WAM 联合组织预测与动作，Structured 4D 先预测几何子目标再逆向求动作，PointWorld 先给出动作再预测后果。判断模型是否能够评价候选动作，首先要检查预测器的条件中是否包含待评价的动作。
@@ -360,7 +366,7 @@ GAM／X-WAM 联合组织预测与动作，Structured 4D 先预测几何子目标
 
 ### 4.1 A4A
 
-**论文标题：** [A4A: Cross-Embodiment Transfer of Action-Oriented 4D Affordances from Human Demonstrations](https://arxiv.org/abs/2609.05892)  
+**Arxiv 2609, 上交：** [A4A: Cross-Embodiment Transfer of Action-Oriented 4D Affordances from Human Demonstrations](https://arxiv.org/abs/2609.05892)  
 
 
 ![A4A 从交互点预训练到机器人动作微调](../../../content/images/2609.05892-representative.webp)
@@ -389,7 +395,7 @@ LIBERO-Object 的 10 个任务中，Octo 从 28.2% 到 57.2%，OpenVLA 从 66.4%
 
 ### 4.2 PointAction
 
-**论文标题：** [PointAction: 3D Points as Universal Action Representations for Robot Control](https://arxiv.org/abs/2606.03943)  
+**CVPR 2026 4DV Workshop, 宾大刘玲洁：** [PointAction: 3D Points as Universal Action Representations for Robot Control](https://arxiv.org/abs/2606.03943)  
 
 
 ![PointAction 动态几何到机器人控制](assets/paper_cards/pointaction_f1.png)
@@ -421,7 +427,7 @@ LIBERO-Object 的 10 个任务中，Octo 从 28.2% 到 57.2%，OpenVLA 从 66.4%
 
 ### 4.3 μ₀ ✨
 
-**论文标题：** [μ₀: A Scalable 3D Interaction-Trace World Model](https://arxiv.org/abs/2606.13769)  
+**CoRL 2026, 马里兰大学帕克分校:** [μ₀: A Scalable 3D Interaction-Trace World Model](https://arxiv.org/abs/2606.13769)  
 
 
 ![μ₀ 视频轨迹预训练与动作专家总览](assets/paper_cards/mu0_f1.png)
@@ -456,7 +462,7 @@ LIBERO-Object 的 10 个任务中，Octo 从 28.2% 到 57.2%，OpenVLA 从 66.4%
 
 **与主线的关系：** 将人类视频学习和本体动作解码分开。轨迹的可迁移性与下游动作专家的执行能力应分别验证。
 
-### 4.4 TrAct ✨
+### 4.4 TrAct
 
 **论文标题：** [TrAct: Bridging Robot Control and Visual Prediction with Visual Tracks](https://arxiv.org/abs/2608.24101)  
 
