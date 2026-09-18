@@ -11,7 +11,7 @@ wam4d 论文写的不错，它 intro 的 fig1 可以放进来，架构、causal 
 
 mecowam: 它这里的所谓 decayed 4d read-mask attention 和 temporal geometric distillation 有什么特别？是它故意造新词，还是真的有特别之处？这个工作跟这一章节的其他工作有没有本质的不同，如果没有，那我建议去掉。
 
-gem4d：看起来它主体是个 world model, 没有特别提它 action 的方面，应该不是 wam. （2）geo dit 利用 video feature 去噪生成 geo data. 但问题是即便它忽略 video feature 它也可能生成出来吧。真能有效引导 video dit 学到几何特征吗？另外 geo foundation model 和 geo dit 是什么模型？（3）这个工作也是把 geo info 像正则一样注入 vidoe model, 那这里的注入方式跟前面的注意有什么区别。我感觉跟 spatial forcing 挺像的。另外这个工作也要有实验结果吧。
+gem4d：看起来它主体是个 world model, 没有特别提它 action 的方面，应该不是 wam. （2）geo dit 利用 video feature 去噪生成 geo data. 但问题是即便它忽略 video feature 它也可能生成出来吧。真能有效引导 video dit 学到几何特征吗？另外 geo foundation model 和 geo dit 是什么模型？（3）这个工作也是把 wam4d 像正则一样注入 vidoe model, 那这里的注入方式跟前面的注意有什么区别。我感觉跟 spatial wam4d 挺像的。
 
 
 第二章这几个模型讲完之后，应该有一个清晰条理的对比总结吧。目前的文字概括不够清晰直观。
@@ -48,6 +48,7 @@ Tract: 虽然是李飞飞吴佳俊署名的，但是它好像跟 3D/4D 没关系
 
 第五章有点多余，直接去掉，并把论文直接留在参考文献就行了。我们讲好 3d/4d geo wam 就行了，不需要讲跨本体泛化。
 
+最后一段全文的 takeaways 要逻辑清晰，符合正文内容。
 
 -----
 要不要放 physicial forcing，它算不算 3d/4d geo wam 的一种？
