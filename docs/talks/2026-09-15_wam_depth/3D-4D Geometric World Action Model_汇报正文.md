@@ -1,6 +1,9 @@
 # 3D/4D Geometric World Action Model
 
-> 技术分享 · 党灵伟 · 2026.09.18 · 北京海国瑞业 F304
+> 技术分享 · 党灵伟 · 2026.09.18
+
+> 报告永久链接： [知域 · 3D/4D Geometric World Action Model](https://droliven.github.io/zhiyu/#report=report-wam-depth-talk-20260918)
+
 
 ## 目录
 
