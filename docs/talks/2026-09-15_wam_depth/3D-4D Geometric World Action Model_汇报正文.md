@@ -15,17 +15,17 @@
 
 相关方法可以按几何在“观测 → 未来 → 动作”链条中的位置分为四类：
 
-1. **世界建模目标：** 在相同 WAM 中预测 Pixel、semantic feature 或 3D motion，模型获得的迁移能力不同。
-2. **训练期几何监督：** 用当前几何、时序转移或未来深度塑造模型表征，推理时通常移除教师和几何分支。
-3. **几何未来与动作求解：** 在线预测未来 RGB-D、geometric latent 或 structured 3D state，再通过联合解码、前馈回归或 inverse dynamics 得到动作。
-4. **几何运动接口：** 用 points、trajectories 或 traces 表示任务相关运动，再由本体专属模块转换为机器人动作。
+1. **世界表征比较：** 比较 Pixel、semantic feature 与 3D motion 等候选状态表征。
+2. **几何蒸馏：** 将 3D 先验注入视觉状态表征，推理时通常移除教师和几何分支。
+3. **3D 世界建模：** 将 3D 与视觉、动作并列建模，或直接在独立的 3D 状态空间中预测未来。
+4. **几何运动接口：** 用 points、trajectories 或 traces 连接视觉学习与本体动作。
 
 四类机制并不互斥。本文重点比较三个问题：**预测什么、几何如何进入动作路径、推理时保留哪些组件。**
 
 
 
 
-## 一、表示选择：人类视频中的可迁移信息
+## 一、世界表征比较：Pixel、Semantic Feature 与 3D Motion
 
 ### 本章总览
 
@@ -50,14 +50,16 @@
 
 - 共享 Transformer 同时接收第一视角视觉、机器人本体状态，以及学习得到的 action／future tokens。
 - Action head 始终用 flow matching 解码动作；可插拔 world head 分别重建 **VAE pixel latent、DINO semantic feature、camera-stabilized dense 3D motion field**。
-- 人类和机器人视频都能训练 world loss，但只有机器人数据提供 action loss。红色反传箭头说明：世界建模通过共享骨干改变动作表示。
+- 人类和机器人数据都参与 action loss 与 world loss；人类动作会先映射到统一的末端动作空间。World loss 额外提供对本体差异不敏感的场景动态监督，并通过共享骨干改变动作表示。
 - 部署时只运行动作路径，world head 可以关闭。因此，几何在该方法中主要作为**训练信号**，而非在线规划状态。
 
 **实验结论**
 
 ![EgoWAM 真实双臂任务定量结果](assets/paper_cards/egowam_f3.png)
 
-*原论文 Figure 3结论*：**换表征：迁移效果不同。**
+*原论文 Figure 3：三个真实双臂任务上的 ID／OOD normalized score 与 success rate。[原图与图注](https://arxiv.org/html/2607.08436#S4.F3)*
+
+**换表征，迁移效果不同：**
 
 - ID 最终性能总体呈现 BC < Pixel／Pixel-PT < DINO < 3D Flow，其中 Pixel 与 Pixel-PT 没有稳定排序；
 - OOD 中，DINO 从人类数据获得的增益整体最明显。
@@ -68,7 +70,7 @@
 
 **World state representation 决定 WAM 能从人类视频中迁移什么能力**：Pixel 迁移较弱，DINO 侧重 OOD 泛化，3D Flow 的 ID 最终表现更高。下一章进一步讨论几何监督如何进入动作路径，以及部署时是否保留。
 
-## 二、训练期几何监督：几何如何增强视觉表征
+## 二、几何蒸馏：将 3D 先验注入视觉状态表征
 
 ### 本章总览
 
@@ -77,9 +79,9 @@
 | 论文 | 几何监督对象 | 动作影响路径 | 部署形式 |
 | --- | --- | --- | --- |
 | [Spatial Forcing](https://arxiv.org/abs/2510.12276) | 当前帧 VGGT feature | 对齐 VLA 中间视觉 token | 只留 VLA |
-| [Track4Action](https://arxiv.org/abs/2608.03727) | 完整动作区间的 3D track feature | 当前帧学生 query 学习“这一步会导致什么转移” | 只留学生策略 |
+| [Track4Action](https://arxiv.org/abs/2608.03727) | 动作对齐片段的 pooled 3D tracker feature | Student queries 从当前观测推断对应的紧凑表示 | 只留学生策略 |
 | [WAM4D](https://arxiv.org/abs/2606.14048) | 未来深度 | 经 spatial registers 反传到共享历史视频特征 | 删除 register/depth 路径 |
-| [GEM-4D](https://arxiv.org/abs/2605.22882) | 4D GFM feature 的去噪目标 | GeoDiT 必须从 VideoDiT feature 读出几何 | 只留视频生成器，再做动作恢复 |
+| [GEM-4D](https://arxiv.org/abs/2605.22882) | 4D GFM feature 的去噪目标 | VideoDiT feature 条件化 GeoDiT 的 geometry flow matching | 只留视频生成器，再做动作恢复 |
 
 
 ### 2.1 Spatial Forcing
@@ -94,7 +96,7 @@
 
 **核心观点**
 
-标准 VLA 的动作监督仅约束输出动作，不能保证中间视觉表示编码深度、尺度和遮挡。Spatial Forcing 使用冻结 GFM 提供监督，使 VLA 中间层视觉 token 保留可线性读出的空间结构，同时保持原有动作定义。
+标准 VLA 的动作监督仅约束输出动作，不能保证中间视觉表示编码深度、尺度和遮挡。Spatial Forcing 使用冻结 GFM 提供监督，使 VLA 中间层视觉 token 保留可由轻量 DPT depth head 恢复的空间结构，同时保持原有动作定义。
 
 **方法**
 
@@ -118,11 +120,13 @@
 
 ![Spatial Forcing depth probing](assets/paper_cards/spatial_forcing_f3.png)
 
+*原论文 Figure 3：冻结 VLA，仅训练 DPT depth head；对齐后的视觉特征能够恢复更完整的深度结构。该实验没有报告定量深度误差。[原图与图注](https://arxiv.org/html/2510.12276v2#S2.F3)*
+
 **局限：** 它学习的是当前观测的空间表示，没有建模动作条件下的未来；效果也依赖教师特征、对齐层和 projector。下一篇 Track4Action 正是把静态教师扩展到动作区间。
 
 ### 2.2 Track4Action
 
-**Arxiv 2608, 上交卢策吾：** [Track4Action: Distilling World-Centric 3D Tracker into Vision-Language-Action Policies](https://arxiv.org/abs/2608.03727)  
+**arXiv 2026.08, 上交卢策吾：** [Track4Action: Distilling World-Centric 3D Tracker into Vision-Language-Action Policies](https://arxiv.org/abs/2608.03727)
 
 
 ![Track4Action 教师与学生方法图](assets/paper_cards/track4action_f2.png)
@@ -137,15 +141,15 @@
 
 两者都在训练期将几何模型的特征蒸馏进 VLA，并在推理时移除教师。区别在于：
 
-- **Spatial Forcing：** repurpose*当前帧* VLA token 经 BN＋两层 MLP 后，直接对齐到 VGGT 的逐像素空间特征。
-- **Track4Action：** 用 Q-Former-like 的 learnable track queries 从当前 VLA feature 中预测*整段未来序列*的track信息，并通过 gate 接入动作头。
+- **Spatial Forcing：** 当前帧 VLA token 经 BN＋两层 MLP 后，直接对齐到 VGGT 的逐像素空间特征。
+- **Track4Action：** Track4World 将与 \(K\) 个动作对齐的 \(K+1\) 帧示范片段汇聚为 teacher feature；Q-Former-like track queries 从当前 VLA feature 中推断与之对齐的紧凑表示，并通过 gate 接入动作头。
 
-两篇论文没有同协议的直接比较。个人觉得 Track4Action 理论上强于 Spatial Forcing.
+Track4Action 不显式输出未来 point tracks，也不是候选动作条件的动力学模型。两篇论文没有同协议的直接比较，现有结果不能支持强弱排序。
 
 
 ### 2.3 WAM4D
 
-**Arxiv 2606, 北大：** [WAM4D: Fast 4D World Action Model via Spatial Register Tokens](https://arxiv.org/abs/2606.14048)  
+**arXiv 2026.06, 北大：** [WAM4D: Fast 4D World Action Model via Spatial Register Tokens](https://arxiv.org/abs/2606.14048)
 
 
 ![WAM4D 与已有 RGB-D 建模方式对比](assets/paper_cards/wam4d_f1.png)
@@ -158,7 +162,7 @@
 
 **核心观点**
 
-WAM4D 并不生成几何 latent，而是从 causal video feature **前馈式重建未来深度**。该几何分支只在训练时提供监督：前向路径与动作隔离，depth loss 则通过共享 video feature 反向更新策略表示。
+WAM4D 不对 noisy geometry latent 做扩散或迭代采样，而是由 spatial registers 从 causal video feature **前馈式读出未来深度**。该几何分支只在训练时提供监督：前向路径与动作隔离，depth loss 则通过共享 video feature 反向更新策略表示。
 
 **几何读出与因果路径**
 
@@ -236,7 +240,7 @@ GEM-4D 对 VideoDiT 的约束是间接的：它不直接对齐 video feature 与
 
 四种方法都在训练期引入几何监督，但监督对象和动作耦合方式不同：Spatial Forcing 对齐当前空间表示，Track4Action 蒸馏已发生的时序转移，WAM4D 从 causal video feature 重建未来深度，GEM-4D 则用生成式 geometry branch 约束视频模型。下一章进一步讨论几何未来如何直接参与动作生成或规划。
 
-## 三、几何作为未来状态：未来预测与动作求解
+## 三、3D 作为世界表征：联合视觉与动作，或独立预测未来
 
 ### 本章总览
 
@@ -249,7 +253,7 @@ GEM-4D 对 VideoDiT 的约束是间接的：它不直接对齐 video feature 与
 
 ### 3.1 X-WAM
 
-**Arxiv 2604, 清华刘华平：** [Unified 4D World Action Modeling from Video Priors with Asynchronous Denoising（X-WAM）](https://arxiv.org/abs/2604.26694)  
+**arXiv 2026.04, 清华刘华平：** [Unified 4D World Action Modeling from Video Priors with Asynchronous Denoising（X-WAM）](https://arxiv.org/abs/2604.26694)
 
 ![X-WAM 统一 4D 建模与总体实验结果](assets/paper_cards/xwam_f1.png)
 
@@ -282,9 +286,9 @@ X-WAM 使用同一个 Wan2.2-5B DiT 处理未来 RGB、proprioception 与 action
 
 **实验**
 
-Table 4 中，无深度、交错分支和序列拼接分别达到 63.0% / 1033 ms、67.8% / 1033 ms 和 68.7% / 1888 ms。同步调度为 66.4% / 4665 ms，ANS 异步调度为 67.8% / 1033 ms，体现了几何质量与延迟的权衡。[Table 4](https://arxiv.org/html/2604.26694v2)
+Table 4 在 RTX 3090、5-step action decoding 下报告：无深度、交错分支和序列拼接分别为 63.0% / 1033 ms、67.8% / 1033 ms 和 68.7% / 1888 ms；同步调度为 66.4% / 4665 ms，ANS 异步调度为 67.8% / 1033 ms。[Table 4](https://arxiv.org/html/2604.26694v2)
 
-真机实验使用 AC One 双臂机器人执行耳机装盒。装 2 个耳机的平均进度为 93.8%，XR-0 为 79.1%；新位置泛化为 70.8% 对 58.3%。每个设置仅评估 6 次，指标为分阶段 progress。模型延迟约为 300 ms／action chunk，仍慢于专用 VLA；固定历史窗口也限制了长程阶段判断。[Table 8 / Limitations](https://arxiv.org/html/2604.26694v2)
+真机实验使用 AC One 双臂机器人执行耳机装盒。装 2 个耳机的平均进度为 93.8%，XR-0 为 79.1%；新位置泛化为 70.8% 对 58.3%。真机的约 300 ms／chunk 来自 RTX 5090D、8-step＋RTC 设置，与 Table 4 的 1033 ms 不可直接比较。每个设置仅评估 6 次，固定历史窗口也限制了长程阶段判断。[Table 8 / Limitations](https://arxiv.org/html/2604.26694v2)
 
 **结论：** X-WAM 在统一模型中同时提供可执行 action 与可观测的 4D rollout；部署时无需在每个控制周期完成 depth/video 生成。异步调度在策略延迟与世界建模质量之间提供了折中。
 
@@ -339,17 +343,17 @@ Structured 4D 先从多视角 RGB-D 构建 sparse voxel latent，再以语言为
 - 该范式依赖标定的多视角 RGB-D，完整 3D latent 的两阶段自回归生成也较难扩展到精细接触和大规模训练。
 
 
-### 本章对比：三种“预测之后求动作”
+### 本章对比：三种几何未来—动作耦合方式
 
-| 方法 | 预测对象 | 动作求解 | 随机性／候选 | 在线代价与主要限制 |
+| 方法 | 几何未来 | 动作耦合 | 生成方式 | 主要限制 |
 | --- | --- | --- | --- | --- |
-| X-WAM | RGB-D、state、action 联合未来 | action 较少步先去噪 | 生成式 | 约 300 ms/chunk；完整视频可晚生成 |
-| GAM | GFM latent future＋action token | 单次前馈回归 | **确定性，无多样性** | 最快，但不能显式提出多种未来 |
-| Structured 4D | 任务条件的目标 3D scene | goal-conditioned inverse dynamics | 先生成子目标 | 多视角 RGB-D 与结构化重建难规模化 |
+| X-WAM | RGB-D、state、action 联合未来 | Action 用较少步骤先完成去噪 | 生成式联合去噪 | 延迟仍高于专用 VLA |
+| GAM | GFM latent future＋action token | Future latent 经 GFM 深层回归动作 | 确定性单次前馈 | 无多样未来与候选动作 |
+| Structured 4D | 任务条件的目标 3D scene | 生成几何子目标后调用 inverse dynamics | 生成式子目标；未搜索多候选 | 多视角 RGB-D 与结构化生成成本高 |
 
 三种方法都预测任务条件的未来，但动作接口不同：X-WAM 联合去噪未来与动作，GAM 由几何骨干确定性回归动作，Structured 4D 则先生成几何子目标，再通过 inverse dynamics 求解动作。
 
-## 四、几何运动接口：从场景运动表征到机器人动作
+## 四、几何运动接口：连接视觉学习与本体动作
 
 ### 本章总览
 
@@ -381,10 +385,11 @@ GeomVLA 不把未来轨迹当作需要直接执行的 plan，而是将其作为 
 
 **方法**
 
-1. **3D scene representation：** VLM 编码多视角 RGB；depth 与相机标定将视觉 token 提升到 robot-centric 3D，并加入 3D positional encoding。
-2. **3D Scene Trajectory Denoiser：** 以语言为条件，通过 flow matching 预测场景点的未来 3D motion。
-3. **3D Action Denoiser：** 不等待完整轨迹去噪完成，而是读取 trajectory denoiser 在初始 noisy state 上产生的 early velocity feature，再通过 geometry-aware attention 生成 action chunk。
-4. **Closed-loop inference：** 每次获得新观测后重新计算 scene motion 与 action，预测轨迹只作为内部条件，不被开环执行。
+1. **3D scene representation：** 使用 Florence-2 初始化 VLM，编码多视角 RGB 与语言；depth 和相机标定将视觉 token 提升到 robot-centric 3D，并加入 3D positional encoding。
+2. **3D Scene Trajectory Denoiser：** 在冻结 VLM 的条件下，先用 SpatialTrackerV2 伪标签训练 \(20\times20\) 个 3D anchors 的未来轨迹。它预测 15 个时间步的 3D displacement，而不生成未来 RGB。
+3. **3D Action Denoiser：** 第二阶段仅使用 action loss，联合微调 VLM、trajectory denoiser 和 action denoiser。推理时不等待完整轨迹生成，只读取初始 noisy state 上的一次 velocity-field evaluation，通过 geometry-aware attention 生成 Cartesian EEF action chunk。
+4. **Optional Joint-Angle Denoiser：** 对原生 joint-space 控制的机器人，可进一步读取 scene-motion 与 EEF action feature，生成 joint-angle commands。它是 Cartesian EEF 输出的替代接口，不是同时执行的第二套动作。
+5. **Chunk-level closed loop：** 每个 action chunk 执行后重新观测并计算 scene motion 与 action；预测轨迹只作为内部条件，不被直接开环跟踪。
 
 **与前文方法的区别**
 
@@ -398,8 +403,9 @@ GeomVLA 不把未来轨迹当作需要直接执行的 plan，而是将其作为 
 **关键 takeaways**
 
 1. **关键不是“加 motion loss”，而是几何一致性。** 2D motion＋3D action 仅为 4.085，低于不使用 motion 的 4.508；将 scene、motion、action 一起变换到任意共享 3D frame 仍达到 4.596，接近完整模型的 4.624。
-2. **Early motion latent 比最终轨迹更适合作为动作条件。** 使用 fully denoised trajectory 仅为 4.047，而读取初始阶段的 velocity feature 达到 4.624。Motion 在这里是内部推理表征，而不是显式计划。
-3. **未来运动在复杂控制中确有作用。** 去掉 trajectory denoiser 后，RoboTwin 5-task 从 84.8% 降至 70.0%，真实八任务从 62.5% 降至 44.4%。
+2. **GeomVLA 预测未来 3D motion，而不生成未来 RGB。** Early motion latent 比最终轨迹更适合作为动作条件：使用 fully denoised trajectory 仅为 4.047，而读取初始阶段的 velocity feature 达到 4.624。
+3. **未来运动在复杂控制中确有作用。** 受控 CALVIN 消融从无 motion 的 4.508 提升至 4.624，真实八任务从 44.4% 提升至 62.5%。RoboTwin 5-task 为 70.0% 对 84.8%，但两者训练任务集合不同，只能作为辅助证据。
+4. **3D reasoning 与最终动作参数化可以解耦。** 主模型输出 Cartesian EEF action；Joint-Angle Denoiser 则将相同的 scene-motion reasoning 适配到 joint-space 控制。
 
 **局限：** 需要 depth 和相机标定；scene trajectory 没有显式物理约束，也不是 action-conditioned consequence model，因此不能直接评价候选动作的后果。
 
@@ -438,10 +444,6 @@ PointAction 不在 world model 内部直接生成 action，而是把生成和控
 
 Pixel world model 需要重建大量外观细节，直接 action model 又依赖本体专属动作标签。μ₀ 选择两者之间的中间表示：**对象、工具、手和接触区域等语义交互点的 3D trace**。
 
-![μ₀ 视频轨迹预训练与动作专家总览](assets/paper_cards/mu0_f1.png)
-
-*原论文 Figure 1：TraceExtract 从视频提供轨迹监督，预训练模型向机器人 action expert 提供运动先验。[原图与图注](https://arxiv.org/html/2606.13769v2#S0.F1)*
-
 **方法**
 
 1. **TraceExtract：** 用 DINOv2 entity cluster 选择语义关键点，将其跟踪并提升到全局对齐的 3D，再按运动事件生成对应语言，构造 `{observation, trace, language}` 训练数据。
@@ -456,7 +458,7 @@ Pixel world model 需要重建大量外观细节，直接 action model 又依赖
 
 | 方法 | 运动表示 | 从运动到动作 |
 | --- | --- | --- |
-| Track4Action | 已发生动作区间的 pooled 3D tracker feature | 蒸馏到当前策略的 student queries；没有独立预训练 world model |
+| Track4Action | 已发生动作区间的 pooled 3D tracker feature | 蒸馏到当前策略的 student queries；部署时不保留可复用的 trace world model |
 | GeomVLA | 场景级 latent 3D motion | 端到端条件化同一策略内的 action denoiser |
 | PointAction | 完整 rollout 中的 dense robot pointmap | 完成 4D rollout 后，由本体专属 decoder 开环生成动作 |
 | μ₀ | Sparse semantic 3D interaction traces | 冻结可复用 trace prior，由本体专属 action expert 读取中间 motion feature |
@@ -482,16 +484,16 @@ Pixel world model 需要重建大量外观细节，直接 action model 又依赖
 ## 总结
 
 1. **预测什么，决定迁移什么。** Pixel、semantic feature 和 3D motion 分别偏向外观、语义与空间动态；world state representation 不是附属设计，而是决定模型能力的核心变量。
-2. **几何只有进入动作路径才有价值。** 它可以通过 feature alignment、student query、共享梯度或 latent motion 影响动作；推理时是否显式生成几何并不是必要条件。
-3. **目标未来与动作后果必须区分。** 任务条件的 future 描述“应该发生什么”，action-conditioned dynamics 描述“执行这个动作会发生什么”；后者才能学习动作与交互变化之间的因果关系。
-4. **有效表示应聚焦交互，而不是覆盖完整场景。** Robot-centric points、semantic traces 和 latent scene motion 都在压缩与操作有关的变化；更关键的是 scene、motion 与 action 之间保持一致的坐标和语义。
+2. **若目标是提升控制，几何必须影响动作实际使用的表示或解码路径。** 它可以通过 feature alignment、student query、共享梯度或 latent motion 发挥作用；推理时是否显式生成几何并不是必要条件。
+3. **目标未来与动作后果必须区分。** 任务条件的 future 描述“应该发生什么”，action-conditioned dynamics 提供比较不同动作后果的接口；能否识别因果关系还取决于动作覆盖、干预数据与失败样本。
+4. **交互中心表示可以显著压缩动作相关的预测空间。** Robot-centric points、semantic traces 和 latent scene motion 聚焦于操作变化；完整场景表示仍适合可视化 rollout、重建和显式规划。
 5. **跨本体迁移需要拆开两种对齐。** Video→motion 负责保留任务意图，motion→action 负责适配具体本体；人类视频可以提供交互先验，但不能替代目标机器人的动作学习。
 
 ### 对后续工作的启发
 
-现有工作已经证明，4D motion 可以连接视频中的任务意图与机器人动作，但仍存在两个缺口：多数 motion prediction 对任务敏感、对具体 action 不够敏感；跨本体方法则通常需要为每种机器人单独学习动作接口。
+现有模型已经能够预测“任务期望的运动”，但尚未将同一个 4D interaction state 同时用于两件事：**比较不同 action 的交互后果，以及为不同本体生成可执行动作。**
 
-**JanusAct4D** 关注以 4D interaction dynamics 连接世界预测与机器人控制：一方面学习 action-conditioned 的交互后果，使 motion 对动作选择保持敏感；另一方面以任务意图对齐的 interaction state 作为接口，生成适配不同本体的动作。其目标不是增加一个辅助几何模态，而是利用人类与机器人数据学习可用于因果预测和跨本体控制的 4D 交互表示。
+我们正在进行的 **JanusAct4D** 以共享 4D interaction state 连接两条互补映射：前向动力学从“状态＋候选动作”预测交互后果，逆向策略从“状态＋任务期望交互”生成本体专属动作。人类视频用于学习任务与运动先验，带动作及成败信息的机器人数据负责识别动作后果并适配具体本体。
 
 
 
