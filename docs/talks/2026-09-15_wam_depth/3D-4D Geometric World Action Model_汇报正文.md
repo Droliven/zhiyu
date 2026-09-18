@@ -70,6 +70,10 @@
 
 **World state representation 决定 WAM 能从人类视频中迁移什么能力**：Pixel 迁移较弱，DINO 侧重 OOD 泛化，3D Flow 的 ID 最终表现更高。下一章进一步讨论几何监督如何进入动作路径，以及部署时是否保留。
 
+
+> 更深入细致的探讨，可以看：（1）[Reconstruction or Semantics? What Makes a Latent Space Useful for Robotic World Models](https://arxiv.org/abs/2605.06388), (2) [What Matters for Latent Actions in Robot Learning](https://arxiv.org/abs/2608.19613).
+
+
 ## 二、几何蒸馏：将 3D 先验注入视觉状态表征
 
 ### 本章总览
