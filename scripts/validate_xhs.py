@@ -153,15 +153,35 @@ def validate_digest(digest: dict, note_ids: set[str] | None, errors: list[str], 
                 errors.append(f"{label}: highlight references unknown note {item.get('note_id')}")
 
 
+def validate_candidates(errors: list[str]) -> int:
+    path = ROOT / "data" / "xhs_candidates.json"
+    if not path.exists():
+        return 0
+    data = load_json(path, {})
+    allowed = {"pending", "found", "added", "not_found", "skipped"}
+    seen: Counter[str] = Counter()
+    for item in data.get("candidates", []):
+        seen[item.get("author", "")] += 1
+        if item.get("status") not in allowed:
+            errors.append(f"candidates: {item.get('author')} has invalid status {item.get('status')!r}")
+        if item.get("user_id") and not USER_ID_RE.match(item["user_id"]):
+            errors.append(f"candidates: {item.get('author')} has invalid user_id {item['user_id']!r}")
+    for author, count in seen.items():
+        if count > 1:
+            errors.append(f"candidates: duplicate author {author!r}")
+    return len(data.get("candidates", []))
+
+
 def main() -> None:
     errors: list[str] = []
+    candidates = validate_candidates(errors)
     watchlist = validate_watchlist(errors)
     months, notes = validate_feed(errors)
     if errors:
         raise SystemExit("\n".join(errors))
     print(
         f"Validated xhs watchlist ({len(watchlist['topics'])} topics, {len(watchlist['creators'])} creators) "
-        f"and feed ({notes} notes in {months} month files)."
+        f"and feed ({notes} notes in {months} month files); {candidates} author candidates."
     )
 
 

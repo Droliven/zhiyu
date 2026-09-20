@@ -564,6 +564,8 @@ XHS_DIGEST=1    ./xhs-update.command     # 抓取后运行 scripts/xhs/digest.py
 
 其他清单命令：`disable-creator <user_id>`（暂停抓取、保留历史）、`enable-creator <user_id>`、`remove-creator <user_id>`（不带 `--purge-notes` 则保留历史笔记）、`add-topic <id> --name 名称`。`user_id` 是主页网址里 `/user/profile/` 后面的 24 位串，命令也接受整条网址。
 
+**候选博主清单**：`data/xhs_candidates.json` 列出论文库中出现 ≥3 篇的作者（中文名、单位、状态、找到的 `user_id`），用于逐个去小红书搜索核验。`python3 scripts/xhs/candidates.py refresh` 按 `data/papers.json` 重新计数（不覆盖人工字段），`list [--status pending]` 查看，`set "Author Name" --status found --user-id <id>` 记录结果；找到并加入清单后状态自动变为 `added`。单位信息初始来自模型记忆，以小红书简介为准。
+
 **数据文件**：`data/xhs_watchlist.json` 关注清单（`topics` 只是博主的分组标签，不过滤内容；`enabled: false` 暂停）；`data/xhs/index.json` 博主昵称头像、月度文件目录、上次运行摘要 `last_run`；`data/xhs/notes-YYYY-MM.json` 按发布月份分桶的笔记。每条笔记只存标题、正文（≤800 字）、发布时间、赞/藏/评/转、话题标签、带 `xsec_token` 的原文链接和一张封面的 CDN 地址；不下载图片视频。
 
 **实现与风控**：Playwright 通过 CDP 接管专用 Chrome（profile 在 `~/.zhiyu/xhs-chrome-profile`，与日常 Chrome 隔离），像人一样打开博主主页读取 `window.__INITIAL_STATE__` 与页面自身的 XHR 响应，再对新笔记打开详情页；不重新实现签名算法。以 `note_id` 去重做增量，已入库笔记只刷新点赞数；笔记 ID 前 8 位十六进制是创建时间戳，所以仅有列表信息的笔记也能按时间排序。页面之间随机停 3–8 秒；每轮最多 60 条详情（`--max-detail`），新博主先取最新 8 条（`--first-run-limit`），剩余额度补旧笔记（`--backfill`）。出现安全限制、访问频次异常、重定向到登录错误页或被登出时立即中止并保存已抓数据。抓取不能放进 GitHub Actions，只能在本机运行；CI 只跑 `python3 scripts/validate_xhs.py` 校验数据。建议用单独注册的观察号，只关注不发帖；只抓公开笔记元信息，不抓评论区与个人信息。

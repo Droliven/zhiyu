@@ -1,0 +1,1033 @@
+{
+  "version": 1,
+  "min_papers": 3,
+  "updated_at": "2026-09-20T17:23:59+08:00",
+  "candidates": [
+    {
+      "author": "Shanghang Zhang",
+      "papers": 6,
+      "titles": [
+        "DeCAL: Towards Physically-Grounded Dexterous Vision-Language-Action Models via Contact-Aware Latent Co-Imagination",
+        "Efficient-WAM: A 1B-Parameter World-Action Model with Low-Cost Future Imagination",
+        "Mask World Model: Predicting What Matters for Robust Robot Policy Learning",
+        "OpenWAM: An Open, Modular Exploration Towards Systematic World-Action Model Pretraining"
+      ],
+      "paper_ids": [
+        "arxiv-2609-09119",
+        "arxiv-2606-10040",
+        "arxiv-2604-19683",
+        "arxiv-2609-07398",
+        "arxiv-2608-24885",
+        "arxiv-2608-09298"
+      ],
+      "cn_name": "张姗姗",
+      "affiliation": "北京大学 计算机学院（具身智能/多模态）",
+      "affiliation_source": "模型记忆，待在小红书简介/主页核验",
+      "status": "pending",
+      "user_id": "",
+      "note": ""
+    },
+    {
+      "author": "Shuai Yang",
+      "papers": 6,
+      "titles": [
+        "Causal World Modeling for Robot Control",
+        "LongLive-2.0: An NVFP4 Parallel Infrastructure for Long Video Generation",
+        "RepWAM: World Action Modeling with Representation Visual-Action Tokenizers",
+        "ReWorld: An Interactive World Model with Long-Horizon Memory"
+      ],
+      "paper_ids": [
+        "arxiv-2601-21998",
+        "arxiv-2605-18739",
+        "arxiv-2606-13674",
+        "arxiv-2608-23565",
+        "arxiv-2608-26103",
+        "arxiv-2509-22622"
+      ],
+      "cn_name": "",
+      "affiliation": "多篇跨不同团队（蚂蚁 WAM / NVIDIA LongLive），可能为同名多人",
+      "affiliation_source": "模型记忆，待在小红书简介/主页核验",
+      "status": "skipped",
+      "user_id": "",
+      "note": "同名多人，无法定位具体个人"
+    },
+    {
+      "author": "Jun Zhu",
+      "papers": 5,
+      "titles": [
+        "Causal Forcing++: Scalable Few-Step Autoregressive Diffusion Distillation for Real-Time Interactive Video Generation",
+        "Causal Forcing: Autoregressive Diffusion Distillation Done Right for High-Quality Real-Time Interactive Video Generation",
+        "minWM: A Full-Stack Open-Source Framework for Real-Time Interactive Video World Models",
+        "Motus2: A Self-Evolving General World Model for Dexterous Manipulation"
+      ],
+      "paper_ids": [
+        "arxiv-2605-15141",
+        "arxiv-2602-02214",
+        "arxiv-2605-30263",
+        "arxiv-2608-30237",
+        "arxiv-2512-13030"
+      ],
+      "cn_name": "朱军",
+      "affiliation": "清华大学 计算机系 TSAIL；生数科技",
+      "affiliation_source": "模型记忆，待在小红书简介/主页核验",
+      "status": "pending",
+      "user_id": "",
+      "note": ""
+    },
+    {
+      "author": "Wei Li",
+      "papers": 5,
+      "titles": [
+        "Learning to Use Imagination: Progress-Conditioned Future Utilization for World Action Models",
+        "Puffin-World: Scaling a Unified Multimodal Model with Native 3D World States",
+        "Riemann-1.0: An Embodied World Action Model for Physical AI",
+        "UniMPA: A Unified Memory-Prediction-Action Model via Action-Grounded Transition Modeling"
+      ],
+      "paper_ids": [
+        "arxiv-2609-06578",
+        "arxiv-2609-04196",
+        "arxiv-2608-27033",
+        "arxiv-2609-11875",
+        "arxiv-2608-19613"
+      ],
+      "cn_name": "",
+      "affiliation": "常见名，可能为同名多人",
+      "affiliation_source": "模型记忆，待在小红书简介/主页核验",
+      "status": "skipped",
+      "user_id": "",
+      "note": "同名多人，无法定位具体个人"
+    },
+    {
+      "author": "Eli Shechtman",
+      "papers": 4,
+      "titles": [
+        "From Slow Bidirectional to Fast Autoregressive Video Diffusion Models",
+        "Self Forcing: Bridging the Train-Test Gap in Autoregressive Video Diffusion",
+        "Improved Distribution Matching Distillation for Fast Image Synthesis",
+        "One-step Diffusion with Distribution Matching Distillation"
+      ],
+      "paper_ids": [
+        "arxiv-2412-07772",
+        "arxiv-2506-08009",
+        "arxiv-2405-14867",
+        "arxiv-2311-18828"
+      ],
+      "cn_name": "",
+      "affiliation": "Adobe Research",
+      "affiliation_source": "模型记忆，待在小红书简介/主页核验",
+      "status": "pending",
+      "user_id": "",
+      "note": ""
+    },
+    {
+      "author": "Hang Su",
+      "papers": 4,
+      "titles": [
+        "Causal Forcing: Autoregressive Diffusion Distillation Done Right for High-Quality Real-Time Interactive Video Generation",
+        "Motus: A Unified Latent Action World Model",
+        "Robots Acquire Manipulation Skills in Seconds from a Single Human Video（HOST）",
+        "WALL-SS: Scaling Long-horizon World Models via Next-Scale Autoregression"
+      ],
+      "paper_ids": [
+        "arxiv-2602-02214",
+        "arxiv-2512-13030",
+        "arxiv-2607-20033",
+        "arxiv-2608-26239"
+      ],
+      "cn_name": "苏航",
+      "affiliation": "清华大学 计算机系",
+      "affiliation_source": "模型记忆，待在小红书简介/主页核验",
+      "status": "pending",
+      "user_id": "",
+      "note": ""
+    },
+    {
+      "author": "Haodong Yan",
+      "papers": 4,
+      "titles": [
+        "GigaWorld-Policy-0.5: A Faster and Stronger WAM Empowered by AutoResearch",
+        "Is Forward Prediction Enough? Physical State Grounding for JEPA World Models",
+        "Open-world Hand-Object Interaction Video Generation Based on Structure and Contact-aware Representation",
+        "FlowVLA: Thinking in Motion with a Visual Chain of Thought"
+      ],
+      "paper_ids": [
+        "arxiv-2607-13960",
+        "arxiv-2608-06799",
+        "arxiv-2512-01677",
+        "arxiv-2508-18269"
+      ],
+      "cn_name": "",
+      "affiliation": "GigaAI / 港科（广州）相关论文，待核验",
+      "affiliation_source": "模型记忆，待在小红书简介/主页核验",
+      "status": "pending",
+      "user_id": "",
+      "note": ""
+    },
+    {
+      "author": "Jiajun Wu",
+      "papers": 4,
+      "titles": [
+        "Masked Visual Actions for Unified World Modeling",
+        "One Demonstration, Many Objects: Generalizing Manipulation via Local Contact Geometry",
+        "RealWonder: Real-Time Physical Action-Conditioned Video Generation",
+        "TrAct: Bridging Robot Control and Visual Prediction with Visual Tracks"
+      ],
+      "paper_ids": [
+        "arxiv-2607-19343",
+        "arxiv-2609-01938",
+        "arxiv-2603-05449",
+        "arxiv-2608-24101"
+      ],
+      "cn_name": "吴佳俊",
+      "affiliation": "Stanford University",
+      "affiliation_source": "模型记忆，待在小红书简介/主页核验",
+      "status": "pending",
+      "user_id": "",
+      "note": ""
+    },
+    {
+      "author": "Min Zhao",
+      "papers": 4,
+      "titles": [
+        "Causal Forcing++: Scalable Few-Step Autoregressive Diffusion Distillation for Real-Time Interactive Video Generation",
+        "Causal Forcing: Autoregressive Diffusion Distillation Done Right for High-Quality Real-Time Interactive Video Generation",
+        "minWM: A Full-Stack Open-Source Framework for Real-Time Interactive Video World Models",
+        "Motus2: A Self-Evolving General World Model for Dexterous Manipulation"
+      ],
+      "paper_ids": [
+        "arxiv-2605-15141",
+        "arxiv-2602-02214",
+        "arxiv-2605-30263",
+        "arxiv-2608-30237"
+      ],
+      "cn_name": "赵敏",
+      "affiliation": "清华大学 TSAIL（朱军组，Causal Forcing）",
+      "affiliation_source": "模型记忆，待在小红书简介/主页核验",
+      "status": "pending",
+      "user_id": "",
+      "note": ""
+    },
+    {
+      "author": "Yujun Shen",
+      "papers": 4,
+      "titles": [
+        "Causal World Modeling for Robot Control",
+        "PhysRVG: Physics-Aware Unified Reinforcement Learning for Video Generative Models",
+        "RepWAM: World Action Modeling with Representation Visual-Action Tokenizers",
+        "Zero-WAM: In-Context World-Action Modeling from Human Videos for Open-Ended Task Generalization"
+      ],
+      "paper_ids": [
+        "arxiv-2601-21998",
+        "arxiv-2601-11087",
+        "arxiv-2606-13674",
+        "arxiv-2608-26103"
+      ],
+      "cn_name": "沈宇军",
+      "affiliation": "蚂蚁集团（蚂蚁灵波 / WAM 系列）",
+      "affiliation_source": "模型记忆，待在小红书简介/主页核验",
+      "status": "pending",
+      "user_id": "",
+      "note": "本人账号未找到；所在公司号 蚂蚁灵波科技 已在清单"
+    },
+    {
+      "author": "Biao Jiang",
+      "papers": 3,
+      "titles": [
+        "Matrix-Game 3.5: Enhancing Real-Time Streaming Interactive World Models with Patch Memory",
+        "Riemann-1.0: An Embodied World Action Model for Physical AI",
+        "MotionGPT3: Human Motion as a Second Modality"
+      ],
+      "paper_ids": [
+        "arxiv-2608-29910",
+        "arxiv-2608-27033",
+        "arxiv-2506-24086"
+      ],
+      "cn_name": "",
+      "affiliation": "复旦大学（MotionGPT 系列）/ 昆仑万维 Matrix-Game",
+      "affiliation_source": "模型记忆，待在小红书简介/主页核验",
+      "status": "pending",
+      "user_id": "",
+      "note": ""
+    },
+    {
+      "author": "Chongxuan Li",
+      "papers": 3,
+      "titles": [
+        "Causal Forcing++: Scalable Few-Step Autoregressive Diffusion Distillation for Real-Time Interactive Video Generation",
+        "Causal Forcing: Autoregressive Diffusion Distillation Done Right for High-Quality Real-Time Interactive Video Generation",
+        "minWM: A Full-Stack Open-Source Framework for Real-Time Interactive Video World Models"
+      ],
+      "paper_ids": [
+        "arxiv-2605-15141",
+        "arxiv-2602-02214",
+        "arxiv-2605-30263"
+      ],
+      "cn_name": "李崇轩",
+      "affiliation": "中国人民大学 高瓴人工智能学院",
+      "affiliation_source": "模型记忆，待在小红书简介/主页核验",
+      "status": "pending",
+      "user_id": "",
+      "note": ""
+    },
+    {
+      "author": "Enze Xie",
+      "papers": 3,
+      "titles": [
+        "LongLive-2.0: An NVFP4 Parallel Infrastructure for Long Video Generation",
+        "PhysisForcing: Physics Reinforced World Simulator for Robotic Manipulation",
+        "LongLive: Real-time Interactive Long Video Generation"
+      ],
+      "paper_ids": [
+        "arxiv-2605-18739",
+        "arxiv-2606-28128",
+        "arxiv-2509-22622"
+      ],
+      "cn_name": "谢恩泽",
+      "affiliation": "NVIDIA",
+      "affiliation_source": "模型记忆，待在小红书简介/主页核验",
+      "status": "pending",
+      "user_id": "",
+      "note": ""
+    },
+    {
+      "author": "Frédo Durand",
+      "papers": 3,
+      "titles": [
+        "From Slow Bidirectional to Fast Autoregressive Video Diffusion Models",
+        "Improved Distribution Matching Distillation for Fast Image Synthesis",
+        "One-step Diffusion with Distribution Matching Distillation"
+      ],
+      "paper_ids": [
+        "arxiv-2412-07772",
+        "arxiv-2405-14867",
+        "arxiv-2311-18828"
+      ],
+      "cn_name": "",
+      "affiliation": "MIT CSAIL",
+      "affiliation_source": "模型记忆，待在小红书简介/主页核验",
+      "status": "pending",
+      "user_id": "",
+      "note": ""
+    },
+    {
+      "author": "Guande He",
+      "papers": 3,
+      "titles": [
+        "Causal Forcing: Autoregressive Diffusion Distillation Done Right for High-Quality Real-Time Interactive Video Generation",
+        "minWM: A Full-Stack Open-Source Framework for Real-Time Interactive Video World Models",
+        "Self Forcing: Bridging the Train-Test Gap in Autoregressive Video Diffusion"
+      ],
+      "paper_ids": [
+        "arxiv-2602-02214",
+        "arxiv-2605-30263",
+        "arxiv-2506-08009"
+      ],
+      "cn_name": "",
+      "affiliation": "清华大学 TSAIL（朱军组）",
+      "affiliation_source": "模型记忆，待在小红书简介/主页核验",
+      "status": "pending",
+      "user_id": "",
+      "note": ""
+    },
+    {
+      "author": "Guanqi He",
+      "papers": 3,
+      "titles": [
+        "LD4WAM: Learning Latent Dynamics from Human Videos for World Action Models",
+        "MINT: A Unified Model for World-Space Camera and Hand Motion Estimation from Scalable Egocentric Pipeline Supervision",
+        "OpenWAM: An Open, Modular Exploration Towards Systematic World-Action Model Pretraining"
+      ],
+      "paper_ids": [
+        "arxiv-2608-22403",
+        "arxiv-2609-04958",
+        "arxiv-2609-07398"
+      ],
+      "cn_name": "",
+      "affiliation": "待核验",
+      "affiliation_source": "模型记忆，待在小红书简介/主页核验",
+      "status": "pending",
+      "user_id": "",
+      "note": ""
+    },
+    {
+      "author": "Haoang Li",
+      "papers": 3,
+      "titles": [
+        "Is Forward Prediction Enough? Physical State Grounding for JEPA World Models",
+        "Open-world Hand-Object Interaction Video Generation Based on Structure and Contact-aware Representation",
+        "FlowVLA: Thinking in Motion with a Visual Chain of Thought"
+      ],
+      "paper_ids": [
+        "arxiv-2608-06799",
+        "arxiv-2512-01677",
+        "arxiv-2508-18269"
+      ],
+      "cn_name": "李浩昂",
+      "affiliation": "香港科技大学（广州）HKUST-GZ",
+      "affiliation_source": "模型记忆，待在小红书简介/主页核验",
+      "status": "pending",
+      "user_id": "",
+      "note": ""
+    },
+    {
+      "author": "Haoyang Huang",
+      "papers": 3,
+      "titles": [
+        "EchoWM: Open and Enterable Omnimodal World Models",
+        "Long-Horizon Audio-Visual Generation for Persistent Stories and Interactive Worlds",
+        "ZimaBlue: Evolving Generalizable World Action Models through Scalable Video Pre-training"
+      ],
+      "paper_ids": [
+        "arxiv-2608-23189",
+        "arxiv-2608-23383",
+        "arxiv-2609-00188"
+      ],
+      "cn_name": "",
+      "affiliation": "阶跃星辰 StepFun（段楠组）",
+      "affiliation_source": "模型记忆，待在小红书简介/主页核验",
+      "status": "pending",
+      "user_id": "",
+      "note": ""
+    },
+    {
+      "author": "Hongzhou Zhu",
+      "papers": 3,
+      "titles": [
+        "Causal Forcing++: Scalable Few-Step Autoregressive Diffusion Distillation for Real-Time Interactive Video Generation",
+        "Causal Forcing: Autoregressive Diffusion Distillation Done Right for High-Quality Real-Time Interactive Video Generation",
+        "minWM: A Full-Stack Open-Source Framework for Real-Time Interactive Video World Models"
+      ],
+      "paper_ids": [
+        "arxiv-2605-15141",
+        "arxiv-2602-02214",
+        "arxiv-2605-30263"
+      ],
+      "cn_name": "",
+      "affiliation": "清华大学 TSAIL（朱军组）",
+      "affiliation_source": "模型记忆，待在小红书简介/主页核验",
+      "status": "pending",
+      "user_id": "",
+      "note": ""
+    },
+    {
+      "author": "Jia-Bin Huang",
+      "papers": 3,
+      "titles": [
+        "Masked Visual Actions for Unified World Modeling",
+        "TraceGen: World Modeling in 3D Trace Space Enables Learning from Cross-Embodiment Videos",
+        "μ₀: A Scalable 3D Interaction-Trace World Model"
+      ],
+      "paper_ids": [
+        "arxiv-2607-19343",
+        "arxiv-2511-21690",
+        "arxiv-2606-13769"
+      ],
+      "cn_name": "黄嘉斌",
+      "affiliation": "University of Maryland",
+      "affiliation_source": "模型记忆，待在小红书简介/主页核验",
+      "status": "pending",
+      "user_id": "",
+      "note": ""
+    },
+    {
+      "author": "Jiwen Lu",
+      "papers": 3,
+      "titles": [
+        "GigaBrain-WBC-0.5: A Behavior World Model for Robust Whole-Body Control with Environment Interaction",
+        "GigaWorld-Policy-0.5: A Faster and Stronger WAM Empowered by AutoResearch",
+        "iMaC: Translating Actions into Motion and Contact Images for Embodied World Models"
+      ],
+      "paper_ids": [
+        "arxiv-2608-18234",
+        "arxiv-2607-13960",
+        "arxiv-2606-09813"
+      ],
+      "cn_name": "鲁继文",
+      "affiliation": "清华大学 自动化系",
+      "affiliation_source": "模型记忆，待在小红书简介/主页核验",
+      "status": "pending",
+      "user_id": "",
+      "note": ""
+    },
+    {
+      "author": "Junfeng Li",
+      "papers": 3,
+      "titles": [
+        "Is Forward Prediction Enough? Physical State Grounding for JEPA World Models",
+        "Open-world Hand-Object Interaction Video Generation Based on Structure and Contact-aware Representation",
+        "FlowVLA: Thinking in Motion with a Visual Chain of Thought"
+      ],
+      "paper_ids": [
+        "arxiv-2608-06799",
+        "arxiv-2512-01677",
+        "arxiv-2508-18269"
+      ],
+      "cn_name": "",
+      "affiliation": "香港科技大学（广州）李浩昂组",
+      "affiliation_source": "模型记忆，待在小红书简介/主页核验",
+      "status": "pending",
+      "user_id": "",
+      "note": ""
+    },
+    {
+      "author": "Li Fei-Fei",
+      "papers": 3,
+      "titles": [
+        "Masked Visual Actions for Unified World Modeling",
+        "RoboTTT: Context Scaling for Robot Policies",
+        "TrAct: Bridging Robot Control and Visual Prediction with Visual Tracks"
+      ],
+      "paper_ids": [
+        "arxiv-2607-19343",
+        "arxiv-2607-15275",
+        "arxiv-2608-24101"
+      ],
+      "cn_name": "李飞飞",
+      "affiliation": "Stanford / World Labs",
+      "affiliation_source": "模型记忆，待在小红书简介/主页核验",
+      "status": "pending",
+      "user_id": "",
+      "note": ""
+    },
+    {
+      "author": "Liqiang Nie",
+      "papers": 3,
+      "titles": [
+        "From Where to How: Continuous 4D Interaction Forecasting from Egocentric Video",
+        "Learning to Use Imagination: Progress-Conditioned Future Utilization for World Action Models",
+        "UniMPA: A Unified Memory-Prediction-Action Model via Action-Grounded Transition Modeling"
+      ],
+      "paper_ids": [
+        "arxiv-2609-08636",
+        "arxiv-2609-06578",
+        "arxiv-2609-11875"
+      ],
+      "cn_name": "聂礼强",
+      "affiliation": "哈尔滨工业大学（深圳）",
+      "affiliation_source": "模型记忆，待在小红书简介/主页核验",
+      "status": "pending",
+      "user_id": "",
+      "note": ""
+    },
+    {
+      "author": "Nan Duan",
+      "papers": 3,
+      "titles": [
+        "EchoWM: Open and Enterable Omnimodal World Models",
+        "Long-Horizon Audio-Visual Generation for Persistent Stories and Interactive Worlds",
+        "ZimaBlue: Evolving Generalizable World Action Models through Scalable Video Pre-training"
+      ],
+      "paper_ids": [
+        "arxiv-2608-23189",
+        "arxiv-2608-23383",
+        "arxiv-2609-00188"
+      ],
+      "cn_name": "段楠",
+      "affiliation": "阶跃星辰 StepFun（曾微软亚洲研究院）",
+      "affiliation_source": "模型记忆，待在小红书简介/主页核验",
+      "status": "pending",
+      "user_id": "",
+      "note": ""
+    },
+    {
+      "author": "Peidong Liu",
+      "papers": 3,
+      "titles": [
+        "HaWMPO: Hallucination-Aware World Model-based Policy Optimization for Generalist Robot Policy",
+        "WLA³: World Latent Action Modeling for Semantics, Dynamics, and Kinematics",
+        "WorldSimProbe: Diagnosing Simulator Faithfulness in Action-Conditioned World Models for Embodied Manipulation"
+      ],
+      "paper_ids": [
+        "arxiv-2609-09941",
+        "arxiv-2609-15870",
+        "arxiv-2608-09298"
+      ],
+      "cn_name": "刘沛东",
+      "affiliation": "西湖大学",
+      "affiliation_source": "模型记忆，待在小红书简介/主页核验",
+      "status": "pending",
+      "user_id": "",
+      "note": ""
+    },
+    {
+      "author": "Pengwei Wang",
+      "papers": 3,
+      "titles": [
+        "DeCAL: Towards Physically-Grounded Dexterous Vision-Language-Action Models via Contact-Aware Latent Co-Imagination",
+        "Mask World Model: Predicting What Matters for Robust Robot Policy Learning",
+        "SLIM-0.5B: Learning Action-Grounded Predictive Latents for Robot Manipulation"
+      ],
+      "paper_ids": [
+        "arxiv-2609-09119",
+        "arxiv-2604-19683",
+        "arxiv-2608-09771"
+      ],
+      "cn_name": "",
+      "affiliation": "北京智源研究院 BAAI（与北大张姗姗合作）",
+      "affiliation_source": "模型记忆，待在小红书简介/主页核验",
+      "status": "pending",
+      "user_id": "",
+      "note": ""
+    },
+    {
+      "author": "Qihang Zhang",
+      "papers": 3,
+      "titles": [
+        "Causal World Modeling for Robot Control",
+        "RepWAM: World Action Modeling with Representation Visual-Action Tokenizers",
+        "Zero-WAM: In-Context World-Action Modeling from Human Videos for Open-Ended Task Generalization"
+      ],
+      "paper_ids": [
+        "arxiv-2601-21998",
+        "arxiv-2606-13674",
+        "arxiv-2608-26103"
+      ],
+      "cn_name": "",
+      "affiliation": "蚂蚁集团（WAM 系列，曾 CUHK）",
+      "affiliation_source": "模型记忆，待在小红书简介/主页核验",
+      "status": "pending",
+      "user_id": "",
+      "note": ""
+    },
+    {
+      "author": "Richard Zhang",
+      "papers": 3,
+      "titles": [
+        "From Slow Bidirectional to Fast Autoregressive Video Diffusion Models",
+        "Improved Distribution Matching Distillation for Fast Image Synthesis",
+        "One-step Diffusion with Distribution Matching Distillation"
+      ],
+      "paper_ids": [
+        "arxiv-2412-07772",
+        "arxiv-2405-14867",
+        "arxiv-2311-18828"
+      ],
+      "cn_name": "",
+      "affiliation": "Adobe Research",
+      "affiliation_source": "模型记忆，待在小红书简介/主页核验",
+      "status": "pending",
+      "user_id": "",
+      "note": ""
+    },
+    {
+      "author": "Siyuan Huang",
+      "papers": 3,
+      "titles": [
+        "ArtManip: Category-Level Articulated In-Hand Manipulation",
+        "DreamHand: Repurposing Video Diffusion Models for Occlusion-Robust Egocentric 3D Hand Motion Recovery",
+        "The Surprising Effectiveness of Video Diffusion Models for Hand Motion Reconstruction"
+      ],
+      "paper_ids": [
+        "arxiv-2609-12498",
+        "arxiv-2608-20308",
+        "arxiv-2606-30308"
+      ],
+      "cn_name": "黄思远",
+      "affiliation": "北京通用人工智能研究院 BIGAI",
+      "affiliation_source": "模型记忆，待在小红书简介/主页核验",
+      "status": "pending",
+      "user_id": "",
+      "note": ""
+    },
+    {
+      "author": "Tianwei Yin",
+      "papers": 3,
+      "titles": [
+        "From Slow Bidirectional to Fast Autoregressive Video Diffusion Models",
+        "Improved Distribution Matching Distillation for Fast Image Synthesis",
+        "One-step Diffusion with Distribution Matching Distillation"
+      ],
+      "paper_ids": [
+        "arxiv-2412-07772",
+        "arxiv-2405-14867",
+        "arxiv-2311-18828"
+      ],
+      "cn_name": "尹天玮",
+      "affiliation": "MIT CSAIL（DMD 系列）",
+      "affiliation_source": "模型记忆，待在小红书简介/主页核验",
+      "status": "pending",
+      "user_id": "",
+      "note": ""
+    },
+    {
+      "author": "Wei Huang",
+      "papers": 3,
+      "titles": [
+        "LongLive-2.0: An NVFP4 Parallel Infrastructure for Long Video Generation",
+        "SolarWM: Open Data and Scalable Training for Long-Horizon Video World Models",
+        "LongLive: Real-time Interactive Long Video Generation"
+      ],
+      "paper_ids": [
+        "arxiv-2605-18739",
+        "arxiv-2609-02886",
+        "arxiv-2509-22622"
+      ],
+      "cn_name": "",
+      "affiliation": "NVIDIA（LongLive 系列）",
+      "affiliation_source": "模型记忆，待在小红书简介/主页核验",
+      "status": "pending",
+      "user_id": "",
+      "note": ""
+    },
+    {
+      "author": "Weiyang Jin",
+      "papers": 3,
+      "titles": [
+        "EchoWM: Open and Enterable Omnimodal World Models",
+        "Long-Horizon Audio-Visual Generation for Persistent Stories and Interactive Worlds",
+        "OpenWAM: An Open, Modular Exploration Towards Systematic World-Action Model Pretraining"
+      ],
+      "paper_ids": [
+        "arxiv-2608-23189",
+        "arxiv-2608-23383",
+        "arxiv-2609-07398"
+      ],
+      "cn_name": "",
+      "affiliation": "阶跃星辰 StepFun（段楠组）",
+      "affiliation_source": "模型记忆，待在小红书简介/主页核验",
+      "status": "pending",
+      "user_id": "",
+      "note": ""
+    },
+    {
+      "author": "Wenxuan Song",
+      "papers": 3,
+      "titles": [
+        "Is Forward Prediction Enough? Physical State Grounding for JEPA World Models",
+        "Open-world Hand-Object Interaction Video Generation Based on Structure and Contact-aware Representation",
+        "FlowVLA: Thinking in Motion with a Visual Chain of Thought"
+      ],
+      "paper_ids": [
+        "arxiv-2608-06799",
+        "arxiv-2512-01677",
+        "arxiv-2508-18269"
+      ],
+      "cn_name": "",
+      "affiliation": "香港科技大学（广州）李浩昂组",
+      "affiliation_source": "模型记忆，待在小红书简介/主页核验",
+      "status": "pending",
+      "user_id": "",
+      "note": ""
+    },
+    {
+      "author": "William T. Freeman",
+      "papers": 3,
+      "titles": [
+        "From Slow Bidirectional to Fast Autoregressive Video Diffusion Models",
+        "Improved Distribution Matching Distillation for Fast Image Synthesis",
+        "One-step Diffusion with Distribution Matching Distillation"
+      ],
+      "paper_ids": [
+        "arxiv-2412-07772",
+        "arxiv-2405-14867",
+        "arxiv-2311-18828"
+      ],
+      "cn_name": "",
+      "affiliation": "MIT CSAIL",
+      "affiliation_source": "模型记忆，待在小红书简介/主页核验",
+      "status": "pending",
+      "user_id": "",
+      "note": ""
+    },
+    {
+      "author": "Xiaofeng Wang",
+      "papers": 3,
+      "titles": [
+        "GigaBrain-WBC-0.5: A Behavior World Model for Robust Whole-Body Control with Environment Interaction",
+        "GigaWorld-Policy-0.5: A Faster and Stronger WAM Empowered by AutoResearch",
+        "iMaC: Translating Actions into Motion and Contact Images for Embodied World Models"
+      ],
+      "paper_ids": [
+        "arxiv-2608-18234",
+        "arxiv-2607-13960",
+        "arxiv-2606-09813"
+      ],
+      "cn_name": "",
+      "affiliation": "极佳科技 GigaAI",
+      "affiliation_source": "模型记忆，待在小红书简介/主页核验",
+      "status": "pending",
+      "user_id": "",
+      "note": ""
+    },
+    {
+      "author": "Xiaowei Chi",
+      "papers": 3,
+      "titles": [
+        "Efficient-WAM: A 1B-Parameter World-Action Model with Low-Cost Future Imagination",
+        "Mask World Model: Predicting What Matters for Robust Robot Policy Learning",
+        "OpenWAM: An Open, Modular Exploration Towards Systematic World-Action Model Pretraining"
+      ],
+      "paper_ids": [
+        "arxiv-2606-10040",
+        "arxiv-2604-19683",
+        "arxiv-2609-07398"
+      ],
+      "cn_name": "池晓威",
+      "affiliation": "香港科技大学 HKUST；与北大张姗姗合作",
+      "affiliation_source": "模型记忆，待在小红书简介/主页核验",
+      "status": "not_found",
+      "user_id": "",
+      "note": "2026-09-20 搜索『池晓威』未找到，可能用英文昵称"
+    },
+    {
+      "author": "Xing Zhu",
+      "papers": 3,
+      "titles": [
+        "Causal World Modeling for Robot Control",
+        "PhysRVG: Physics-Aware Unified Reinforcement Learning for Video Generative Models",
+        "Zero-WAM: In-Context World-Action Modeling from Human Videos for Open-Ended Task Generalization"
+      ],
+      "paper_ids": [
+        "arxiv-2601-21998",
+        "arxiv-2601-11087",
+        "arxiv-2608-26103"
+      ],
+      "cn_name": "",
+      "affiliation": "蚂蚁集团（WAM 系列）",
+      "affiliation_source": "模型记忆，待在小红书简介/主页核验",
+      "status": "pending",
+      "user_id": "",
+      "note": ""
+    },
+    {
+      "author": "Xingang Pan",
+      "papers": 3,
+      "titles": [
+        "DreamHand: Repurposing Video Diffusion Models for Occlusion-Robust Egocentric 3D Hand Motion Recovery",
+        "Hand2World: Autoregressive Egocentric Interaction Generation via Free-Space Hand Gestures",
+        "The Surprising Effectiveness of Video Diffusion Models for Hand Motion Reconstruction"
+      ],
+      "paper_ids": [
+        "arxiv-2608-20308",
+        "arxiv-2602-09600",
+        "arxiv-2606-30308"
+      ],
+      "cn_name": "潘新钢",
+      "affiliation": "南洋理工大学 NTU",
+      "affiliation_source": "模型记忆，待在小红书简介/主页核验",
+      "status": "pending",
+      "user_id": "",
+      "note": ""
+    },
+    {
+      "author": "Xun Huang",
+      "papers": 3,
+      "titles": [
+        "Can Video World Models Track Unobserved World States?",
+        "From Slow Bidirectional to Fast Autoregressive Video Diffusion Models",
+        "Self Forcing: Bridging the Train-Test Gap in Autoregressive Video Diffusion"
+      ],
+      "paper_ids": [
+        "arxiv-2608-30692",
+        "arxiv-2412-07772",
+        "arxiv-2506-08009"
+      ],
+      "cn_name": "黄勋",
+      "affiliation": "Adobe Research（曾 NVIDIA；Self Forcing）",
+      "affiliation_source": "模型记忆，待在小红书简介/主页核验",
+      "status": "pending",
+      "user_id": "",
+      "note": ""
+    },
+    {
+      "author": "Yang Liu",
+      "papers": 3,
+      "titles": [
+        "Matrix-Game 3.5: Enhancing Real-Time Streaming Interactive World Models with Patch Memory",
+        "Riemann-1.0: An Embodied World Action Model for Physical AI",
+        "WM-Craftnet: World Synesthesia Model for Generalizable and Robust Dexterous In-Hand Manipulation"
+      ],
+      "paper_ids": [
+        "arxiv-2608-29910",
+        "arxiv-2608-27033",
+        "arxiv-2609-07002"
+      ],
+      "cn_name": "",
+      "affiliation": "常见名，可能为同名多人",
+      "affiliation_source": "模型记忆，待在小红书简介/主页核验",
+      "status": "skipped",
+      "user_id": "",
+      "note": "同名多人，无法定位具体个人"
+    },
+    {
+      "author": "Yann LeCun",
+      "papers": 3,
+      "titles": [
+        "Causal-JEPA: Learning World Models through Object-Level Latent Masking",
+        "LpWM: A Case for Sparse Representations in World Models",
+        "World Models for Learning Dexterous Hand-Object Interactions from Human Videos"
+      ],
+      "paper_ids": [
+        "arxiv-2602-11389",
+        "arxiv-2608-22764",
+        "arxiv-2512-13644"
+      ],
+      "cn_name": "",
+      "affiliation": "Meta FAIR / NYU",
+      "affiliation_source": "模型记忆，待在小红书简介/主页核验",
+      "status": "pending",
+      "user_id": "",
+      "note": ""
+    },
+    {
+      "author": "Yilun Du",
+      "papers": 3,
+      "titles": [
+        "Hydra-0: Action Flow for Generalist World Modeling and Control",
+        "Masked Visual Actions for Unified World Modeling",
+        "Scaling Cross-Embodiment World Models for Dexterous Manipulation"
+      ],
+      "paper_ids": [
+        "arxiv-2608-18077",
+        "arxiv-2607-19343",
+        "arxiv-2511-01177"
+      ],
+      "cn_name": "杜逸伦",
+      "affiliation": "Harvard University",
+      "affiliation_source": "模型记忆，待在小红书简介/主页核验",
+      "status": "pending",
+      "user_id": "",
+      "note": ""
+    },
+    {
+      "author": "Yiming Luo",
+      "papers": 3,
+      "titles": [
+        "Causal World Modeling for Robot Control",
+        "RepWAM: World Action Modeling with Representation Visual-Action Tokenizers",
+        "Zero-WAM: In-Context World-Action Modeling from Human Videos for Open-Ended Task Generalization"
+      ],
+      "paper_ids": [
+        "arxiv-2601-21998",
+        "arxiv-2606-13674",
+        "arxiv-2608-26103"
+      ],
+      "cn_name": "",
+      "affiliation": "蚂蚁集团（WAM 系列）",
+      "affiliation_source": "模型记忆，待在小红书简介/主页核验",
+      "status": "pending",
+      "user_id": "",
+      "note": ""
+    },
+    {
+      "author": "Yinghao Xu",
+      "papers": 3,
+      "titles": [
+        "Causal World Modeling for Robot Control",
+        "RepWAM: World Action Modeling with Representation Visual-Action Tokenizers",
+        "Zero-WAM: In-Context World-Action Modeling from Human Videos for Open-Ended Task Generalization"
+      ],
+      "paper_ids": [
+        "arxiv-2601-21998",
+        "arxiv-2606-13674",
+        "arxiv-2608-26103"
+      ],
+      "cn_name": "徐英豪",
+      "affiliation": "Stanford → 蚂蚁（WAM 系列）",
+      "affiliation_source": "模型记忆，待在小红书简介/主页核验",
+      "status": "pending",
+      "user_id": "",
+      "note": ""
+    },
+    {
+      "author": "Yukang Chen",
+      "papers": 3,
+      "titles": [
+        "LongLive-2.0: An NVFP4 Parallel Infrastructure for Long Video Generation",
+        "SolarWM: Open Data and Scalable Training for Long-Horizon Video World Models",
+        "LongLive: Real-time Interactive Long Video Generation"
+      ],
+      "paper_ids": [
+        "arxiv-2605-18739",
+        "arxiv-2609-02886",
+        "arxiv-2509-22622"
+      ],
+      "cn_name": "陈玉康",
+      "affiliation": "NVIDIA",
+      "affiliation_source": "模型记忆，待在小红书简介/主页核验",
+      "status": "pending",
+      "user_id": "",
+      "note": ""
+    },
+    {
+      "author": "Zheng Zhu",
+      "papers": 3,
+      "titles": [
+        "GigaBrain-WBC-0.5: A Behavior World Model for Robust Whole-Body Control with Environment Interaction",
+        "GigaWorld-Policy-0.5: A Faster and Stronger WAM Empowered by AutoResearch",
+        "iMaC: Translating Actions into Motion and Contact Images for Embodied World Models"
+      ],
+      "paper_ids": [
+        "arxiv-2608-18234",
+        "arxiv-2607-13960",
+        "arxiv-2606-09813"
+      ],
+      "cn_name": "朱政",
+      "affiliation": "极佳科技 GigaAI",
+      "affiliation_source": "模型记忆，待在小红书简介/主页核验",
+      "status": "pending",
+      "user_id": "",
+      "note": ""
+    },
+    {
+      "author": "Zhibo Chen",
+      "papers": 3,
+      "titles": [
+        "EmbodiedVAE: Disentangled Video VAE for Efficient and Controllable Embodied Manipulation",
+        "IMPACT: Attention Is the Interaction Map for Scalable Interaction-Aware World Model Training",
+        "VLA-JEPA: Enhancing Vision-Language-Action Model with Latent World Model"
+      ],
+      "paper_ids": [
+        "arxiv-2608-02990",
+        "arxiv-2609-00161",
+        "arxiv-2602-10098"
+      ],
+      "cn_name": "陈志波",
+      "affiliation": "中国科学技术大学 USTC",
+      "affiliation_source": "模型记忆，待在小红书简介/主页核验",
+      "status": "pending",
+      "user_id": "",
+      "note": ""
+    },
+    {
+      "author": "Zhide Zhong",
+      "papers": 3,
+      "titles": [
+        "Is Forward Prediction Enough? Physical State Grounding for JEPA World Models",
+        "Open-world Hand-Object Interaction Video Generation Based on Structure and Contact-aware Representation",
+        "FlowVLA: Thinking in Motion with a Visual Chain of Thought"
+      ],
+      "paper_ids": [
+        "arxiv-2608-06799",
+        "arxiv-2512-01677",
+        "arxiv-2508-18269"
+      ],
+      "cn_name": "",
+      "affiliation": "香港科技大学（广州）李浩昂组",
+      "affiliation_source": "模型记忆，待在小红书简介/主页核验",
+      "status": "pending",
+      "user_id": "",
+      "note": ""
+    },
+    {
+      "author": "Ziwei Liu",
+      "papers": 3,
+      "titles": [
+        "Code as Worlds: Agentic Discovery of Executable World Representations for Physical Reasoning",
+        "InfiniteDance: Scalable 3D Dance Generation Towards in-the-wild Generalization",
+        "UniMPA: A Unified Memory-Prediction-Action Model via Action-Grounded Transition Modeling"
+      ],
+      "paper_ids": [
+        "arxiv-2608-27549",
+        "arxiv-2603-13375",
+        "arxiv-2609-11875"
+      ],
+      "cn_name": "刘子纬",
+      "affiliation": "南洋理工大学 NTU S-Lab",
+      "affiliation_source": "模型记忆，待在小红书简介/主页核验",
+      "status": "pending",
+      "user_id": "",
+      "note": ""
+    }
+  ]
+}
