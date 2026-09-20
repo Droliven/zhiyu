@@ -1,0 +1,54 @@
+[
+  {
+    "note_id": "658a7c240000000012000dd6",
+    "xsec_token": "ABx0lrs6jdF3nbL9i5nBHX2beP4hOHYisd3MKHAgEVmLY=",
+    "url": "https://www.xiaohongshu.com/explore/658a7c240000000012000dd6?xsec_token=ABx0lrs6jdF3nbL9i5nBHX2beP4hOHYisd3MKHAgEVmLY=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "我的2023年终总结 / 2023 Recap",
+    "desc": "",
+    "creator_id": "5c9f98f30000000010027431",
+    "creator_name": "ZiyangXie",
+    "topics": [
+      "3d-4d",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2023-12-26T15:09:24+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:17:14+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 299
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/1040g00830t4tsnvljs0g5n4vj3pk4t1hj2f7nug?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:17:14+08:00"
+  },
+  {
+    "note_id": "657ee72000000000090186ca",
+    "xsec_token": "ABZ9DEwfupobWstNnVujrL0XSFCcwOA1aoR6lQNXxSxSE=",
+    "url": "https://www.xiaohongshu.com/explore/657ee72000000000090186ca?xsec_token=ABZ9DEwfupobWstNnVujrL0XSFCcwOA1aoR6lQNXxSxSE=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "CVPR审稿paper是AC分配的吗",
+    "desc": "",
+    "creator_id": "5c9f98f30000000010027431",
+    "creator_name": "ZiyangXie",
+    "topics": [
+      "3d-4d",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2023-12-17T20:18:40+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:17:14+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 37
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/1040g2sg30spjuleujq005n4vj3pk4t1hgeels1g?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:17:14+08:00"
+  }
+]

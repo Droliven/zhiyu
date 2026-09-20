@@ -1,0 +1,2157 @@
+[
+  {
+    "note_id": "6a1c2ef50000000007025081",
+    "xsec_token": "ABW3k3qG-kOlhN0_u8SsRF4lvzkMkdZqd5eZeeYLVIaho=",
+    "url": "https://www.xiaohongshu.com/explore/6a1c2ef50000000007025081?xsec_token=ABW3k3qG-kOlhN0_u8SsRF4lvzkMkdZqd5eZeeYLVIaho=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "UTAustin：量化感知调度推进文生图模型压缩",
+    "desc": "",
+    "creator_id": "6729f6b9000000001d02c826",
+    "creator_name": "DailyQuant｜量化实验室",
+    "topics": [
+      "llm-trend",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-05-31T20:52:05+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:35+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 27
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o320r6svuflc005pp9uqsndi16oj468ng?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:35+08:00"
+  },
+  {
+    "note_id": "6a1abd83000000000802540a",
+    "xsec_token": "ABOsjUx8ncMaZmak5zsE8d8JSw25xgtJZsgCj8-Rr262I=",
+    "url": "https://www.xiaohongshu.com/explore/6a1abd83000000000802540a?xsec_token=ABOsjUx8ncMaZmak5zsE8d8JSw25xgtJZsgCj8-Rr262I=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "NVIDIA:长视频生成的KV-cache也能压到2-bit",
+    "desc": "",
+    "creator_id": "6729f6b9000000001d02c826",
+    "creator_name": "DailyQuant｜量化实验室",
+    "topics": [
+      "llm-trend",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-05-30T18:35:47+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:35+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 89
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o320ppoq7mli5g5pp9uqsndi16d9ls08o?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:35+08:00"
+  },
+  {
+    "note_id": "6a1a5fc600000000370350ba",
+    "xsec_token": "ABOsjUx8ncMaZmak5zsE8d8PFQEwB9rH2VhCxk9_eGgUg=",
+    "url": "https://www.xiaohongshu.com/explore/6a1a5fc600000000370350ba?xsec_token=ABOsjUx8ncMaZmak5zsE8d8PFQEwB9rH2VhCxk9_eGgUg=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "每日论文-0530",
+    "desc": "",
+    "creator_id": "68c51ab7000000001901f242",
+    "creator_name": "OmniAI",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-05-30T11:55:50+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:45+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 14
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o320pecc5c6q105q653armbsi2a9ibhgo?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:45+08:00"
+  },
+  {
+    "note_id": "6a19c571000000003502fbb4",
+    "xsec_token": "ABH39BFvVg7MRLSQBylCF04wO0u4Psep2BV_EZWsnVWwQ=",
+    "url": "https://www.xiaohongshu.com/explore/6a19c571000000003502fbb4?xsec_token=ABH39BFvVg7MRLSQBylCF04wO0u4Psep2BV_EZWsnVWwQ=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "英伟达发布机器人WorldAction模型DreamZero",
+    "desc": "",
+    "creator_id": "64a2edc1000000002a035f1a",
+    "creator_name": "机器人解剖师",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-05-30T00:57:21+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:26+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 40
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o320oragu75kd05p52tn0qmnoqbhncd2g?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:26+08:00"
+  },
+  {
+    "note_id": "6a1938230000000038035c05",
+    "xsec_token": "ABH39BFvVg7MRLSQBylCF04zKSo__Gx20UbfL0OEVTOSQ=",
+    "url": "https://www.xiaohongshu.com/explore/6a1938230000000038035c05?xsec_token=ABH39BFvVg7MRLSQBylCF04zKSo__Gx20UbfL0OEVTOSQ=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "Causal-Forcing系列：正确打开流式生成模型",
+    "desc": "",
+    "creator_id": "61fe4e6700000000100091ea",
+    "creator_name": "Michael",
+    "topics": [
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-05-29T14:54:27+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:17:01+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 79
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/notes_pre_post/1040g3k0320oa46hc5s0g5ofu9pjk14fa9p8snlg?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:17:01+08:00"
+  },
+  {
+    "note_id": "6a1921170000000006022333",
+    "xsec_token": "ABH39BFvVg7MRLSQBylCF041x_m4p7IU-maHdTebnzplI=",
+    "url": "https://www.xiaohongshu.com/explore/6a1921170000000006022333?xsec_token=ABH39BFvVg7MRLSQBylCF041x_m4p7IU-maHdTebnzplI=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "视频模型秒变可玩世界，全栈开源！🌍",
+    "desc": "",
+    "creator_id": "5cb921b0000000001102f005",
+    "creator_name": "瓦奇塔Vaquitai🐬",
+    "topics": [
+      "world-model",
+      "llm-trend"
+    ],
+    "tags": [],
+    "published_at": "2026-05-29T13:16:07+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:16:02+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 35
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o320o7fi205k405n5p46o4ds05mkhn8r8?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:16:02+08:00"
+  },
+  {
+    "note_id": "6a191451000000003601c73c",
+    "xsec_token": "ABH39BFvVg7MRLSQBylCF04yY6gfAYn3H6x0xpKPEPFPc=",
+    "url": "https://www.xiaohongshu.com/explore/6a191451000000003601c73c?xsec_token=ABH39BFvVg7MRLSQBylCF04yY6gfAYn3H6x0xpKPEPFPc=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "每日论文-0529",
+    "desc": "",
+    "creator_id": "68c51ab7000000001901f242",
+    "creator_name": "OmniAI",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-05-29T12:21:37+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:45+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 9
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o320o5utcv5e105q653armbsi2s83ih00?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:45+08:00"
+  },
+  {
+    "note_id": "6a1849440000000035025104",
+    "xsec_token": "ABGbV9OkRwDbgOWH-U2r_6eJq5PsXt5PnRbdTIkLktlfk=",
+    "url": "https://www.xiaohongshu.com/explore/6a1849440000000035025104?xsec_token=ABGbV9OkRwDbgOWH-U2r_6eJq5PsXt5PnRbdTIkLktlfk=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "自动化所提出BRQ：让rotation适配MXFP4",
+    "desc": "",
+    "creator_id": "6729f6b9000000001d02c826",
+    "creator_name": "DailyQuant｜量化实验室",
+    "topics": [
+      "llm-trend",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-05-28T21:55:16+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:35+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 54
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o320nd2bm05c805pp9uqsndi16jn58hug?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:35+08:00"
+  },
+  {
+    "note_id": "6a18466b000000000702a8d3",
+    "xsec_token": "ABGbV9OkRwDbgOWH-U2r_6eA6p4nDpsV7spTbgFZDeSIM=",
+    "url": "https://www.xiaohongshu.com/explore/6a18466b000000000702a8d3?xsec_token=ABGbV9OkRwDbgOWH-U2r_6eA6p4nDpsV7spTbgFZDeSIM=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "VLM看见深度，具身智能开窍了🦾",
+    "desc": "",
+    "creator_id": "5cb921b0000000001102f005",
+    "creator_name": "瓦奇塔Vaquitai🐬",
+    "topics": [
+      "world-model",
+      "llm-trend"
+    ],
+    "tags": [],
+    "published_at": "2026-05-28T21:43:07+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:16:02+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 17
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g0k0320nclv2cli005n5p46o4ds05jk8bhj8?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:16:02+08:00"
+  },
+  {
+    "note_id": "6a17c53c0000000036018b5b",
+    "xsec_token": "ABaaoACYCBDliL350czlkS3yTYkr-D1KCcPs7bPpad_bs=",
+    "url": "https://www.xiaohongshu.com/explore/6a17c53c0000000036018b5b?xsec_token=ABaaoACYCBDliL350czlkS3yTYkr-D1KCcPs7bPpad_bs=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "每日论文-0528",
+    "desc": "",
+    "creator_id": "68c51ab7000000001901f242",
+    "creator_name": "OmniAI",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-05-28T12:31:56+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:45+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 5
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g0k0320mt190f5k005q653armbsi2v1hjoeo?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:45+08:00"
+  },
+  {
+    "note_id": "6a1712d400000000350333bc",
+    "xsec_token": "ABaaoACYCBDliL350czlkS3xEXnE5dhsYUhL2929V7Ku4=",
+    "url": "https://www.xiaohongshu.com/explore/6a1712d400000000350333bc?xsec_token=ABaaoACYCBDliL350czlkS3xEXnE5dhsYUhL2929V7Ku4=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "小米发布机器人视觉大模型Xiaomi-Robotics",
+    "desc": "",
+    "creator_id": "64a2edc1000000002a035f1a",
+    "creator_name": "机器人解剖师",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-05-27T23:50:44+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:26+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 51
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o320m75qbklk805p52tn0qmnoquqvlvuo?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:26+08:00"
+  },
+  {
+    "note_id": "6a16eead0000000037037b34",
+    "xsec_token": "ABqL_2dmPew48YSqOgt-I83enaeHoFlTGtez32hz2y1IY=",
+    "url": "https://www.xiaohongshu.com/explore/6a16eead0000000037037b34?xsec_token=ABqL_2dmPew48YSqOgt-I83enaeHoFlTGtez32hz2y1IY=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "【合集】智驾目前都有哪些neural simulator",
+    "desc": "",
+    "creator_id": "61fe4e6700000000100091ea",
+    "creator_name": "Michael",
+    "topics": [
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-05-27T21:16:29+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:17:01+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 32
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/notes_pre_post/1040g3k8320m29i7llm005ofu9pjk14fapn6lrlo?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:17:01+08:00"
+  },
+  {
+    "note_id": "6a16dada000000003601b533",
+    "xsec_token": "ABqL_2dmPew48YSqOgt-I83T6E3DQhPNl36gtq1MWV2Jo=",
+    "url": "https://www.xiaohongshu.com/explore/6a16dada000000003601b533?xsec_token=ABqL_2dmPew48YSqOgt-I83T6E3DQhPNl36gtq1MWV2Jo=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "VGGT-Ω：把 feed-forward 3D 重建继续放大",
+    "desc": "",
+    "creator_id": "61fe4e6700000000100091ea",
+    "creator_name": "Michael",
+    "topics": [
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-05-27T19:51:54+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:17:01+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 13
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/notes_pre_post/1040g3k8320m0a3pelm705ofu9pjk14famhb88s8?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:17:01+08:00"
+  },
+  {
+    "note_id": "6a16c0950000000006035a13",
+    "xsec_token": "ABqL_2dmPew48YSqOgt-I83TscjL42BRrGrA8lwA1Azko=",
+    "url": "https://www.xiaohongshu.com/explore/6a16c0950000000006035a13?xsec_token=ABqL_2dmPew48YSqOgt-I83TscjL42BRrGrA8lwA1Azko=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "CMU论文：LLM也要睡觉，不睡可能越用越笨",
+    "desc": "",
+    "creator_id": "642cea970000000011023ff4",
+    "creator_name": "P小二的AI探索笔记",
+    "topics": [
+      "llm-trend"
+    ],
+    "tags": [],
+    "published_at": "2026-05-27T17:59:49+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:17:31+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 40
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o320lt569o5i605p1ctabkcfvkrqacie8?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:17:31+08:00"
+  },
+  {
+    "note_id": "6a16793e0000000007027d5f",
+    "xsec_token": "ABqL_2dmPew48YSqOgt-I83aZo12ejRxbulC72adN8_pQ=",
+    "url": "https://www.xiaohongshu.com/explore/6a16793e0000000007027d5f?xsec_token=ABqL_2dmPew48YSqOgt-I83aZo12ejRxbulC72adN8_pQ=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "视频token大降本！码流喂AI🎬",
+    "desc": "",
+    "creator_id": "5cb921b0000000001102f005",
+    "creator_name": "瓦奇塔Vaquitai🐬",
+    "topics": [
+      "world-model",
+      "llm-trend"
+    ],
+    "tags": [],
+    "published_at": "2026-05-27T12:55:26+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:16:02+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 16
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g0k0320lkfse0lc005n5p46o4ds058fsqr7o?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:16:02+08:00"
+  },
+  {
+    "note_id": "6a16668c000000003601c074",
+    "xsec_token": "ABqL_2dmPew48YSqOgt-I83Y7RRh0utMh2j6s4p9JIC3E=",
+    "url": "https://www.xiaohongshu.com/explore/6a16668c000000003601c074?xsec_token=ABqL_2dmPew48YSqOgt-I83Y7RRh0utMh2j6s4p9JIC3E=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "每日论文-0527",
+    "desc": "",
+    "creator_id": "68c51ab7000000001901f242",
+    "creator_name": "OmniAI",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-05-27T11:35:40+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:45+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 8
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g0k0320li72v75i005q653armbsi2iae0er8?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:45+08:00"
+  },
+  {
+    "note_id": "6a163e11000000003700f2ec",
+    "xsec_token": "ABqL_2dmPew48YSqOgt-I83XmA3e17EMQDloLmySoLlXM=",
+    "url": "https://www.xiaohongshu.com/explore/6a163e11000000003700f2ec?xsec_token=ABqL_2dmPew48YSqOgt-I83XmA3e17EMQDloLmySoLlXM=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "CCIG2026 之 学术老友记",
+    "desc": "",
+    "creator_id": "606a7080000000000101ee20",
+    "creator_name": "韩晓光",
+    "topics": [
+      "3d-4d",
+      "embodied",
+      "academia"
+    ],
+    "tags": [],
+    "published_at": "2026-05-27T08:42:57+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:16:52+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 52
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/1040g008320ld8qpb5mjg5o3ae200brh09qse5k0?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:16:52+08:00"
+  },
+  {
+    "note_id": "6a152ab30000000006022666",
+    "xsec_token": "ABizockQsAel2UxTDcwmMQMFqPCf-bc8PnF1y5IHgDe-c=",
+    "url": "https://www.xiaohongshu.com/explore/6a152ab30000000006022666?xsec_token=ABizockQsAel2UxTDcwmMQMFqPCf-bc8PnF1y5IHgDe-c=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "FPS世界模型，开枪只动准星！🎯",
+    "desc": "",
+    "creator_id": "5cb921b0000000001102f005",
+    "creator_name": "瓦奇塔Vaquitai🐬",
+    "topics": [
+      "world-model",
+      "llm-trend"
+    ],
+    "tags": [],
+    "published_at": "2026-05-26T13:08:03+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:16:02+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 17
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o320kbl4975c405n5p46o4ds050raki2g?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:16:02+08:00"
+  },
+  {
+    "note_id": "6a151b09000000003701e794",
+    "xsec_token": "ABizockQsAel2UxTDcwmMQMPu6sBQuXyGsxaKSpfUMRkc=",
+    "url": "https://www.xiaohongshu.com/explore/6a151b09000000003701e794?xsec_token=ABizockQsAel2UxTDcwmMQMPu6sBQuXyGsxaKSpfUMRkc=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "每日论文-0526",
+    "desc": "",
+    "creator_id": "68c51ab7000000001901f242",
+    "creator_name": "OmniAI",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-05-26T12:01:13+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:45+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 8
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o320k9o3nrlk105q653armbsi2bhcpmf8?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:45+08:00"
+  },
+  {
+    "note_id": "6a14d9ab0000000007020dc7",
+    "xsec_token": "ABIoQQH2C6qJuQqoxncFbz4t-NBdyyn_kxrQMbv4ppNjA=",
+    "url": "https://www.xiaohongshu.com/explore/6a14d9ab0000000007020dc7?xsec_token=ABIoQQH2C6qJuQqoxncFbz4t-NBdyyn_kxrQMbv4ppNjA=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "让AI视频守物理规律，NEWTON用Agent来规划",
+    "desc": "",
+    "creator_id": "642cea970000000011023ff4",
+    "creator_name": "P小二的AI探索笔记",
+    "topics": [
+      "llm-trend"
+    ],
+    "tags": [],
+    "published_at": "2026-05-26T07:22:19+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:17:31+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 27
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o320k1o1ekle505p1ctabkcfvkvpijd58?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:17:31+08:00"
+  },
+  {
+    "note_id": "6a14d76f0000000007020b5c",
+    "xsec_token": "ABIoQQH2C6qJuQqoxncFbz4j2szdRXVT4ywC1tgxp65c0=",
+    "url": "https://www.xiaohongshu.com/explore/6a14d76f0000000007020b5c?xsec_token=ABIoQQH2C6qJuQqoxncFbz4j2szdRXVT4ywC1tgxp65c0=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "Aurora：基于VLM Agent统一视频编辑新范式",
+    "desc": "",
+    "creator_id": "642cea970000000011023ff4",
+    "creator_name": "P小二的AI探索笔记",
+    "topics": [
+      "llm-trend"
+    ],
+    "tags": [],
+    "published_at": "2026-05-26T07:12:47+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:17:31+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 32
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g0k0320k1dgjf5k005p1ctabkcfvk4hviv5g?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:17:31+08:00"
+  },
+  {
+    "note_id": "6a14d5790000000007013b40",
+    "xsec_token": "ABIoQQH2C6qJuQqoxncFbz4qO4iA7zo6Kdo120RcT8-eE=",
+    "url": "https://www.xiaohongshu.com/explore/6a14d5790000000007013b40?xsec_token=ABIoQQH2C6qJuQqoxncFbz4qO4iA7zo6Kdo120RcT8-eE=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "Meta新论文：机器人世界模型怎么才真有用",
+    "desc": "",
+    "creator_id": "642cea970000000011023ff4",
+    "creator_name": "P小二的AI探索笔记",
+    "topics": [
+      "llm-trend"
+    ],
+    "tags": [],
+    "published_at": "2026-05-26T07:04:25+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:17:31+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 85
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g0k0320k172iflk005p1ctabkcfvkt3go4ig?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:17:31+08:00"
+  },
+  {
+    "note_id": "6a14644e0000000007013077",
+    "xsec_token": "ABIoQQH2C6qJuQqoxncFbz4pirlgR5bqillq2s_E0PCNc=",
+    "url": "https://www.xiaohongshu.com/explore/6a14644e0000000007013077?xsec_token=ABIoQQH2C6qJuQqoxncFbz4pirlgR5bqillq2s_E0PCNc=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "刚体+布料+铰接，一锅端！🦾",
+    "desc": "",
+    "creator_id": "5cb921b0000000001102f005",
+    "creator_name": "瓦奇塔Vaquitai🐬",
+    "topics": [
+      "world-model",
+      "llm-trend"
+    ],
+    "tags": [],
+    "published_at": "2026-05-25T23:01:34+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:16:02+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 12
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g0k0320iebrbl5k005n5p46o4ds052ek8ru8?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:16:02+08:00"
+  },
+  {
+    "note_id": "6a14504b0000000038034c74",
+    "xsec_token": "ABIoQQH2C6qJuQqoxncFbz4jSHHLVhzSaWsTr6_zQKstk=",
+    "url": "https://www.xiaohongshu.com/explore/6a14504b0000000038034c74?xsec_token=ABIoQQH2C6qJuQqoxncFbz4jSHHLVhzSaWsTr6_zQKstk=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "SONIC：把人形机器人控制也推到“规模化训练”",
+    "desc": "",
+    "creator_id": "61fe4e6700000000100091ea",
+    "creator_name": "Michael",
+    "topics": [
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-05-25T21:36:11+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:17:01+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 26
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/notes_pre_post/1040g3k0320jguk2tme005ofu9pjk14fafsna4i0?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:17:01+08:00"
+  },
+  {
+    "note_id": "6a1410ae0000000036001f1f",
+    "xsec_token": "ABIoQQH2C6qJuQqoxncFbz4nIsoKYrN1trr9vQ-W9Fhc8=",
+    "url": "https://www.xiaohongshu.com/explore/6a1410ae0000000036001f1f?xsec_token=ABIoQQH2C6qJuQqoxncFbz4nIsoKYrN1trr9vQ-W9Fhc8=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "OSCAR：2-bit KVCache 量化还能接近 BF16？",
+    "desc": "",
+    "creator_id": "6729f6b9000000001d02c826",
+    "creator_name": "DailyQuant｜量化实验室",
+    "topics": [
+      "llm-trend",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-05-25T17:04:46+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:35+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 62
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o320j8vcp96ob05pp9uqsndi16r94gq5g?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:35+08:00"
+  },
+  {
+    "note_id": "6a1410a3000000003502f523",
+    "xsec_token": "ABIoQQH2C6qJuQqoxncFbz4mdtj_I2GpKWTVN1abqhsCM=",
+    "url": "https://www.xiaohongshu.com/explore/6a1410a3000000003502f523?xsec_token=ABIoQQH2C6qJuQqoxncFbz4mdtj_I2GpKWTVN1abqhsCM=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "OScaR：重新理解 INT2 KV Cache 量化",
+    "desc": "",
+    "creator_id": "6729f6b9000000001d02c826",
+    "creator_name": "DailyQuant｜量化实验室",
+    "topics": [
+      "llm-trend",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-05-25T17:04:35+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:35+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 24
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o320j8v3e1moa05pp9uqsndi16p2bu1i8?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:35+08:00"
+  },
+  {
+    "note_id": "6a13c4a7000000003700d127",
+    "xsec_token": "ABEMSe7y9wkHno0UmO1_MAgsJY4wTyiTWWviaxKOP9JWQ=",
+    "url": "https://www.xiaohongshu.com/explore/6a13c4a7000000003700d127?xsec_token=ABEMSe7y9wkHno0UmO1_MAgsJY4wTyiTWWviaxKOP9JWQ=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "每日论文-0525",
+    "desc": "",
+    "creator_id": "68c51ab7000000001901f242",
+    "creator_name": "OmniAI",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-05-25T11:40:23+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:45+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 6
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g0k0320ivtem45k005q653armbsi2h47khig?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:45+08:00"
+  },
+  {
+    "note_id": "6a118b9700000000380342ba",
+    "xsec_token": "ABBYakmszwubq7W5ekBxLo_uFEyWrjgVAdxzHYJ6bPo7c=",
+    "url": "https://www.xiaohongshu.com/explore/6a118b9700000000380342ba?xsec_token=ABBYakmszwubq7W5ekBxLo_uFEyWrjgVAdxzHYJ6bPo7c=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "BF16 不是唯一解：LLM 量化部署实测",
+    "desc": "",
+    "creator_id": "6729f6b9000000001d02c826",
+    "creator_name": "DailyQuant｜量化实验室",
+    "topics": [
+      "llm-trend",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-05-23T19:12:23+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:35+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 51
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o320gqe5hble705pp9uqsndi16bqpu1s0?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:35+08:00"
+  },
+  {
+    "note_id": "6a1124020000000036031a40",
+    "xsec_token": "ABBYakmszwubq7W5ekBxLo_q_msqhf_ARkA-vXkwIjL4I=",
+    "url": "https://www.xiaohongshu.com/explore/6a1124020000000036031a40?xsec_token=ABBYakmszwubq7W5ekBxLo_q_msqhf_ARkA-vXkwIjL4I=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "每日论文-0523",
+    "desc": "",
+    "creator_id": "68c51ab7000000001901f242",
+    "creator_name": "OmniAI",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-05-23T11:50:26+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:45+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 6
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o320gdr9tf5c0g5q653armbsi2a00dl18?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:45+08:00"
+  },
+  {
+    "note_id": "6a107031000000003601f653",
+    "xsec_token": "ABatzYm1HcifyD-g5n2Jvwg0hkFN3Qeeiutx3SH_5dVdA=",
+    "url": "https://www.xiaohongshu.com/explore/6a107031000000003601f653?xsec_token=ABatzYm1HcifyD-g5n2Jvwg0hkFN3Qeeiutx3SH_5dVdA=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "Yann LeCun非常炸裂的机器人与世界模型访谈",
+    "desc": "",
+    "creator_id": "64a2edc1000000002a035f1a",
+    "creator_name": "机器人解剖师",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-05-22T23:03:13+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:26+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 310
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g0k0320fnka5m5k005p52tn0qmnoq6sotggg?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:26+08:00"
+  },
+  {
+    "note_id": "6a10365e0000000037035a2d",
+    "xsec_token": "ABatzYm1HcifyD-g5n2Jvwg4YQWrgvmDvVKfXOMjgpo2g=",
+    "url": "https://www.xiaohongshu.com/explore/6a10365e0000000037035a2d?xsec_token=ABatzYm1HcifyD-g5n2Jvwg4YQWrgvmDvVKfXOMjgpo2g=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "Flow-GRPO 把 online RL接到 Flow Matching",
+    "desc": "",
+    "creator_id": "61fe4e6700000000100091ea",
+    "creator_name": "Michael",
+    "topics": [
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-05-22T18:56:30+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:17:01+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 91
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/notes_pre_post/1040g3k8320fgp5ubme705ofu9pjk14fad2suahg?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:17:01+08:00"
+  },
+  {
+    "note_id": "6a0fce510000000038021064",
+    "xsec_token": "ABCEf62ROJXZsVPqILQcmcxJgtUwRx8E7GJwY8SKHaEmM=",
+    "url": "https://www.xiaohongshu.com/explore/6a0fce510000000038021064?xsec_token=ABCEf62ROJXZsVPqILQcmcxJgtUwRx8E7GJwY8SKHaEmM=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "每日论文-0522",
+    "desc": "",
+    "creator_id": "68c51ab7000000001901f242",
+    "creator_name": "OmniAI",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-05-22T11:32:33+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:45+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 19
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o320f3bjh5mk105q653armbsi2fhh5m4g?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:45+08:00"
+  },
+  {
+    "note_id": "6a0f39b300000000070278ba",
+    "xsec_token": "ABCEf62ROJXZsVPqILQcmcxOeso2BZNdyfM9F7GTjr51g=",
+    "url": "https://www.xiaohongshu.com/explore/6a0f39b300000000070278ba?xsec_token=ABCEf62ROJXZsVPqILQcmcxOeso2BZNdyfM9F7GTjr51g=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "蚂蚁灵波机器人开源世界模型LingBot-World",
+    "desc": "",
+    "creator_id": "64a2edc1000000002a035f1a",
+    "creator_name": "机器人解剖师",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-05-22T00:58:27+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:26+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 9
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o320ehot1gli505p52tn0qmnoq9imqri8?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:26+08:00"
+  },
+  {
+    "note_id": "6a0e82840000000037035e39",
+    "xsec_token": "ABLnEiK2FpXKNnRvnYK2s06akmCcMApoW0SWSjDW7GIVA=",
+    "url": "https://www.xiaohongshu.com/explore/6a0e82840000000037035e39?xsec_token=ABLnEiK2FpXKNnRvnYK2s06akmCcMApoW0SWSjDW7GIVA=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "每日论文-0521",
+    "desc": "",
+    "creator_id": "68c51ab7000000001901f242",
+    "creator_name": "OmniAI",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-05-21T11:56:52+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:45+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 4
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g0k0320drkdnrli005q653armbsi2a728ta8?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:45+08:00"
+  },
+  {
+    "note_id": "6a0db6a5000000003502e33a",
+    "xsec_token": "AB2haFjhDFsGdpOkPfuJTX3N7eQWa4OH7ZeIHX4vjIpS4=",
+    "url": "https://www.xiaohongshu.com/explore/6a0db6a5000000003502e33a?xsec_token=AB2haFjhDFsGdpOkPfuJTX3N7eQWa4OH7ZeIHX4vjIpS4=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "Lumina一周年啦🎂",
+    "desc": "一年时间，搭建起来了3万人的具身社区，明年会有很多惊喜，期望大家多多支持[喝奶茶R]\n#具身智能[话题]# #学术[话题]# #论文[话题]# #科研[话题]#",
+    "creator_id": "618fe930000000001000afe7",
+    "creator_name": "Tianxing Chen（陈天行）",
+    "topics": [
+      "embodied",
+      "academia"
+    ],
+    "tags": [
+      "具身智能",
+      "学术",
+      "论文",
+      "科研"
+    ],
+    "published_at": "2026-05-20T21:27:01+08:00",
+    "published_source": "detail",
+    "captured_at": "2026-09-20T16:47:07+08:00",
+    "updated_at": "2026-05-20T21:27:02+08:00",
+    "stats": {
+      "liked": 232,
+      "collected": 29,
+      "comments": 6,
+      "shares": 22
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/notes_pre_post/1040g3k0320d2naahli005ocft4o41bv72scmc50?imageView2/2/w/480/format/webp",
+    "image_count": 1,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:48:07+08:00"
+  },
+  {
+    "note_id": "6a0d6b020000000038020b2c",
+    "xsec_token": "AB2haFjhDFsGdpOkPfuJTX3Agq0pY_TvEE4EHTZITl-qY=",
+    "url": "https://www.xiaohongshu.com/explore/6a0d6b020000000038020b2c?xsec_token=AB2haFjhDFsGdpOkPfuJTX3Agq0pY_TvEE4EHTZITl-qY=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "让 Diffusion LLM 用上 KV Cache",
+    "desc": "",
+    "creator_id": "6729f6b9000000001d02c826",
+    "creator_name": "DailyQuant｜量化实验室",
+    "topics": [
+      "llm-trend",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-05-20T16:04:18+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:35+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 27
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g0k0320cpfs8jli005pp9uqsndi16ln88iho?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:35+08:00"
+  },
+  {
+    "note_id": "6a0d35c6000000003701ed1c",
+    "xsec_token": "AB2haFjhDFsGdpOkPfuJTX3OjijqapCVChnP4K6K5BnUU=",
+    "url": "https://www.xiaohongshu.com/explore/6a0d35c6000000003701ed1c?xsec_token=AB2haFjhDFsGdpOkPfuJTX3OjijqapCVChnP4K6K5BnUU=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "每日论文-0520",
+    "desc": "",
+    "creator_id": "68c51ab7000000001901f242",
+    "creator_name": "OmniAI",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-05-20T12:17:10+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:45+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 18
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o320cj07f3lc005q653armbsi2d5k3k78?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:45+08:00"
+  },
+  {
+    "note_id": "6a0c81a90000000006033adc",
+    "xsec_token": "ABUzX07ucHXcy_Y7dK8MbH2y8fuUSOW7suPrG4ymDbqh4=",
+    "url": "https://www.xiaohongshu.com/explore/6a0c81a90000000006033adc?xsec_token=ABUzX07ucHXcy_Y7dK8MbH2y8fuUSOW7suPrG4ymDbqh4=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "突发，Andrej Karpathy加入Anthropic",
+    "desc": "",
+    "creator_id": "642cea970000000011023ff4",
+    "creator_name": "P小二的AI探索笔记",
+    "topics": [
+      "llm-trend"
+    ],
+    "tags": [],
+    "published_at": "2026-05-19T23:28:41+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:17:31+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 23
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o320cace4s5c105p1ctabkcfvk64cf1do?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:17:31+08:00"
+  },
+  {
+    "note_id": "6a0bde8b0000000037036d82",
+    "xsec_token": "ABKCjHBvqj7B5n_QfJ575b8J0gh7YYDdLlm2DuUpc8S9w=",
+    "url": "https://www.xiaohongshu.com/explore/6a0bde8b0000000037036d82?xsec_token=ABKCjHBvqj7B5n_QfJ575b8J0gh7YYDdLlm2DuUpc8S9w=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "每日论文-0519",
+    "desc": "",
+    "creator_id": "68c51ab7000000001901f242",
+    "creator_name": "OmniAI",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-05-19T11:52:43+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:45+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 9
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o320b93p20lcm05q653armbsi28m2nlt8?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:45+08:00"
+  },
+  {
+    "note_id": "6a0ac7860000000037036dbd",
+    "xsec_token": "ABuTx2fYS57VEkuvBZzM9Q4RSvZP-4KUwlCjgGmFsGrB8=",
+    "url": "https://www.xiaohongshu.com/explore/6a0ac7860000000037036dbd?xsec_token=ABuTx2fYS57VEkuvBZzM9Q4RSvZP-4KUwlCjgGmFsGrB8=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "QSVD：面向低精度 VLM 的统一压缩",
+    "desc": "",
+    "creator_id": "6729f6b9000000001d02c826",
+    "creator_name": "DailyQuant｜量化实验室",
+    "topics": [
+      "llm-trend",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-05-18T16:02:14+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:35+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 34
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g0k0320a6unu6le005pp9uqsndi16g67e7vg?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:35+08:00"
+  },
+  {
+    "note_id": "6a0a8f94000000003703477d",
+    "xsec_token": "ABuTx2fYS57VEkuvBZzM9Q4Q8IFXm2I9PMBk9HX_KE8SE=",
+    "url": "https://www.xiaohongshu.com/explore/6a0a8f94000000003703477d?xsec_token=ABuTx2fYS57VEkuvBZzM9Q4Q8IFXm2I9PMBk9HX_KE8SE=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "每日论文-0518",
+    "desc": "",
+    "creator_id": "68c51ab7000000001901f242",
+    "creator_name": "OmniAI",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-05-18T12:03:32+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:45+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 6
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o320a05go85i105q653armbsi2snb1l70?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:45+08:00"
+  },
+  {
+    "note_id": "6a09c7f30000000038023ece",
+    "xsec_token": "ABLq-U6_9HR6Tuzc3B5ExZ4-BnTjayCvRYSyuwTaE9KpU=",
+    "url": "https://www.xiaohongshu.com/explore/6a09c7f30000000038023ece?xsec_token=ABLq-U6_9HR6Tuzc3B5ExZ4-BnTjayCvRYSyuwTaE9KpU=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "CodeQuant：MoE 低比特量化的新思路",
+    "desc": "",
+    "creator_id": "6729f6b9000000001d02c826",
+    "creator_name": "DailyQuant｜量化实验室",
+    "topics": [
+      "llm-trend",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-05-17T21:51:47+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:35+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 68
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g0k032097r56n5e005pp9uqsndi165jlg500?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:35+08:00"
+  },
+  {
+    "note_id": "6a09424d000000003503205c",
+    "xsec_token": "ABLq-U6_9HR6Tuzc3B5ExZ41u9hC2uClULwouXCLMbFqA=",
+    "url": "https://www.xiaohongshu.com/explore/6a09424d000000003503205c?xsec_token=ABLq-U6_9HR6Tuzc3B5ExZ41u9hC2uClULwouXCLMbFqA=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "北京大学发布世界模型开源框架OpenWorldLib",
+    "desc": "",
+    "creator_id": "64a2edc1000000002a035f1a",
+    "creator_name": "机器人解剖师",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-05-17T12:21:33+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:26+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 164
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g0k03208n6oodle405p52tn0qmnoq1q71thg?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:26+08:00"
+  },
+  {
+    "note_id": "6a07e42f0000000038021c8a",
+    "xsec_token": "ABm-9zWoExuSFuZ1MLF_KeeS2nUFmXO2D1djd37LSYOoI=",
+    "url": "https://www.xiaohongshu.com/explore/6a07e42f0000000038021c8a?xsec_token=ABm-9zWoExuSFuZ1MLF_KeeS2nUFmXO2D1djd37LSYOoI=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "每日论文-0516",
+    "desc": "",
+    "creator_id": "68c51ab7000000001901f242",
+    "creator_name": "OmniAI",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-05-16T11:27:43+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:45+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 5
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o3207cpecj5c105q653armbsi2rgjl3jo?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:45+08:00"
+  },
+  {
+    "note_id": "6a070bf400000000350315d8",
+    "xsec_token": "ABm-9zWoExuSFuZ1MLF_KeeeWtAe4m6X75hlFknnmiT0M=",
+    "url": "https://www.xiaohongshu.com/explore/6a070bf400000000350315d8?xsec_token=ABm-9zWoExuSFuZ1MLF_KeeeWtAe4m6X75hlFknnmiT0M=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "FP8/FP4 之外，INT 还有机会吗？",
+    "desc": "",
+    "creator_id": "6729f6b9000000001d02c826",
+    "creator_name": "DailyQuant｜量化实验室",
+    "topics": [
+      "llm-trend",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-05-15T20:05:08+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:35+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 113
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o3206icmmulib05pp9uqsndi16sdu5kjo?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:35+08:00"
+  },
+  {
+    "note_id": "6a06a263000000003501d2c5",
+    "xsec_token": "ABqTPqXFESrI7AZyyuiRFF328wjzLzjDvF0fcgfqCx9ac=",
+    "url": "https://www.xiaohongshu.com/explore/6a06a263000000003501d2c5?xsec_token=ABqTPqXFESrI7AZyyuiRFF328wjzLzjDvF0fcgfqCx9ac=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "南洋理工&伯克利等发布机器人世界模型综述",
+    "desc": "",
+    "creator_id": "64a2edc1000000002a035f1a",
+    "creator_name": "机器人解剖师",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-05-15T12:34:43+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:26+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 62
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g0k0320650vi25e505p52tn0qmnoqne4vvsg?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:26+08:00"
+  },
+  {
+    "note_id": "6a069948000000003701f336",
+    "xsec_token": "ABqTPqXFESrI7AZyyuiRFF30-6IkPXuz07qERAu-G5V4c=",
+    "url": "https://www.xiaohongshu.com/explore/6a069948000000003701f336?xsec_token=ABqTPqXFESrI7AZyyuiRFF30-6IkPXuz07qERAu-G5V4c=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "每日论文-0515",
+    "desc": "",
+    "creator_id": "68c51ab7000000001901f242",
+    "creator_name": "OmniAI",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-05-15T11:55:52+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:45+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 13
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o32064d62r5g105q653armbsi2nk4srfg?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:45+08:00"
+  },
+  {
+    "note_id": "6a066a7700000000060237b1",
+    "xsec_token": "ABqTPqXFESrI7AZyyuiRFF38VxJa9nKPHanDlet5YOlS8=",
+    "url": "https://www.xiaohongshu.com/explore/6a066a7700000000060237b1?xsec_token=ABqTPqXFESrI7AZyyuiRFF38VxJa9nKPHanDlet5YOlS8=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "codex最强功能来了",
+    "desc": "",
+    "creator_id": "642cea970000000011023ff4",
+    "creator_name": "P小二的AI探索笔记",
+    "topics": [
+      "llm-trend"
+    ],
+    "tags": [],
+    "published_at": "2026-05-15T08:36:07+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:17:31+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 256
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/notes_pre_post/1040g3k83205umpqhiadg5p1ctabkcfvkteurgso?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:17:31+08:00"
+  },
+  {
+    "note_id": "6a0636f7000000003700e900",
+    "xsec_token": "ABqTPqXFESrI7AZyyuiRFF39Nbi9-QZrMVCrpcYoT4_iI=",
+    "url": "https://www.xiaohongshu.com/explore/6a0636f7000000003700e900?xsec_token=ABqTPqXFESrI7AZyyuiRFF39Nbi9-QZrMVCrpcYoT4_iI=&xsec_source=pc_user",
+    "type": "video",
+    "title": "VALSE26 辩论：保毕业 vs 追质量",
+    "desc": "",
+    "creator_id": "606a7080000000000101ee20",
+    "creator_name": "韩晓光",
+    "topics": [
+      "3d-4d",
+      "embodied",
+      "academia"
+    ],
+    "tags": [],
+    "published_at": "2026-05-15T04:56:23+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:16:52+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 289
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/1040g0083205iftl52g1g5o3ae200brh058egkno?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:16:52+08:00"
+  },
+  {
+    "note_id": "6a05538b0000000007029544",
+    "xsec_token": "ABn_qGACefVbNdQpoaxltH7VuYBt18NkIFB8V9ergkoFA=",
+    "url": "https://www.xiaohongshu.com/explore/6a05538b0000000007029544?xsec_token=ABn_qGACefVbNdQpoaxltH7VuYBt18NkIFB8V9ergkoFA=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "大模型 AI工具",
+    "desc": "",
+    "creator_id": "620fbaef000000001000411e",
+    "creator_name": "机器感知",
+    "topics": [
+      "embodied",
+      "llm-trend"
+    ],
+    "tags": [],
+    "published_at": "2026-05-14T12:46:03+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:17:22+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 0
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/1040g0083204skbo22ae05ogfnbnk0g8ubrr4q10?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:17:22+08:00"
+  },
+  {
+    "note_id": "6a04a6330000000037035dfe",
+    "xsec_token": "AB5GhURXkFJFBtmYar50OBnmJ2fbHO2UviW7yrd_JQABk=",
+    "url": "https://www.xiaohongshu.com/explore/6a04a6330000000037035dfe?xsec_token=AB5GhURXkFJFBtmYar50OBnmJ2fbHO2UviW7yrd_JQABk=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "MBZUAI与中国科学院等发布世界模型综述文章",
+    "desc": "",
+    "creator_id": "64a2edc1000000002a035f1a",
+    "creator_name": "机器人解剖师",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-05-14T00:26:27+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:26+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 58
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g0k0320475npuhm5g5p52tn0qmnoqlha1ak0?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:26+08:00"
+  },
+  {
+    "note_id": "6a042e4500000000080305cd",
+    "xsec_token": "AB5GhURXkFJFBtmYar50OBnumibEAOc3bRFVO1_vwC0Rs=",
+    "url": "https://www.xiaohongshu.com/explore/6a042e4500000000080305cd?xsec_token=AB5GhURXkFJFBtmYar50OBnumibEAOc3bRFVO1_vwC0Rs=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "FLATQUANT：让量化前先“变平”",
+    "desc": "",
+    "creator_id": "6729f6b9000000001d02c826",
+    "creator_name": "DailyQuant｜量化实验室",
+    "topics": [
+      "llm-trend",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-05-13T15:54:45+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:35+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 45
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o3203opm7dl4bg5pp9uqsndi168a35ufg?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:35+08:00"
+  },
+  {
+    "note_id": "6a041d86000000003803472f",
+    "xsec_token": "AB5GhURXkFJFBtmYar50OBnsD-mewGMjS8JPH9ng4abjs=",
+    "url": "https://www.xiaohongshu.com/explore/6a041d86000000003803472f?xsec_token=AB5GhURXkFJFBtmYar50OBnsD-mewGMjS8JPH9ng4abjs=&xsec_source=pc_user",
+    "type": "video",
+    "title": "何恺明首个语言模型：105M参数，不走GPT自",
+    "desc": "",
+    "creator_id": "5f2b3ded0000000001001e3c",
+    "creator_name": "AIGC 深一度",
+    "topics": [
+      "llm-trend"
+    ],
+    "tags": [],
+    "published_at": "2026-05-13T14:43:18+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:16:39+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 537
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/1040g0083203mq75n2g605npb7nmg87hs9etd8pg?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:16:39+08:00"
+  },
+  {
+    "note_id": "6a03faf0000000000802529e",
+    "xsec_token": "ABWgi2xCWkupLj9OBILPcQ2NwLvW1b4FkNiLK4MrQCplA=",
+    "url": "https://www.xiaohongshu.com/explore/6a03faf0000000000802529e?xsec_token=ABWgi2xCWkupLj9OBILPcQ2NwLvW1b4FkNiLK4MrQCplA=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "Token管够，饭可不是",
+    "desc": "",
+    "creator_id": "5d7dbb7b00000000010089e3",
+    "creator_name": "养猪科学家",
+    "topics": [
+      "3d-4d",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-05-13T12:15:44+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:17:39+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 181
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g0k03203iiue0k8005nbtndtg92f3qu2deno?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:17:39+08:00"
+  },
+  {
+    "note_id": "6a03edfa0000000037036ab3",
+    "xsec_token": "ABWgi2xCWkupLj9OBILPcQ2LaPHyz2-8D46Q1GZ-MmwFU=",
+    "url": "https://www.xiaohongshu.com/explore/6a03edfa0000000037036ab3?xsec_token=ABWgi2xCWkupLj9OBILPcQ2LaPHyz2-8D46Q1GZ-MmwFU=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "每日论文-0513",
+    "desc": "",
+    "creator_id": "68c51ab7000000001901f242",
+    "creator_name": "OmniAI",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-05-13T11:20:26+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:45+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 8
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o3203gp21i48105q653armbsi2tt5rk28?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:45+08:00"
+  },
+  {
+    "note_id": "6a031d640000000038034db4",
+    "xsec_token": "ABWgi2xCWkupLj9OBILPcQ2C-pJLcRr3Ge1lUKFgOF7Rc=",
+    "url": "https://www.xiaohongshu.com/explore/6a031d640000000038034db4?xsec_token=ABWgi2xCWkupLj9OBILPcQ2C-pJLcRr3Ge1lUKFgOF7Rc=&xsec_source=pc_user",
+    "type": "video",
+    "title": "VALSE26优秀学生嘉宾访谈",
+    "desc": "",
+    "creator_id": "606a7080000000000101ee20",
+    "creator_name": "韩晓光",
+    "topics": [
+      "3d-4d",
+      "embodied",
+      "academia"
+    ],
+    "tags": [],
+    "published_at": "2026-05-12T20:30:28+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:16:52+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 423
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/1040g0083202jg3092q605o3ae200brh0cgsjcqo?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:16:52+08:00"
+  },
+  {
+    "note_id": "6a0313e3000000003701c4da",
+    "xsec_token": "ABWgi2xCWkupLj9OBILPcQ2JGkTJh4T1XYClS2tKQIsXQ=",
+    "url": "https://www.xiaohongshu.com/explore/6a0313e3000000003701c4da?xsec_token=ABWgi2xCWkupLj9OBILPcQ2JGkTJh4T1XYClS2tKQIsXQ=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "何凯明团队ELF让连续扩散语言模型翻身",
+    "desc": "",
+    "creator_id": "642cea970000000011023ff4",
+    "creator_name": "P小二的AI探索笔记",
+    "topics": [
+      "llm-trend"
+    ],
+    "tags": [],
+    "published_at": "2026-05-12T19:49:55+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:17:31+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 26
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o3202m6rl72s705p1ctabkcfvkn2qo670?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:17:31+08:00"
+  },
+  {
+    "note_id": "6a02e4fa000000000802622c",
+    "xsec_token": "ABSZXM09ET1NI9KOmtkYk5jXMPNAU3WO_BlbERshP3tDc=",
+    "url": "https://www.xiaohongshu.com/explore/6a02e4fa000000000802622c?xsec_token=ABSZXM09ET1NI9KOmtkYk5jXMPNAU3WO_BlbERshP3tDc=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "OSAQ：面向低比特 LLM 的异常值自吸收方法",
+    "desc": "",
+    "creator_id": "6729f6b9000000001d02c826",
+    "creator_name": "DailyQuant｜量化实验室",
+    "topics": [
+      "llm-trend",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-05-12T16:29:46+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:35+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 39
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o3202gjikbhm705pp9uqsndi16is1pivg?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:35+08:00"
+  },
+  {
+    "note_id": "6a02a6710000000036030f09",
+    "xsec_token": "ABSZXM09ET1NI9KOmtkYk5jYyukxrqG5IunFzIcBL2QSI=",
+    "url": "https://www.xiaohongshu.com/explore/6a02a6710000000036030f09?xsec_token=ABSZXM09ET1NI9KOmtkYk5jYyukxrqG5IunFzIcBL2QSI=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "每日论文-0512",
+    "desc": "",
+    "creator_id": "68c51ab7000000001901f242",
+    "creator_name": "OmniAI",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-05-12T12:02:57+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:45+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 4
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g0k0320290am0is005q653armbsi24hv5po8?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:45+08:00"
+  },
+  {
+    "note_id": "6a0200220000000036032b73",
+    "xsec_token": "ABSZXM09ET1NI9KOmtkYk5jU8RQYcDwzdiuUsk7N8MtYU=",
+    "url": "https://www.xiaohongshu.com/explore/6a0200220000000036032b73?xsec_token=ABSZXM09ET1NI9KOmtkYk5jU8RQYcDwzdiuUsk7N8MtYU=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "李飞飞团队发布世界模型打分平台WorldScore",
+    "desc": "",
+    "creator_id": "64a2edc1000000002a035f1a",
+    "creator_name": "机器人解剖师",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-05-12T00:13:22+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:26+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 163
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g0k03201ki5ojl61g5p52tn0qmnoq2977gk8?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:26+08:00"
+  },
+  {
+    "note_id": "6a01c574000000003703736e",
+    "xsec_token": "AB1C2aUMkgojaOrNAz3BiMRppN-9BogYsubTNPAHRtHF0=",
+    "url": "https://www.xiaohongshu.com/explore/6a01c574000000003703736e?xsec_token=AB1C2aUMkgojaOrNAz3BiMRppN-9BogYsubTNPAHRtHF0=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "FAAR：重新理解 NVFP4 舍入",
+    "desc": "",
+    "creator_id": "6729f6b9000000001d02c826",
+    "creator_name": "DailyQuant｜量化实验室",
+    "topics": [
+      "llm-trend",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-05-11T20:03:00+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:35+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 59
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o3201dh7r0l6605pp9uqsndi16spa8t1o?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:35+08:00"
+  },
+  {
+    "note_id": "6a014dd40000000038037dcb",
+    "xsec_token": "AB1C2aUMkgojaOrNAz3BiMRp8_5cyoMOJmPU-kXTR7vFY=",
+    "url": "https://www.xiaohongshu.com/explore/6a014dd40000000038037dcb?xsec_token=AB1C2aUMkgojaOrNAz3BiMRp8_5cyoMOJmPU-kXTR7vFY=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "每日论文-0511",
+    "desc": "",
+    "creator_id": "68c51ab7000000001901f242",
+    "creator_name": "OmniAI",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-05-11T11:32:36+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:45+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 14
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o3200uu5ur1m0g5q653armbsi2luh91g0?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:45+08:00"
+  },
+  {
+    "note_id": "6a00961b0000000008027c3e",
+    "xsec_token": "ABbQ095J3Qv8VvCGDo8aENEv25UlVY99AK4pS6JEmlkjo=",
+    "url": "https://www.xiaohongshu.com/explore/6a00961b0000000008027c3e?xsec_token=ABbQ095J3Qv8VvCGDo8aENEv25UlVY99AK4pS6JEmlkjo=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "W4A4 QAT 也有 Scaling Law？",
+    "desc": "",
+    "creator_id": "6729f6b9000000001d02c826",
+    "creator_name": "DailyQuant｜量化实验室",
+    "topics": [
+      "llm-trend",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-05-10T22:28:43+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:35+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 71
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o32008g7dg2s805pp9uqsndi16ho73s58?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:35+08:00"
+  },
+  {
+    "note_id": "6a003b2700000000380201b3",
+    "xsec_token": "ABbQ095J3Qv8VvCGDo8aENEhkCpsCImwyYO_npCLW6LL8=",
+    "url": "https://www.xiaohongshu.com/explore/6a003b2700000000380201b3?xsec_token=ABbQ095J3Qv8VvCGDo8aENEhkCpsCImwyYO_npCLW6LL8=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "蹲一个论坛体验反馈",
+    "desc": "",
+    "creator_id": "606a7080000000000101ee20",
+    "creator_name": "韩晓光",
+    "topics": [
+      "3d-4d",
+      "embodied",
+      "academia"
+    ],
+    "tags": [],
+    "published_at": "2026-05-10T16:00:39+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:16:52+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 62
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/1040g00831vvtc1bdii605o3ae200brh0ms22od8?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:16:52+08:00"
+  },
+  {
+    "note_id": "69ff6088000000003700fa34",
+    "xsec_token": "ABoj0IvNTdC_EYlHwhaMWXdb8lYjecQOj6cWsF0YAHlgg=",
+    "url": "https://www.xiaohongshu.com/explore/69ff6088000000003700fa34?xsec_token=ABoj0IvNTdC_EYlHwhaMWXdb8lYjecQOj6cWsF0YAHlgg=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "ManifoldAI发布实时交互世界模型WorldScape",
+    "desc": "",
+    "creator_id": "64a2edc1000000002a035f1a",
+    "creator_name": "机器人解剖师",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-05-10T00:27:52+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:26+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 90
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o31vv24chgl4i05p52tn0qmnoqhahtjg0?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:26+08:00"
+  },
+  {
+    "note_id": "69feab9e0000000037037dab",
+    "xsec_token": "ABifvpaz5cgu7njJx3FErE8cmNYMv3ZbnNIcxmBTK-Yf4=",
+    "url": "https://www.xiaohongshu.com/explore/69feab9e0000000037037dab?xsec_token=ABifvpaz5cgu7njJx3FErE8cmNYMv3ZbnNIcxmBTK-Yf4=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "每日论文-0509",
+    "desc": "",
+    "creator_id": "68c51ab7000000001901f242",
+    "creator_name": "OmniAI",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-05-09T11:35:58+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:45+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 12
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g0k031vuck9o448005q653armbsi2ihrmtgo?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:45+08:00"
+  },
+  {
+    "note_id": "69fdf38800000000230161b4",
+    "xsec_token": "ABj9lO5-6-JptOPj7MLMRkfBOZa-akU-Lb4Xm3aS7QL5Q=",
+    "url": "https://www.xiaohongshu.com/explore/69fdf38800000000230161b4?xsec_token=ABj9lO5-6-JptOPj7MLMRkfBOZa-akU-Lb4Xm3aS7QL5Q=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "EdgeRazor：面向端侧部署的混合精度量化",
+    "desc": "",
+    "creator_id": "6729f6b9000000001d02c826",
+    "creator_name": "DailyQuant｜量化实验室",
+    "topics": [
+      "llm-trend",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-05-08T22:30:32+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:35+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 31
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o31vtlvhn848805pp9uqsndi1699dfk90?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:35+08:00"
+  },
+  {
+    "note_id": "69fd5cac0000000038022c7c",
+    "xsec_token": "ABj9lO5-6-JptOPj7MLMRkfH2lWPDijG8Ngm1XSuQcOys=",
+    "url": "https://www.xiaohongshu.com/explore/69fd5cac0000000038022c7c?xsec_token=ABj9lO5-6-JptOPj7MLMRkfH2lWPDijG8Ngm1XSuQcOys=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "字节提出GenLIP让ViT直接说话",
+    "desc": "",
+    "creator_id": "642cea970000000011023ff4",
+    "creator_name": "P小二的AI探索笔记",
+    "topics": [
+      "llm-trend"
+    ],
+    "tags": [],
+    "published_at": "2026-05-08T11:46:52+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:17:31+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 44
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g0k031vt3o8ee48005p1ctabkcfvkmplm438?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:17:31+08:00"
+  },
+  {
+    "note_id": "69fd5373000000003601ed29",
+    "xsec_token": "ABj9lO5-6-JptOPj7MLMRkfM7j6WF7WCHBMIggixUoscA=",
+    "url": "https://www.xiaohongshu.com/explore/69fd5373000000003601ed29?xsec_token=ABj9lO5-6-JptOPj7MLMRkfM7j6WF7WCHBMIggixUoscA=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "每日论文-0508",
+    "desc": "",
+    "creator_id": "68c51ab7000000001901f242",
+    "creator_name": "OmniAI",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-05-08T11:07:31+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:45+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 7
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o31vt2imb3hm105q653armbsi2vfootb8?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:45+08:00"
+  },
+  {
+    "note_id": "69fcbc6b000000001b022209",
+    "xsec_token": "ABcb1_8KLZl6C33XXlsskw9KQGK4T2cYeXXklY8VJnIhE=",
+    "url": "https://www.xiaohongshu.com/explore/69fcbc6b000000001b022209?xsec_token=ABcb1_8KLZl6C33XXlsskw9KQGK4T2cYeXXklY8VJnIhE=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "浙江大学等发布跨模态世界大模型LatentUM",
+    "desc": "",
+    "creator_id": "64a2edc1000000002a035f1a",
+    "creator_name": "机器人解剖师",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-05-08T00:23:07+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:26+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 25
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g0k031vsfvabp565g5p52tn0qmnoq6jq55to?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:26+08:00"
+  },
+  {
+    "note_id": "69fc24340000000022024548",
+    "xsec_token": "ABcb1_8KLZl6C33XXlsskw9PT-iQk3YfWlAzgxzCMa-6U=",
+    "url": "https://www.xiaohongshu.com/explore/69fc24340000000022024548?xsec_token=ABcb1_8KLZl6C33XXlsskw9PT-iQk3YfWlAzgxzCMa-6U=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "TSQ-MTC：多任务协同训练QAT的尺度错配问题",
+    "desc": "",
+    "creator_id": "6729f6b9000000001d02c826",
+    "creator_name": "DailyQuant｜量化实验室",
+    "topics": [
+      "llm-trend",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-05-07T13:33:40+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:35+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 10
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g0k031vrth2a61m005pp9uqsndi16nscsm3o?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:35+08:00"
+  },
+  {
+    "note_id": "69fc013f0000000038035e79",
+    "xsec_token": "ABcb1_8KLZl6C33XXlsskw9JTQVZ7DhTQ7gpTnQqEIEys=",
+    "url": "https://www.xiaohongshu.com/explore/69fc013f0000000038035e79?xsec_token=ABcb1_8KLZl6C33XXlsskw9JTQVZ7DhTQ7gpTnQqEIEys=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "每日论文-0507",
+    "desc": "",
+    "creator_id": "68c51ab7000000001901f242",
+    "creator_name": "OmniAI",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-05-07T11:04:31+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:45+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 6
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o31vro4n5h56m05q653armbsi25rfa270?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:45+08:00"
+  },
+  {
+    "note_id": "69fb54b9000000001a02df8f",
+    "xsec_token": "ABjo21d9hzeWP6019mZnL3ZtC6tPC20yaGYpWAnJ35ZZQ=",
+    "url": "https://www.xiaohongshu.com/explore/69fb54b9000000001a02df8f?xsec_token=ABjo21d9hzeWP6019mZnL3ZtC6tPC20yaGYpWAnJ35ZZQ=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "二值网络训练，SURGE重新补梯度",
+    "desc": "",
+    "creator_id": "6729f6b9000000001d02c826",
+    "creator_name": "DailyQuant｜量化实验室",
+    "topics": [
+      "llm-trend",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-05-06T22:48:25+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:35+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 25
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g0k031vr494dkis0g5pp9uqsndi16g5mrtao?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:35+08:00"
+  },
+  {
+    "note_id": "69faac2300000000380366b7",
+    "xsec_token": "ABm75TXB-ME1oxaLhbx1Wk1HY26Kn1EJ450scNFhQe8ok=",
+    "url": "https://www.xiaohongshu.com/explore/69faac2300000000380366b7?xsec_token=ABm75TXB-ME1oxaLhbx1Wk1HY26Kn1EJ450scNFhQe8ok=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "ICML 2026 Accept！",
+    "desc": "",
+    "creator_id": "68c51ab7000000001901f242",
+    "creator_name": "OmniAI",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-05-06T10:49:07+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:45+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 25
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g0k031vqfklq72s0g5q653armbsi23pdsoig?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:45+08:00"
+  },
+  {
+    "note_id": "69f9f8200000000022028f11",
+    "xsec_token": "ABX0GmhbwP7CocfmpikZ30sMUdCz-dBRj6N01XTHHsmSs=",
+    "url": "https://www.xiaohongshu.com/explore/69f9f8200000000022028f11?xsec_token=ABX0GmhbwP7CocfmpikZ30sMUdCz-dBRj6N01XTHHsmSs=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "QAT 太贵？L4Q 用 LoRA 降低量化微调成本",
+    "desc": "",
+    "creator_id": "6729f6b9000000001d02c826",
+    "creator_name": "DailyQuant｜量化实验室",
+    "topics": [
+      "llm-trend",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-05-05T22:01:04+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:35+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 39
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o31vppmfai4c705pp9uqsndi16c0eh3a8?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:35+08:00"
+  },
+  {
+    "note_id": "69f9f4cd0000000035022361",
+    "xsec_token": "ABX0GmhbwP7CocfmpikZ30sACXhMqQThmMQi-HcAaPvBs=",
+    "url": "https://www.xiaohongshu.com/explore/69f9f4cd0000000035022361?xsec_token=ABX0GmhbwP7CocfmpikZ30sACXhMqQThmMQi-HcAaPvBs=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "斯坦福清华发布机器人世界大模型CtrlWorld",
+    "desc": "",
+    "creator_id": "64a2edc1000000002a035f1a",
+    "creator_name": "机器人解剖师",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-05-05T21:46:53+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:26+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 114
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o31vpp00ue4cb05p52tn0qmnoq9sqjcng?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:26+08:00"
+  },
+  {
+    "note_id": "69f8a63b000000001b023a2f",
+    "xsec_token": "ABI5TwcjXXfxi5kd5pmbubdAlzyot8IVySzpY83VbM9Ws=",
+    "url": "https://www.xiaohongshu.com/explore/69f8a63b000000001b023a2f?xsec_token=ABI5TwcjXXfxi5kd5pmbubdAlzyot8IVySzpY83VbM9Ws=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "QDROP：极低比特 PTQ 中被忽略的激活量化",
+    "desc": "",
+    "creator_id": "6729f6b9000000001d02c826",
+    "creator_name": "DailyQuant｜量化实验室",
+    "topics": [
+      "llm-trend",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-05-04T21:59:23+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:35+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 27
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o31vogft3p1m805pp9uqsndi161e4bldo?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:35+08:00"
+  },
+  {
+    "note_id": "69f75e9f00000000360181ad",
+    "xsec_token": "AB_SMiiihwq5fA0VlRZPfbo_OHnopmonvX0DPnv21KuZg=",
+    "url": "https://www.xiaohongshu.com/explore/69f75e9f00000000360181ad?xsec_token=AB_SMiiihwq5fA0VlRZPfbo_OHnopmonvX0DPnv21KuZg=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "靠冷门知识测模型大小：GPT-5.5被估9.7T",
+    "desc": "",
+    "creator_id": "642cea970000000011023ff4",
+    "creator_name": "P小二的AI探索笔记",
+    "topics": [
+      "llm-trend"
+    ],
+    "tags": [],
+    "published_at": "2026-05-03T22:41:35+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:17:31+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 20
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g0k031vn8ettsjm405p1ctabkcfvk8e9udl8?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:17:31+08:00"
+  },
+  {
+    "note_id": "69f7579c000000003803597c",
+    "xsec_token": "AB_SMiiihwq5fA0VlRZPfbo9j1wsbBsgFNFdn2KroPRcY=",
+    "url": "https://www.xiaohongshu.com/explore/69f7579c000000003803597c?xsec_token=AB_SMiiihwq5fA0VlRZPfbo9j1wsbBsgFNFdn2KroPRcY=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "KVSlimmer：从谱分析理解 KV Cache 合并",
+    "desc": "",
+    "creator_id": "6729f6b9000000001d02c826",
+    "creator_name": "DailyQuant｜量化实验室",
+    "topics": [
+      "llm-trend",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-05-03T22:11:40+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:35+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 74
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g0k031vn7hkf22s005pp9uqsndi16oftjqq0?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:35+08:00"
+  },
+  {
+    "note_id": "69f6b53b000000003601aad2",
+    "xsec_token": "AB8Hu3O1bosZyOjIR4NJgT1-7TMrXWaRuh1Hoq5s2STP8=",
+    "url": "https://www.xiaohongshu.com/explore/69f6b53b000000003601aad2?xsec_token=AB8Hu3O1bosZyOjIR4NJgT1-7TMrXWaRuh1Hoq5s2STP8=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "清华发布统一latent action世界大模型Motus",
+    "desc": "",
+    "creator_id": "64a2edc1000000002a035f1a",
+    "creator_name": "机器人解剖师",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-05-03T10:38:51+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:26+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 127
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o31vmjmm7c1m5g5p52tn0qmnoq8pgm238?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:26+08:00"
+  },
+  {
+    "note_id": "69f5a87600000000230172a3",
+    "xsec_token": "ABw_gElhI6tAzNiK-cIgqX4uQeuVnELvoC0nuKMVoB5uI=",
+    "url": "https://www.xiaohongshu.com/explore/69f5a87600000000230172a3?xsec_token=ABw_gElhI6tAzNiK-cIgqX4uQeuVnELvoC0nuKMVoB5uI=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "AdaRound：PTQ 里被忽视的“舍入选择”",
+    "desc": "",
+    "creator_id": "6729f6b9000000001d02c826",
+    "creator_name": "DailyQuant｜量化实验室",
+    "topics": [
+      "llm-trend",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-05-02T15:32:06+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:35+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 29
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o31vlivldshm905pp9uqsndi169sj1g08?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:35+08:00"
+  },
+  {
+    "note_id": "69f48eeb00000000350246ff",
+    "xsec_token": "ABhLulu3qGZ_o4iPZjFPCe426j6iL3FGG8mUHAXSWI4pM=",
+    "url": "https://www.xiaohongshu.com/explore/69f48eeb00000000350246ff?xsec_token=ABhLulu3qGZ_o4iPZjFPCe426j6iL3FGG8mUHAXSWI4pM=&xsec_source=pc_user",
+    "type": "video",
+    "title": "Danfei Xu：人类数据，行为克隆，机器人GPT",
+    "desc": "",
+    "creator_id": "63c466c0000000002601025b",
+    "creator_name": "WhynotTV",
+    "topics": [
+      "embodied",
+      "academia"
+    ],
+    "tags": [],
+    "published_at": "2026-05-01T19:30:51+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:18:07+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 6704
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g0k031vkghmgh3m005ou4cr09i0irisrb2d0?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:18:07+08:00"
+  },
+  {
+    "note_id": "69f4640d000000003701e2f8",
+    "xsec_token": "ABhLulu3qGZ_o4iPZjFPCe4330Io-kmsp4HgVGhvUJdQs=",
+    "url": "https://www.xiaohongshu.com/explore/69f4640d000000003701e2f8?xsec_token=ABhLulu3qGZ_o4iPZjFPCe4330Io-kmsp4HgVGhvUJdQs=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "KIVI：KV Cache 2bit 量化为什么可行？",
+    "desc": "",
+    "creator_id": "6729f6b9000000001d02c826",
+    "creator_name": "DailyQuant｜量化实验室",
+    "topics": [
+      "llm-trend",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-05-01T16:27:57+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:35+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 38
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g0k031vkbc9je3mb05pp9uqsndi16k3kq8t8?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:35+08:00"
+  }
+]

@@ -1,0 +1,366 @@
+[
+  {
+    "note_id": "6721e8e7000000001a01c6c8",
+    "xsec_token": "AB5xz8U4typikdEfmIUKGNNvv197sClSZBVKv_sZZcNCA=",
+    "url": "https://www.xiaohongshu.com/explore/6721e8e7000000001a01c6c8?xsec_token=AB5xz8U4typikdEfmIUKGNNvv197sClSZBVKv_sZZcNCA=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "代码算法能力提升，不同目标梯度指南",
+    "desc": "",
+    "creator_id": "618fe930000000001000afe7",
+    "creator_name": "Tianxing Chen（陈天行）",
+    "topics": [
+      "embodied",
+      "academia"
+    ],
+    "tags": [],
+    "published_at": "2024-10-30T16:05:59+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:47:07+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 448
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/1040g2sg319iptj4e6o005ocft4o41bv7g19hfo0?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:47:07+08:00"
+  },
+  {
+    "note_id": "6720ea01000000001b02b6b0",
+    "xsec_token": "AB_R8bNpDFkr_WIHSAQdoBQzP43yHnYk7-PyFhvz8nfR8=",
+    "url": "https://www.xiaohongshu.com/explore/6720ea01000000001b02b6b0?xsec_token=AB_R8bNpDFkr_WIHSAQdoBQzP43yHnYk7-PyFhvz8nfR8=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "北美机器人机构发布重磅通用机器人模型综述",
+    "desc": "",
+    "creator_id": "64a2edc1000000002a035f1a",
+    "creator_name": "机器人解剖师",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2024-10-29T21:58:25+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:26+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 80
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g0k0319hqgcfjmq005p52tn0qmnoq6ftap8g?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:26+08:00"
+  },
+  {
+    "note_id": "671dbdd2000000002401b106",
+    "xsec_token": "ABnC4X_IzlEeF5hzOGtqWGlD5YFIez76OYK9Kk-uFg-FY=",
+    "url": "https://www.xiaohongshu.com/explore/671dbdd2000000002401b106?xsec_token=ABnC4X_IzlEeF5hzOGtqWGlD5YFIez76OYK9Kk-uFg-FY=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "斯坦福大学和UCSD发布DoggyBot机器人系统",
+    "desc": "",
+    "creator_id": "64a2edc1000000002a035f1a",
+    "creator_name": "机器人解剖师",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2024-10-27T12:13:06+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:26+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 29
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o319engh7jlo0g5p52tn0qmnoq1tb9su0?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:26+08:00"
+  },
+  {
+    "note_id": "671c67cf00000000240185bd",
+    "xsec_token": "ABWveqUbTYkBJ1rIHRWKV37pKm6q82vCFEU0h5Tgqn1uw=",
+    "url": "https://www.xiaohongshu.com/explore/671c67cf00000000240185bd?xsec_token=ABWveqUbTYkBJ1rIHRWKV37pKm6q82vCFEU0h5Tgqn1uw=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "谷歌发布增强低成本双手远程操控硬件ALOHA2",
+    "desc": "",
+    "creator_id": "64a2edc1000000002a035f1a",
+    "creator_name": "机器人解剖师",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2024-10-26T11:53:51+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:26+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 21
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g0k0319ddq3l0ls005p52tn0qmnoqb75i4ro?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:26+08:00"
+  },
+  {
+    "note_id": "671b60d80000000026037042",
+    "xsec_token": "AB9IEuYuuMVygDJVofawdNb1eWRexW6rmo7kN-clN8cKg=",
+    "url": "https://www.xiaohongshu.com/explore/671b60d80000000026037042?xsec_token=AB9IEuYuuMVygDJVofawdNb1eWRexW6rmo7kN-clN8cKg=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "谷歌发布机器人双臂灵巧手操控任务",
+    "desc": "",
+    "creator_id": "64a2edc1000000002a035f1a",
+    "creator_name": "机器人解剖师",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2024-10-25T17:11:52+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:26+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 54
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o319cd9umc5s0g5p52tn0qmnoqkb11390?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:26+08:00"
+  },
+  {
+    "note_id": "6717d01c0000000024015b4d",
+    "xsec_token": "ABSx-69LZ8_Cwf1MWDrXkM8P2AJmfmDDUs0wxHimRJZhk=",
+    "url": "https://www.xiaohongshu.com/explore/6717d01c0000000024015b4d?xsec_token=ABSx-69LZ8_Cwf1MWDrXkM8P2AJmfmDDUs0wxHimRJZhk=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "特斯拉WE-ROBOT发布会上强悍的家庭机器人",
+    "desc": "",
+    "creator_id": "64a2edc1000000002a035f1a",
+    "creator_name": "机器人解剖师",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2024-10-23T00:17:32+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:26+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 3
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o3198u3e8ekm0g5p52tn0qmnoqgcb9cg8?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:26+08:00"
+  },
+  {
+    "note_id": "67165ce60000000024014895",
+    "xsec_token": "ABXIcA2RbcsICoZ5gNtdhUm1kG_QtbfSGIrCskgxXR8jE=",
+    "url": "https://www.xiaohongshu.com/explore/67165ce60000000024014895?xsec_token=ABXIcA2RbcsICoZ5gNtdhUm1kG_QtbfSGIrCskgxXR8jE=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "哥大/斯坦福发布人与机器人协作模型",
+    "desc": "",
+    "creator_id": "64a2edc1000000002a035f1a",
+    "creator_name": "机器人解剖师",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2024-10-21T21:53:42+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:26+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 42
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o3197guirv4i0g5p52tn0qmnoqci8u418?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:26+08:00"
+  },
+  {
+    "note_id": "67134aab000000001600c0c9",
+    "xsec_token": "ABWlMPVVDhAtVvUUrxq6QHBW1iMBGbIxsZ7sr_xxwWsD8=",
+    "url": "https://www.xiaohongshu.com/explore/67134aab000000001600c0c9?xsec_token=ABWlMPVVDhAtVvUUrxq6QHBW1iMBGbIxsZ7sr_xxwWsD8=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "[蹲后续H][蹲后续H][蹲后续H]",
+    "desc": "",
+    "creator_id": "620fbaef000000001000411e",
+    "creator_name": "机器感知",
+    "topics": [
+      "embodied",
+      "llm-trend"
+    ],
+    "tags": [],
+    "published_at": "2024-10-19T13:59:07+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:17:22+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 2
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/1040g2sg319be14gg6e7g5ogfnbnk0g8udhm59qg?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:17:22+08:00"
+  },
+  {
+    "note_id": "67121cf100000000210001bf",
+    "xsec_token": "ABSoOyYeGGEq9MP6a0OCdpzN1TKvu9y47vllcL_gS9Vso=",
+    "url": "https://www.xiaohongshu.com/explore/67121cf100000000210001bf?xsec_token=ABSoOyYeGGEq9MP6a0OCdpzN1TKvu9y47vllcL_gS9Vso=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "我去，阴暗反派风😭",
+    "desc": "",
+    "creator_id": "618fe930000000001000afe7",
+    "creator_name": "Tianxing Chen（陈天行）",
+    "topics": [
+      "embodied",
+      "academia"
+    ],
+    "tags": [],
+    "published_at": "2024-10-18T16:31:45+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:47:07+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 348
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/1040g0083193ca4j1ki005ocft4o41bv7prqkeso?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:47:07+08:00"
+  },
+  {
+    "note_id": "670ffb67000000002100bad4",
+    "xsec_token": "ABuP2-KSyCmqbaobNVznpAtM6bBHrUmQqIs5wW3E7oqYY=",
+    "url": "https://www.xiaohongshu.com/explore/670ffb67000000002100bad4?xsec_token=ABuP2-KSyCmqbaobNVznpAtM6bBHrUmQqIs5wW3E7oqYY=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "笨笨的，不太像是能拿诺贝尔奖的样子🥺",
+    "desc": "",
+    "creator_id": "618fe930000000001000afe7",
+    "creator_name": "Tianxing Chen（陈天行）",
+    "topics": [
+      "embodied",
+      "academia"
+    ],
+    "tags": [],
+    "published_at": "2024-10-17T01:44:07+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:47:07+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 79
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/1040g2sg31919lrnakm705ocft4o41bv78l0r08g?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:47:07+08:00"
+  },
+  {
+    "note_id": "670fce09000000001b03c6d0",
+    "xsec_token": "ABuP2-KSyCmqbaobNVznpAtPtGO2FxzeW62vyYxhEUaFI=",
+    "url": "https://www.xiaohongshu.com/explore/670fce09000000001b03c6d0?xsec_token=ABuP2-KSyCmqbaobNVznpAtPtGO2FxzeW62vyYxhEUaFI=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "2024 IROS机器人会议在阿联酋阿布扎比举行",
+    "desc": "",
+    "creator_id": "64a2edc1000000002a035f1a",
+    "creator_name": "机器人解剖师",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2024-10-16T22:30:33+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:26+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 9
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g0k03191399954m005p52tn0qmnoqd75ani8?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:26+08:00"
+  },
+  {
+    "note_id": "6706a716000000001902fd63",
+    "xsec_token": "AB1G9ZjINi7LN-TkQCPjEV0UyhCnxuEzvdqucUp767vTk=",
+    "url": "https://www.xiaohongshu.com/explore/6706a716000000001902fd63?xsec_token=AB1G9ZjINi7LN-TkQCPjEV0UyhCnxuEzvdqucUp767vTk=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "推荐一个机器人旋量非常不错的课程及参考书",
+    "desc": "",
+    "creator_id": "64a2edc1000000002a035f1a",
+    "creator_name": "机器人解剖师",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2024-10-09T23:53:58+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:26+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 96
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o318o5rbs1gm0g5p52tn0qmnoq1f1t7lg?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:26+08:00"
+  },
+  {
+    "note_id": "66fce023000000001902cd44",
+    "xsec_token": "AB7C4iVO7BecSxKv-FZCO73VPk0WGNxQ1P-X6juQDcgns=",
+    "url": "https://www.xiaohongshu.com/explore/66fce023000000001902cd44?xsec_token=AB7C4iVO7BecSxKv-FZCO73VPk0WGNxQ1P-X6juQDcgns=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "没发过的图：CCF优秀大学生，ACM主席合影🥺",
+    "desc": "",
+    "creator_id": "618fe930000000001000afe7",
+    "creator_name": "Tianxing Chen（陈天行）",
+    "topics": [
+      "embodied",
+      "academia"
+    ],
+    "tags": [],
+    "published_at": "2024-10-02T13:54:43+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:47:07+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 80
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/1040g2sg318ekm8l4jk005ocft4o41bv7o1ujmig?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:47:07+08:00"
+  },
+  {
+    "note_id": "66fbff15000000001902c1a3",
+    "xsec_token": "ABfnW4UDRIdfQ7r3pLrfew-o8zDtnKh6mpUot0hKUFs0Y=",
+    "url": "https://www.xiaohongshu.com/explore/66fbff15000000001902c1a3?xsec_token=ABfnW4UDRIdfQ7r3pLrfew-o8zDtnKh6mpUot0hKUFs0Y=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "腾讯Robotics X Lab发布居家服务机器人小五",
+    "desc": "",
+    "creator_id": "64a2edc1000000002a035f1a",
+    "creator_name": "机器人解剖师",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2024-10-01T21:54:29+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:26+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 196
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g0k0318dovosf0s005p52tn0qmnoqnvhlpg8?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:26+08:00"
+  }
+]

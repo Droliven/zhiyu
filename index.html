@@ -11,7 +11,7 @@
     <title>知域 · 研究知识库</title>
     <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png" />
-    <link rel="stylesheet" href="assets/styles.css?v=20260915-toc" />
+    <link rel="stylesheet" href="assets/styles.css?v=20260920-feed" />
     <script>
       window.MathJax = {
         tex: {
@@ -22,7 +22,7 @@
       };
     </script>
     <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
-    <script defer src="assets/app.js?v=20260915-toc"></script>
+    <script defer src="assets/app.js?v=20260920-feed"></script>
   </head>
   <body>
     <header class="site-header">
@@ -39,12 +39,14 @@
           <div><strong id="paper-total">—</strong><span>论文</span></div>
           <div><strong id="report-total">—</strong><span>专题报告</span></div>
           <div><strong id="tag-total">—</strong><span>类别</span></div>
+          <div><strong id="note-total">—</strong><span>动向笔记</span></div>
         </div>
       </div>
       <nav class="view-tabs" aria-label="主要视图">
         <button class="view-tab is-active" type="button" data-view="readme">README · 开始</button>
         <button class="view-tab" type="button" data-view="papers">文献图书馆</button>
         <button class="view-tab" type="button" data-view="reports">专题报告厅</button>
+        <button class="view-tab" type="button" data-view="feed">动向 · 小红书</button>
         <button class="view-tab" type="button" data-view="maintenance">数据维护</button>
       </nav>
     </header>
@@ -118,6 +120,84 @@
         <div id="report-list" class="report-list"></div>
       </section>
 
+      <section class="view" id="feed-view" aria-labelledby="feed-heading" hidden>
+        <div class="section-heading">
+          <div>
+            <span class="section-kicker">Watch feed</span>
+            <h2 id="feed-heading">动向 · 小红书</h2>
+          </div>
+          <p id="feed-status">关注博主的最新笔记，由本地脚本定期抓取后随仓库发布。</p>
+        </div>
+        <div class="filter-band feed-filters">
+          <div class="filter-row primary-filters">
+            <label class="search-field">
+              <span class="sr-only">检索笔记</span>
+              <input id="feed-search" type="search" placeholder="检索标题、正文、博主、话题…" autocomplete="off" />
+            </label>
+            <label class="select-field">
+              <span>时间</span>
+              <select id="feed-range">
+                <option value="1">最近 24 小时</option>
+                <option value="7">最近 7 天</option>
+                <option value="30">最近 30 天</option>
+                <option value="all" selected>全部</option>
+              </select>
+            </label>
+            <label class="select-field">
+              <span>博主</span>
+              <select id="feed-creator">
+                <option value="">全部博主</option>
+              </select>
+            </label>
+            <label class="select-field">
+              <span>排序</span>
+              <select id="feed-sort">
+                <option value="newest">发布时间：新 → 旧</option>
+                <option value="hot">热度：高 → 低</option>
+                <option value="captured">最近抓取</option>
+              </select>
+            </label>
+            <label class="select-field">
+              <span>展示</span>
+              <select id="feed-group">
+                <option value="day">按发布日期分组</option>
+                <option value="none">连续卡片</option>
+              </select>
+            </label>
+          </div>
+          <div class="tag-tools">
+            <div class="tag-list" id="feed-topics" aria-label="关注方向"></div>
+            <button class="text-button" id="feed-mark-read" type="button">当前结果全部标为已读</button>
+            <label class="check-control">
+              <input id="feed-new-only" type="checkbox" />
+              <span>只看本次新增</span>
+            </label>
+            <label class="check-control feed-check-secondary">
+              <input id="feed-unread-only" type="checkbox" />
+              <span>只看未读</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="results-heading">
+          <p><strong id="feed-count">0</strong> 条笔记</p>
+          <p id="feed-summary">全部方向</p>
+        </div>
+        <div id="feed-results" class="feed-grid" aria-live="polite">
+          <div class="empty-state">
+            <strong>正在加载动向</strong>
+            <span>正在读取 data/xhs 下的笔记数据。</span>
+          </div>
+        </div>
+        <div class="empty-state" id="feed-empty" hidden>
+          <strong>没有匹配的笔记</strong>
+          <span>放宽时间范围、清除方向筛选，或加载更早的月份。</span>
+        </div>
+        <div class="feed-more">
+          <button class="button secondary" id="feed-load-more" type="button" hidden>加载更早的月份</button>
+        </div>
+      </section>
+
       <section class="view" id="maintenance-view" aria-labelledby="maintenance-heading" hidden>
         <div class="section-heading">
           <div>
@@ -152,6 +232,7 @@
             <div class="readme-actions">
               <button class="button primary" type="button" data-switch-view="papers">进入文献图书馆</button>
               <button class="button secondary" type="button" data-switch-view="reports">进入专题报告厅</button>
+              <button class="button secondary" type="button" data-switch-view="feed">进入动向</button>
               <a class="button secondary" href="#readme-collaboration">用 AI 更新资源</a>
             </div>
           </header>
@@ -162,6 +243,7 @@
             <a href="#readme-collaboration"><strong>03</strong><span>AI 更新</span></a>
             <a href="#readme-preview"><strong>04</strong><span>预览结果</span></a>
             <a href="#readme-submit"><strong>05</strong><span>审阅提交</span></a>
+            <a href="#readme-xhs"><strong>06</strong><span>小红书动向</span></a>
           </nav>
 
           <section class="readme-topics" aria-labelledby="readme-topics-heading">
@@ -190,6 +272,7 @@
                   <tr><td>搜索、排序、标签筛选</td><td>临时改变当前页面上的结果集合与顺序</td><td>否</td></tr>
                   <tr><td>隐藏论文</td><td>将论文 ID 保存到当前浏览器的本地存储</td><td>否</td></tr>
                   <tr><td>保存评论</td><td>将评论保存到当前浏览器的本地存储</td><td>否</td></tr>
+                  <tr><td>动向笔记标为已读</td><td>将笔记 ID 保存到当前浏览器的本地存储</td><td>否</td></tr>
                   <tr><td>导出本地修改</td><td>下载一份 JSON 文件，供维护者审阅和提交</td><td>否</td></tr>
                   <tr><td>打开论文、代码或项目链接</td><td>访问第三方网站提供的公开资源</td><td>否</td></tr>
                 </tbody>
@@ -323,6 +406,53 @@ git push -u origin HEAD
 # 最后在 GitHub 创建 Pull Request</code></pre>
             </div>
             <p class="readme-notice">如果 AI 新增了可靠配图，也要审阅并暂存对应的 <code>content/images/...</code>。不要使用 <code>git add .</code>，避免把其他人的本地修改或无关文件一起提交。</p>
+          </section>
+
+          <section class="readme-section readme-xhs" aria-labelledby="readme-xhs">
+            <div class="readme-section-heading"><span>在你自己的 Mac 上执行</span><h3 id="readme-xhs">小红书动向：三步搞定</h3></div>
+            <p>“动向 · 小红书”里的内容来自你清单里的博主。更新它只需要三件事：<strong>第一次装好并扫码</strong>、<strong>以后每天双击一次</strong>、<strong>想加谁就加谁</strong>。</p>
+
+            <div class="terminal-block">
+              <div class="terminal-heading"><span>第 1 步 · 只做一次</span><strong>装好，扫码</strong></div>
+              <pre><code># 打开终端，逐行执行：
+pip3 install playwright
+cd /path/to/zhiyu            # 换成你电脑上知域仓库的路径
+python3 scripts/xhs/fetch.py --check-login
+
+# 会弹出一个 Chrome 窗口，里面有二维码 → 用手机小红书扫一下。
+# 终端显示“登录成功”就完成了。这个登录能用好几周，不用每天扫。</code></pre>
+            </div>
+
+            <div class="terminal-block">
+              <div class="terminal-heading"><span>第 2 步 · 每天一次</span><strong>双击更新</strong></div>
+              <pre><code># 在 Finder 里打开知域仓库文件夹，双击：
+xhs-update.command
+
+# 然后什么都不用做，等 3–5 分钟。跑完会弹系统通知，网页上就能看到新笔记。
+# 如果它提示“请扫码”，就切到 Chrome 窗口扫一下，它会自己继续。
+# 一天跑一次就够了，别反复跑。</code></pre>
+            </div>
+
+            <div class="terminal-block">
+              <div class="terminal-heading"><span>第 3 步 · 随时</span><strong>加博主、删博主</strong></div>
+              <pre><code># 在浏览器里打开这位博主的小红书主页，复制地址栏整条网址，然后：
+python3 scripts/xhs/watchlist.py add-creator "粘贴网址" --topics embodied --name "博主昵称"
+
+# --topics 是给他贴的方向标签，可选：
+#   world-model 世界模型 / embodied 具身智能 / 3d-4d 3D/4D / llm-trend LLM 动向 / academia 学术圈
+#   可以写多个，用逗号隔开：--topics embodied,world-model
+
+# 不想看某人了：
+python3 scripts/xhs/watchlist.py remove-creator "粘贴网址" --purge-notes
+
+# 看看现在有谁：
+python3 scripts/xhs/watchlist.py list
+
+# 加完后双击一次 xhs-update.command，新博主的笔记就进来了。</code></pre>
+            </div>
+
+            <p class="readme-notice"><strong>遇到问题只有三种：</strong> ① 提示要扫码 → 扫；② Chrome 里出现滑块 → 用鼠标划一下；③ 提示“安全限制” → 今天别跑了，明天再双击。其他情况看 <code>~/.zhiyu/xhs/</code> 下的日志，或把报错发给维护者。</p>
+            <p>网页里怎么看：默认显示全部笔记，按日期分组、最新在上。勾“只看本次新增”就是这次跑出来的新内容；点“打开原文”跳去小红书，卡片会变灰表示看过。更多细节见仓库 README 的“小红书动向”一节。</p>
           </section>
         </div>
       </section>

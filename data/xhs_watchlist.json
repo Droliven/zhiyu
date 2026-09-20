@@ -1,0 +1,343 @@
+{
+  "version": 1,
+  "_comment": "小红书关注清单。topics 是方向分组（keywords 预留给关键词检索，当前抓取只跑 creators）。creators 需要 24 位十六进制 user_id，可从主页 URL https://www.xiaohongshu.com/user/profile/<user_id> 复制；也可用 python3 scripts/xhs/watchlist.py add-creator <url> --topics a,b 添加。enabled=false 表示暂停抓取但保留历史。",
+  "topics": [
+    {
+      "id": "world-model",
+      "name": "世界模型",
+      "keywords": [
+        "世界模型",
+        "world model",
+        "视频生成 物理"
+      ],
+      "description": "视频/交互世界模型、World Action Model、物理一致性",
+      "enabled": true
+    },
+    {
+      "id": "embodied",
+      "name": "具身智能",
+      "keywords": [
+        "具身智能",
+        "VLA",
+        "机器人 学习"
+      ],
+      "description": "机器人学习、VLA、模仿学习与真机部署",
+      "enabled": true
+    },
+    {
+      "id": "3d-4d",
+      "name": "3D/4D",
+      "keywords": [
+        "4D 重建",
+        "3D 生成",
+        "几何一致性"
+      ],
+      "description": "3D/4D 重建与生成、几何一致性",
+      "enabled": true
+    },
+    {
+      "id": "llm-trend",
+      "name": "LLM 动向",
+      "keywords": [
+        "大模型 发布",
+        "LLM 研究"
+      ],
+      "description": "大模型发布、评测、研究风向",
+      "enabled": true
+    },
+    {
+      "id": "academia",
+      "name": "学术圈动态",
+      "keywords": [
+        "顶会 投稿",
+        "CVPR",
+        "NeurIPS",
+        "ICLR"
+      ],
+      "description": "顶会截稿、审稿、榜单与圈内讨论",
+      "enabled": true
+    }
+  ],
+  "creators": [
+    {
+      "user_id": "6263b02c00000000210242e0",
+      "name": "马跃 Yue Ma",
+      "profile_url": "https://www.xiaohongshu.com/user/profile/6263b02c00000000210242e0",
+      "topics": [
+        "world-model"
+      ],
+      "note": "港科 PhD，GenAI，可控视频综述",
+      "added": "2026-09-20",
+      "enabled": true
+    },
+    {
+      "user_id": "6225665b0000000010008fa8",
+      "name": "李沐",
+      "profile_url": "https://www.xiaohongshu.com/user/profile/6225665b0000000010008fa8",
+      "topics": [
+        "llm-trend"
+      ],
+      "note": "BosonAI 联创，前 Amazon",
+      "added": "2026-09-20",
+      "enabled": true
+    },
+    {
+      "user_id": "62da320e000000000e00f1f5",
+      "name": "VistrendAI",
+      "profile_url": "https://www.xiaohongshu.com/user/profile/62da320e000000000e00f1f5",
+      "topics": [
+        "llm-trend",
+        "embodied"
+      ],
+      "note": "AI 趋势可视化",
+      "added": "2026-09-20",
+      "enabled": true
+    },
+    {
+      "user_id": "6228870a0000000010008e88",
+      "name": "量子位",
+      "profile_url": "https://www.xiaohongshu.com/user/profile/6228870a0000000010008e88",
+      "topics": [
+        "llm-trend"
+      ],
+      "note": "科技媒体",
+      "added": "2026-09-20",
+      "enabled": true
+    },
+    {
+      "user_id": "64a2edc1000000002a035f1a",
+      "name": "机器人解剖师",
+      "profile_url": "https://www.xiaohongshu.com/user/profile/64a2edc1000000002a035f1a",
+      "topics": [
+        "embodied",
+        "world-model"
+      ],
+      "note": "国科大，具身/世界模型论文解读",
+      "added": "2026-09-20",
+      "enabled": true
+    },
+    {
+      "user_id": "6729f6b9000000001d02c826",
+      "name": "DailyQuant｜量化实验室",
+      "profile_url": "https://www.xiaohongshu.com/user/profile/6729f6b9000000001d02c826",
+      "topics": [
+        "llm-trend",
+        "world-model"
+      ],
+      "note": "LLM 量化 + 视频生成/世界模型",
+      "added": "2026-09-20",
+      "enabled": true
+    },
+    {
+      "user_id": "68c51ab7000000001901f242",
+      "name": "OmniAI",
+      "profile_url": "https://www.xiaohongshu.com/user/profile/68c51ab7000000001901f242",
+      "topics": [
+        "embodied",
+        "world-model"
+      ],
+      "note": "浙大软院 OmniAI 实验室，每日论文",
+      "added": "2026-09-20",
+      "enabled": true
+    },
+    {
+      "user_id": "65abf805000000001001dca8",
+      "name": "Lumina具身社区",
+      "profile_url": "https://www.xiaohongshu.com/user/profile/65abf805000000001001dca8",
+      "topics": [
+        "embodied",
+        "academia"
+      ],
+      "note": "具身社区：招聘/活动/榜单",
+      "added": "2026-09-20",
+      "enabled": true
+    },
+    {
+      "user_id": "5cb921b0000000001102f005",
+      "name": "瓦奇塔Vaquitai🐬",
+      "profile_url": "https://www.xiaohongshu.com/user/profile/5cb921b0000000001102f005",
+      "topics": [
+        "world-model",
+        "llm-trend"
+      ],
+      "note": "多模态 AIGC 从业者",
+      "added": "2026-09-20",
+      "enabled": true
+    },
+    {
+      "user_id": "62ec8387000000001e01eacb",
+      "name": "AI蜘蛛侠",
+      "profile_url": "https://www.xiaohongshu.com/user/profile/62ec8387000000001e01eacb",
+      "topics": [
+        "embodied",
+        "llm-trend"
+      ],
+      "note": "硅谷 Research Scientist，VLA 论文",
+      "added": "2026-09-20",
+      "enabled": true
+    },
+    {
+      "user_id": "5ea72415000000000100554e",
+      "name": "大模型知识分享",
+      "profile_url": "https://www.xiaohongshu.com/user/profile/5ea72415000000000100554e",
+      "topics": [
+        "llm-trend"
+      ],
+      "note": "每日大模型论文",
+      "added": "2026-09-20",
+      "enabled": true
+    },
+    {
+      "user_id": "5f2b3ded0000000001001e3c",
+      "name": "AIGC 深一度",
+      "profile_url": "https://www.xiaohongshu.com/user/profile/5f2b3ded0000000001001e3c",
+      "topics": [
+        "llm-trend"
+      ],
+      "note": "大模型从业者，论文速递",
+      "added": "2026-09-20",
+      "enabled": true
+    },
+    {
+      "user_id": "606a7080000000000101ee20",
+      "name": "韩晓光",
+      "profile_url": "https://www.xiaohongshu.com/user/profile/606a7080000000000101ee20",
+      "topics": [
+        "3d-4d",
+        "embodied",
+        "academia"
+      ],
+      "note": "港中深副教授，图形学/三维视觉/具身",
+      "added": "2026-09-20",
+      "enabled": true
+    },
+    {
+      "user_id": "61fe4e6700000000100091ea",
+      "name": "Michael",
+      "profile_url": "https://www.xiaohongshu.com/user/profile/61fe4e6700000000100091ea",
+      "topics": [
+        "world-model"
+      ],
+      "note": "小米汽车世界模型；扩散模型论文",
+      "added": "2026-09-20",
+      "enabled": true
+    },
+    {
+      "user_id": "5c9f98f30000000010027431",
+      "name": "ZiyangXie",
+      "profile_url": "https://www.xiaohongshu.com/user/profile/5c9f98f30000000010027431",
+      "topics": [
+        "3d-4d",
+        "world-model"
+      ],
+      "note": "Braintrance CTO，UCLA CS，沉浸式交互视频",
+      "added": "2026-09-20",
+      "enabled": true
+    },
+    {
+      "user_id": "620fbaef000000001000411e",
+      "name": "机器感知",
+      "profile_url": "https://www.xiaohongshu.com/user/profile/620fbaef000000001000411e",
+      "topics": [
+        "embodied",
+        "llm-trend"
+      ],
+      "note": "每日 AIGC/Robotics 论文",
+      "added": "2026-09-20",
+      "enabled": true
+    },
+    {
+      "user_id": "642cea970000000011023ff4",
+      "name": "P小二的AI探索笔记",
+      "profile_url": "https://www.xiaohongshu.com/user/profile/642cea970000000011023ff4",
+      "topics": [
+        "llm-trend"
+      ],
+      "note": "AI 周刊",
+      "added": "2026-09-20",
+      "enabled": true
+    },
+    {
+      "user_id": "5d7dbb7b00000000010089e3",
+      "name": "养猪科学家",
+      "profile_url": "https://www.xiaohongshu.com/user/profile/5d7dbb7b00000000010089e3",
+      "topics": [
+        "3d-4d",
+        "world-model"
+      ],
+      "note": "UIUC PhD，World Labs Atlas 3D",
+      "added": "2026-09-20",
+      "enabled": true
+    },
+    {
+      "user_id": "685b8aa1000000001d003e2d",
+      "name": "AI魔法屋",
+      "profile_url": "https://www.xiaohongshu.com/user/profile/685b8aa1000000001d003e2d",
+      "topics": [
+        "llm-trend",
+        "academia"
+      ],
+      "note": "前沿论文 + 学术圈动态",
+      "added": "2026-09-20",
+      "enabled": true
+    },
+    {
+      "user_id": "5a094aa04eacab60354412e6",
+      "name": "一只哔mer",
+      "profile_url": "https://www.xiaohongshu.com/user/profile/5a094aa04eacab60354412e6",
+      "topics": [
+        "embodied",
+        "world-model"
+      ],
+      "note": "清华→UMich，WAM/VLA/Foundation Models",
+      "added": "2026-09-20",
+      "enabled": true
+    },
+    {
+      "user_id": "63c466c0000000002601025b",
+      "name": "WhynotTV",
+      "profile_url": "https://www.xiaohongshu.com/user/profile/63c466c0000000002601025b",
+      "topics": [
+        "embodied",
+        "academia"
+      ],
+      "note": "何泰然，机器人研究者访谈",
+      "added": "2026-09-20",
+      "enabled": true
+    },
+    {
+      "user_id": "6468629c0000000012037726",
+      "name": "LLM 翰林院",
+      "profile_url": "https://www.xiaohongshu.com/user/profile/6468629c0000000012037726",
+      "topics": [
+        "llm-trend"
+      ],
+      "note": "THU 在读，大模型论文摘要",
+      "added": "2026-09-20",
+      "enabled": true
+    },
+    {
+      "user_id": "62e3f870000000001f01413d",
+      "name": "SpatialAI Lab",
+      "profile_url": "https://www.xiaohongshu.com/user/profile/62e3f870000000001f01413d",
+      "topics": [
+        "3d-4d"
+      ],
+      "note": "空间智能前沿",
+      "added": "2026-09-20",
+      "enabled": true
+    },
+    {
+      "user_id": "618fe930000000001000afe7",
+      "name": "Tianxing Chen（陈天行）",
+      "profile_url": "https://www.xiaohongshu.com/user/profile/618fe930000000001000afe7",
+      "topics": [
+        "embodied",
+        "academia"
+      ],
+      "note": "Lumina 具身社区创始人",
+      "added": "2026-09-20",
+      "enabled": true
+    }
+  ]
+}

@@ -3,7 +3,10 @@
 const STORAGE = {
   hidden: "paper-library.hidden.v1",
   comments: "paper-library.comments.v1",
+  feedRead: "paper-library.feed-read.v1",
 };
+
+const FEED_INITIAL_MONTHS = 3;
 
 const LINK_LABELS = {
   paper: "论文",
@@ -38,6 +41,23 @@ const state = {
   group: "none",
   showHidden: false,
   view: "readme",
+  feed: {
+    index: null,
+    watchlist: { topics: [], creators: [] },
+    notes: [],
+    loadedMonths: 0,
+    read: new Set(),
+    query: "",
+    range: "all",
+    creator: "",
+    sort: "newest",
+    group: "day",
+    topics: new Set(),
+    unreadOnly: false,
+    newOnly: false,
+    expanded: new Set(),
+    error: null,
+  },
 };
 
 const elements = {};
@@ -51,6 +71,7 @@ async function init() {
   bindEvents();
   state.hidden = new Set(readStorage(STORAGE.hidden, []));
   state.comments = readStorage(STORAGE.comments, {});
+  state.feed.read = new Set(readStorage(STORAGE.feedRead, []));
 
   if (window.location.protocol === "file:") {
     renderLoadError(
@@ -60,6 +81,7 @@ async function init() {
   }
 
   loadReadmePrompts();
+  loadFeed();
 
   try {
     const [papers, reports, overrides] = await Promise.all([
@@ -160,6 +182,22 @@ function cacheElements() {
     reportDialog: document.querySelector("#report-dialog"),
     reportDialogContent: document.querySelector("#report-dialog-content"),
     toast: document.querySelector("#toast"),
+    noteTotal: document.querySelector("#note-total"),
+    feedStatus: document.querySelector("#feed-status"),
+    feedSearch: document.querySelector("#feed-search"),
+    feedRange: document.querySelector("#feed-range"),
+    feedCreator: document.querySelector("#feed-creator"),
+    feedSort: document.querySelector("#feed-sort"),
+    feedGroup: document.querySelector("#feed-group"),
+    feedTopics: document.querySelector("#feed-topics"),
+    feedMarkRead: document.querySelector("#feed-mark-read"),
+    feedUnreadOnly: document.querySelector("#feed-unread-only"),
+    feedNewOnly: document.querySelector("#feed-new-only"),
+    feedCount: document.querySelector("#feed-count"),
+    feedSummary: document.querySelector("#feed-summary"),
+    feedResults: document.querySelector("#feed-results"),
+    feedEmpty: document.querySelector("#feed-empty"),
+    feedLoadMore: document.querySelector("#feed-load-more"),
   });
 }
 
@@ -267,7 +305,75 @@ function bindEvents() {
     if (button) toggleHidden(button.dataset.restorePaper, false);
   });
 
+  bindFeedEvents();
+
   window.addEventListener("hashchange", openHashTarget);
+}
+
+function bindFeedEvents() {
+  const feed = state.feed;
+  elements.feedSearch.addEventListener("input", (event) => {
+    feed.query = event.target.value.trim();
+    renderFeed();
+  });
+  elements.feedRange.addEventListener("change", (event) => {
+    feed.range = event.target.value;
+    renderFeed();
+  });
+  elements.feedCreator.addEventListener("change", (event) => {
+    feed.creator = event.target.value;
+    renderFeed();
+  });
+  elements.feedSort.addEventListener("change", (event) => {
+    feed.sort = event.target.value;
+    renderFeed();
+  });
+  elements.feedGroup.addEventListener("change", (event) => {
+    feed.group = event.target.value;
+    renderFeed();
+  });
+  elements.feedUnreadOnly.addEventListener("change", (event) => {
+    feed.unreadOnly = event.target.checked;
+    renderFeed();
+  });
+  elements.feedNewOnly.addEventListener("change", (event) => {
+    feed.newOnly = event.target.checked;
+    renderFeed();
+  });
+  elements.feedTopics.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-feed-topic]");
+    if (!button) return;
+    const topic = button.dataset.feedTopic;
+    if (feed.topics.has(topic)) feed.topics.delete(topic);
+    else feed.topics.add(topic);
+    renderFeedTopics();
+    renderFeed();
+  });
+  elements.feedMarkRead.addEventListener("click", () => {
+    const notes = filteredFeedNotes();
+    notes.forEach((note) => feed.read.add(note.note_id));
+    writeStorage(STORAGE.feedRead, [...feed.read]);
+    renderFeed();
+    showToast(`已将 ${notes.length} 条标为已读。`);
+  });
+  elements.feedLoadMore.addEventListener("click", () => loadFeedMonths(FEED_INITIAL_MONTHS));
+  elements.feedResults.addEventListener("click", (event) => {
+    const desc = event.target.closest("[data-feed-expand]");
+    if (desc) {
+      const id = desc.dataset.feedExpand;
+      if (feed.expanded.has(id)) feed.expanded.delete(id);
+      else feed.expanded.add(id);
+      desc.classList.toggle("is-expanded", feed.expanded.has(id));
+      return;
+    }
+    const readButton = event.target.closest("[data-feed-toggle-read]");
+    if (readButton) {
+      toggleFeedRead(readButton.dataset.feedToggleRead);
+      return;
+    }
+    const link = event.target.closest("a[data-feed-open]");
+    if (link) markFeedRead(link.dataset.feedOpen);
+  });
 }
 
 async function fetchJson(url) {
@@ -565,6 +671,331 @@ function renderMaintenance() {
         })
         .join("")
     : '<p class="missing-note">当前设备没有尚未导出的修改。</p>';
+}
+
+// ---------------------------------------------------------------------------
+// 动向 · 小红书
+// ---------------------------------------------------------------------------
+
+async function loadFeed() {
+  const feed = state.feed;
+  try {
+    const [index, watchlist] = await Promise.all([
+      fetchJson("data/xhs/index.json"),
+      fetchJson("data/xhs_watchlist.json").catch(() => ({ topics: [], creators: [] })),
+    ]);
+    feed.index = index;
+    feed.watchlist = watchlist;
+    elements.noteTotal.textContent = String(index.total ?? 0);
+    renderFeedStatus();
+    renderFeedTopics();
+    renderFeedCreators();
+    // 全部动态默认全部加载、全部展示；月度分桶只是为了让文件保持小体积。
+    await loadFeedMonths(Math.max(FEED_INITIAL_MONTHS, (index.months || []).length));
+  } catch (error) {
+    feed.error = error;
+    elements.noteTotal.textContent = "0";
+    elements.feedResults.innerHTML = `
+      <div class="empty-state">
+        <strong>尚未抓取任何动向</strong>
+        <span>在仓库根目录运行 xhs-update.command（或 python3 scripts/xhs/fetch.py）后，笔记会出现在这里。</span>
+      </div>`;
+    elements.feedLoadMore.hidden = true;
+  }
+}
+
+async function loadFeedMonths(count) {
+  const feed = state.feed;
+  const months = feed.index?.months || [];
+  const targets = months.slice(feed.loadedMonths, feed.loadedMonths + count);
+  if (targets.length) {
+    elements.feedLoadMore.disabled = true;
+    elements.feedLoadMore.textContent = "正在加载…";
+    const chunks = await Promise.all(
+      targets.map((entry) => fetchJson(entry.path).catch(() => [])),
+    );
+    const known = new Set(feed.notes.map((note) => note.note_id));
+    chunks.flat().forEach((note) => {
+      if (!known.has(note.note_id)) {
+        known.add(note.note_id);
+        feed.notes.push(note);
+      }
+    });
+    feed.loadedMonths += targets.length;
+  }
+  const remaining = months.length - feed.loadedMonths;
+  elements.feedLoadMore.hidden = remaining <= 0;
+  elements.feedLoadMore.disabled = false;
+  elements.feedLoadMore.textContent = remaining > 0 ? `加载更早的月份（还有 ${remaining} 个月）` : "";
+  renderFeedTopics();
+  renderFeedCreators();
+  renderFeed();
+}
+
+function feedTopicName(id) {
+  const topic = state.feed.watchlist.topics.find((item) => item.id === id);
+  return topic ? topic.name : id;
+}
+
+function feedCreatorName(note) {
+  const listed = state.feed.watchlist.creators.find((item) => item.user_id === note.creator_id);
+  if (listed?.name) return listed.name;
+  const discovered = state.feed.index?.creators?.[note.creator_id];
+  return note.creator_name || discovered?.name || note.creator_id || "未知博主";
+}
+
+function feedNewSince() {
+  // Notes captured during the most recent run are "new since last time".
+  return state.feed.index?.last_run?.started_at || "";
+}
+
+function isFeedNew(note) {
+  const since = feedNewSince();
+  return Boolean(since && note.captured_at && note.captured_at >= since);
+}
+
+function feedNoteTime(note) {
+  return note.published_at || note.captured_at || "";
+}
+
+function feedEngagement(note) {
+  const stats = note.stats || {};
+  return (stats.liked || 0) + (stats.collected || 0) * 2 + (stats.comments || 0) * 3 + (stats.shares || 0) * 2;
+}
+
+function renderFeedStatus() {
+  const run = state.feed.index?.last_run;
+  const updated = state.feed.index?.updated_at;
+  if (!run) {
+    elements.feedStatus.textContent = updated ? `数据更新于 ${formatFeedTime(updated)}。` : "关注博主的最新笔记，由本地脚本定期抓取后随仓库发布。";
+    return;
+  }
+  const status = run.status === "ok" ? "正常" : `中止：${run.message || run.status || "未知原因"}`;
+  const creators = `${run.creators_ok ?? "?"}/${run.creators_total ?? "?"}`;
+  elements.feedStatus.textContent = `上次抓取 ${formatFeedTime(run.finished_at || run.started_at || updated)} · 博主 ${creators} · 新增 ${run.new_notes ?? 0} 条 · ${status}`;
+  elements.feedStatus.classList.toggle("is-warning", run.status !== "ok");
+}
+
+function renderFeedTopics() {
+  const feed = state.feed;
+  const counts = new Map();
+  feed.notes.forEach((note) => (note.topics || []).forEach((topic) => counts.set(topic, (counts.get(topic) || 0) + 1)));
+  const topics = feed.watchlist.topics.filter((topic) => topic.enabled !== false);
+  const extra = [...counts.keys()].filter((id) => !topics.some((topic) => topic.id === id)).map((id) => ({ id, name: id }));
+  elements.feedTopics.innerHTML = [...topics, ...extra]
+    .map(
+      (topic) => `
+        <button class="tag-chip ${feed.topics.has(topic.id) ? "is-active" : ""}" type="button"
+          data-feed-topic="${escapeAttr(topic.id)}" aria-pressed="${feed.topics.has(topic.id)}" title="${escapeAttr(topic.description || "")}">
+          ${escapeHtml(topic.name)} <small>${counts.get(topic.id) || 0}</small>
+        </button>`,
+    )
+    .join("");
+}
+
+function renderFeedCreators() {
+  const feed = state.feed;
+  const seen = new Map();
+  feed.watchlist.creators.forEach((creator) => seen.set(creator.user_id, creator.name || ""));
+  feed.notes.forEach((note) => {
+    if (note.creator_id && !seen.get(note.creator_id)) seen.set(note.creator_id, feedCreatorName(note));
+  });
+  const options = [...seen.entries()]
+    .map(([id, name]) => ({ id, name: name || feed.index?.creators?.[id]?.name || id }))
+    .sort((a, b) => a.name.localeCompare(b.name, "zh-CN"));
+  const current = feed.creator;
+  elements.feedCreator.innerHTML =
+    '<option value="">全部博主</option>' +
+    options.map((item) => `<option value="${escapeAttr(item.id)}">${escapeHtml(item.name)}</option>`).join("");
+  elements.feedCreator.value = options.some((item) => item.id === current) ? current : "";
+  feed.creator = elements.feedCreator.value;
+}
+
+function filteredFeedNotes() {
+  const feed = state.feed;
+  const query = feed.query.toLocaleLowerCase("zh-CN");
+  const cutoff = feed.range === "all" ? null : Date.now() - Number(feed.range) * 86_400_000;
+  const topics = [...feed.topics];
+  const notes = feed.notes.filter((note) => {
+    if (feed.unreadOnly && feed.read.has(note.note_id)) return false;
+    if (feed.newOnly && !isFeedNew(note)) return false;
+    if (feed.creator && note.creator_id !== feed.creator) return false;
+    if (topics.length && !topics.some((topic) => (note.topics || []).includes(topic))) return false;
+    if (cutoff !== null) {
+      const stamp = Date.parse(feedNoteTime(note));
+      if (Number.isFinite(stamp) && stamp < cutoff) return false;
+    }
+    if (query) {
+      const haystack = [note.title, note.desc, feedCreatorName(note), (note.tags || []).join(" "), (note.topics || []).map(feedTopicName).join(" ")]
+        .join(" ")
+        .toLocaleLowerCase("zh-CN");
+      if (!haystack.includes(query)) return false;
+    }
+    return true;
+  });
+  return notes.sort((a, b) => {
+    if (feed.sort === "hot") return feedEngagement(b) - feedEngagement(a) || feedNoteTime(b).localeCompare(feedNoteTime(a));
+    if (feed.sort === "captured") return String(b.captured_at || "").localeCompare(String(a.captured_at || ""));
+    return feedNoteTime(b).localeCompare(feedNoteTime(a));
+  });
+}
+
+function renderFeed() {
+  const feed = state.feed;
+  if (!feed.index) return;
+  const notes = filteredFeedNotes();
+  elements.feedCount.textContent = String(notes.length);
+  elements.feedEmpty.hidden = notes.length !== 0 || feed.notes.length === 0;
+  const parts = [];
+  if (feed.topics.size) parts.push([...feed.topics].map(feedTopicName).join(" / "));
+  if (feed.creator) parts.push(elements.feedCreator.selectedOptions[0]?.textContent || feed.creator);
+  if (feed.query) parts.push(`检索：${feed.query}`);
+  const rangeLabel = elements.feedRange.selectedOptions[0]?.textContent || "";
+  elements.feedSummary.textContent = `${parts.join(" · ") || "全部方向"} · ${rangeLabel} · 已加载 ${feed.loadedMonths}/${feed.index.months.length} 个月`;
+
+  if (!feed.notes.length) {
+    elements.feedResults.innerHTML = `
+      <div class="empty-state">
+        <strong>清单里还没有抓到笔记</strong>
+        <span>用 python3 scripts/xhs/watchlist.py add-creator &lt;主页链接&gt; --topics … 添加博主，再运行 xhs-update.command。</span>
+      </div>`;
+    return;
+  }
+  if (feed.group === "day") {
+    const groups = new Map();
+    notes.forEach((note) => {
+      const key = feedDayKey(note);
+      if (!groups.has(key)) groups.set(key, []);
+      groups.get(key).push(note);
+    });
+    elements.feedResults.innerHTML = [...groups.entries()]
+      .map(([key, items]) => {
+        const hot = items.reduce((best, note) => (feedEngagement(note) > feedEngagement(best) ? note : best), items[0]);
+        return `
+          <section class="feed-day">
+            <div class="group-heading feed-day-heading">
+              <h3>${escapeHtml(formatFeedDay(key))}</h3>
+              <span>${items.length} 条 · 最热：${escapeHtml(previewText(hot.title || "（无标题）", 28))}</span>
+            </div>
+            <div class="feed-day-grid">${items.map(renderFeedCard).join("")}</div>
+          </section>`;
+      })
+      .join("");
+  } else {
+    elements.feedResults.innerHTML = notes.map(renderFeedCard).join("");
+  }
+  elements.feedResults.querySelectorAll(".feed-cover img").forEach((img) => {
+    img.addEventListener("error", () => img.closest(".feed-cover")?.classList.add("is-broken"), { once: true });
+  });
+}
+
+function renderFeedCard(note) {
+  const feed = state.feed;
+  const read = feed.read.has(note.note_id);
+  const stats = note.stats || {};
+  const statItems = [
+    ["赞", stats.liked],
+    ["藏", stats.collected],
+    ["评", stats.comments],
+    ["转", stats.shares],
+  ]
+    .filter(([, value]) => typeof value === "number")
+    .map(([label, value]) => `<span>${label} <strong>${formatCount(value)}</strong></span>`)
+    .join("");
+  const cover = note.cover
+    ? `<a class="feed-cover" href="${escapeAttr(note.url)}" target="_blank" rel="noreferrer" data-feed-open="${escapeAttr(note.note_id)}">
+        <img src="${escapeAttr(note.cover)}" alt="" loading="lazy" referrerpolicy="no-referrer" />
+      </a>`
+    : "";
+  const topics = (note.topics || [])
+    .map((topic) => `<span class="paper-tag feed-topic-chip">${escapeHtml(feedTopicName(topic))}</span>`)
+    .join("");
+  const tags = (note.tags || [])
+    .slice(0, 6)
+    .map((tag) => `<span class="paper-tag">#${escapeHtml(tag)}</span>`)
+    .join("");
+  const desc = note.desc
+    ? `<p class="feed-desc ${feed.expanded.has(note.note_id) ? "is-expanded" : ""}" data-feed-expand="${escapeAttr(note.note_id)}" title="点击展开/收起">${escapeHtml(note.desc)}</p>`
+    : "";
+  const typeLabel = note.type === "video" ? "视频" : "";
+  return `
+    <article class="feed-card ${read ? "is-read" : ""}">
+      ${cover}
+      <div class="feed-body">
+        <div class="card-meta">
+          <span class="feed-creator">${escapeHtml(feedCreatorName(note))}</span>
+          <span class="feed-time" title="${escapeAttr(feedNoteTime(note))}">${note.published_at ? "" : "抓取于 "}${escapeHtml(formatFeedTime(feedNoteTime(note)))}</span>
+          ${typeLabel ? `<span class="feed-type">${typeLabel}</span>` : ""}
+          ${isFeedNew(note) ? '<span class="feed-new">本次新增</span>' : ""}
+          ${topics}
+          ${read ? "" : '<span class="feed-unread-dot" aria-label="未读"></span>'}
+        </div>
+        <h3><a href="${escapeAttr(note.url)}" target="_blank" rel="noreferrer" data-feed-open="${escapeAttr(note.note_id)}">${escapeHtml(note.title || "（无标题）")}</a></h3>
+        ${desc}
+        ${tags ? `<div class="card-tags">${tags}</div>` : ""}
+        <div class="card-actions">
+          <div class="feed-stats">${statItems}</div>
+          <div class="card-command-row">
+            <button class="hide-paper" type="button" data-feed-toggle-read="${escapeAttr(note.note_id)}">${read ? "标为未读" : "标为已读"}</button>
+            <a href="${escapeAttr(note.url)}" target="_blank" rel="noreferrer" data-feed-open="${escapeAttr(note.note_id)}">打开原文</a>
+          </div>
+        </div>
+      </div>
+    </article>`;
+}
+
+function markFeedRead(noteId) {
+  if (state.feed.read.has(noteId)) return;
+  state.feed.read.add(noteId);
+  writeStorage(STORAGE.feedRead, [...state.feed.read]);
+  renderFeed();
+}
+
+function toggleFeedRead(noteId) {
+  const feed = state.feed;
+  if (feed.read.has(noteId)) feed.read.delete(noteId);
+  else feed.read.add(noteId);
+  writeStorage(STORAGE.feedRead, [...feed.read]);
+  renderFeed();
+}
+
+function feedDayKey(note) {
+  const stamp = Date.parse(feedNoteTime(note));
+  if (!Number.isFinite(stamp)) return "unknown";
+  const date = new Date(stamp);
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+}
+
+function formatFeedDay(key) {
+  if (key === "unknown") return "时间未知";
+  const [year, month, day] = key.split("-").map(Number);
+  const date = new Date(year, month - 1, day);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const diffDays = Math.round((today - date) / 86_400_000);
+  const weekday = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"][date.getDay()];
+  const label = year === today.getFullYear() ? `${month}月${day}日 ${weekday}` : `${year}年${month}月${day}日 ${weekday}`;
+  if (diffDays === 0) return `今天 · ${label}`;
+  if (diffDays === 1) return `昨天 · ${label}`;
+  if (diffDays > 1 && diffDays < 7) return `${diffDays} 天前 · ${label}`;
+  return label;
+}
+
+function formatFeedTime(iso) {
+  const stamp = Date.parse(iso || "");
+  if (!Number.isFinite(stamp)) return "时间未知";
+  const date = new Date(stamp);
+  const now = new Date();
+  const pad = (value) => String(value).padStart(2, "0");
+  if (date.getFullYear() === now.getFullYear()) {
+    return `${date.getMonth() + 1}月${date.getDate()}日 ${pad(date.getHours())}:${pad(date.getMinutes())}`;
+  }
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
+}
+
+function formatCount(value) {
+  if (value >= 10_000) return `${(value / 10_000).toFixed(value >= 100_000 ? 0 : 1)}万`;
+  return String(value);
 }
 
 function switchView(view) {

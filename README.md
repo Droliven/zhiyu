@@ -13,7 +13,7 @@
 | 网页操作 | 实际效果 | 是否修改仓库 |
 |---|---|---|
 | 搜索、排序、标签筛选 | 临时改变当前页面的展示 | 否 |
-| 隐藏论文、保存评论 | 写入当前浏览器的 `localStorage` | 否 |
+| 隐藏论文、保存评论、动向笔记标为已读 | 写入当前浏览器的 `localStorage` | 否 |
 | 导出本地修改 | 下载供维护者审阅的 `paper_overrides.json` | 否 |
 | 打开论文、项目、代码 | 访问第三方公开资源 | 否 |
 
@@ -500,6 +500,75 @@ python3 scripts/check_asset_budget.py
 ```
 
 单张图片默认不应超过 500 KB，本地图像总量默认不应超过 25 MB。建议最长边不超过 1600 px，并优先保存为 WebP；任何配图都必须保留论文名、图号和来源链接。
+
+## 小红书动向
+
+网页"动向 · 小红书"显示你清单里博主发的所有新笔记（技术的、吐槽的、日常的都有）。更新它只有三件事：**第一次装好并扫码；以后每天双击一次；想加谁就加谁。** 全部在你自己的 Mac 上完成。
+
+### 第 1 步 · 只做一次：装好，扫码
+
+打开终端，逐行执行：
+
+```bash
+pip3 install playwright
+cd /path/to/zhiyu            # 换成你电脑上知域仓库的路径
+python3 scripts/xhs/fetch.py --check-login
+```
+
+会弹出一个 Chrome 窗口，里面有二维码，用手机小红书扫一下。终端显示"登录成功"就完成了。这个登录能用好几周，**不用每天扫**。
+
+### 第 2 步 · 每天一次：双击更新
+
+在 Finder 里打开知域仓库文件夹，双击 `xhs-update.command`。然后什么都不用做，等 3–5 分钟。跑完会弹系统通知，网页上就能看到新笔记（它会自动 commit 并 push `data/xhs`）。
+
+- 如果它提示"请扫码"：切到 Chrome 窗口扫一下，它会自己继续。
+- 一天跑一次就够了，别反复跑。
+
+### 第 3 步 · 随时：加博主、删博主
+
+在浏览器里打开这位博主的小红书主页，复制地址栏整条网址，然后：
+
+```bash
+python3 scripts/xhs/watchlist.py add-creator "粘贴网址" --topics embodied --name "博主昵称"
+```
+
+`--topics` 是给他贴的方向标签，可选 `world-model` 世界模型、`embodied` 具身智能、`3d-4d` 3D/4D、`llm-trend` LLM 动向、`academia` 学术圈；多个用逗号隔开。
+
+```bash
+python3 scripts/xhs/watchlist.py remove-creator "粘贴网址" --purge-notes   # 不想看某人了
+python3 scripts/xhs/watchlist.py list                                      # 看看现在有谁
+```
+
+加完后双击一次 `xhs-update.command`，新博主的笔记就进来了。
+
+### 遇到问题
+
+只有三种：① 提示要扫码 → 扫；② Chrome 里出现滑块 → 用鼠标划一下；③ 提示"安全限制" → 今天别跑了，明天再双击。其他情况看 `~/.zhiyu/xhs/` 下的日志。
+
+### 网页里怎么看
+
+默认显示全部笔记，按日期分组、最新在上。勾"只看本次新增"就是这次跑出来的新内容；点"打开原文"跳去小红书，卡片会变灰表示看过（只记在你这个浏览器里）。
+
+<details>
+<summary><strong>进阶：可选开关、数据文件与实现说明</strong></summary>
+
+**可选开关**（写在命令前）：
+
+```bash
+XHS_NO_PUSH=1   ./xhs-update.command     # 只提交不推送
+XHS_NO_COMMIT=1 ./xhs-update.command     # 只抓取，不提交
+XHS_FETCH_ARGS="--creators <user_id>" ./xhs-update.command    # 只抓某一位博主
+XHS_FETCH_ARGS="--dump-state" ./xhs-update.command            # 把每页原始状态存到 ~/.zhiyu/xhs/debug/ 供排查
+XHS_DIGEST=1    ./xhs-update.command     # 抓取后运行 scripts/xhs/digest.py 生成摘要归档（网页暂不展示）
+```
+
+其他清单命令：`disable-creator <user_id>`（暂停抓取、保留历史）、`enable-creator <user_id>`、`remove-creator <user_id>`（不带 `--purge-notes` 则保留历史笔记）、`add-topic <id> --name 名称`。`user_id` 是主页网址里 `/user/profile/` 后面的 24 位串，命令也接受整条网址。
+
+**数据文件**：`data/xhs_watchlist.json` 关注清单（`topics` 只是博主的分组标签，不过滤内容；`enabled: false` 暂停）；`data/xhs/index.json` 博主昵称头像、月度文件目录、上次运行摘要 `last_run`；`data/xhs/notes-YYYY-MM.json` 按发布月份分桶的笔记。每条笔记只存标题、正文（≤800 字）、发布时间、赞/藏/评/转、话题标签、带 `xsec_token` 的原文链接和一张封面的 CDN 地址；不下载图片视频。
+
+**实现与风控**：Playwright 通过 CDP 接管专用 Chrome（profile 在 `~/.zhiyu/xhs-chrome-profile`，与日常 Chrome 隔离），像人一样打开博主主页读取 `window.__INITIAL_STATE__` 与页面自身的 XHR 响应，再对新笔记打开详情页；不重新实现签名算法。以 `note_id` 去重做增量，已入库笔记只刷新点赞数；笔记 ID 前 8 位十六进制是创建时间戳，所以仅有列表信息的笔记也能按时间排序。页面之间随机停 3–8 秒；每轮最多 60 条详情（`--max-detail`），新博主先取最新 8 条（`--first-run-limit`），剩余额度补旧笔记（`--backfill`）。出现安全限制、访问频次异常、重定向到登录错误页或被登出时立即中止并保存已抓数据。抓取不能放进 GitHub Actions，只能在本机运行；CI 只跑 `python3 scripts/validate_xhs.py` 校验数据。建议用单独注册的观察号，只关注不发帖；只抓公开笔记元信息，不抓评论区与个人信息。
+
+</details>
 
 ## GitHub Pages
 

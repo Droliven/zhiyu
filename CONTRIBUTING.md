@@ -96,8 +96,11 @@
 python3 scripts/ingest_reports.py
 python3 scripts/enrich_arxiv.py
 python3 scripts/validate_data.py
+python3 scripts/validate_xhs.py
 python3 scripts/check_asset_budget.py
 ```
+
+`validate_xhs.py` 校验小红书关注清单 `data/xhs_watchlist.json` 与笔记数据 `data/xhs/`（字段、去重、月份分桶、排序）。改动清单或抓取数据后运行；单元测试用 `python3 -m unittest tests.test_xhs`。抓取本身只在维护者本机运行，见 README“小红书动向”。
 
 导入器按 arXiv ID、DOI、规范化标题去重。未改动的报告再次导入时不会重写已有论文正文。`enrich_arxiv.py` 需要网络；网络不可用时应记录该项未完成，并继续执行其余本地校验。它只补全空标题，不会用 API 题名覆盖已写入的标题。
 

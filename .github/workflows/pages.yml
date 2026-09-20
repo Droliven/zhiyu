@@ -26,6 +26,7 @@ jobs:
       - name: Validate library
         run: |
           python3 scripts/validate_data.py
+          python3 scripts/validate_xhs.py
           python3 scripts/check_asset_budget.py
       - name: Configure Pages
         # Enable Pages once in Settings -> Pages -> Source: GitHub Actions.

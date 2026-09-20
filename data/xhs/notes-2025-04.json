@@ -1,0 +1,575 @@
+[
+  {
+    "note_id": "6810e414000000002100bddc",
+    "xsec_token": "ABSFfFYccFA9pgHVmZW0XHfcazHhFF1pgoeylmuL6kirI=",
+    "url": "https://www.xiaohongshu.com/explore/6810e414000000002100bddc?xsec_token=ABSFfFYccFA9pgHVmZW0XHfcazHhFF1pgoeylmuL6kirI=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "几种典型的机器人大模型设计与训练方法",
+    "desc": "",
+    "creator_id": "64a2edc1000000002a035f1a",
+    "creator_name": "机器人解剖师",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2025-04-29T22:37:08+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:26+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 151
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o31gs5rt9ij47g5p52tn0qmnoq7kl97co?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:26+08:00"
+  },
+  {
+    "note_id": "680fce310000000022027301",
+    "xsec_token": "ABNc7AcnawDIVKsIsYxvgZuVBIQmMyyJIhW8v69UpgvZA=",
+    "url": "https://www.xiaohongshu.com/explore/680fce310000000022027301?xsec_token=ABNc7AcnawDIVKsIsYxvgZuVBIQmMyyJIhW8v69UpgvZA=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "🚀 用一句话生成3D场景！WorldGen全新上线",
+    "desc": "",
+    "creator_id": "5c9f98f30000000010027431",
+    "creator_name": "ZiyangXie",
+    "topics": [
+      "3d-4d",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2025-04-29T02:51:29+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:17:14+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 320
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/notes_pre_post/1040g3k831gr41i1g3q705n4vj3pk4t1hpc7ofpo?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:17:14+08:00"
+  },
+  {
+    "note_id": "680f8f13000000002001e20c",
+    "xsec_token": "ABNc7AcnawDIVKsIsYxvgZuYSuEXT1jshty3mGUF0j4Ew=",
+    "url": "https://www.xiaohongshu.com/explore/680f8f13000000002001e20c?xsec_token=ABNc7AcnawDIVKsIsYxvgZuYSuEXT1jshty3mGUF0j4Ew=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "ICRA 2025国际会议于5月19-23在Atlanta举行",
+    "desc": "",
+    "creator_id": "64a2edc1000000002a035f1a",
+    "creator_name": "机器人解剖师",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2025-04-28T22:22:11+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:26+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 28
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o31gqs9bj7348g5p52tn0qmnoqi9utf28?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:26+08:00"
+  },
+  {
+    "note_id": "680f19e90000000022024071",
+    "xsec_token": "ABNc7AcnawDIVKsIsYxvgZueMz69Y-dPXmCKm4DStmQdk=",
+    "url": "https://www.xiaohongshu.com/explore/680f19e90000000022024071?xsec_token=ABNc7AcnawDIVKsIsYxvgZueMz69Y-dPXmCKm4DStmQdk=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "爸爸是AI界大佬妈妈是科技巨头高管",
+    "desc": "",
+    "creator_id": "6729f6b9000000001d02c826",
+    "creator_name": "DailyQuant｜量化实验室",
+    "topics": [
+      "llm-trend",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2025-04-28T14:02:17+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:35+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 13
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/1040g2sg31gqe50pkjieg5pp9uqsndi162essckg?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:35+08:00"
+  },
+  {
+    "note_id": "680dd274000000001c033123",
+    "xsec_token": "ABr9AO_eMVjKRMYwR7VFGRBdJJTNL_PCuI2vfRYz3awIY=",
+    "url": "https://www.xiaohongshu.com/explore/680dd274000000001c033123?xsec_token=ABr9AO_eMVjKRMYwR7VFGRBdJJTNL_PCuI2vfRYz3awIY=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "本科毕设结束了👋（致谢版）",
+    "desc": "",
+    "creator_id": "618fe930000000001000afe7",
+    "creator_name": "Tianxing Chen（陈天行）",
+    "topics": [
+      "embodied",
+      "academia"
+    ],
+    "tags": [],
+    "published_at": "2025-04-27T14:45:08+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:47:07+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 795
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/1040g00831gp65taa3c005ocft4o41bv7b0snob8?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:47:07+08:00"
+  },
+  {
+    "note_id": "680a69b2000000001a0057bb",
+    "xsec_token": "ABIwJr28bShiWc2kSSagN9CGKKXXy0lkX-x7g1XLBNS8E=",
+    "url": "https://www.xiaohongshu.com/explore/680a69b2000000001a0057bb?xsec_token=ABIwJr28bShiWc2kSSagN9CGKKXXy0lkX-x7g1XLBNS8E=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "2025 ICLR国际会议于本周在新加坡EXPO举行",
+    "desc": "",
+    "creator_id": "64a2edc1000000002a035f1a",
+    "creator_name": "机器人解剖师",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2025-04-25T00:41:22+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:26+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 60
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o31glrbkt4343g5p52tn0qmnoqkbvedmo?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:26+08:00"
+  },
+  {
+    "note_id": "6808f132000000001c01f26c",
+    "xsec_token": "ABQSTRn0-HPpfIUxRpK1RjBX4L4-RcOxkZMTbbeTDuq4k=",
+    "url": "https://www.xiaohongshu.com/explore/6808f132000000001c01f26c?xsec_token=ABQSTRn0-HPpfIUxRpK1RjBX4L4-RcOxkZMTbbeTDuq4k=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "智元机器人发布大规模高质量操控数据与系统",
+    "desc": "",
+    "creator_id": "64a2edc1000000002a035f1a",
+    "creator_name": "机器人解剖师",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2025-04-23T21:54:58+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:26+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 31
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o31gkdhvc23c1g5p52tn0qmnoqn5d4r7o?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:26+08:00"
+  },
+  {
+    "note_id": "68084767000000001c02d965",
+    "xsec_token": "ABQSTRn0-HPpfIUxRpK1RjBY_qkKacymylC8zj-rrQHUM=",
+    "url": "https://www.xiaohongshu.com/explore/68084767000000001c02d965?xsec_token=ABQSTRn0-HPpfIUxRpK1RjBY_qkKacymylC8zj-rrQHUM=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "算法竞赛正式退役了👋",
+    "desc": "",
+    "creator_id": "618fe930000000001000afe7",
+    "creator_name": "Tianxing Chen（陈天行）",
+    "topics": [
+      "embodied",
+      "academia"
+    ],
+    "tags": [],
+    "published_at": "2025-04-23T09:50:31+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:47:07+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 1166
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/notes_pre_post/1040g3k831gjom44l42e05ocft4o41bv796moh1g?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:47:07+08:00"
+  },
+  {
+    "note_id": "68065d15000000001a00430e",
+    "xsec_token": "ABFILd5nGEEb4rbk_DLNZnU1YYeZFptanCnQZkgvz_Kj4=",
+    "url": "https://www.xiaohongshu.com/explore/68065d15000000001a00430e?xsec_token=ABFILd5nGEEb4rbk_DLNZnU1YYeZFptanCnQZkgvz_Kj4=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "英伟达发布通用人形机器人基础模型GRT001N1",
+    "desc": "",
+    "creator_id": "64a2edc1000000002a035f1a",
+    "creator_name": "机器人解剖师",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2025-04-21T22:58:29+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:26+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 37
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o31ghspvghk26g5p52tn0qmnoqtrq2ltg?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:26+08:00"
+  },
+  {
+    "note_id": "68049d8c000000001e007920",
+    "xsec_token": "ABX8oGLj7W4DyVdBZKm7Lzwp9Hhy7rVvO76toaa7vB9tw=",
+    "url": "https://www.xiaohongshu.com/explore/68049d8c000000001e007920?xsec_token=ABX8oGLj7W4DyVdBZKm7Lzwp9Hhy7rVvO76toaa7vB9tw=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "亦庄全球首个人形机器人半马获奖名单及思考",
+    "desc": "",
+    "creator_id": "64a2edc1000000002a035f1a",
+    "creator_name": "机器人解剖师",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2025-04-20T15:09:00+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:26+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 44
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o31gg6509cja4g5p52tn0qmnoq6icfav0?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:26+08:00"
+  },
+  {
+    "note_id": "680339cf000000001201fd4f",
+    "xsec_token": "ABx-9PYqjoWrarGi3CbXl3KsISVaQCE3vNJv_F9gFzLho=",
+    "url": "https://www.xiaohongshu.com/explore/680339cf000000001201fd4f?xsec_token=ABx-9PYqjoWrarGi3CbXl3KsISVaQCE3vNJv_F9gFzLho=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "卷不过别人卷自己 跑步打卡 跑步治愈自己 科研",
+    "desc": "",
+    "creator_id": "606a7080000000000101ee20",
+    "creator_name": "韩晓光",
+    "topics": [
+      "3d-4d",
+      "embodied",
+      "academia"
+    ],
+    "tags": [],
+    "published_at": "2025-04-19T13:51:11+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:16:52+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 51
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/1040g00831ger153pji5g5o3ae200brh0kn7i6d8?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:16:52+08:00"
+  },
+  {
+    "note_id": "6801d087000000001d02c08a",
+    "xsec_token": "AB9doKLGsuuISRq6XHTbDej_s2Gi-43DC20tNQHSaPsis=",
+    "url": "https://www.xiaohongshu.com/explore/6801d087000000001d02c08a?xsec_token=AB9doKLGsuuISRq6XHTbDej_s2Gi-43DC20tNQHSaPsis=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "亦庄全球首个人形机器人半马21个参赛队名单",
+    "desc": "",
+    "creator_id": "64a2edc1000000002a035f1a",
+    "creator_name": "机器人解剖师",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2025-04-18T12:09:43+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:26+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 156
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g0k031gden9c942005p52tn0qmnoqp8j0pmo?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:26+08:00"
+  },
+  {
+    "note_id": "67ffe0e0000000001c011acb",
+    "xsec_token": "ABOGT5niB_bXFymar1cJuvRwqlrtKBYrs0PMFXneGpvfM=",
+    "url": "https://www.xiaohongshu.com/explore/67ffe0e0000000001c011acb?xsec_token=ABOGT5niB_bXFymar1cJuvRwqlrtKBYrs0PMFXneGpvfM=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "北京大学与中科院等发布机器人操控统一大脑",
+    "desc": "",
+    "creator_id": "64a2edc1000000002a035f1a",
+    "creator_name": "机器人解剖师",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2025-04-17T00:54:56+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:26+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 35
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g0k031gbhume7j60g5p52tn0qmnoqkb4lsc0?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:26+08:00"
+  },
+  {
+    "note_id": "67fe0b4a000000001c029001",
+    "xsec_token": "ABXn6Mwhq_mzzkQgzyAiQe8QXMgw0GdXt3tV1fHgf3m3o=",
+    "url": "https://www.xiaohongshu.com/explore/67fe0b4a000000001c029001?xsec_token=ABXn6Mwhq_mzzkQgzyAiQe8QXMgw0GdXt3tV1fHgf3m3o=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "《继顶会舌战6个审稿人》后获得Highlight🐒",
+    "desc": "",
+    "creator_id": "618fe930000000001000afe7",
+    "creator_name": "Tianxing Chen（陈天行）",
+    "topics": [
+      "embodied",
+      "academia"
+    ],
+    "tags": [],
+    "published_at": "2025-04-15T15:31:22+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:47:07+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 232
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/notes_pre_post/1040g3k031g9p153718105ocft4o41bv7r9i9tm0?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:47:07+08:00"
+  },
+  {
+    "note_id": "67fd1eb6000000000f038ec1",
+    "xsec_token": "ABYywGSLd8gIPjzlV8Iv3Lm96Ci1ZagLKRlfoHzXAEbO4=",
+    "url": "https://www.xiaohongshu.com/explore/67fd1eb6000000000f038ec1?xsec_token=ABYywGSLd8gIPjzlV8Iv3Lm96Ci1ZagLKRlfoHzXAEbO4=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "2025年一些重要的机器人展览与国际会议",
+    "desc": "",
+    "creator_id": "64a2edc1000000002a035f1a",
+    "creator_name": "机器人解剖师",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2025-04-14T22:41:58+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:26+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 744
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g0k031g8s181lha005p52tn0qmnoqkgo4rv8?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:26+08:00"
+  },
+  {
+    "note_id": "67fd1a21000000001c0118e3",
+    "xsec_token": "ABYywGSLd8gIPjzlV8Iv3Lm2cGZ46aq2t367lDfQcy1KQ=",
+    "url": "https://www.xiaohongshu.com/explore/67fd1a21000000001c0118e3?xsec_token=ABYywGSLd8gIPjzlV8Iv3Lm2cGZ46aq2t367lDfQcy1KQ=&xsec_source=pc_user",
+    "type": "video",
+    "title": "主持了我们社区联办的第一个活动🎤",
+    "desc": "",
+    "creator_id": "618fe930000000001000afe7",
+    "creator_name": "Tianxing Chen（陈天行）",
+    "topics": [
+      "embodied",
+      "academia"
+    ],
+    "tags": [],
+    "published_at": "2025-04-14T22:22:25+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:47:07+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 132
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/1040g00831g8rlsvu18005ocft4o41bv7n9hrvj8?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:47:07+08:00"
+  },
+  {
+    "note_id": "67f71077000000001c01cd00",
+    "xsec_token": "ABZ_AnK4N9KLOE16ltJzSPz7uVvUhNoCBGm0aLavEX09k=",
+    "url": "https://www.xiaohongshu.com/explore/67f71077000000001c01cd00?xsec_token=ABZ_AnK4N9KLOE16ltJzSPz7uVvUhNoCBGm0aLavEX09k=&xsec_source=pc_user",
+    "type": "video",
+    "title": "前校队替补->TFCC->复健中🏸",
+    "desc": "",
+    "creator_id": "618fe930000000001000afe7",
+    "creator_name": "Tianxing Chen（陈天行）",
+    "topics": [
+      "embodied",
+      "academia"
+    ],
+    "tags": [],
+    "published_at": "2025-04-10T08:27:35+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:47:07+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 86
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/1040g00831g2sr4rrgk105pdbv02k3n58sn15f3g?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:47:07+08:00"
+  },
+  {
+    "note_id": "67f6fecd000000001c03e1a0",
+    "xsec_token": "ABJrYjVWYbKVsCYV2M0w9GbxC6ltqp3wCA1Wt9-lLoKuE=",
+    "url": "https://www.xiaohongshu.com/explore/67f6fecd000000001c03e1a0?xsec_token=ABJrYjVWYbKVsCYV2M0w9GbxC6ltqp3wCA1Wt9-lLoKuE=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "更新了社区的Logo😎",
+    "desc": "",
+    "creator_id": "65abf805000000001001dca8",
+    "creator_name": "Lumina具身社区",
+    "topics": [
+      "embodied",
+      "academia"
+    ],
+    "tags": [],
+    "published_at": "2025-04-10T07:12:13+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:55+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 15
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/1040g00831g2sr4rrgk005pdbv02k3n58iddu76g?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:55+08:00"
+  },
+  {
+    "note_id": "67ef7dbe000000000b01ebd8",
+    "xsec_token": "ABCUF0yk9ibt-8-TwgEpD2prdS7rN5BoH64wGR7pr6cU4=",
+    "url": "https://www.xiaohongshu.com/explore/67ef7dbe000000000b01ebd8?xsec_token=ABCUF0yk9ibt-8-TwgEpD2prdS7rN5BoH64wGR7pr6cU4=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "Meta之YanLeCun发布机器人导航世界模型NWM",
+    "desc": "",
+    "creator_id": "64a2edc1000000002a035f1a",
+    "creator_name": "机器人解剖师",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2025-04-04T14:35:42+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:26+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 49
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g0k031frhu8jp0c105p52tn0qmnoqr7nbhig?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:26+08:00"
+  },
+  {
+    "note_id": "67eea535000000001e00049e",
+    "xsec_token": "ABvptdIyFgHQx2jF43cKbqyY-Autbl_2F4w759Dhb41Rs=",
+    "url": "https://www.xiaohongshu.com/explore/67eea535000000001e00049e?xsec_token=ABvptdIyFgHQx2jF43cKbqyY-Autbl_2F4w759Dhb41Rs=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "大湾区具身智能研讨会@Lumina社区共建",
+    "desc": "",
+    "creator_id": "65abf805000000001001dca8",
+    "creator_name": "Lumina具身社区",
+    "topics": [
+      "embodied",
+      "academia"
+    ],
+    "tags": [],
+    "published_at": "2025-04-03T23:11:49+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:55+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 67
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/1040g00831fvmcjrmnk0g5ocft4o41bv7kmtga48?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:55+08:00"
+  },
+  {
+    "note_id": "67ed49e3000000001c032687",
+    "xsec_token": "AB1KpZ8Ra3E_2KA0vlKMMyz4eEDyLtGjpjxo2MxMR6Tas=",
+    "url": "https://www.xiaohongshu.com/explore/67ed49e3000000001c032687?xsec_token=AB1KpZ8Ra3E_2KA0vlKMMyz4eEDyLtGjpjxo2MxMR6Tas=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "英伟达发布机器人操控姿态轨迹生成框架SPOT",
+    "desc": "",
+    "creator_id": "64a2edc1000000002a035f1a",
+    "creator_name": "机器人解剖师",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2025-04-02T22:29:55+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:26+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 98
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o31fpcuvingc005p52tn0qmnoqes9a3n8?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:26+08:00"
+  },
+  {
+    "note_id": "67ebf0e4000000001d022390",
+    "xsec_token": "ABDYmzfVxfZPWIxVmLeA0kB72CfPFPv6SPXuQ_o1UfgLg=",
+    "url": "https://www.xiaohongshu.com/explore/67ebf0e4000000001d022390?xsec_token=ABDYmzfVxfZPWIxVmLeA0kB72CfPFPv6SPXuQ_o1UfgLg=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "春天开幕式",
+    "desc": "",
+    "creator_id": "6729f6b9000000001d02c826",
+    "creator_name": "DailyQuant｜量化实验室",
+    "topics": [
+      "llm-trend",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2025-04-01T21:57:56+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T16:15:35+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 0
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/1040g2sg31fo3cnnkg2dg5pp9uqsndi168c32ksg?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T16:15:35+08:00"
+  }
+]
