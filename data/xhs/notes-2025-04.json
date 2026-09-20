@@ -130,6 +130,31 @@
     "stats_updated_at": "2026-09-20T16:47:07+08:00"
   },
   {
+    "note_id": "680c926a000000001b0384c8",
+    "xsec_token": "ABOJ439fz1KnncXqRtcwnM_gWPZTLeZDv8PpOaIu2EK2c=",
+    "url": "https://www.xiaohongshu.com/explore/680c926a000000001b0384c8?xsec_token=ABOJ439fz1KnncXqRtcwnM_gWPZTLeZDv8PpOaIu2EK2c=&xsec_source=pc_user",
+    "type": "video",
+    "title": "留学生读博日记：毕业答辩",
+    "desc": "",
+    "creator_id": "5d0cb93f000000001002b869",
+    "creator_name": "U航",
+    "topics": [
+      "embodied"
+    ],
+    "tags": [],
+    "published_at": "2025-04-26T15:59:38+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:13:33+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 5782
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/1040g00831gnv39qejq005n8cn4vk5e39rul4vho?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:13:33+08:00"
+  },
+  {
     "note_id": "680a69b2000000001a0057bb",
     "xsec_token": "ABIwJr28bShiWc2kSSagN9CGKKXXy0lkX-x7g1XLBNS8E=",
     "url": "https://www.xiaohongshu.com/explore/680a69b2000000001a0057bb?xsec_token=ABIwJr28bShiWc2kSSagN9CGKKXXy0lkX-x7g1XLBNS8E=&xsec_source=pc_user",
@@ -467,6 +492,31 @@
     "image_count": 0,
     "ip_location": "",
     "stats_updated_at": "2026-09-20T16:15:55+08:00"
+  },
+  {
+    "note_id": "67f228bf000000001c001937",
+    "xsec_token": "ABWLkYRBHBlPtQdYtLD2nQchUgCfSDlSC-he3awcIoFN8=",
+    "url": "https://www.xiaohongshu.com/explore/67f228bf000000001c001937?xsec_token=ABWLkYRBHBlPtQdYtLD2nQchUgCfSDlSC-he3awcIoFN8=&xsec_source=pc_user",
+    "type": "video",
+    "title": "美国留学生留学日常：卷的多的人总先变虚伪",
+    "desc": "",
+    "creator_id": "5d0cb93f000000001002b869",
+    "creator_name": "U航",
+    "topics": [
+      "embodied"
+    ],
+    "tags": [],
+    "published_at": "2025-04-06T15:09:51+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:13:33+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 4905
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/1040g00831fu5mvhag6005n8cn4vk5e39dbtut00?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:13:33+08:00"
   },
   {
     "note_id": "67ef7dbe000000000b01ebd8",

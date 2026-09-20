@@ -1067,6 +1067,31 @@
     "stats_updated_at": "2026-09-20T16:16:52+08:00"
   },
   {
+    "note_id": "68fc43df000000000400340f",
+    "xsec_token": "ABn1siMlJKxk0HBOK1JXaF2J0pqJ4N5xpaNQc0GZlky1o=",
+    "url": "https://www.xiaohongshu.com/explore/68fc43df000000000400340f?xsec_token=ABn1siMlJKxk0HBOK1JXaF2J0pqJ4N5xpaNQc0GZlky1o=&xsec_source=pc_user",
+    "type": "video",
+    "title": "机器人 Origin M1 【监修中】——首形科技",
+    "desc": "",
+    "creator_id": "5d0cb93f000000001002b869",
+    "creator_name": "U航",
+    "topics": [
+      "embodied"
+    ],
+    "tags": [],
+    "published_at": "2025-10-25T11:28:31+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:13:33+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 34000
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o31o21eot9l0105n8cn4vk5e39u6hdpq8?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:13:33+08:00"
+  },
+  {
     "note_id": "68fb4dc1000000000300d56e",
     "xsec_token": "ABEf2J9q5-qbS_wK2lruVrlEtilsC9RdV8K_kTLYfX36I=",
     "url": "https://www.xiaohongshu.com/explore/68fb4dc1000000000300d56e?xsec_token=ABEf2J9q5-qbS_wK2lruVrlEtilsC9RdV8K_kTLYfX36I=&xsec_source=pc_user",
@@ -1534,6 +1559,31 @@
     "image_count": 0,
     "ip_location": "",
     "stats_updated_at": "2026-09-20T16:17:39+08:00"
+  },
+  {
+    "note_id": "68f85135000000000303716c",
+    "xsec_token": "ABEQuZno5EiPN2iC7Gm071Fb6-EPmUDcve9pgkDtH7BeM=",
+    "url": "https://www.xiaohongshu.com/explore/68f85135000000000303716c?xsec_token=ABEQuZno5EiPN2iC7Gm071Fb6-EPmUDcve9pgkDtH7BeM=&xsec_source=pc_user",
+    "type": "video",
+    "title": "挑战仿生机器人恐怖谷—首形科技AheadForm",
+    "desc": "",
+    "creator_id": "5d0cb93f000000001002b869",
+    "creator_name": "U航",
+    "topics": [
+      "embodied"
+    ],
+    "tags": [],
+    "published_at": "2025-10-22T11:36:21+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:13:33+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 17000
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g0k031nu64ae54s005n8cn4vk5e39fg16ot0?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:13:33+08:00"
   },
   {
     "note_id": "68f819db0000000007000ba1",
@@ -2105,5 +2155,55 @@
     "image_count": 0,
     "ip_location": "",
     "stats_updated_at": "2026-09-20T16:15:55+08:00"
+  },
+  {
+    "note_id": "68df7c9100000000040131da",
+    "xsec_token": "ABrUATLikB8pTBam2lhvxQwJhWxQpDx5kkBpCCszGoIXk=",
+    "url": "https://www.xiaohongshu.com/explore/68df7c9100000000040131da?xsec_token=ABrUATLikB8pTBam2lhvxQwJhWxQpDx5kkBpCCszGoIXk=&xsec_source=pc_user",
+    "type": "video",
+    "title": "机器人：精灵·铱 —太湖湾音乐节（胡宇桐）",
+    "desc": "",
+    "creator_id": "5d0cb93f000000001002b869",
+    "creator_name": "U航",
+    "topics": [
+      "embodied"
+    ],
+    "tags": [],
+    "published_at": "2025-10-03T15:34:41+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:13:33+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 5298
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/1040g2sg31n5tsdjllm005n8cn4vk5e39g7trljo?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:13:33+08:00"
+  },
+  {
+    "note_id": "68ddb2a20000000005032da3",
+    "xsec_token": "ABoBO07uucJIpX8ykDU8YtohsU8g6vlkDwOBx4njAUOB8=",
+    "url": "https://www.xiaohongshu.com/explore/68ddb2a20000000005032da3?xsec_token=ABoBO07uucJIpX8ykDU8YtohsU8g6vlkDwOBx4njAUOB8=&xsec_source=pc_user",
+    "type": "video",
+    "title": "精灵·铱，开机",
+    "desc": "",
+    "creator_id": "5d0cb93f000000001002b869",
+    "creator_name": "U航",
+    "topics": [
+      "embodied"
+    ],
+    "tags": [],
+    "published_at": "2025-10-02T07:00:50+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:13:33+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 4915
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/1040g00831n4660596g005n8cn4vk5e39v563suo?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:13:33+08:00"
   }
 ]

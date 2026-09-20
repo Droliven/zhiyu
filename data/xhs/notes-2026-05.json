@@ -78,6 +78,31 @@
     "stats_updated_at": "2026-09-20T16:15:45+08:00"
   },
   {
+    "note_id": "6a1a55ce0000000038022ee3",
+    "xsec_token": "ABOsjUx8ncMaZmak5zsE8d8PPdHW_PTJKXrDsYGkXwUxY=",
+    "url": "https://www.xiaohongshu.com/explore/6a1a55ce0000000038022ee3?xsec_token=ABOsjUx8ncMaZmak5zsE8d8PPdHW_PTJKXrDsYGkXwUxY=&xsec_source=pc_user",
+    "type": "video",
+    "title": "🎉会聊天就能建模？全球首个3D创作Agent来了",
+    "desc": "",
+    "creator_id": "613dfd6d0000000002022cc0",
+    "creator_name": "Meshy.ai",
+    "topics": [
+      "3d-4d"
+    ],
+    "tags": [],
+    "published_at": "2026-05-30T11:13:18+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:13:25+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 157
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/1040g008320pvjtbgm8l05o9tvlmgkb60ls0q0dg?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:13:25+08:00"
+  },
+  {
     "note_id": "6a19c571000000003502fbb4",
     "xsec_token": "ABH39BFvVg7MRLSQBylCF04wO0u4Psep2BV_EZWsnVWwQ=",
     "url": "https://www.xiaohongshu.com/explore/6a19c571000000003502fbb4?xsec_token=ABH39BFvVg7MRLSQBylCF04wO0u4Psep2BV_EZWsnVWwQ=&xsec_source=pc_user",
@@ -489,6 +514,33 @@
     "image_count": 0,
     "ip_location": "",
     "stats_updated_at": "2026-09-20T16:15:45+08:00"
+  },
+  {
+    "note_id": "6a1501fd000000000702a1a3",
+    "xsec_token": "ABizockQsAel2UxTDcwmMQMCDNagLESsj2QjjXR2uOt0g=",
+    "url": "https://www.xiaohongshu.com/explore/6a1501fd000000000702a1a3?xsec_token=ABizockQsAel2UxTDcwmMQMCDNagLESsj2QjjXR2uOt0g=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "8320x12480分辨率的文生图",
+    "desc": "",
+    "creator_id": "62488688000000001000710b",
+    "creator_name": "Fromandto赵昊",
+    "topics": [
+      "3d-4d",
+      "world-model",
+      "academia"
+    ],
+    "tags": [],
+    "published_at": "2026-05-26T10:14:21+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:13:17+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 499
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/notes_pre_post/1040g3k8320k6mf7jm8605oi8gq440s8bici620o?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:13:17+08:00"
   },
   {
     "note_id": "6a14d9ab0000000007020dc7",
@@ -910,6 +962,33 @@
     "stats_updated_at": "2026-09-20T16:48:07+08:00"
   },
   {
+    "note_id": "6a0dae1600000000060309d8",
+    "xsec_token": "AB2haFjhDFsGdpOkPfuJTX3KfUDZvUeC_Lva6HSKexbJo=",
+    "url": "https://www.xiaohongshu.com/explore/6a0dae1600000000060309d8?xsec_token=AB2haFjhDFsGdpOkPfuJTX3KfUDZvUeC_Lva6HSKexbJo=&xsec_source=pc_user",
+    "type": "video",
+    "title": "TideGS单卡重建1B高斯，ICML 2026Spotlight",
+    "desc": "",
+    "creator_id": "62488688000000001000710b",
+    "creator_name": "Fromandto赵昊",
+    "topics": [
+      "3d-4d",
+      "world-model",
+      "academia"
+    ],
+    "tags": [],
+    "published_at": "2026-05-20T20:50:30+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:13:17+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 101
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/1040g008320d1mjvf686g5oi8gq440s8bkc0um78?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:13:17+08:00"
+  },
+  {
     "note_id": "6a0d6b020000000038020b2c",
     "xsec_token": "AB2haFjhDFsGdpOkPfuJTX3Agq0pY_TvEE4EHTZITl-qY=",
     "url": "https://www.xiaohongshu.com/explore/6a0d6b020000000038020b2c?xsec_token=AB2haFjhDFsGdpOkPfuJTX3Agq0pY_TvEE4EHTZITl-qY=&xsec_source=pc_user",
@@ -985,6 +1064,31 @@
     "image_count": 0,
     "ip_location": "",
     "stats_updated_at": "2026-09-20T16:17:31+08:00"
+  },
+  {
+    "note_id": "6a0c27100000000038020b8b",
+    "xsec_token": "ABUzX07ucHXcy_Y7dK8MbH23D0JbYYhZITZMevvXwI4s8=",
+    "url": "https://www.xiaohongshu.com/explore/6a0c27100000000038020b8b?xsec_token=ABUzX07ucHXcy_Y7dK8MbH23D0JbYYhZITZMevvXwI4s8=&xsec_source=pc_user",
+    "type": "video",
+    "title": "3D打印又快又精细的秘密是……？",
+    "desc": "",
+    "creator_id": "613dfd6d0000000002022cc0",
+    "creator_name": "Meshy.ai",
+    "topics": [
+      "3d-4d"
+    ],
+    "tags": [],
+    "published_at": "2026-05-19T17:02:08+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:13:25+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 138
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/1040g008320bhqlsj5s005o9tvlmgkb60ujra5l8?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:13:25+08:00"
   },
   {
     "note_id": "6a0bde8b0000000037036d82",
@@ -1091,6 +1195,33 @@
     "stats_updated_at": "2026-09-20T16:15:35+08:00"
   },
   {
+    "note_id": "6a09c0a70000000008026349",
+    "xsec_token": "ABLq-U6_9HR6Tuzc3B5ExZ4875sZgytG316uo-Rt2-Jis=",
+    "url": "https://www.xiaohongshu.com/explore/6a09c0a70000000008026349?xsec_token=ABLq-U6_9HR6Tuzc3B5ExZ4875sZgytG316uo-Rt2-Jis=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "要是能同时CVPR和ICRA的bp就牛逼了 🥹",
+    "desc": "",
+    "creator_id": "62488688000000001000710b",
+    "creator_name": "Fromandto赵昊",
+    "topics": [
+      "3d-4d",
+      "world-model",
+      "academia"
+    ],
+    "tags": [],
+    "published_at": "2026-05-17T21:20:39+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:13:17+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 578
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/notes_pre_post/1040g3k832096um3d5m005oi8gq440s8b45r547o?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:13:17+08:00"
+  },
+  {
     "note_id": "6a09424d000000003503205c",
     "xsec_token": "ABLq-U6_9HR6Tuzc3B5ExZ41u9hC2uClULwouXCLMbFqA=",
     "url": "https://www.xiaohongshu.com/explore/6a09424d000000003503205c?xsec_token=ABLq-U6_9HR6Tuzc3B5ExZ41u9hC2uClULwouXCLMbFqA=&xsec_source=pc_user",
@@ -1115,6 +1246,31 @@
     "image_count": 0,
     "ip_location": "",
     "stats_updated_at": "2026-09-20T16:15:26+08:00"
+  },
+  {
+    "note_id": "6a080ef50000000036019ee4",
+    "xsec_token": "ABx-yEwdkG_Wg119WbX8UeeSCH_-P6t703QQWW1-_wY_U=",
+    "url": "https://www.xiaohongshu.com/explore/6a080ef50000000036019ee4?xsec_token=ABx-yEwdkG_Wg119WbX8UeeSCH_-P6t703QQWW1-_wY_U=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "🎤 百度AI开发者大会回顾：3D产能黑洞怎么破",
+    "desc": "",
+    "creator_id": "613dfd6d0000000002022cc0",
+    "creator_name": "Meshy.ai",
+    "topics": [
+      "3d-4d"
+    ],
+    "tags": [],
+    "published_at": "2026-05-16T14:30:13+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:13:25+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 27
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/notes_pre_post/1040g3k03207i17b65s0g5o9tvlmgkb603oth3lo?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:13:25+08:00"
   },
   {
     "note_id": "6a07e42f0000000038021c8a",
@@ -1480,6 +1636,31 @@
     "stats_updated_at": "2026-09-20T16:17:31+08:00"
   },
   {
+    "note_id": "6a0306350000000036018dd7",
+    "xsec_token": "ABWgi2xCWkupLj9OBILPcQ2ESut22L6XktjW8isLfwPYA=",
+    "url": "https://www.xiaohongshu.com/explore/6a0306350000000036018dd7?xsec_token=ABWgi2xCWkupLj9OBILPcQ2ESut22L6XktjW8isLfwPYA=&xsec_source=pc_user",
+    "type": "video",
+    "title": "3D 打印灯罩不翻车的秘诀……被我发现啦",
+    "desc": "",
+    "creator_id": "613dfd6d0000000002022cc0",
+    "creator_name": "Meshy.ai",
+    "topics": [
+      "3d-4d"
+    ],
+    "tags": [],
+    "published_at": "2026-05-12T18:51:33+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:13:25+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 93
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/1040g2sg3202khegv2q705o9tvlmgkb600lcr728?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:13:25+08:00"
+  },
+  {
     "note_id": "6a02e4fa000000000802622c",
     "xsec_token": "ABSZXM09ET1NI9KOmtkYk5jXMPNAU3WO_BlbERshP3tDc=",
     "url": "https://www.xiaohongshu.com/explore/6a02e4fa000000000802622c?xsec_token=ABSZXM09ET1NI9KOmtkYk5jXMPNAU3WO_BlbERshP3tDc=&xsec_source=pc_user",
@@ -1608,6 +1789,33 @@
     "image_count": 0,
     "ip_location": "",
     "stats_updated_at": "2026-09-20T16:15:45+08:00"
+  },
+  {
+    "note_id": "6a01407800000000060319a1",
+    "xsec_token": "AB1C2aUMkgojaOrNAz3BiMRsxhjpb6pwT3ek2qUJ1165Y=",
+    "url": "https://www.xiaohongshu.com/explore/6a01407800000000060319a1?xsec_token=AB1C2aUMkgojaOrNAz3BiMRsxhjpb6pwT3ek2qUJ1165Y=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "I❤️坂田",
+    "desc": "",
+    "creator_id": "62488688000000001000710b",
+    "creator_name": "Fromandto赵昊",
+    "topics": [
+      "3d-4d",
+      "world-model",
+      "academia"
+    ],
+    "tags": [],
+    "published_at": "2026-05-11T10:35:36+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:13:17+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 343
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/note_pre_post_uhdr/1040g3r03200ta502ii6g5oi8gq440s8baaj5qt0?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:13:17+08:00"
   },
   {
     "note_id": "6a00961b0000000008027c3e",
@@ -1739,6 +1947,58 @@
     "image_count": 0,
     "ip_location": "",
     "stats_updated_at": "2026-09-20T16:15:35+08:00"
+  },
+  {
+    "note_id": "69fdcb1a00000000220259c4",
+    "xsec_token": "ABj9lO5-6-JptOPj7MLMRkfFhtqs_NLtSZAsA_k-gYNNA=",
+    "url": "https://www.xiaohongshu.com/explore/69fdcb1a00000000220259c4?xsec_token=ABj9lO5-6-JptOPj7MLMRkfFhtqs_NLtSZAsA_k-gYNNA=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "Relit-LiVE超越英伟达DiffusionRenderer",
+    "desc": "",
+    "creator_id": "62488688000000001000710b",
+    "creator_name": "Fromandto赵昊",
+    "topics": [
+      "3d-4d",
+      "world-model",
+      "academia"
+    ],
+    "tags": [],
+    "published_at": "2026-05-08T19:38:02+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:13:17+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 70
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/1040g00831vth7neciqkg5oi8gq440s8blhoi920?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:13:17+08:00"
+  },
+  {
+    "note_id": "69fd9b44000000003601efa5",
+    "xsec_token": "ABj9lO5-6-JptOPj7MLMRkfANxDcFRA_I1dk5guzIbq-E=",
+    "url": "https://www.xiaohongshu.com/explore/69fd9b44000000003601efa5?xsec_token=ABj9lO5-6-JptOPj7MLMRkfANxDcFRA_I1dk5guzIbq-E=&xsec_source=pc_user",
+    "type": "video",
+    "title": "3D 打印Benchy小船，但蒙德里安风 🟥🟦🟨",
+    "desc": "",
+    "creator_id": "613dfd6d0000000002022cc0",
+    "creator_name": "Meshy.ai",
+    "topics": [
+      "3d-4d"
+    ],
+    "tags": [],
+    "published_at": "2026-05-08T16:13:56+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:13:25+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 33
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/1040g00831vtb5nscii005o9tvlmgkb600ohafao?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:13:25+08:00"
   },
   {
     "note_id": "69fd5cac0000000038022c7c",
@@ -1972,6 +2232,33 @@
     "image_count": 0,
     "ip_location": "",
     "stats_updated_at": "2026-09-20T16:15:26+08:00"
+  },
+  {
+    "note_id": "69f963030000000022028089",
+    "xsec_token": "ABX0GmhbwP7CocfmpikZ30sKhDvJK-GI0fK_gly-H2LeY=",
+    "url": "https://www.xiaohongshu.com/explore/69f963030000000022028089?xsec_token=ABX0GmhbwP7CocfmpikZ30sKhDvJK-GI0fK_gly-H2LeY=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "ICRA 2026|自驾地图先验大一统",
+    "desc": "",
+    "creator_id": "62488688000000001000710b",
+    "creator_name": "Fromandto赵昊",
+    "topics": [
+      "3d-4d",
+      "world-model",
+      "academia"
+    ],
+    "tags": [],
+    "published_at": "2026-05-05T11:24:51+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:13:17+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 115
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/notes_pre_post/1040g3k031vp7e4scig6g5oi8gq440s8bj0jpv5o?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:13:17+08:00"
   },
   {
     "note_id": "69f8a63b000000001b023a2f",

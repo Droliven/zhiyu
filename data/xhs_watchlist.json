@@ -338,6 +338,41 @@
       "note": "Lumina 具身社区创始人",
       "added": "2026-09-20",
       "enabled": true
+    },
+    {
+      "user_id": "62488688000000001000710b",
+      "name": "Fromandto赵昊",
+      "profile_url": "https://www.xiaohongshu.com/user/profile/62488688000000001000710b",
+      "topics": [
+        "3d-4d",
+        "world-model",
+        "academia"
+      ],
+      "note": "清华 AIR / BAAI，赵昊",
+      "added": "2026-09-20",
+      "enabled": true
+    },
+    {
+      "user_id": "613dfd6d0000000002022cc0",
+      "name": "Meshy.ai",
+      "profile_url": "https://www.xiaohongshu.com/user/profile/613dfd6d0000000002022cc0",
+      "topics": [
+        "3d-4d"
+      ],
+      "note": "Meshy 官方号（胡渊明）",
+      "added": "2026-09-20",
+      "enabled": true
+    },
+    {
+      "user_id": "5d0cb93f000000001002b869",
+      "name": "U航",
+      "profile_url": "https://www.xiaohongshu.com/user/profile/5d0cb93f000000001002b869",
+      "topics": [
+        "embodied"
+      ],
+      "note": "首形科技 胡宇航",
+      "added": "2026-09-20",
+      "enabled": true
     }
   ]
 }

@@ -255,6 +255,31 @@
     "stats_updated_at": "2026-09-20T16:16:23+08:00"
   },
   {
+    "note_id": "6a408a660000000016026af5",
+    "xsec_token": "ABpgdHkBaHXtdoCvCIOrwxtUOiElyAI5GkSgO8zF4H1dI=",
+    "url": "https://www.xiaohongshu.com/explore/6a408a660000000016026af5?xsec_token=ABpgdHkBaHXtdoCvCIOrwxtUOiElyAI5GkSgO8zF4H1dI=&xsec_source=pc_user",
+    "type": "video",
+    "title": "重生之我把Agent玩成了奇迹暖暖",
+    "desc": "",
+    "creator_id": "613dfd6d0000000002022cc0",
+    "creator_name": "Meshy.ai",
+    "topics": [
+      "3d-4d"
+    ],
+    "tags": [],
+    "published_at": "2026-06-28T10:43:50+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:13:25+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 34
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/1040g2sg321umlt867oe05o9tvlmgkb60m9mjm68?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:13:25+08:00"
+  },
+  {
     "note_id": "6a3fe23a000000000f032859",
     "xsec_token": "ABrkNlcElj3IE3BDRJSh0areD_opGy2NIkoykneT73eH0=",
     "url": "https://www.xiaohongshu.com/explore/6a3fe23a000000000f032859?xsec_token=ABrkNlcElj3IE3BDRJSh0areD_opGy2NIkoykneT73eH0=&xsec_source=pc_user",
@@ -967,6 +992,31 @@
     "stats_updated_at": "2026-09-20T16:14:48+08:00"
   },
   {
+    "note_id": "6a3a5080000000001702bfc3",
+    "xsec_token": "AByDkdJvdsHN51zQNSTHUkeeK1j4GCT0RXYxJchuYtY5U=",
+    "url": "https://www.xiaohongshu.com/explore/6a3a5080000000001702bfc3?xsec_token=AByDkdJvdsHN51zQNSTHUkeeK1j4GCT0RXYxJchuYtY5U=&xsec_source=pc_user",
+    "type": "video",
+    "title": "不打磨也能更光滑？3D打印熨烫教程来啦！",
+    "desc": "",
+    "creator_id": "613dfd6d0000000002022cc0",
+    "creator_name": "Meshy.ai",
+    "topics": [
+      "3d-4d"
+    ],
+    "tags": [],
+    "published_at": "2026-06-23T17:23:12+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:13:25+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 94
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/1040g2sg321okha22nae05o9tvlmgkb60h3tgpao?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:13:25+08:00"
+  },
+  {
     "note_id": "6a3a342f00000000160258ad",
     "xsec_token": "AByDkdJvdsHN51zQNSTHUkeQViMWj--fN3gn8XfEq8jzY=",
     "url": "https://www.xiaohongshu.com/explore/6a3a342f00000000160258ad?xsec_token=AByDkdJvdsHN51zQNSTHUkeQViMWj--fN3gn8XfEq8jzY=&xsec_source=pc_user",
@@ -1117,6 +1167,31 @@
     "image_count": 0,
     "ip_location": "",
     "stats_updated_at": "2026-09-20T16:16:23+08:00"
+  },
+  {
+    "note_id": "6a37a6ed000000001702eac6",
+    "xsec_token": "AB4sGHhBgU8g4-i4CmDrPGOpg944wSYEiLPJAhrlTbYCs=",
+    "url": "https://www.xiaohongshu.com/explore/6a37a6ed000000001702eac6?xsec_token=AB4sGHhBgU8g4-i4CmDrPGOpg944wSYEiLPJAhrlTbYCs=&xsec_source=pc_user",
+    "type": "video",
+    "title": "3D 小船换上青花瓷外衣，效果有点惊艳⛵️",
+    "desc": "",
+    "creator_id": "613dfd6d0000000002022cc0",
+    "creator_name": "Meshy.ai",
+    "topics": [
+      "3d-4d"
+    ],
+    "tags": [],
+    "published_at": "2026-06-21T16:55:09+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:13:25+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 132
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/1040g2sg321m1a3d6nk705o9tvlmgkb60a4l6390?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:13:25+08:00"
   },
   {
     "note_id": "6a3749df0000000011005919",
@@ -1346,6 +1421,58 @@
     "image_count": 0,
     "ip_location": "",
     "stats_updated_at": "2026-09-20T16:15:26+08:00"
+  },
+  {
+    "note_id": "6a33954b000000001702bfe5",
+    "xsec_token": "AB9MeOWOpi-_Nk4rSZ43f2Pb_diXN6mfur1S-QctoKi-A=",
+    "url": "https://www.xiaohongshu.com/explore/6a33954b000000001702bfe5?xsec_token=AB9MeOWOpi-_Nk4rSZ43f2Pb_diXN6mfur1S-QctoKi-A=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "叮！达成 YouTube 百万订阅成就🎉",
+    "desc": "",
+    "creator_id": "613dfd6d0000000002022cc0",
+    "creator_name": "Meshy.ai",
+    "topics": [
+      "3d-4d"
+    ],
+    "tags": [],
+    "published_at": "2026-06-18T14:50:51+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:13:25+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 45
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/notes_pre_post/1040g3k0321i1vuvdno005o9tvlmgkb60jkvm6f8?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:13:25+08:00"
+  },
+  {
+    "note_id": "6a3386000000000007020420",
+    "xsec_token": "AB9MeOWOpi-_Nk4rSZ43f2PQg52QIg-VsThXtrNmpo_Fs=",
+    "url": "https://www.xiaohongshu.com/explore/6a3386000000000007020420?xsec_token=AB9MeOWOpi-_Nk4rSZ43f2PQg52QIg-VsThXtrNmpo_Fs=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "ECCV+5",
+    "desc": "",
+    "creator_id": "62488688000000001000710b",
+    "creator_name": "Fromandto赵昊",
+    "topics": [
+      "3d-4d",
+      "world-model",
+      "academia"
+    ],
+    "tags": [],
+    "published_at": "2026-06-18T13:45:36+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:13:17+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 564
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/1040g2sg321i011t4nkd05oi8gq440s8bhmd6tsg?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:13:17+08:00"
   },
   {
     "note_id": "6a3353a20000000020039ce5",
@@ -1958,6 +2085,33 @@
     "stats_updated_at": "2026-09-20T16:16:23+08:00"
   },
   {
+    "note_id": "6a2e33260000000006037ec7",
+    "xsec_token": "AByjK8sd_U6mgj2jLMl3hyQBqu2qRPzujFIIOVpjd827I=",
+    "url": "https://www.xiaohongshu.com/explore/6a2e33260000000006037ec7?xsec_token=AByjK8sd_U6mgj2jLMl3hyQBqu2qRPzujFIIOVpjd827I=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "真实视频重光照的技术演进",
+    "desc": "",
+    "creator_id": "62488688000000001000710b",
+    "creator_name": "Fromandto赵昊",
+    "topics": [
+      "3d-4d",
+      "world-model",
+      "academia"
+    ],
+    "tags": [],
+    "published_at": "2026-06-14T12:50:46+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:13:17+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 86
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/notes_pre_post/1040g3k8321cpu6p17edg5oi8gq440s8bpnfsq30?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:13:17+08:00"
+  },
+  {
     "note_id": "6a2e0e42000000001503e2e1",
     "xsec_token": "AByjK8sd_U6mgj2jLMl3hyQGS5a926Lgf2JKhCYM2cKVU=",
     "url": "https://www.xiaohongshu.com/explore/6a2e0e42000000001503e2e1?xsec_token=AByjK8sd_U6mgj2jLMl3hyQGS5a926Lgf2JKhCYM2cKVU=&xsec_source=pc_user",
@@ -2042,6 +2196,31 @@
     "image_count": 2,
     "ip_location": "",
     "stats_updated_at": "2026-09-20T16:47:58+08:00"
+  },
+  {
+    "note_id": "6a2cc09f000000001503d6f7",
+    "xsec_token": "ABx3e7NrxeMc129H-P3SToeFOUSYHyKq56ApJbbhb78P4=",
+    "url": "https://www.xiaohongshu.com/explore/6a2cc09f000000001503d6f7?xsec_token=ABx3e7NrxeMc129H-P3SToeFOUSYHyKq56ApJbbhb78P4=&xsec_source=pc_user",
+    "type": "video",
+    "title": "拒绝手搓！挑战最速搭一个 3D 小镇 🏘️",
+    "desc": "",
+    "creator_id": "613dfd6d0000000002022cc0",
+    "creator_name": "Meshy.ai",
+    "topics": [
+      "3d-4d"
+    ],
+    "tags": [],
+    "published_at": "2026-06-13T10:29:51+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:13:25+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 56
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/1040g2sg321bcqfu1nk005o9tvlmgkb60cidbhgg?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:13:25+08:00"
   },
   {
     "note_id": "6a2cbcb3000000001702a6b6",
@@ -2758,6 +2937,31 @@
     "stats_updated_at": "2026-09-20T16:16:23+08:00"
   },
   {
+    "note_id": "6a2908b6000000001602666a",
+    "xsec_token": "ABTLz6XPdlBXjvEYvbAUFT-0ljgQ_tDLKG_Nw5QOeNsUg=",
+    "url": "https://www.xiaohongshu.com/explore/6a2908b6000000001602666a?xsec_token=ABTLz6XPdlBXjvEYvbAUFT-0ljgQ_tDLKG_Nw5QOeNsUg=&xsec_source=pc_user",
+    "type": "video",
+    "title": "超解压！可折叠指尖玩具来啦",
+    "desc": "",
+    "creator_id": "613dfd6d0000000002022cc0",
+    "creator_name": "Meshy.ai",
+    "topics": [
+      "3d-4d"
+    ],
+    "tags": [],
+    "published_at": "2026-06-10T14:48:22+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:13:25+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 17
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/1040g2sg3217ofkr1nu705o9tvlmgkb60n34qam0?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:13:25+08:00"
+  },
+  {
     "note_id": "6a28f4da000000000702ea08",
     "xsec_token": "ABm6-77jB8uots_BbVB7hGT4oukuMGIZi02fuTktIl2bU=",
     "url": "https://www.xiaohongshu.com/explore/6a28f4da000000000702ea08?xsec_token=ABm6-77jB8uots_BbVB7hGT4oukuMGIZi02fuTktIl2bU=&xsec_source=pc_user",
@@ -3014,6 +3218,31 @@
     "stats_updated_at": "2026-09-20T16:17:01+08:00"
   },
   {
+    "note_id": "6a268201000000001603f6ae",
+    "xsec_token": "ABu-7EU2Gw3KkB-lI1cL3anHt2WF4Upmo6JK9GPTkNrUU=",
+    "url": "https://www.xiaohongshu.com/explore/6a268201000000001603f6ae?xsec_token=ABu-7EU2Gw3KkB-lI1cL3anHt2WF4Upmo6JK9GPTkNrUU=&xsec_source=pc_user",
+    "type": "video",
+    "title": "3D 打印新手必看：支撑怎么设置更好拆",
+    "desc": "",
+    "creator_id": "613dfd6d0000000002022cc0",
+    "creator_name": "Meshy.ai",
+    "topics": [
+      "3d-4d"
+    ],
+    "tags": [],
+    "published_at": "2026-06-08T16:49:05+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:13:25+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 771
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/1040g00832159d9aunu0g5o9tvlmgkb605pj69eo?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:13:25+08:00"
+  },
+  {
     "note_id": "6a2649ef000000001503cfa3",
     "xsec_token": "ABu-7EU2Gw3KkB-lI1cL3anDNKQI3zExXpLJyfEcGlB9E=",
     "url": "https://www.xiaohongshu.com/explore/6a2649ef000000001503cfa3?xsec_token=ABu-7EU2Gw3KkB-lI1cL3anDNKQI3zExXpLJyfEcGlB9E=&xsec_source=pc_user",
@@ -3193,6 +3422,33 @@
     "image_count": 0,
     "ip_location": "",
     "stats_updated_at": "2026-09-20T16:16:02+08:00"
+  },
+  {
+    "note_id": "6a23349d00000000070136c4",
+    "xsec_token": "ABslSe38VXpgnVX799KqZ_r4RyopmWs05Xq9IZhcfNVsQ=",
+    "url": "https://www.xiaohongshu.com/explore/6a23349d00000000070136c4?xsec_token=ABslSe38VXpgnVX799KqZ_r4RyopmWs05Xq9IZhcfNVsQ=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "锦 襕 袈 裟",
+    "desc": "",
+    "creator_id": "62488688000000001000710b",
+    "creator_name": "Fromandto赵昊",
+    "topics": [
+      "3d-4d",
+      "world-model",
+      "academia"
+    ],
+    "tags": [],
+    "published_at": "2026-06-06T04:42:05+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:13:17+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 858
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/1040g00832122adc87a605oi8gq440s8b4jkd29o?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:13:17+08:00"
   },
   {
     "note_id": "6a23281a0000000015027cbd",
@@ -3529,6 +3785,58 @@
     "stats_updated_at": "2026-09-20T16:16:02+08:00"
   },
   {
+    "note_id": "6a205cfb0000000007028bad",
+    "xsec_token": "ABd_yk6H4lENpjzlsK5lsCTYH9EF1pxk8BMQycvV9l-5A=",
+    "url": "https://www.xiaohongshu.com/explore/6a205cfb0000000007028bad?xsec_token=ABd_yk6H4lENpjzlsK5lsCTYH9EF1pxk8BMQycvV9l-5A=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "清纯男大勇闯ICRA 2026双光圈教堂",
+    "desc": "",
+    "creator_id": "62488688000000001000710b",
+    "creator_name": "Fromandto赵昊",
+    "topics": [
+      "3d-4d",
+      "world-model",
+      "academia"
+    ],
+    "tags": [],
+    "published_at": "2026-06-04T00:57:31+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:13:17+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 259
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/note_pre_post_uhdr/1040g3r0320v9duh57u505oi8gq440s8b592t4cg?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:13:17+08:00"
+  },
+  {
+    "note_id": "6a1ff9a9000000003601b21d",
+    "xsec_token": "ABZZKC8N8PpoAiX5El46SQ4KiQWaZevNUjS-ZX6Pt_Hi8=",
+    "url": "https://www.xiaohongshu.com/explore/6a1ff9a9000000003601b21d?xsec_token=ABZZKC8N8PpoAiX5El46SQ4KiQWaZevNUjS-ZX6Pt_Hi8=&xsec_source=pc_user",
+    "type": "video",
+    "title": "从照片到Q版手办，Meshy 零基础教程来啦🎉",
+    "desc": "",
+    "creator_id": "613dfd6d0000000002022cc0",
+    "creator_name": "Meshy.ai",
+    "topics": [
+      "3d-4d"
+    ],
+    "tags": [],
+    "published_at": "2026-06-03T17:53:45+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:13:25+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 25
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/1040g2sg320utdt877a005o9tvlmgkb60s1iqdsg?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:13:25+08:00"
+  },
+  {
     "note_id": "6a1f8e98000000000800178d",
     "xsec_token": "ABZZKC8N8PpoAiX5El46SQ4MAi2TTWFwDQ1gLeBng3jGI=",
     "url": "https://www.xiaohongshu.com/explore/6a1f8e98000000000800178d?xsec_token=ABZZKC8N8PpoAiX5El46SQ4MAi2TTWFwDQ1gLeBng3jGI=&xsec_source=pc_user",
@@ -3734,5 +4042,32 @@
     "image_count": 0,
     "ip_location": "",
     "stats_updated_at": "2026-09-20T16:15:45+08:00"
+  },
+  {
+    "note_id": "6a1c604f00000000070234be",
+    "xsec_token": "ABW3k3qG-kOlhN0_u8SsRF4gztEAfJd9xOLWu2r7-KlAU=",
+    "url": "https://www.xiaohongshu.com/explore/6a1c604f00000000070234be?xsec_token=ABW3k3qG-kOlhN0_u8SsRF4gztEAfJd9xOLWu2r7-KlAU=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "Uniscene-v2被TPAMI接收",
+    "desc": "",
+    "creator_id": "62488688000000001000710b",
+    "creator_name": "Fromandto赵昊",
+    "topics": [
+      "3d-4d",
+      "world-model",
+      "academia"
+    ],
+    "tags": [],
+    "published_at": "2026-06-01T00:22:39+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:13:17+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 264
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/1040g008320rctjssm26g5oi8gq440s8b3egv56g?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:13:17+08:00"
   }
 ]

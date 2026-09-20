@@ -1058,6 +1058,31 @@
     "stats_updated_at": "2026-09-20T16:23:07+08:00"
   },
   {
+    "note_id": "6aac14f10000000025034c44",
+    "xsec_token": "ABsiY4rZeCrRD5x-s52eBP2IDVwf5v-DcEWI4h0SCutvo=",
+    "url": "https://www.xiaohongshu.com/explore/6aac14f10000000025034c44?xsec_token=ABsiY4rZeCrRD5x-s52eBP2IDVwf5v-DcEWI4h0SCutvo=&xsec_source=pc_user",
+    "type": "video",
+    "title": "AI 建模的几何精度，已经卷到 4K 了🔥",
+    "desc": "",
+    "creator_id": "613dfd6d0000000002022cc0",
+    "creator_name": "Meshy.ai",
+    "topics": [
+      "3d-4d"
+    ],
+    "tags": [],
+    "published_at": "2026-09-18T00:27:29+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:13:25+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 104
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/1040g0083257nf4kvl0005o9tvlmgkb60ade7rl8?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:13:25+08:00"
+  },
+  {
     "note_id": "6aabc1780000000011032eff",
     "xsec_token": "ABhg8hEBotXvhIk3cIjzWFgvW-LL16USL4pzM1B_KlWeI=",
     "url": "https://www.xiaohongshu.com/explore/6aabc1780000000011032eff?xsec_token=ABhg8hEBotXvhIk3cIjzWFgvW-LL16USL4pzM1B_KlWeI=&xsec_source=pc_user",
@@ -2483,6 +2508,31 @@
     "stats_updated_at": "2026-09-20T16:26:55+08:00"
   },
   {
+    "note_id": "6aa944b7000000001203c005",
+    "xsec_token": "ABWSsT62KjBD5kTpAtcNpmubP-XW_k_ZviNOU48koyboU=",
+    "url": "https://www.xiaohongshu.com/explore/6aa944b7000000001203c005?xsec_token=ABWSsT62KjBD5kTpAtcNpmubP-XW_k_ZviNOU48koyboU=&xsec_source=pc_user",
+    "type": "video",
+    "title": "Gamescom 回顾 | Meshy 的 AI×3D 高光时刻",
+    "desc": "",
+    "creator_id": "613dfd6d0000000002022cc0",
+    "creator_name": "Meshy.ai",
+    "topics": [
+      "3d-4d"
+    ],
+    "tags": [],
+    "published_at": "2026-09-15T21:14:31+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:13:25+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 20
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/1040g0083255199rp56005o9tvlmgkb60olor48g?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:13:25+08:00"
+  },
+  {
     "note_id": "6aa941e7000000000d026335",
     "xsec_token": "ABWSsT62KjBD5kTpAtcNpmua75EhrOQzyHwQ4SZxXejok=",
     "url": "https://www.xiaohongshu.com/explore/6aa941e7000000000d026335?xsec_token=ABWSsT62KjBD5kTpAtcNpmua75EhrOQzyHwQ4SZxXejok=&xsec_source=pc_user",
@@ -2570,6 +2620,31 @@
     "image_count": 0,
     "ip_location": "",
     "stats_updated_at": "2026-09-20T16:15:16+08:00"
+  },
+  {
+    "note_id": "6aa90dcf000000001001f275",
+    "xsec_token": "ABWSsT62KjBD5kTpAtcNpmuRXFc7nxIRKk2N8di8Tb_9U=",
+    "url": "https://www.xiaohongshu.com/explore/6aa90dcf000000001001f275?xsec_token=ABWSsT62KjBD5kTpAtcNpmuRXFc7nxIRKk2N8di8Tb_9U=&xsec_source=pc_user",
+    "type": "video",
+    "title": "Meshy × Snapmaker：多色 3D 打印新玩法",
+    "desc": "",
+    "creator_id": "613dfd6d0000000002022cc0",
+    "creator_name": "Meshy.ai",
+    "topics": [
+      "3d-4d"
+    ],
+    "tags": [],
+    "published_at": "2026-09-15T17:20:15+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:13:25+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 24
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/1040g2sg3254osqj8jue05o9tvlmgkb60e5h3830?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:13:25+08:00"
   },
   {
     "note_id": "6aa90a49000000001103700e",
@@ -2709,6 +2784,33 @@
     "image_count": 0,
     "ip_location": "",
     "stats_updated_at": "2026-09-20T16:15:16+08:00"
+  },
+  {
+    "note_id": "6aa8cdf40000000028031aad",
+    "xsec_token": "ABir1j-o2dOGp60UqA8DQrB4mnLorMAJvPudAl63QIOOQ=",
+    "url": "https://www.xiaohongshu.com/explore/6aa8cdf40000000028031aad?xsec_token=ABir1j-o2dOGp60UqA8DQrB4mnLorMAJvPudAl63QIOOQ=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "SURE-Map超越lingbot-map和horizonstream",
+    "desc": "",
+    "creator_id": "62488688000000001000710b",
+    "creator_name": "Fromandto赵昊",
+    "topics": [
+      "3d-4d",
+      "world-model",
+      "academia"
+    ],
+    "tags": [],
+    "published_at": "2026-09-15T12:47:48+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:13:17+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 252
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/notes_pre_post/1040g3k83254hbjbt3icg5oi8gq440s8bclueui8?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:13:17+08:00"
   },
   {
     "note_id": "6aa8c8a8000000001001f110",
@@ -3717,6 +3819,31 @@
     "stats_updated_at": "2026-09-20T16:15:55+08:00"
   },
   {
+    "note_id": "6aa6514b000000001103307d",
+    "xsec_token": "ABTrfgIBqXtMlsRnRh5aAdQ0dqdLajSmvOttVWnj7MGiM=",
+    "url": "https://www.xiaohongshu.com/explore/6aa6514b000000001103307d?xsec_token=ABTrfgIBqXtMlsRnRh5aAdQ0dqdLajSmvOttVWnj7MGiM=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "又一位新伙伴 从虚拟世界来到现实",
+    "desc": "",
+    "creator_id": "5d0cb93f000000001002b869",
+    "creator_name": "U航",
+    "topics": [
+      "embodied"
+    ],
+    "tags": [],
+    "published_at": "2026-09-13T15:31:23+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:13:33+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 258
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g0k032523k190j2005n8cn4vk5e39js664mo?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:13:33+08:00"
+  },
+  {
     "note_id": "6aa62187000000001103ba08",
     "xsec_token": "ABTrfgIBqXtMlsRnRh5aAdQ5ICBjtk51nB1Q9tsp59vZE=",
     "url": "https://www.xiaohongshu.com/explore/6aa62187000000001103ba08?xsec_token=ABTrfgIBqXtMlsRnRh5aAdQ5ICBjtk51nB1Q9tsp59vZE=&xsec_source=pc_user",
@@ -4283,6 +4410,31 @@
     "stats_updated_at": "2026-09-20T16:16:02+08:00"
   },
   {
+    "note_id": "6aa41906000000000b0365b2",
+    "xsec_token": "ABNYu0ePJDQSA5NOgB7plccn5oPqNYa-MZ3R_z2hf89kM=",
+    "url": "https://www.xiaohongshu.com/explore/6aa41906000000000b0365b2?xsec_token=ABNYu0ePJDQSA5NOgB7plccn5oPqNYa-MZ3R_z2hf89kM=&xsec_source=pc_user",
+    "type": "video",
+    "title": "当你和她对视时，我相信你会明白我曾说的",
+    "desc": "",
+    "creator_id": "5d0cb93f000000001002b869",
+    "creator_name": "U航",
+    "topics": [
+      "embodied"
+    ],
+    "tags": [],
+    "published_at": "2026-09-11T23:06:46+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:13:33+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 1374
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g0k0324vu9c36j4005n8cn4vk5e39m9f0od8?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:13:33+08:00"
+  },
+  {
     "note_id": "6aa40e0e000000002a026e65",
     "xsec_token": "ABNYu0ePJDQSA5NOgB7plccoofanWqV0I8yunfEQnCz0c=",
     "url": "https://www.xiaohongshu.com/explore/6aa40e0e000000002a026e65?xsec_token=ABNYu0ePJDQSA5NOgB7plccoofanWqV0I8yunfEQnCz0c=&xsec_source=pc_user",
@@ -4410,6 +4562,33 @@
     "stats_updated_at": "2026-09-20T16:15:16+08:00"
   },
   {
+    "note_id": "6aa3e5f200000000260331a7",
+    "xsec_token": "AB16K4udgzV9spSxcrA6n-QOzigIGsH3OmZVe2HNdW7ik=",
+    "url": "https://www.xiaohongshu.com/explore/6aa3e5f200000000260331a7?xsec_token=AB16K4udgzV9spSxcrA6n-QOzigIGsH3OmZVe2HNdW7ik=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "fjs说他在北欧待了17年了你敢信…",
+    "desc": "",
+    "creator_id": "62488688000000001000710b",
+    "creator_name": "Fromandto赵昊",
+    "topics": [
+      "3d-4d",
+      "world-model",
+      "academia"
+    ],
+    "tags": [],
+    "published_at": "2026-09-11T19:28:50+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:13:17+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 201
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/note_pre_post_uhdr/1040g3r8324vo10u43id05oi8gq440s8bkhjehio?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:13:17+08:00"
+  },
+  {
     "note_id": "6aa3cb55000000000d0273f8",
     "xsec_token": "AB16K4udgzV9spSxcrA6n-QCJP-JmwD4EvWAqamZOxqfk=",
     "url": "https://www.xiaohongshu.com/explore/6aa3cb55000000000d0273f8?xsec_token=AB16K4udgzV9spSxcrA6n-QCJP-JmwD4EvWAqamZOxqfk=&xsec_source=pc_user",
@@ -4508,6 +4687,31 @@
     "image_count": 0,
     "ip_location": "",
     "stats_updated_at": "2026-09-20T16:16:23+08:00"
+  },
+  {
+    "note_id": "6aa3b4f70000000011037944",
+    "xsec_token": "AB16K4udgzV9spSxcrA6n-QB8-5S561yPAPZrFZ9mLBMY=",
+    "url": "https://www.xiaohongshu.com/explore/6aa3b4f70000000011037944?xsec_token=AB16K4udgzV9spSxcrA6n-QB8-5S561yPAPZrFZ9mLBMY=&xsec_source=pc_user",
+    "type": "video",
+    "title": "GPT-6 + Meshy，一张图直接生成可编辑3D场景",
+    "desc": "",
+    "creator_id": "613dfd6d0000000002022cc0",
+    "creator_name": "Meshy.ai",
+    "topics": [
+      "3d-4d"
+    ],
+    "tags": [],
+    "published_at": "2026-09-11T15:59:51+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:13:25+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 72
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/1040g2sg324vhq9h3j6e05o9tvlmgkb608dl3df8?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:13:25+08:00"
   },
   {
     "note_id": "6aa3b2b9000000002502c992",
@@ -4919,6 +5123,31 @@
     "stats_updated_at": "2026-09-20T16:16:02+08:00"
   },
   {
+    "note_id": "6aa2ccf600000000250356c1",
+    "xsec_token": "ABYoYcC5MZXEDyjOzbE55G8nrQbee2jIZCSTyXernUYb8=",
+    "url": "https://www.xiaohongshu.com/explore/6aa2ccf600000000250356c1?xsec_token=ABYoYcC5MZXEDyjOzbE55G8nrQbee2jIZCSTyXernUYb8=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "Meshy国内站来了🚀4K几何生成功能即将开放",
+    "desc": "",
+    "creator_id": "613dfd6d0000000002022cc0",
+    "creator_name": "Meshy.ai",
+    "topics": [
+      "3d-4d"
+    ],
+    "tags": [],
+    "published_at": "2026-09-10T23:29:58+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:13:25+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 32
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/notes_pre_post/1040g3k0324ul958l3u005o9tvlmgkb60igsmnt0?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:13:25+08:00"
+  },
+  {
     "note_id": "6aa2a63f00000000280327bf",
     "xsec_token": "ABYoYcC5MZXEDyjOzbE55G8qoGwlh_QzCYtP9hMn8kCnc=",
     "url": "https://www.xiaohongshu.com/explore/6aa2a63f00000000280327bf?xsec_token=ABYoYcC5MZXEDyjOzbE55G8qoGwlh_QzCYtP9hMn8kCnc=&xsec_source=pc_user",
@@ -5069,6 +5298,31 @@
     "image_count": 0,
     "ip_location": "",
     "stats_updated_at": "2026-09-20T16:16:39+08:00"
+  },
+  {
+    "note_id": "6aa25ffe000000001001f753",
+    "xsec_token": "ABYoYcC5MZXEDyjOzbE55G8nmIlhfe2ISINKPix-tSxzM=",
+    "url": "https://www.xiaohongshu.com/explore/6aa25ffe000000001001f753?xsec_token=ABYoYcC5MZXEDyjOzbE55G8nmIlhfe2ISINKPix-tSxzM=&xsec_source=pc_user",
+    "type": "video",
+    "title": "我只是拍张照，怎么把铁塔复制了🗼",
+    "desc": "",
+    "creator_id": "613dfd6d0000000002022cc0",
+    "creator_name": "Meshy.ai",
+    "topics": [
+      "3d-4d"
+    ],
+    "tags": [],
+    "published_at": "2026-09-10T15:45:02+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:13:25+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 29
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/1040g2sg324u8do103oe05o9tvlmgkb60cm3ccao?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:13:25+08:00"
   },
   {
     "note_id": "6aa25897000000002b0265ec",
@@ -6069,6 +6323,31 @@
     "stats_updated_at": "2026-09-20T16:15:55+08:00"
   },
   {
+    "note_id": "6a9fe546000000001103009a",
+    "xsec_token": "ABWlgv3Z4TthuGm0Y9-teKB6oW6sn0xATQ55Y2axYuZZY=",
+    "url": "https://www.xiaohongshu.com/explore/6a9fe546000000001103009a?xsec_token=ABWlgv3Z4TthuGm0Y9-teKB6oW6sn0xATQ55Y2axYuZZY=&xsec_source=pc_user",
+    "type": "video",
+    "title": "拿稳手机，Meshy App 来了📱",
+    "desc": "",
+    "creator_id": "613dfd6d0000000002022cc0",
+    "creator_name": "Meshy.ai",
+    "topics": [
+      "3d-4d"
+    ],
+    "tags": [],
+    "published_at": "2026-09-08T18:36:54+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:13:25+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 58
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/1040g008324rqsqbv2as05o9tvlmgkb60hrjcga0?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:13:25+08:00"
+  },
+  {
     "note_id": "6a9fb8cf00000000260391fb",
     "xsec_token": "ABWlgv3Z4TthuGm0Y9-teKB7RGbfWRK6Ufm0S1DBw5ZVc=",
     "url": "https://www.xiaohongshu.com/explore/6a9fb8cf00000000260391fb?xsec_token=ABWlgv3Z4TthuGm0Y9-teKB7RGbfWRK6Ufm0S1DBw5ZVc=&xsec_source=pc_user",
@@ -6400,6 +6679,31 @@
     "image_count": 0,
     "ip_location": "",
     "stats_updated_at": "2026-09-20T16:15:55+08:00"
+  },
+  {
+    "note_id": "6a9ebeb100000000260153ac",
+    "xsec_token": "ABCGXN0L0hzp84THUfSCEat9QfprpOtpqMbJNDfWnOFF0=",
+    "url": "https://www.xiaohongshu.com/explore/6a9ebeb100000000260153ac?xsec_token=ABCGXN0L0hzp84THUfSCEat9QfprpOtpqMbJNDfWnOFF0=&xsec_source=pc_user",
+    "type": "video",
+    "title": "这桌瓷器，真不是实拍？👀",
+    "desc": "",
+    "creator_id": "613dfd6d0000000002022cc0",
+    "creator_name": "Meshy.ai",
+    "topics": [
+      "3d-4d"
+    ],
+    "tags": [],
+    "published_at": "2026-09-07T21:40:01+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:13:25+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 21
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/1040g008324qmv11jia005o9tvlmgkb60ntm5sv0?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:13:25+08:00"
   },
   {
     "note_id": "6a9eba57000000002b003a95",
@@ -7123,6 +7427,33 @@
     "stats_updated_at": "2026-09-20T16:17:48+08:00"
   },
   {
+    "note_id": "6a9afe6d000000002601a11a",
+    "xsec_token": "ABHElAW9gAsyUjvNT9CXyVgg4thEImS9s91tRS9ukaKyg=",
+    "url": "https://www.xiaohongshu.com/explore/6a9afe6d000000002601a11a?xsec_token=ABHElAW9gAsyUjvNT9CXyVgg4thEImS9s91tRS9ukaKyg=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "好长…",
+    "desc": "",
+    "creator_id": "62488688000000001000710b",
+    "creator_name": "Fromandto赵昊",
+    "topics": [
+      "3d-4d",
+      "world-model",
+      "academia"
+    ],
+    "tags": [],
+    "published_at": "2026-09-05T01:22:53+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:13:17+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 32
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/notes_pre_post/1040g3k8324n1mkv1nkdg5oi8gq440s8bk57oadg?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:13:17+08:00"
+  },
+  {
     "note_id": "6a9aef46000000002803718e",
     "xsec_token": "ABHElAW9gAsyUjvNT9CXyVgnPfdA-la8Iw3Nqhhl-AY78=",
     "url": "https://www.xiaohongshu.com/explore/6a9aef46000000002803718e?xsec_token=ABHElAW9gAsyUjvNT9CXyVgnPfdA-la8Iw3Nqhhl-AY78=&xsec_source=pc_user",
@@ -7406,6 +7737,31 @@
     "image_count": 0,
     "ip_location": "",
     "stats_updated_at": "2026-09-20T16:15:05+08:00"
+  },
+  {
+    "note_id": "6a9a9f3e000000002502e02e",
+    "xsec_token": "ABHElAW9gAsyUjvNT9CXyVguLTI6G9GtBNY060SYPO5OM=",
+    "url": "https://www.xiaohongshu.com/explore/6a9a9f3e000000002502e02e?xsec_token=ABHElAW9gAsyUjvNT9CXyVguLTI6G9GtBNY060SYPO5OM=&xsec_source=pc_user",
+    "type": "video",
+    "title": "脑子：这是 3D。眼睛：我不信。",
+    "desc": "",
+    "creator_id": "613dfd6d0000000002022cc0",
+    "creator_name": "Meshy.ai",
+    "topics": [
+      "3d-4d"
+    ],
+    "tags": [],
+    "published_at": "2026-09-04T18:36:46+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:13:25+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 40
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/1040g008324mm52ot0a0g5o9tvlmgkb60mg4v8ro?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:13:25+08:00"
   },
   {
     "note_id": "6a9a88b2000000002a02dcc3",
