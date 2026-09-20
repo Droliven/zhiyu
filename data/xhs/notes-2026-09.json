@@ -742,6 +742,32 @@
     "stats_updated_at": "2026-09-20T16:21:17+08:00"
   },
   {
+    "note_id": "6aad130900000000110303ef",
+    "xsec_token": "ABPlTmpGpeHGKxTPM3BoFm1O9L8sQyASIK84XJgDTrDJs=",
+    "url": "https://www.xiaohongshu.com/explore/6aad130900000000110303ef?xsec_token=ABPlTmpGpeHGKxTPM3BoFm1O9L8sQyASIK84XJgDTrDJs=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "✨邀请函｜蚂蚁灵波邀你 2026 云栖大会线下见！",
+    "desc": "",
+    "creator_id": "696079c5000000003703058b",
+    "creator_name": "蚂蚁灵波科技",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-09-18T18:31:37+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:15:42+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 6
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o3258km3d6k6105qb0f72tu1cbf5bn8ho?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:15:42+08:00"
+  },
+  {
     "note_id": "6aad128a0000000011030095",
     "xsec_token": "ABPlTmpGpeHGKxTPM3BoFm1IoeNMEdd46LWqSo4e22vdg=",
     "url": "https://www.xiaohongshu.com/explore/6aad128a0000000011030095?xsec_token=ABPlTmpGpeHGKxTPM3BoFm1IoeNMEdd46LWqSo4e22vdg=&xsec_source=pc_user",
@@ -1115,6 +1141,32 @@
     "image_count": 1,
     "ip_location": "北京",
     "stats_updated_at": "2026-09-20T16:23:24+08:00"
+  },
+  {
+    "note_id": "6aabc14e000000002700a5d1",
+    "xsec_token": "ABhg8hEBotXvhIk3cIjzWFgjbENzM54QSV4IPMHXFmPlE=",
+    "url": "https://www.xiaohongshu.com/explore/6aabc14e000000002700a5d1?xsec_token=ABhg8hEBotXvhIk3cIjzWFgjbENzM54QSV4IPMHXFmPlE=&xsec_source=pc_user",
+    "type": "video",
+    "title": "🔥首届蚂蚁灵波具身大模型挑战赛正式启动",
+    "desc": "",
+    "creator_id": "696079c5000000003703058b",
+    "creator_name": "蚂蚁灵波科技",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-09-17T18:30:38+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:15:42+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 29
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o3257e7tebk4105qb0f72tu1cbtrgk168?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:15:42+08:00"
   },
   {
     "note_id": "6aabafa6000000001001ec01",
@@ -1871,6 +1923,32 @@
     "stats_updated_at": "2026-09-20T16:25:39+08:00"
   },
   {
+    "note_id": "6aaa4bf50000000025037ea6",
+    "xsec_token": "ABYIAX_biyehNZUvyQEzkt3irnxK8WPvs0jm0eB2lr130=",
+    "url": "https://www.xiaohongshu.com/explore/6aaa4bf50000000025037ea6?xsec_token=ABYIAX_biyehNZUvyQEzkt3irnxK8WPvs0jm0eB2lr130=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "具身数据先锋圆桌｜数据飞轮，从堆数量到做减法，高质量数据驱动模型迭代",
+    "desc": "",
+    "creator_id": "696079c5000000003703058b",
+    "creator_name": "蚂蚁灵波科技",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-09-16T15:57:41+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:15:42+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 1
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g0k03255vjc6pk6105qb0f72tu1cbuau4b2g?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:15:42+08:00"
+  },
+  {
     "note_id": "6aaa49d6000000002502cc21",
     "xsec_token": "ABYIAX_biyehNZUvyQEzkt3jTfYhLHuW0DjYGyGi8sTfs=",
     "url": "https://www.xiaohongshu.com/explore/6aaa49d6000000002502cc21?xsec_token=ABYIAX_biyehNZUvyQEzkt3jTfYhLHuW0DjYGyGi8sTfs=&xsec_source=pc_user",
@@ -1894,6 +1972,58 @@
     "image_count": 0,
     "ip_location": "",
     "stats_updated_at": "2026-09-20T16:15:16+08:00"
+  },
+  {
+    "note_id": "6aaa488c000000002802c697",
+    "xsec_token": "ABYIAX_biyehNZUvyQEzkt3mR6jS-sN5XlvfEBuwOLY34=",
+    "url": "https://www.xiaohongshu.com/explore/6aaa488c000000002802c697?xsec_token=ABYIAX_biyehNZUvyQEzkt3mR6jS-sN5XlvfEBuwOLY34=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "具身产业 CEO 圆桌｜产业落地，从单点成功走向规模化复制，商业与技术的现实思考",
+    "desc": "",
+    "creator_id": "696079c5000000003703058b",
+    "creator_name": "蚂蚁灵波科技",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-09-16T15:43:08+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:15:42+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 4
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g0k03255u8kue4a005qb0f72tu1cb5t6i0bg?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:15:42+08:00"
+  },
+  {
+    "note_id": "6aaa3ced000000001103217d",
+    "xsec_token": "ABYIAX_biyehNZUvyQEzkt3rjpzoMgwnLqGlK11ugfM1c=",
+    "url": "https://www.xiaohongshu.com/explore/6aaa3ced000000001103217d?xsec_token=ABYIAX_biyehNZUvyQEzkt3rjpzoMgwnLqGlK11ugfM1c=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "具身科学家圆桌｜具身智能的 Scaling Law，不能照搬数字世界大模型的发展",
+    "desc": "",
+    "creator_id": "696079c5000000003703058b",
+    "creator_name": "蚂蚁灵波科技",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-09-16T14:53:33+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:15:42+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 7
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g0k03255tqdt2k4105qb0f72tu1cbrhprv4g?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:15:42+08:00"
   },
   {
     "note_id": "6aaa38ff0000000011035059",
@@ -2620,6 +2750,32 @@
     "image_count": 0,
     "ip_location": "",
     "stats_updated_at": "2026-09-20T16:15:16+08:00"
+  },
+  {
+    "note_id": "6aa90f38000000002600b482",
+    "xsec_token": "ABWSsT62KjBD5kTpAtcNpmuT06RnY1-3eLH3y24wdkYNE=",
+    "url": "https://www.xiaohongshu.com/explore/6aa90f38000000002600b482?xsec_token=ABWSsT62KjBD5kTpAtcNpmuT06RnY1-3eLH3y24wdkYNE=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "灵波创意 Demo 月榜｜8 月优秀作品揭晓🤖",
+    "desc": "",
+    "creator_id": "696079c5000000003703058b",
+    "creator_name": "蚂蚁灵波科技",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-09-15T17:26:16+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:15:42+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 6
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o3254kouu6j0105qb0f72tu1cb6aqjgtg?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:15:42+08:00"
   },
   {
     "note_id": "6aa90dcf000000001001f275",
@@ -4205,6 +4361,32 @@
     "stats_updated_at": "2026-09-20T16:16:23+08:00"
   },
   {
+    "note_id": "6aa533b50000000012000ee7",
+    "xsec_token": "AB69dhZu_PZFTXP2HNI6BEG_nrdNoCsNM6vYwL0T2GdZg=",
+    "url": "https://www.xiaohongshu.com/explore/6aa533b50000000012000ee7?xsec_token=AB69dhZu_PZFTXP2HNI6BEG_nrdNoCsNM6vYwL0T2GdZg=&xsec_source=pc_user",
+    "type": "video",
+    "title": "✨2026 外滩大会圆满落幕！",
+    "desc": "",
+    "creator_id": "696079c5000000003703058b",
+    "creator_name": "蚂蚁灵波科技",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-09-12T19:12:53+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:15:42+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 7
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g0k032510pilp30005qb0f72tu1cbfut83mo?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:15:42+08:00"
+  },
+  {
     "note_id": "6aa51b27000000001001cd63",
     "xsec_token": "AB69dhZu_PZFTXP2HNI6BEGx2UyPVL0xNkj6E4bQw1MyE=",
     "url": "https://www.xiaohongshu.com/explore/6aa51b27000000001001cd63?xsec_token=AB69dhZu_PZFTXP2HNI6BEGx2UyPVL0xNkj6E4bQw1MyE=&xsec_source=pc_user",
@@ -4356,6 +4538,32 @@
     "image_count": 0,
     "ip_location": "",
     "stats_updated_at": "2026-09-20T16:15:26+08:00"
+  },
+  {
+    "note_id": "6aa4c90e000000002900f46b",
+    "xsec_token": "ABNYu0ePJDQSA5NOgB7plcciypVDxV1SN3iAd0fW-tC6s=",
+    "url": "https://www.xiaohongshu.com/explore/6aa4c90e000000002900f46b?xsec_token=ABNYu0ePJDQSA5NOgB7plcciypVDxV1SN3iAd0fW-tC6s=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "首届蚂蚁灵波具身大模型挑战赛正式启动🔥",
+    "desc": "",
+    "creator_id": "696079c5000000003703058b",
+    "creator_name": "蚂蚁灵波科技",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-09-12T11:37:50+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:15:42+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 165
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o3250j717aiu5g5qb0f72tu1cb336deuo?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:15:42+08:00"
   },
   {
     "note_id": "6aa4a5f7000000000b000073",
@@ -5200,6 +5408,32 @@
     "stats_updated_at": "2026-09-20T16:15:55+08:00"
   },
   {
+    "note_id": "6aa286320000000026031e82",
+    "xsec_token": "ABYoYcC5MZXEDyjOzbE55G8i6qkHTfd5eZFFsjzdgPsfg=",
+    "url": "https://www.xiaohongshu.com/explore/6aa286320000000026031e82?xsec_token=ABYoYcC5MZXEDyjOzbE55G8i6qkHTfd5eZFFsjzdgPsfg=&xsec_source=pc_user",
+    "type": "video",
+    "title": "灵波厨房，让具身智能走进日常烟火气✨",
+    "desc": "",
+    "creator_id": "696079c5000000003703058b",
+    "creator_name": "蚂蚁灵波科技",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-09-10T18:28:02+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:15:42+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 9
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g0k0324ud3c4g2s005qb0f72tu1cb6sp4ujg?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:15:42+08:00"
+  },
+  {
     "note_id": "6aa27aad00000000110375e4",
     "xsec_token": "ABYoYcC5MZXEDyjOzbE55G8mxmH2OU6nTdPzyFOn1mbLA=",
     "url": "https://www.xiaohongshu.com/explore/6aa27aad00000000110375e4?xsec_token=ABYoYcC5MZXEDyjOzbE55G8mxmH2OU6nTdPzyFOn1mbLA=&xsec_source=pc_user",
@@ -5476,6 +5710,32 @@
     "stats_updated_at": "2026-09-20T16:16:23+08:00"
   },
   {
+    "note_id": "6aa23ac0000000000d025b71",
+    "xsec_token": "ABYoYcC5MZXEDyjOzbE55G8qjshCOUjxP3nBh0mxGYhLU=",
+    "url": "https://www.xiaohongshu.com/explore/6aa23ac0000000000d025b71?xsec_token=ABYoYcC5MZXEDyjOzbE55G8qjshCOUjxP3nBh0mxGYhLU=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "🔥蚂蚁灵波科技 ✖ 冠军主厨屈雨瑜共创限定美食",
+    "desc": "",
+    "creator_id": "696079c5000000003703058b",
+    "creator_name": "蚂蚁灵波科技",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-09-10T13:06:08+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:15:42+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 9
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g0k0324u3ip4uiu005qb0f72tu1cbqkvrpt8?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:15:42+08:00"
+  },
+  {
     "note_id": "6aa234d30000000025035bc0",
     "xsec_token": "ABYoYcC5MZXEDyjOzbE55G8iMxLokBJ43NoXVUcdmUzPA=",
     "url": "https://www.xiaohongshu.com/explore/6aa234d30000000025035bc0?xsec_token=ABYoYcC5MZXEDyjOzbE55G8iMxLokBJ43NoXVUcdmUzPA=&xsec_source=pc_user",
@@ -5551,6 +5811,32 @@
     "image_count": 0,
     "ip_location": "",
     "stats_updated_at": "2026-09-20T16:16:11+08:00"
+  },
+  {
+    "note_id": "6aa21a8c000000002900efac",
+    "xsec_token": "ABYoYcC5MZXEDyjOzbE55G8jrebphIZMGu3FOCc_Jkj1g=",
+    "url": "https://www.xiaohongshu.com/explore/6aa21a8c000000002900efac?xsec_token=ABYoYcC5MZXEDyjOzbE55G8jrebphIZMGu3FOCc_Jkj1g=&xsec_source=pc_user",
+    "type": "video",
+    "title": "一张消费级显卡可跑，蚂蚁灵波世界模型上新",
+    "desc": "",
+    "creator_id": "696079c5000000003703058b",
+    "creator_name": "蚂蚁灵波科技",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-09-10T10:48:44+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:15:42+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 49
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g0k0324tvueitj40g5qb0f72tu1cbliuuroo?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:15:42+08:00"
   },
   {
     "note_id": "6aa1ed51000000002b025606",
@@ -6062,6 +6348,32 @@
     "image_count": 0,
     "ip_location": "",
     "stats_updated_at": "2026-09-20T16:16:11+08:00"
+  },
+  {
+    "note_id": "6aa0afc2000000002502e7f2",
+    "xsec_token": "ABzbud8S16-iSOJzWo-sV644j4A-Bf797C3MU0KMgEBfA=",
+    "url": "https://www.xiaohongshu.com/explore/6aa0afc2000000002502e7f2?xsec_token=ABzbud8S16-iSOJzWo-sV644j4A-Bf797C3MU0KMgEBfA=&xsec_source=pc_user",
+    "type": "video",
+    "title": "让人工智能走向物理世界｜2026 外滩大会蚂蚁灵波展区抢先探！",
+    "desc": "",
+    "creator_id": "696079c5000000003703058b",
+    "creator_name": "蚂蚁灵波科技",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-09-09T09:00:50+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:15:42+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 5
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g0k0324sitql52q005qb0f72tu1cbmntnru0?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:15:42+08:00"
   },
   {
     "note_id": "6aa0adbd00000000120253c9",
@@ -6730,6 +7042,32 @@
     "image_count": 0,
     "ip_location": "",
     "stats_updated_at": "2026-09-20T16:15:05+08:00"
+  },
+  {
+    "note_id": "6a9eabbe000000002502c605",
+    "xsec_token": "ABCGXN0L0hzp84THUfSCEat6Uhkn8lm6i46Y1MAn4ga-U=",
+    "url": "https://www.xiaohongshu.com/explore/6a9eabbe000000002502c605?xsec_token=ABCGXN0L0hzp84THUfSCEat6Uhkn8lm6i46Y1MAn4ga-U=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "邀请函｜蚂蚁灵波科技邀您相约外滩大会 2026",
+    "desc": "",
+    "creator_id": "696079c5000000003703058b",
+    "creator_name": "蚂蚁灵波科技",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-09-07T20:19:10+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:15:42+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 11
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g0k0324qhqe321o0g5qb0f72tu1cbmmkkgu8?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:15:42+08:00"
   },
   {
     "note_id": "6a9ea920000000002603a8fd",
@@ -7739,6 +8077,32 @@
     "stats_updated_at": "2026-09-20T16:15:05+08:00"
   },
   {
+    "note_id": "6a9aa5ba000000002b0131d3",
+    "xsec_token": "ABHElAW9gAsyUjvNT9CXyVgrG2-Hpw1811fpWkPZRC8Ps=",
+    "url": "https://www.xiaohongshu.com/explore/6a9aa5ba000000002b0131d3?xsec_token=ABHElAW9gAsyUjvNT9CXyVgrG2-Hpw1811fpWkPZRC8Ps=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "刚刚，LingBot-World 2.0 亮相 IFA 开幕演讲！",
+    "desc": "",
+    "creator_id": "696079c5000000003703058b",
+    "creator_name": "蚂蚁灵波科技",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-09-04T19:04:26+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:15:42+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 18
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g0k0324mmkev1n2005qb0f72tu1cbpajato8?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:15:42+08:00"
+  },
+  {
     "note_id": "6a9a9f3e000000002502e02e",
     "xsec_token": "ABHElAW9gAsyUjvNT9CXyVguLTI6G9GtBNY060SYPO5OM=",
     "url": "https://www.xiaohongshu.com/explore/6a9a9f3e000000002502e02e?xsec_token=ABHElAW9gAsyUjvNT9CXyVguLTI6G9GtBNY060SYPO5OM=&xsec_source=pc_user",
@@ -8120,6 +8484,32 @@
     "image_count": 0,
     "ip_location": "",
     "stats_updated_at": "2026-09-20T16:16:23+08:00"
+  },
+  {
+    "note_id": "6a99450c000000001200050e",
+    "xsec_token": "ABGyOWLal1aaYYWKxl7HEuqRnDxhLdC38soPnGc6tYHjc=",
+    "url": "https://www.xiaohongshu.com/explore/6a99450c000000001200050e?xsec_token=ABGyOWLal1aaYYWKxl7HEuqRnDxhLdC38soPnGc6tYHjc=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "ECCV 2026｜蚂蚁灵波邀您相约马尔默🚀",
+    "desc": "",
+    "creator_id": "696079c5000000003703058b",
+    "creator_name": "蚂蚁灵波科技",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-09-03T17:59:40+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:15:42+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 59
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o324lbml6o6u1g5qb0f72tu1cb81oins8?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:15:42+08:00"
   },
   {
     "note_id": "6a993d7b000000002901b21a",
@@ -8788,6 +9178,32 @@
     "image_count": 0,
     "ip_location": "",
     "stats_updated_at": "2026-09-20T16:16:23+08:00"
+  },
+  {
+    "note_id": "6a969a0600000000280350e3",
+    "xsec_token": "ABrnU_QngeKET-HN2142jZDlREnobWDi8hReJ_pS_HZvE=",
+    "url": "https://www.xiaohongshu.com/explore/6a969a0600000000280350e3?xsec_token=ABrnU_QngeKET-HN2142jZDlREnobWDi8hReJ_pS_HZvE=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "百亿具身企业掌门人、具身青年科学家们都来了……",
+    "desc": "",
+    "creator_id": "696079c5000000003703058b",
+    "creator_name": "蚂蚁灵波科技",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-09-01T17:25:26+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:15:42+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 28
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o324iq3hfvn4105qb0f72tu1cbrceqcjo?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:15:42+08:00"
   },
   {
     "note_id": "6a969354000000002502e3fe",

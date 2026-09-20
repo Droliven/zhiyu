@@ -127,6 +127,31 @@
     "stats_updated_at": "2026-09-20T17:13:33+08:00"
   },
   {
+    "note_id": "6787e210000000001602a534",
+    "xsec_token": "ABf_qwEOmc2F3xuX6u4ijCthsfy5wzAQi6uXKdO0Q6l_I=",
+    "url": "https://www.xiaohongshu.com/explore/6787e210000000001602a534?xsec_token=ABf_qwEOmc2F3xuX6u4ijCthsfy5wzAQi6uXKdO0Q6l_I=&xsec_source=pc_user",
+    "type": "video",
+    "title": "人形机器人｜唐三藏",
+    "desc": "",
+    "creator_id": "66a2621c000000001d033373",
+    "creator_name": "首形科技 AheadForm",
+    "topics": [
+      "embodied"
+    ],
+    "tags": [],
+    "published_at": "2025-01-16T00:28:00+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:15:50+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 680
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/1040g2sg31jfcbr70j47g5pl2c8e7ecrjpfan820?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:15:50+08:00"
+  },
+  {
     "note_id": "678147b8000000001703cb81",
     "xsec_token": "ABqCxBAsU-jCCfKDxEqVyP5iA3rHwD3Ypgzutgg2WtX8I=",
     "url": "https://www.xiaohongshu.com/explore/678147b8000000001703cb81?xsec_token=ABqCxBAsU-jCCfKDxEqVyP5iA3rHwD3Ypgzutgg2WtX8I=&xsec_source=pc_user",
@@ -200,6 +225,31 @@
     "image_count": 0,
     "ip_location": "",
     "stats_updated_at": "2026-09-20T17:13:33+08:00"
+  },
+  {
+    "note_id": "677776a7000000000902c8aa",
+    "xsec_token": "AB28TSpz2cQPFE0DA3--h1VFZB-NgYW6C2oIn00DxsmlE=",
+    "url": "https://www.xiaohongshu.com/explore/677776a7000000000902c8aa?xsec_token=AB28TSpz2cQPFE0DA3--h1VFZB-NgYW6C2oIn00DxsmlE=&xsec_source=pc_user",
+    "type": "video",
+    "title": "人形机器人 【精灵系列】",
+    "desc": "",
+    "creator_id": "66a2621c000000001d033373",
+    "creator_name": "首形科技 AheadForm",
+    "topics": [
+      "embodied"
+    ],
+    "tags": [],
+    "published_at": "2025-01-03T13:33:27+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:15:50+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 2611
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/1040g2sg31c6bf9mf0m805pl2c8e7ecrjab3kvu8?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:15:50+08:00"
   },
   {
     "note_id": "677739c3000000000900e9ef",

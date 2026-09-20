@@ -4016,6 +4016,32 @@
     "stats_updated_at": "2026-09-20T17:13:33+08:00"
   },
   {
+    "note_id": "6a5e11e2000000001d00d7a4",
+    "xsec_token": "ABNnw7bMCGtcfMbJR9MxYLAE8YHIEx5kR_a9QlKNtIV4k=",
+    "url": "https://www.xiaohongshu.com/explore/6a5e11e2000000001d00d7a4?xsec_token=ABNnw7bMCGtcfMbJR9MxYLAE8YHIEx5kR_a9QlKNtIV4k=&xsec_source=pc_user",
+    "type": "video",
+    "title": "WAIC 2026 顺利闭幕啦！很开心在这场行业盛会与各位相遇，感谢每一位来蚂蚁",
+    "desc": "",
+    "creator_id": "696079c5000000003703058b",
+    "creator_name": "蚂蚁灵波科技",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-07-20T20:17:38+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:15:42+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 12
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g0k0322rhqrbh72005qb0f72tu1cbh1dn408?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:15:42+08:00"
+  },
+  {
     "note_id": "6a5dd992000000000503aef4",
     "xsec_token": "ABcxSvqP4i60qrkcluRHMaMyG9zsDZ1ZOeBzE3tY3wDz8=",
     "url": "https://www.xiaohongshu.com/explore/6a5dd992000000000503aef4?xsec_token=ABcxSvqP4i60qrkcluRHMaMyG9zsDZ1ZOeBzE3tY3wDz8=&xsec_source=pc_user",
@@ -4243,6 +4269,32 @@
     "stats_updated_at": "2026-09-20T16:16:23+08:00"
   },
   {
+    "note_id": "6a5caa3c000000000c017841",
+    "xsec_token": "ABJd30seiTjeWifSSSPwZ-TRT4qbM63DfBP07JR--gR9c=",
+    "url": "https://www.xiaohongshu.com/explore/6a5caa3c000000000c017841?xsec_token=ABJd30seiTjeWifSSSPwZ-TRT4qbM63DfBP07JR--gR9c=&xsec_source=pc_user",
+    "type": "video",
+    "title": "LingBot 2.0 系列模型集体亮相 WAIC 2026，带你沉浸式互动，亲",
+    "desc": "",
+    "creator_id": "696079c5000000003703058b",
+    "creator_name": "蚂蚁灵波科技",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-07-19T18:43:08+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:15:42+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 13
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g0k0322q5jsapn4005qb0f72tu1cbqa6sv90?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:15:42+08:00"
+  },
+  {
     "note_id": "6a5c4e4d000000001c00da15",
     "xsec_token": "ABJd30seiTjeWifSSSPwZ-TUOpmms3e66omjKyMKgo1U4=",
     "url": "https://www.xiaohongshu.com/explore/6a5c4e4d000000001c00da15?xsec_token=ABJd30seiTjeWifSSSPwZ-TUOpmms3e66omjKyMKgo1U4=&xsec_source=pc_user",
@@ -4319,6 +4371,32 @@
     "image_count": 0,
     "ip_location": "",
     "stats_updated_at": "2026-09-20T16:15:55+08:00"
+  },
+  {
+    "note_id": "6a5c3d5d000000000401ee75",
+    "xsec_token": "ABJd30seiTjeWifSSSPwZ-TaSqTN_YQEkFFa4za3rESkg=",
+    "url": "https://www.xiaohongshu.com/explore/6a5c3d5d000000000401ee75?xsec_token=ABJd30seiTjeWifSSSPwZ-TaSqTN_YQEkFFa4za3rESkg=&xsec_source=pc_user",
+    "type": "video",
+    "title": "蚂蚁灵波亮相 “模登时代・伙伴之城”具身智能展",
+    "desc": "",
+    "creator_id": "696079c5000000003703058b",
+    "creator_name": "蚂蚁灵波科技",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-07-19T10:58:37+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:15:42+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 5
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g0k0322pojgtsms005qb0f72tu1cbltvicm8?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:15:42+08:00"
   },
   {
     "note_id": "6a5c2ff0000000001102df0c",
@@ -4553,6 +4631,32 @@
     "stats_updated_at": "2026-09-20T16:16:11+08:00"
   },
   {
+    "note_id": "6a5af259000000000100e00b",
+    "xsec_token": "ABoYbr-DhiMazLte0zij7JwYq4EJbM4VbC_F5P1mAoefE=",
+    "url": "https://www.xiaohongshu.com/explore/6a5af259000000000100e00b?xsec_token=ABoYbr-DhiMazLte0zij7JwYq4EJbM4VbC_F5P1mAoefE=&xsec_source=pc_user",
+    "type": "video",
+    "title": "WAIC 2026 镇馆之宝 ｜ 搭载蚂蚁灵波跨本体机器人通用大脑，让机器人看得",
+    "desc": "",
+    "creator_id": "696079c5000000003703058b",
+    "creator_name": "蚂蚁灵波科技",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-07-18T11:26:17+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:15:42+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 19
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o322oh1efan4105qb0f72tu1cbe4or8ag?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:15:42+08:00"
+  },
+  {
     "note_id": "6a5aefc8000000001003e763",
     "xsec_token": "ABoYbr-DhiMazLte0zij7JwcUBwignajzkrlXipfIlErc=",
     "url": "https://www.xiaohongshu.com/explore/6a5aefc8000000001003e763?xsec_token=ABoYbr-DhiMazLte0zij7JwcUBwignajzkrlXipfIlErc=&xsec_source=pc_user",
@@ -4577,6 +4681,32 @@
     "image_count": 0,
     "ip_location": "",
     "stats_updated_at": "2026-09-20T16:15:26+08:00"
+  },
+  {
+    "note_id": "6a5acc2d000000000f014aa2",
+    "xsec_token": "ABoYbr-DhiMazLte0zij7JwXntyxP39sjCQBs_6aRvWvQ=",
+    "url": "https://www.xiaohongshu.com/explore/6a5acc2d000000000f014aa2?xsec_token=ABoYbr-DhiMazLte0zij7JwXntyxP39sjCQBs_6aRvWvQ=&xsec_source=pc_user",
+    "type": "video",
+    "title": "WAIC 2026 Day 1 蚂蚁灵波展厅回顾，从镇馆之宝“一脑多机”机器人智",
+    "desc": "",
+    "creator_id": "696079c5000000003703058b",
+    "creator_name": "蚂蚁灵波科技",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-07-18T08:43:25+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:15:42+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 12
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g0k0322obhjdj72005qb0f72tu1cb307ebao?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:15:42+08:00"
   },
   {
     "note_id": "6a5a8d1300000000010022be",
@@ -4654,6 +4784,32 @@
     "image_count": 0,
     "ip_location": "",
     "stats_updated_at": "2026-09-20T16:16:23+08:00"
+  },
+  {
+    "note_id": "6a59eb21000000002201aebb",
+    "xsec_token": "ABYDcXBuT_EvDCCKLPEz-vXgdrEybVUuoGUfuFAC8E2sY=",
+    "url": "https://www.xiaohongshu.com/explore/6a59eb21000000002201aebb?xsec_token=ABYDcXBuT_EvDCCKLPEz-vXgdrEybVUuoGUfuFAC8E2sY=&xsec_source=pc_user",
+    "type": "video",
+    "title": "蚂蚁灵波携手乐聚机器人，推出物流分拣整机解决方案，让机器人真正适配仓储复杂工况！",
+    "desc": "",
+    "creator_id": "696079c5000000003703058b",
+    "creator_name": "蚂蚁灵波科技",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-07-17T16:43:13+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:15:42+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 28
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o322nfpro5700g5qb0f72tu1cbso8sjog?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:15:42+08:00"
   },
   {
     "note_id": "6a59e473000000001c00cbe6",
@@ -4809,6 +4965,32 @@
     "stats_updated_at": "2026-09-20T16:16:11+08:00"
   },
   {
+    "note_id": "6a58d8f6000000001003c713",
+    "xsec_token": "ABG7OLRgsO47FhZ3pOrYZTU91zM2QhbHfO5WHwz_AVAyY=",
+    "url": "https://www.xiaohongshu.com/explore/6a58d8f6000000001003c713?xsec_token=ABG7OLRgsO47FhZ3pOrYZTU91zM2QhbHfO5WHwz_AVAyY=&xsec_source=pc_user",
+    "type": "video",
+    "title": "倒计时 0 天！WAIC 终极剧透｜蚂蚁灵波展厅已就位",
+    "desc": "",
+    "creator_id": "696079c5000000003703058b",
+    "creator_name": "蚂蚁灵波科技",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-07-16T21:13:26+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:15:42+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 24
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g0k0322men4uqn4005qb0f72tu1cb8k3gke8?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:15:42+08:00"
+  },
+  {
     "note_id": "6a58ae2d000000001002650e",
     "xsec_token": "ABG7OLRgsO47FhZ3pOrYZTUxutSin8bLYLKl8H-0DYA6w=",
     "url": "https://www.xiaohongshu.com/explore/6a58ae2d000000001002650e?xsec_token=ABG7OLRgsO47FhZ3pOrYZTUxutSin8bLYLKl8H-0DYA6w=&xsec_source=pc_user",
@@ -4960,6 +5142,32 @@
     "image_count": 0,
     "ip_location": "",
     "stats_updated_at": "2026-09-20T16:16:23+08:00"
+  },
+  {
+    "note_id": "6a5895d8000000001102d63b",
+    "xsec_token": "ABG7OLRgsO47FhZ3pOrYZTU-ZNZr21wZO26wH0JkYp6HU=",
+    "url": "https://www.xiaohongshu.com/explore/6a5895d8000000001102d63b?xsec_token=ABG7OLRgsO47FhZ3pOrYZTU-ZNZr21wZO26wH0JkYp6HU=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "WAIC 2026 镇馆之宝！基于蚂蚁灵波跨本体具身大模型的机器人智慧药房来啦！",
+    "desc": "",
+    "creator_id": "696079c5000000003703058b",
+    "creator_name": "蚂蚁灵波科技",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-07-16T16:27:04+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:15:42+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 19
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g0k0322m5a9pdmu0g5qb0f72tu1cba4n2t4g?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:15:42+08:00"
   },
   {
     "note_id": "6a585ade0000000011017e4e",
@@ -5501,6 +5709,32 @@
     "stats_updated_at": "2026-09-20T16:16:11+08:00"
   },
   {
+    "note_id": "6a55ccd90000000008001712",
+    "xsec_token": "ABd1PAEVHWgp8Z7NBrFdhfewlq-Ik2MS_vGtadEAE4E1U=",
+    "url": "https://www.xiaohongshu.com/explore/6a55ccd90000000008001712?xsec_token=ABd1PAEVHWgp8Z7NBrFdhfewlq-Ik2MS_vGtadEAE4E1U=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "邀您玩转蚂蚁灵波 WAIC 2026 展位攻略！",
+    "desc": "",
+    "creator_id": "696079c5000000003703058b",
+    "creator_name": "蚂蚁灵波科技",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-07-14T13:44:57+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:15:42+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 18
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o322jf8284n4105qb0f72tu1cbs9221c8?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:15:42+08:00"
+  },
+  {
     "note_id": "6a55b167000000000803243b",
     "xsec_token": "ABd1PAEVHWgp8Z7NBrFdhfezLFTIqmNiS-yK4IUscUpzY=",
     "url": "https://www.xiaohongshu.com/explore/6a55b167000000000803243b?xsec_token=ABd1PAEVHWgp8Z7NBrFdhfezLFTIqmNiS-yK4IUscUpzY=&xsec_source=pc_user",
@@ -5681,6 +5915,32 @@
     "stats_updated_at": "2026-09-20T16:15:55+08:00"
   },
   {
+    "note_id": "6a54e4100000000011006803",
+    "xsec_token": "ABK9Xx1bhdsnO9Atg5W_oLF0kSQPXAixjHo8KjJN-owRo=",
+    "url": "https://www.xiaohongshu.com/explore/6a54e4100000000011006803?xsec_token=ABK9Xx1bhdsnO9Atg5W_oLF0kSQPXAixjHo8KjJN-owRo=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "蚂蚁灵波引力场 WAIC 具身派对｜和 LingBot 主创们聊聊 2.0 发布",
+    "desc": "",
+    "creator_id": "696079c5000000003703058b",
+    "creator_name": "蚂蚁灵波科技",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-07-13T21:11:44+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:15:42+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 25
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o322iduu2imu105qb0f72tu1cb7h4d9k0?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:15:42+08:00"
+  },
+  {
     "note_id": "6a549130000000001003fcdd",
     "xsec_token": "ABK9Xx1bhdsnO9Atg5W_oLF_1ANxQsaubJlxjyPqlEiHw=",
     "url": "https://www.xiaohongshu.com/explore/6a549130000000001003fcdd?xsec_token=ABK9Xx1bhdsnO9Atg5W_oLF_1ANxQsaubJlxjyPqlEiHw=&xsec_source=pc_user",
@@ -5705,6 +5965,32 @@
     "image_count": 0,
     "ip_location": "",
     "stats_updated_at": "2026-09-20T16:16:11+08:00"
+  },
+  {
+    "note_id": "6a548075000000000f01ef9d",
+    "xsec_token": "ABK9Xx1bhdsnO9Atg5W_oLFzXNTDYT17FmmNNxu-1s10c=",
+    "url": "https://www.xiaohongshu.com/explore/6a548075000000000f01ef9d?xsec_token=ABK9Xx1bhdsnO9Atg5W_oLFzXNTDYT17FmmNNxu-1s10c=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "Meet LingBot 2.0 on Hugging Face trendin",
+    "desc": "",
+    "creator_id": "696079c5000000003703058b",
+    "creator_name": "蚂蚁灵波科技",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-07-13T14:06:45+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:15:42+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 16
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o322i6panr740g5qb0f72tu1cbkgq579g?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:15:42+08:00"
   },
   {
     "note_id": "6a5457d8000000000f030215",
@@ -6398,6 +6684,32 @@
     "stats_updated_at": "2026-09-20T16:16:23+08:00"
   },
   {
+    "note_id": "6a5053be0000000007010b38",
+    "xsec_token": "ABlp2KZbKY9-hPs_8qLl3x8dmLpTQulTADUGyQ9Zx21eI=",
+    "url": "https://www.xiaohongshu.com/explore/6a5053be0000000007010b38?xsec_token=ABlp2KZbKY9-hPs_8qLl3x8dmLpTQulTADUGyQ9Zx21eI=&xsec_source=pc_user",
+    "type": "video",
+    "title": "蚂蚁灵波科技 LingBot-VA 2.0 正式发布，行业首个具身原生基础模型！",
+    "desc": "",
+    "creator_id": "696079c5000000003703058b",
+    "creator_name": "蚂蚁灵波科技",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-07-10T10:06:54+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:15:42+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 50
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g0k0322e2fnogn4005qb0f72tu1cbv3uv92g?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:15:42+08:00"
+  },
+  {
     "note_id": "6a50062e00000000150278db",
     "xsec_token": "ABlp2KZbKY9-hPs_8qLl3x8VQCR8pK7gxjEhv-AJ3vpaM=",
     "url": "https://www.xiaohongshu.com/explore/6a50062e00000000150278db?xsec_token=ABlp2KZbKY9-hPs_8qLl3x8VQCR8pK7gxjEhv-AJ3vpaM=&xsec_source=pc_user",
@@ -6575,6 +6887,58 @@
     "image_count": 0,
     "ip_location": "",
     "stats_updated_at": "2026-09-20T16:14:48+08:00"
+  },
+  {
+    "note_id": "6a4eff8f000000001603d791",
+    "xsec_token": "ABLc6rJFdDXFJVLhckFo7l_c0DHafkn7YohuXkZNAtJDw=",
+    "url": "https://www.xiaohongshu.com/explore/6a4eff8f000000001603d791?xsec_token=ABLc6rJFdDXFJVLhckFo7l_c0DHafkn7YohuXkZNAtJDw=&xsec_source=pc_user",
+    "type": "video",
+    "title": "今天，我们正式开源 LingBot-Video。这是全球首个基于 Mixture",
+    "desc": "",
+    "creator_id": "696079c5000000003703058b",
+    "creator_name": "蚂蚁灵波科技",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-07-09T09:55:27+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:15:42+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 181
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o322covqmk72105qb0f72tu1cbkltga1g?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:15:42+08:00"
+  },
+  {
+    "note_id": "6a4efe09000000000603709e",
+    "xsec_token": "ABLc6rJFdDXFJVLhckFo7l_fJBpRoQX7-_2vNDJn0qX7I=",
+    "url": "https://www.xiaohongshu.com/explore/6a4efe09000000000603709e?xsec_token=ABLc6rJFdDXFJVLhckFo7l_fJBpRoQX7-_2vNDJn0qX7I=&xsec_source=pc_user",
+    "type": "video",
+    "title": "蚂蚁灵波科技 正式开源全新一代实时交互世界模型——LingBot-World 2",
+    "desc": "",
+    "creator_id": "696079c5000000003703058b",
+    "creator_name": "蚂蚁灵波科技",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-07-09T09:48:57+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:15:42+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 75
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g0k0322concnpmu005qb0f72tu1cbbfra51o?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:15:42+08:00"
   },
   {
     "note_id": "6a4ec7e5000000001c026ee0",
@@ -6815,6 +7179,32 @@
     "image_count": 0,
     "ip_location": "",
     "stats_updated_at": "2026-09-20T16:15:45+08:00"
+  },
+  {
+    "note_id": "6a4da6cf000000002103c610",
+    "xsec_token": "AB4LeFUBlyiLkelSEusHSoS2Fg8D0UOpcm-QnB3nuQGRw=",
+    "url": "https://www.xiaohongshu.com/explore/6a4da6cf000000002103c610?xsec_token=AB4LeFUBlyiLkelSEusHSoS2Fg8D0UOpcm-QnB3nuQGRw=&xsec_source=pc_user",
+    "type": "video",
+    "title": "今天，我们正式开源新一代具身基座模型 LingBot-VLA 2.0。作为今年",
+    "desc": "",
+    "creator_id": "696079c5000000003703058b",
+    "creator_name": "蚂蚁灵波科技",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-07-08T09:24:31+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:15:42+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 55
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g0k0322bggju970705qb0f72tu1cb57v75m8?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:15:42+08:00"
   },
   {
     "note_id": "6a4d9e880000000008025eb5",
@@ -7130,6 +7520,32 @@
     "stats_updated_at": "2026-09-20T16:16:23+08:00"
   },
   {
+    "note_id": "6a4c55b3000000000702d43e",
+    "xsec_token": "ABOQbe_fgLGZde9fGo2BjeipzYWebdjM5u7NGK1LDnc-I=",
+    "url": "https://www.xiaohongshu.com/explore/6a4c55b3000000000702d43e?xsec_token=ABOQbe_fgLGZde9fGo2BjeipzYWebdjM5u7NGK1LDnc-I=&xsec_source=pc_user",
+    "type": "video",
+    "title": "空间感知新突破，LingBot-Depth 2.0 正式发布！",
+    "desc": "",
+    "creator_id": "696079c5000000003703058b",
+    "creator_name": "蚂蚁灵波科技",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-07-07T09:26:11+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:15:42+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 121
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o3229r7m8gmu0g5qb0f72tu1cb6nf50o0?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:15:42+08:00"
+  },
+  {
     "note_id": "6a4c1b92000000001702c3ca",
     "xsec_token": "ABOQbe_fgLGZde9fGo2Bjeiij_g4I0EEffIQeoiJd9n9g=",
     "url": "https://www.xiaohongshu.com/explore/6a4c1b92000000001702c3ca?xsec_token=ABOQbe_fgLGZde9fGo2Bjeiij_g4I0EEffIQeoiJd9n9g=&xsec_source=pc_user",
@@ -7281,6 +7697,58 @@
     "image_count": 0,
     "ip_location": "",
     "stats_updated_at": "2026-09-20T16:15:45+08:00"
+  },
+  {
+    "note_id": "6a4b44dd000000000f0163b1",
+    "xsec_token": "ABzAddxUt2MC1ShPMFNz6wkNuHAJxWNL6adgfkMMkFmwc=",
+    "url": "https://www.xiaohongshu.com/explore/6a4b44dd000000000f0163b1?xsec_token=ABzAddxUt2MC1ShPMFNz6wkNuHAJxWNL6adgfkMMkFmwc=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "蚂蚁灵波全栈 2.0 来了！",
+    "desc": "",
+    "creator_id": "696079c5000000003703058b",
+    "creator_name": "蚂蚁灵波科技",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-07-06T14:02:05+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:15:42+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 19
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g0k0322932m56n2005qb0f72tu1cbrha4h00?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:15:42+08:00"
+  },
+  {
+    "note_id": "6a4b04d100000000220175a0",
+    "xsec_token": "ABzAddxUt2MC1ShPMFNz6wkC0Z6pYe6usZXWqp8pBln8w=",
+    "url": "https://www.xiaohongshu.com/explore/6a4b04d100000000220175a0?xsec_token=ABzAddxUt2MC1ShPMFNz6wkC0Z6pYe6usZXWqp8pBln8w=&xsec_source=pc_user",
+    "type": "video",
+    "title": "LingBot 2.0，明日起，逐一揭晓！",
+    "desc": "",
+    "creator_id": "696079c5000000003703058b",
+    "creator_name": "蚂蚁灵波科技",
+    "topics": [
+      "embodied",
+      "world-model"
+    ],
+    "tags": [],
+    "published_at": "2026-07-06T09:28:49+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:15:42+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 382
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o3228toorj6s005qb0f72tu1cbs2un9pg?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:15:42+08:00"
   },
   {
     "note_id": "6a4ac7f9000000001c025edd",

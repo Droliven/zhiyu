@@ -1,5 +1,30 @@
 [
   {
+    "note_id": "68dbdd60000000000402323a",
+    "xsec_token": "ABylIQWzQE86T_TBal-GmvvYBzqoh5fyhNs0ybQcAXLd4=",
+    "url": "https://www.xiaohongshu.com/explore/68dbdd60000000000402323a?xsec_token=ABylIQWzQE86T_TBal-GmvvYBzqoh5fyhNs0ybQcAXLd4=&xsec_source=pc_user",
+    "type": "video",
+    "title": "精灵·璇（新皮肤）首形科技x逆水寒",
+    "desc": "",
+    "creator_id": "66a2621c000000001d033373",
+    "creator_name": "首形科技 AheadForm",
+    "topics": [
+      "embodied"
+    ],
+    "tags": [],
+    "published_at": "2025-09-30T21:38:40+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:15:50+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 2890
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/1040g2sg31n2cjbq56g705pl2c8e7ecrjjcii08g?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:15:50+08:00"
+  },
+  {
     "note_id": "68dbab8b000000000302fc56",
     "xsec_token": "ABylIQWzQE86T_TBal-GmvvZuwrJ2n95_1I0gJoHhi_5s=",
     "url": "https://www.xiaohongshu.com/explore/68dbab8b000000000302fc56?xsec_token=ABylIQWzQE86T_TBal-GmvvZuwrJ2n95_1I0gJoHhi_5s=&xsec_source=pc_user",
@@ -127,6 +152,31 @@
     "image_count": 0,
     "ip_location": "",
     "stats_updated_at": "2026-09-20T17:13:33+08:00"
+  },
+  {
+    "note_id": "68d79a98000000000e031836",
+    "xsec_token": "ABdbdHIgpiTfaRatHAKxSBXIT1syuw9PNHw8LAgsfrcY4=",
+    "url": "https://www.xiaohongshu.com/explore/68d79a98000000000e031836?xsec_token=ABdbdHIgpiTfaRatHAKxSBXIT1syuw9PNHw8LAgsfrcY4=&xsec_source=pc_user",
+    "type": "video",
+    "title": "新的生命会打破机械与自然的界限-精灵·璇",
+    "desc": "",
+    "creator_id": "66a2621c000000001d033373",
+    "creator_name": "首形科技 AheadForm",
+    "topics": [
+      "embodied"
+    ],
+    "tags": [],
+    "published_at": "2025-09-27T16:04:40+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:15:50+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 2489
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/spectrum/1040g34o31mu7bkcm52105pl2c8e7ecrjhdpl67o?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:15:50+08:00"
   },
   {
     "note_id": "68d51f1b000000000e0225b1",

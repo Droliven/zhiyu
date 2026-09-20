@@ -373,6 +373,29 @@
       "note": "首形科技 胡宇航",
       "added": "2026-09-20",
       "enabled": true
+    },
+    {
+      "user_id": "696079c5000000003703058b",
+      "name": "蚂蚁灵波科技",
+      "profile_url": "https://www.xiaohongshu.com/user/profile/696079c5000000003703058b",
+      "topics": [
+        "embodied",
+        "world-model"
+      ],
+      "note": "蚂蚁灵波官方号（沈玉军）",
+      "added": "2026-09-20",
+      "enabled": true
+    },
+    {
+      "user_id": "66a2621c000000001d033373",
+      "name": "首形科技 AheadForm",
+      "profile_url": "https://www.xiaohongshu.com/user/profile/66a2621c000000001d033373",
+      "topics": [
+        "embodied"
+      ],
+      "note": "首形科技官方号（胡宇航）",
+      "added": "2026-09-20",
+      "enabled": true
     }
   ]
 }
