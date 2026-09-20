@@ -396,6 +396,19 @@
       "note": "首形科技官方号（胡宇航）",
       "added": "2026-09-20",
       "enabled": true
+    },
+    {
+      "user_id": "60cca0ae0000000001002752",
+      "name": "刘希慧",
+      "profile_url": "https://www.xiaohongshu.com/user/profile/60cca0ae0000000001002752",
+      "topics": [
+        "world-model",
+        "embodied",
+        "academia"
+      ],
+      "note": "港大 HKU-MMLab 助理教授，世界模型/具身",
+      "added": "2026-09-20",
+      "enabled": true
     }
   ]
 }

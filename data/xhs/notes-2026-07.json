@@ -7259,6 +7259,33 @@
     "stats_updated_at": "2026-09-20T17:13:17+08:00"
   },
   {
+    "note_id": "6a4d1685000000000f016928",
+    "xsec_token": "AB4LeFUBlyiLkelSEusHSoS0TyTI1P3vlWxDmcPsroVjw=",
+    "url": "https://www.xiaohongshu.com/explore/6a4d1685000000000f016928?xsec_token=AB4LeFUBlyiLkelSEusHSoS0TyTI1P3vlWxDmcPsroVjw=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "ICML预热 | World Guidance",
+    "desc": "",
+    "creator_id": "60cca0ae0000000001002752",
+    "creator_name": "刘希慧",
+    "topics": [
+      "world-model",
+      "embodied",
+      "academia"
+    ],
+    "tags": [],
+    "published_at": "2026-07-07T23:08:53+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:19:45+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 110
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/1040g2sg322ash66rn0005o6ck2n089qikeevgg8?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:19:45+08:00"
+  },
+  {
     "note_id": "6a4cedf60000000022015711",
     "xsec_token": "ABOQbe_fgLGZde9fGo2BjeihTc6RRX2aHLFxGHOBWh7fQ=",
     "url": "https://www.xiaohongshu.com/explore/6a4cedf60000000022015711?xsec_token=ABOQbe_fgLGZde9fGo2BjeihTc6RRX2aHLFxGHOBWh7fQ=&xsec_source=pc_user",
@@ -7829,6 +7856,33 @@
     "stats_updated_at": "2026-09-20T16:15:45+08:00"
   },
   {
+    "note_id": "6a4a4f12000000001102fe38",
+    "xsec_token": "ABp_pFYCSH23L9AFW2YoyyFsUn_gmllZcSe_asB95bYlo=",
+    "url": "https://www.xiaohongshu.com/explore/6a4a4f12000000001102fe38?xsec_token=ABp_pFYCSH23L9AFW2YoyyFsUn_gmllZcSe_asB95bYlo=&xsec_source=pc_user",
+    "type": "video",
+    "title": "ICML 2026预热 | PhysForge —— 让 3D 资产",
+    "desc": "",
+    "creator_id": "60cca0ae0000000001002752",
+    "creator_name": "刘希慧",
+    "topics": [
+      "world-model",
+      "embodied",
+      "academia"
+    ],
+    "tags": [],
+    "published_at": "2026-07-05T20:33:22+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:19:45+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 129
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/1040g2sg3228894mrmu705o6ck2n089qidl52dug?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:19:45+08:00"
+  },
+  {
     "note_id": "6a4a3da3000000001003cc2c",
     "xsec_token": "ABp_pFYCSH23L9AFW2YoyyFkMo5EQ50GX9k-CVMbT1_i0=",
     "url": "https://www.xiaohongshu.com/explore/6a4a3da3000000001003cc2c?xsec_token=ABp_pFYCSH23L9AFW2YoyyFkMo5EQ50GX9k-CVMbT1_i0=&xsec_source=pc_user",
@@ -8109,6 +8163,33 @@
     "image_count": 0,
     "ip_location": "",
     "stats_updated_at": "2026-09-20T16:16:52+08:00"
+  },
+  {
+    "note_id": "6a4790610000000011017afc",
+    "xsec_token": "ABbkEJ1eN6wBc5-rqVfOWrgU0EvSalK40NL2bG2WUyVyk=",
+    "url": "https://www.xiaohongshu.com/explore/6a4790610000000011017afc?xsec_token=ABbkEJ1eN6wBc5-rqVfOWrgU0EvSalK40NL2bG2WUyVyk=&xsec_source=pc_user",
+    "type": "normal",
+    "title": "World Model 03 | MemLearner (ECCV 2026)",
+    "desc": "",
+    "creator_id": "60cca0ae0000000001002752",
+    "creator_name": "刘希慧",
+    "topics": [
+      "world-model",
+      "embodied",
+      "academia"
+    ],
+    "tags": [],
+    "published_at": "2026-07-03T18:35:13+08:00",
+    "published_source": "note_id",
+    "captured_at": "2026-09-20T17:19:45+08:00",
+    "updated_at": null,
+    "stats": {
+      "liked": 214
+    },
+    "cover": "https://sns-img-qc.xhscdn.com/notes_pre_post/1040g3k03225d06l974005o6ck2n089qittnc80o?imageView2/2/w/480/format/webp",
+    "image_count": 0,
+    "ip_location": "",
+    "stats_updated_at": "2026-09-20T17:19:45+08:00"
   },
   {
     "note_id": "6a476a9f0000000017009b9a",
