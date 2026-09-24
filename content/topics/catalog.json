@@ -1,0 +1,166 @@
+{
+  "protected_report_ids": [
+    "report-wam-depth-talk-20260918"
+  ],
+  "archived_report_ids": [
+    "report-1b1ffacf7d",
+    "report-37b94c4145",
+    "report-0d81d19c6c",
+    "report-d2be249044",
+    "report-1950a5754f",
+    "report-f3ad8e6a32",
+    "report-cedaa0825a",
+    "report-a141624b1e",
+    "report-ea0469615f",
+    "report-89efbb2378",
+    "report-5a20368080",
+    "report-f5f82689ca",
+    "report-77695ff321",
+    "report-a77d9a7ad6",
+    "report-365c2cc93b",
+    "report-af906c7fa2",
+    "report-90041fa2f9",
+    "report-ce5d8128c6",
+    "report-e81e6bd3a1",
+    "report-6fa37648ba",
+    "report-554de78a93",
+    "report-1818b05f33",
+    "report-0ad44831eb"
+  ],
+  "topics": [
+    {
+      "id": "topic-visual-action",
+      "title": "Visual Action：从视觉运动到跨本体动作接口",
+      "date": "2026-09-24",
+      "tags": [
+        "动作表征",
+        "跨本体迁移",
+        "World Action Model"
+      ],
+      "summary": "按控制意图、实际运动与环境响应区分视觉动作，比较渲染、光流、轨迹、骨架和潜在动作，并审查它们怎样变成可执行控制。",
+      "path": "content/topics/visual-action.md"
+    },
+    {
+      "id": "topic-in-context-learning",
+      "title": "具身上下文学习：示范、记忆、检索与测试时适应",
+      "date": "2026-09-24",
+      "tags": [
+        "具身上下文学习",
+        "长时记忆",
+        "适应与泛化"
+      ],
+      "summary": "用部署时到底改变了什么来分类：外部示范、回合记忆、检索结果、快速权重和持久参数，分别评估新任务学习与长任务执行。",
+      "path": "content/topics/in-context-learning.md"
+    },
+    {
+      "id": "topic-code-agentic-world",
+      "title": "代码与 Agent 世界模型：可执行状态、视觉渲染与闭环验证",
+      "date": "2026-09-24",
+      "tags": [
+        "Agent与可执行世界",
+        "世界模型",
+        "物理建模与仿真"
+      ],
+      "summary": "按代码在系统中的职责区分世界构造、观测解释、持久状态、视觉渲染和机器人编排，比较“能运行”“拟合观测”与“预测真实后果”的证据差别。",
+      "path": "content/topics/code-agentic-world.md"
+    },
+    {
+      "id": "topic-3d-reconstruction",
+      "title": "3D/4D 生成与重建：从几何潜空间到统一世界表征",
+      "date": "2026-09-24",
+      "tags": [
+        "3D/4D",
+        "世界模型",
+        "视频生成",
+        "自监督与预测表征"
+      ],
+      "summary": "以 GAE、Gen3R、PixWorld、RecGen3D 和 World Tracing 为核心，比较几何潜空间、渲染监督与生成补全，再梳理视角、时间和长期记忆如何走向持久的 4D 世界。",
+      "path": "content/topics/3d-reconstruction.md"
+    },
+    {
+      "id": "topic-physical-plausibility",
+      "title": "物理合理性：从视觉生成到可验证的动力学与交互",
+      "date": "2026-09-24",
+      "tags": [
+        "物理建模与仿真",
+        "世界模型",
+        "数据与评测"
+      ],
+      "summary": "比较显式模拟、学习式动力学、物理监督与奖励、真实交互校准，以 Principia、IMPLY、RoboPhys-3D、VeriPhy 等建立从画面观感到可验证动力学的证据链。",
+      "path": "content/topics/physical-plausibility.md"
+    },
+    {
+      "id": "topic-reinforcement-learning",
+      "title": "强化学习与世界模型：奖励优化、想象学习及执行校正",
+      "date": "2026-09-24",
+      "tags": [
+        "强化与模仿学习",
+        "世界模型",
+        "数据与评测"
+      ],
+      "summary": "区分优化视频生成器、在模型中学习机器人策略、把生成计划接地到物理控制三条路线，重点审查奖励代理、模型利用与真实执行证据。",
+      "path": "content/topics/reinforcement-learning.md"
+    },
+    {
+      "id": "topic-generative-world-models",
+      "title": "生成式世界模型：预测表征、长程记忆与实时执行",
+      "date": "2026-09-24",
+      "tags": [
+        "世界模型",
+        "视频生成",
+        "流式与自回归",
+        "自监督与预测表征"
+      ],
+      "summary": "把预测什么、如何维持状态、未来如何用于决策和怎样实时运行拆开讨论，连接视频表征、WAM预训练、流式蒸馏与几何记忆。",
+      "path": "content/topics/generative-world-models.md"
+    },
+    {
+      "id": "topic-jepa-latent-state",
+      "title": "JEPA与隐式状态表征：从可预测特征到可用于决策的世界状态",
+      "date": "2026-09-24",
+      "tags": [
+        "表征学习与潜空间",
+        "世界模型",
+        "机器人学习"
+      ],
+      "summary": "围绕15篇馆藏，区分防坍塌、物理可解码性、动态可预测性与控制效用；重点比较LeVJEPA、Causal-JEPA、PSG-JEPA和JEPA-x，并连接生成tokenizer、动作规划与失败监控。",
+      "path": "content/topics/jepa-latent-state.md"
+    },
+    {
+      "id": "report-c7ced2c92d",
+      "title": "流式与自回归交互视频生成：蒸馏、长程记忆、几何控制与实时系统",
+      "date": "2026-09-24",
+      "tags": [
+        "视频生成",
+        "自回归扩散",
+        "交互世界模型"
+      ],
+      "summary": "恢复独立流式专题，保留原十篇精读；以15篇馆藏串联DMD、Self Forcing、Causal Forcing、LongLive，并比较几何控制、动态一致性、重访记忆与端到端交互延迟。",
+      "path": "content/topics/streaming-generation.md"
+    },
+    {
+      "id": "topic-causality-reliability",
+      "title": "因果、反事实与可靠性：世界模型到底值得信任什么",
+      "date": "2026-09-24",
+      "tags": [
+        "因果与反事实",
+        "数据与评测",
+        "世界模型"
+      ],
+      "summary": "从时间因果、动作响应、机制结构到反事实识别建立证据层级，再连接失效诊断、物理锚定、选择性使用与更新价值。",
+      "path": "content/topics/causality-reliability.md"
+    },
+    {
+      "id": "topic-contact-hoi",
+      "title": "手物交互重建与生成：从单目视频、接触运动到可交互物理资产",
+      "date": "2026-09-24",
+      "tags": [
+        "HOI",
+        "3D/4D",
+        "物理建模与仿真"
+      ],
+      "summary": "围绕25篇馆藏，以AgentSTAR与ForceTwin为重点，串联手物联合重建、结构化对象资产、交互动作与视频生成、接触约束及物理辨识，比较输入权限、实验口径与可执行性。",
+      "path": "content/topics/contact-hoi.md"
+    }
+  ]
+}

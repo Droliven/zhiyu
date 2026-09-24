@@ -1130,6 +1130,23 @@ mjx-container[display="true"] {
   border-bottom: 1px solid var(--line);
 }
 
+.report-archive {
+  margin-top: 32px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+}
+
+.report-archive > summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.report-archive > p {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
 .report-item {
   display: grid;
   grid-template-columns: 145px minmax(0, 1fr) auto;

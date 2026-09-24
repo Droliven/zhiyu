@@ -21,235 +21,759 @@
     ]
   },
   {
-    "id": "report-1b1ffacf7d",
-    "title": "从视频预测到结构化世界状态：WAM、3D/4D 与具身交互新进展",
-    "date": "2026-09-16",
+    "id": "topic-visual-action",
+    "title": "Visual Action：从视觉运动到跨本体动作接口",
+    "date": "2026-09-24",
     "tags": [
-      "3D/4D",
-      "HOI",
-      "World Action Model",
-      "人类视频",
-      "具身导航",
-      "前馈重建",
-      "因果审计",
-      "流式世界模型"
+      "动作表征",
+      "跨本体迁移",
+      "World Action Model"
     ],
-    "summary": "<!-- suggested filename: 2026-09-16 weekly paper update.md --",
+    "summary": "按控制意图、实际运动与环境响应区分视觉动作，比较渲染、光流、轨迹、骨架和潜在动作，并审查它们怎样变成可执行控制。",
+    "path": "content/topics/visual-action.md",
+    "source_file": "visual-action.md",
     "paper_ids": [
-      "arxiv-2609-06955",
-      "arxiv-2609-12155",
-      "arxiv-2609-13733",
-      "arxiv-2609-13812",
-      "arxiv-2609-13851",
-      "arxiv-2609-14462",
-      "arxiv-2609-14561",
-      "arxiv-2609-14833",
-      "arxiv-2609-15005",
+      "arxiv-2508-13104",
+      "arxiv-2508-18269",
+      "arxiv-2511-21690",
+      "arxiv-2512-13030",
+      "arxiv-2606-03943",
+      "arxiv-2606-13674",
+      "arxiv-2606-13769",
+      "arxiv-2607-13017",
+      "arxiv-2607-22535",
+      "arxiv-2608-06332",
+      "arxiv-2608-19613",
+      "arxiv-2608-24101",
       "arxiv-2609-15870",
-      "arxiv-2609-16737",
-      "arxiv-2609-17372",
-      "arxiv-2609-17524"
+      "arxiv-2609-21514",
+      "arxiv-2609-21983",
+      "arxiv-2609-22332",
+      "arxiv-2609-23252"
     ],
-    "path": "content/reports/2026-09-16_weekly_paper_update.md",
-    "source_file": "2026-09-16_weekly_paper_update.md",
-    "content_sha1": "b37d79b5c5d8c4a3ae1e90925e0bad1f776467cd"
+    "kind": "synthesis",
+    "archived": false
   },
   {
-    "id": "report-37b94c4145",
-    "title": "从可预测到可执行：世界模型的记忆、物理约束与 4D 交互接口",
-    "date": "2026-09-14",
+    "id": "topic-in-context-learning",
+    "title": "具身上下文学习：示范、记忆、检索与测试时适应",
+    "date": "2026-09-24",
     "tags": [
-      "3D/4D",
-      "HOI",
-      "World Action Model",
-      "世界模型",
-      "世界模型评测",
       "具身上下文学习",
-      "第一视角",
-      "触觉与接触"
+      "长时记忆",
+      "适应与泛化"
     ],
-    "summary": "OpenWAM 双系统架构、预训练组成与统一动作空间",
-    "paper_ids": [
-      "arxiv-2609-04911",
-      "arxiv-2609-04958",
-      "arxiv-2609-05588",
-      "arxiv-2609-05834",
-      "arxiv-2609-05892",
-      "arxiv-2609-06009",
-      "arxiv-2609-06302",
-      "arxiv-2609-06578",
-      "arxiv-2609-06615",
-      "arxiv-2609-06852",
-      "arxiv-2609-07002",
-      "arxiv-2609-07126",
-      "arxiv-2609-07398",
-      "arxiv-2609-07581",
-      "arxiv-2609-07747",
-      "arxiv-2609-08636",
-      "arxiv-2609-08743",
-      "arxiv-2609-08848",
-      "arxiv-2609-09119",
-      "arxiv-2609-09210",
-      "arxiv-2609-09941",
-      "arxiv-2609-10050",
-      "arxiv-2609-10506",
-      "arxiv-2609-10540",
-      "arxiv-2609-10706",
-      "arxiv-2609-11172",
-      "arxiv-2609-11308",
-      "arxiv-2609-11445",
-      "arxiv-2609-11548",
-      "arxiv-2609-11561",
-      "arxiv-2609-11875",
-      "arxiv-2609-12036",
-      "arxiv-2609-12103",
-      "arxiv-2609-12441",
-      "arxiv-2609-12498",
-      "arxiv-2609-12549"
-    ],
-    "path": "content/reports/2026-09-14_predictive_to_executable_world_models.md",
-    "source_file": "2026-09-14_predictive_to_executable_world_models.md",
-    "content_sha1": "301f77f4f1a9bb4cf4dc274772f0633b907613b2"
-  },
-  {
-    "id": "report-0d81d19c6c",
-    "title": "知域论文合并更新：2026-09-06",
-    "date": "2026-09-06",
-    "tags": [
-      "3D/4D",
-      "HOI",
-      "World Action Model",
-      "世界模型",
-      "具身上下文学习",
-      "因果建模",
-      "流式生成",
-      "物理建模",
-      "第一视角",
-      "跨本体迁移"
-    ],
-    "summary": "报告标签 ：周报, World Action Model, world model, Embodied In-context Learning, cross-embodiment, HOI, egocentric vision, 3D/4D Reconstruction, Streaming Generation, Causal Modeling, Physical Reasoning",
-    "paper_ids": [
-      "arxiv-2608-28549",
-      "arxiv-2608-28718",
-      "arxiv-2608-29242",
-      "arxiv-2608-29910",
-      "arxiv-2608-30237",
-      "arxiv-2608-30643",
-      "arxiv-2608-30692",
-      "arxiv-2608-30880",
-      "arxiv-2609-00161",
-      "arxiv-2609-00188",
-      "arxiv-2609-00610",
-      "arxiv-2609-01276",
-      "arxiv-2609-01596",
-      "arxiv-2609-01938",
-      "arxiv-2609-02159",
-      "arxiv-2609-02531",
-      "arxiv-2609-02886",
-      "arxiv-2609-03153",
-      "arxiv-2609-03199",
-      "arxiv-2609-03673",
-      "arxiv-2609-04196",
-      "arxiv-2609-04200"
-    ],
-    "path": "content/reports/2026-09-06_weekly_paper_update_merged.md",
-    "source_file": "2026-09-06_weekly_paper_update_merged.md",
-    "content_sha1": "a19f721bcf6a0f7426809c6140444f3b6acc4428"
-  },
-  {
-    "id": "report-d2be249044",
-    "title": "物理世界模型与物理一致视频生成论文精读（2026-09-03）",
-    "date": "2026-09-03",
-    "tags": [
-      "世界模型",
-      "物理建模"
-    ],
-    "summary": "报告标签 ：Physical World Model, Physics-Aware Video Generation, World Simulator",
-    "paper_ids": [
-      "arxiv-2409-18964",
-      "arxiv-2509-09737",
-      "arxiv-2509-21309",
-      "arxiv-2512-05564",
-      "arxiv-2601-11087",
-      "arxiv-2603-05449",
-      "arxiv-2604-02296",
-      "arxiv-2606-28128",
-      "arxiv-2607-28624",
-      "arxiv-2608-27549"
-    ],
-    "path": "content/reports/2026-09-03_curated_papers.md",
-    "source_file": "2026-09-03_curated_papers.md",
-    "content_sha1": "6ca9eeee7ad7ca85381f9d53ad7c0a279436c8d0"
-  },
-  {
-    "id": "report-1950a5754f",
-    "title": "具身 In-Context Learning 专题：视频提示、长上下文与测试时适应",
-    "date": "2026-09-02",
-    "tags": [
-      "VLA",
-      "World Action Model",
-      "具身上下文学习",
-      "测试时适应",
-      "长时记忆"
-    ],
-    "summary": "本专题以 Zero-WAM、RoboTTT、HOST、S1、GEN-1.5 和 Dyna-2 为主线，并保留 RA-VLA、PonderPounce 两项相关工作。统一比较上下文是什么、策略在测试时究竟改变了什么、实验探查了什么、证据实际支持什么。RoboTTT 与 HOST 有 arXiv 论文；S1、GEN-1.5 和 Dyna-2 目前只有机构官方研究长文或网页版技术报告，后者的结果均按“作者自报、未外部复现”处理。",
+    "summary": "用部署时到底改变了什么来分类：外部示范、回合记忆、检索结果、快速权重和持久参数，分别评估新任务学习与长任务执行。",
+    "path": "content/topics/in-context-learning.md",
+    "source_file": "in-context-learning.md",
     "paper_ids": [
       "arxiv-2607-15275",
       "arxiv-2607-20033",
       "arxiv-2608-24115",
       "arxiv-2608-25585",
       "arxiv-2608-26103",
-      "paper-1d4c797b72",
+      "arxiv-2609-06615",
+      "arxiv-2609-06852",
+      "arxiv-2609-07581",
+      "arxiv-2609-11308",
+      "arxiv-2609-11561",
+      "arxiv-2609-13851",
+      "arxiv-2609-19138",
+      "arxiv-2609-22966",
+      "arxiv-2609-24411",
       "paper-5299527392",
       "paper-d14a137e07"
     ],
-    "path": "content/reports/2026-08-31_embodied_in_context_learning.md",
-    "source_file": "2026-08-31_embodied_in_context_learning.md",
-    "content_sha1": "5cbcf668f2e0ee34230873895a91431734aef927"
+    "kind": "synthesis",
+    "archived": false
   },
   {
-    "id": "report-f3ad8e6a32",
-    "title": "Dyna-2 技术报告精读：百万小时人类视频上的世界动作模型扩展律",
-    "date": "2026-09-02",
+    "id": "topic-code-agentic-world",
+    "title": "代码与 Agent 世界模型：可执行状态、视觉渲染与闭环验证",
+    "date": "2026-09-24",
     "tags": [
-      "World Action Model",
-      "扩散与流匹配",
-      "机器人学习",
-      "第一视角",
-      "视频生成",
-      "跨本体迁移",
-      "预训练与扩展律"
+      "Agent与可执行世界",
+      "世界模型",
+      "物理建模与仿真"
     ],
-    "summary": "报告标签 ：World Action Model, scaling law, cross-embodiment transfer, 第一视角, 机器人学习, flow matching, video generation",
+    "summary": "按代码在系统中的职责区分世界构造、观测解释、持久状态、视觉渲染和机器人编排，比较“能运行”“拟合观测”与“预测真实后果”的证据差别。",
+    "path": "content/topics/code-agentic-world.md",
+    "source_file": "code-agentic-world.md",
     "paper_ids": [
-      "paper-1d4c797b72"
+      "arxiv-2511-13647",
+      "arxiv-2606-07723",
+      "arxiv-2607-01766",
+      "arxiv-2608-25927",
+      "arxiv-2608-27549",
+      "arxiv-2609-04911",
+      "arxiv-2609-22966",
+      "arxiv-2609-23578",
+      "arxiv-2609-24487",
+      "arxiv-2609-26458",
+      "arxiv-2609-26795"
     ],
-    "path": "content/reports/2026-09-02_dyna_2_technical_report.md",
-    "source_file": "2026-09-02_dyna_2_technical_report.md",
-    "content_sha1": "9da8ae6f0e2ec4c1f705c2fc777fe2cd4de136f0"
+    "kind": "synthesis",
+    "archived": false
   },
   {
-    "id": "report-cedaa0825a",
-    "title": "R1 / GRPO / 奖励优化专题：从视频几何一致性到机器人策略",
-    "date": "2026-08-31",
+    "id": "topic-3d-reconstruction",
+    "title": "3D/4D 生成与重建：从几何潜空间到统一世界表征",
+    "date": "2026-09-24",
     "tags": [
       "3D/4D",
-      "强化学习",
-      "机器人学习",
-      "视频生成"
+      "世界模型",
+      "视频生成",
+      "自监督与预测表征"
     ],
-    "summary": "严格收录知域中直接使用 R1-style、GRPO、RL post-training 或显式奖励优化的 6 篇工作；不因标题、机器人型号或 on-policy 字样做表面匹配。",
+    "summary": "以 GAE、Gen3R、PixWorld、RecGen3D 和 World Tracing 为核心，比较几何潜空间、渲染监督与生成补全，再梳理视角、时间和长期记忆如何走向持久的 4D 世界。",
+    "path": "content/topics/3d-reconstruction.md",
+    "source_file": "3d-reconstruction.md",
+    "paper_ids": [
+      "arxiv-2601-04090",
+      "arxiv-2603-08254",
+      "arxiv-2604-01479",
+      "arxiv-2606-13652",
+      "arxiv-2607-05373",
+      "arxiv-2607-09225",
+      "arxiv-2608-04701",
+      "arxiv-2608-19556",
+      "arxiv-2608-28549",
+      "arxiv-2608-28718",
+      "arxiv-2609-00610",
+      "arxiv-2609-13733",
+      "arxiv-2609-20012",
+      "arxiv-2609-20817",
+      "arxiv-2609-21751",
+      "arxiv-2609-24487",
+      "arxiv-2609-24981",
+      "arxiv-2609-24984"
+    ],
+    "kind": "synthesis",
+    "archived": false
+  },
+  {
+    "id": "topic-physical-plausibility",
+    "title": "物理合理性：从视觉生成到可验证的动力学与交互",
+    "date": "2026-09-24",
+    "tags": [
+      "物理建模与仿真",
+      "世界模型",
+      "数据与评测"
+    ],
+    "summary": "比较显式模拟、学习式动力学、物理监督与奖励、真实交互校准，以 Principia、IMPLY、RoboPhys-3D、VeriPhy 等建立从画面观感到可验证动力学的证据链。",
+    "path": "content/topics/physical-plausibility.md",
+    "source_file": "physical-plausibility.md",
+    "paper_ids": [
+      "arxiv-2409-18964",
+      "arxiv-2509-21309",
+      "arxiv-2512-05564",
+      "arxiv-2601-11087",
+      "arxiv-2603-05449",
+      "arxiv-2603-26599",
+      "arxiv-2604-24764",
+      "arxiv-2606-28128",
+      "arxiv-2608-06799",
+      "arxiv-2608-09298",
+      "arxiv-2608-19556",
+      "arxiv-2608-28718",
+      "arxiv-2609-03153",
+      "arxiv-2609-04200",
+      "arxiv-2609-04911",
+      "arxiv-2609-12441",
+      "arxiv-2609-14833",
+      "arxiv-2609-20761",
+      "arxiv-2609-21751"
+    ],
+    "kind": "synthesis",
+    "archived": false
+  },
+  {
+    "id": "topic-reinforcement-learning",
+    "title": "强化学习与世界模型：奖励优化、想象学习及执行校正",
+    "date": "2026-09-24",
+    "tags": [
+      "强化与模仿学习",
+      "世界模型",
+      "数据与评测"
+    ],
+    "summary": "区分优化视频生成器、在模型中学习机器人策略、把生成计划接地到物理控制三条路线，重点审查奖励代理、模型利用与真实执行证据。",
+    "path": "content/topics/reinforcement-learning.md",
+    "source_file": "reinforcement-learning.md",
+    "paper_ids": [
+      "arxiv-2401-12497",
+      "arxiv-2507-13340",
+      "arxiv-2511-02225",
+      "arxiv-2511-14262",
+      "arxiv-2512-05564",
+      "arxiv-2601-11087",
+      "arxiv-2602-06035",
+      "arxiv-2603-26599",
+      "arxiv-2604-24764",
+      "arxiv-2606-28128",
+      "arxiv-2608-19556",
+      "arxiv-2608-22364",
+      "arxiv-2609-02159",
+      "arxiv-2609-06009",
+      "arxiv-2609-09941",
+      "arxiv-2609-10050",
+      "arxiv-2609-10954",
+      "arxiv-2609-12036",
+      "arxiv-2609-17372"
+    ],
+    "kind": "synthesis",
+    "archived": false
+  },
+  {
+    "id": "topic-generative-world-models",
+    "title": "生成式世界模型：预测表征、长程记忆与实时执行",
+    "date": "2026-09-24",
+    "tags": [
+      "世界模型",
+      "视频生成",
+      "流式与自回归",
+      "自监督与预测表征"
+    ],
+    "summary": "把预测什么、如何维持状态、未来如何用于决策和怎样实时运行拆开讨论，连接视频表征、WAM预训练、流式蒸馏与几何记忆。",
+    "path": "content/topics/generative-world-models.md",
+    "source_file": "generative-world-models.md",
+    "paper_ids": [
+      "arxiv-2311-18828",
+      "arxiv-2405-14867",
+      "arxiv-2506-08009",
+      "arxiv-2509-22622",
+      "arxiv-2512-13030",
+      "arxiv-2602-02214",
+      "arxiv-2602-10098",
+      "arxiv-2605-15141",
+      "arxiv-2605-18739",
+      "arxiv-2605-30263",
+      "arxiv-2606-03188",
+      "arxiv-2606-10040",
+      "arxiv-2607-05468",
+      "arxiv-2607-13960",
+      "arxiv-2607-14088",
+      "arxiv-2608-01397",
+      "arxiv-2608-04996",
+      "arxiv-2608-09771",
+      "arxiv-2608-23565",
+      "arxiv-2608-27328",
+      "arxiv-2608-27395",
+      "arxiv-2608-29910",
+      "arxiv-2609-05588",
+      "arxiv-2609-07398",
+      "arxiv-2609-10506",
+      "arxiv-2609-14462",
+      "arxiv-2609-17524",
+      "arxiv-2609-24868",
+      "arxiv-2609-24981",
+      "arxiv-2609-24984",
+      "arxiv-2609-25627",
+      "paper-1d4c797b72"
+    ],
+    "kind": "synthesis",
+    "archived": false
+  },
+  {
+    "id": "topic-jepa-latent-state",
+    "title": "JEPA与隐式状态表征：从可预测特征到可用于决策的世界状态",
+    "date": "2026-09-24",
+    "tags": [
+      "表征学习与潜空间",
+      "世界模型",
+      "机器人学习"
+    ],
+    "summary": "围绕15篇馆藏，区分防坍塌、物理可解码性、动态可预测性与控制效用；重点比较LeVJEPA、Causal-JEPA、PSG-JEPA和JEPA-x，并连接生成tokenizer、动作规划与失败监控。",
+    "path": "content/topics/jepa-latent-state.md",
+    "source_file": "jepa-latent-state.md",
+    "paper_ids": [
+      "arxiv-2512-13644",
+      "arxiv-2602-10098",
+      "arxiv-2602-11389",
+      "arxiv-2606-13674",
+      "arxiv-2607-14088",
+      "arxiv-2608-04996",
+      "arxiv-2608-06799",
+      "arxiv-2608-15651",
+      "arxiv-2608-19085",
+      "arxiv-2608-19613",
+      "arxiv-2608-24044",
+      "arxiv-2608-27395",
+      "arxiv-2609-10506",
+      "arxiv-2609-11445",
+      "arxiv-2609-24981"
+    ],
+    "kind": "synthesis",
+    "archived": false
+  },
+  {
+    "id": "report-c7ced2c92d",
+    "title": "流式与自回归交互视频生成：蒸馏、长程记忆、几何控制与实时系统",
+    "date": "2026-09-24",
+    "tags": [
+      "视频生成",
+      "自回归扩散",
+      "交互世界模型"
+    ],
+    "summary": "恢复独立流式专题，保留原十篇精读；以15篇馆藏串联DMD、Self Forcing、Causal Forcing、LongLive，并比较几何控制、动态一致性、重访记忆与端到端交互延迟。",
+    "path": "content/topics/streaming-generation.md",
+    "source_file": "streaming-generation.md",
+    "paper_ids": [
+      "arxiv-2311-18828",
+      "arxiv-2405-14867",
+      "arxiv-2412-07772",
+      "arxiv-2505-13211",
+      "arxiv-2506-08009",
+      "arxiv-2509-22622",
+      "arxiv-2602-02214",
+      "arxiv-2605-15141",
+      "arxiv-2605-18739",
+      "arxiv-2605-30263",
+      "arxiv-2608-19556",
+      "arxiv-2608-25479",
+      "arxiv-2608-27328",
+      "arxiv-2608-29910",
+      "arxiv-2609-00610"
+    ],
+    "kind": "synthesis",
+    "archived": false
+  },
+  {
+    "id": "topic-causality-reliability",
+    "title": "因果、反事实与可靠性：世界模型到底值得信任什么",
+    "date": "2026-09-24",
+    "tags": [
+      "因果与反事实",
+      "数据与评测",
+      "世界模型"
+    ],
+    "summary": "从时间因果、动作响应、机制结构到反事实识别建立证据层级，再连接失效诊断、物理锚定、选择性使用与更新价值。",
+    "path": "content/topics/causality-reliability.md",
+    "source_file": "causality-reliability.md",
+    "paper_ids": [
+      "arxiv-2401-12497",
+      "arxiv-2402-10877",
+      "arxiv-2410-19923",
+      "arxiv-2511-14262",
+      "arxiv-2601-21998",
+      "arxiv-2602-11389",
+      "arxiv-2604-02296",
+      "arxiv-2605-27589",
+      "arxiv-2608-09298",
+      "arxiv-2608-24885",
+      "arxiv-2609-03153",
+      "arxiv-2609-05834",
+      "arxiv-2609-06302",
+      "arxiv-2609-07126",
+      "arxiv-2609-09210",
+      "arxiv-2609-10954",
+      "arxiv-2609-11172",
+      "arxiv-2609-11445",
+      "arxiv-2609-12441",
+      "arxiv-2609-14833",
+      "arxiv-2609-15005",
+      "arxiv-2609-23252",
+      "arxiv-2609-26293"
+    ],
+    "kind": "synthesis",
+    "archived": false
+  },
+  {
+    "id": "topic-contact-hoi",
+    "title": "手物交互重建与生成：从单目视频、接触运动到可交互物理资产",
+    "date": "2026-09-24",
+    "tags": [
+      "HOI",
+      "3D/4D",
+      "物理建模与仿真"
+    ],
+    "summary": "围绕25篇馆藏，以AgentSTAR与ForceTwin为重点，串联手物联合重建、结构化对象资产、交互动作与视频生成、接触约束及物理辨识，比较输入权限、实验口径与可执行性。",
+    "path": "content/topics/contact-hoi.md",
+    "source_file": "contact-hoi.md",
+    "paper_ids": [
+      "arxiv-2505-16602",
+      "arxiv-2507-01737",
+      "arxiv-2512-01677",
+      "arxiv-2512-13644",
+      "arxiv-2512-17907",
+      "arxiv-2601-01050",
+      "arxiv-2602-09600",
+      "arxiv-2603-13615",
+      "arxiv-2604-01001",
+      "arxiv-2604-10836",
+      "arxiv-2606-30308",
+      "arxiv-2606-30598",
+      "arxiv-2607-02075",
+      "arxiv-2608-20308",
+      "arxiv-2608-22449",
+      "arxiv-2608-27407",
+      "arxiv-2609-04958",
+      "arxiv-2609-07747",
+      "arxiv-2609-08636",
+      "arxiv-2609-10982",
+      "arxiv-2609-20649",
+      "arxiv-2609-21751",
+      "arxiv-2609-24487",
+      "arxiv-2609-24507",
+      "paper-3cc64741b1"
+    ],
+    "kind": "synthesis",
+    "archived": false
+  },
+  {
+    "id": "report-0ad44831eb",
+    "title": "Hand-Object Interaction World Model：2D 视频结合 3D/4D 的最新工作梳理",
+    "date": "2026-08-15",
+    "tags": [
+      "HOI",
+      "3D/4D",
+      "第一视角"
+    ],
+    "summary": "检索日期：2026-08-15 关注方向：egocentric hand-object interaction world model，尤其是 2D 视频生成 + 3D/4D 几何、手部动作、相机运动、物体状态、接触动力学 的结合。 说明：很多最新工作标题里都写 world model / egocentric interaction，但实际 3D/4D grounding 强度差异很大。因此本文先做分级，再逐篇介绍。",
+    "paper_ids": [
+      "arxiv-2505-16602",
+      "arxiv-2512-01677",
+      "arxiv-2512-13644",
+      "arxiv-2512-17907",
+      "arxiv-2601-01050",
+      "arxiv-2602-09600",
+      "arxiv-2602-09638",
+      "arxiv-2603-08254",
+      "arxiv-2603-13615",
+      "arxiv-2604-01001",
+      "arxiv-2604-10836",
+      "arxiv-2607-02075",
+      "paper-3cc64741b1"
+    ],
+    "path": "content/reports/hoi_world_model_3d4d_report.md",
+    "source_file": "hoi_world_model_3d4d_report.md",
+    "content_sha1": "4dd34260be7eff347a7322a8acdc9aa628129e72",
+    "archived": true
+  },
+  {
+    "id": "report-1818b05f33",
+    "title": "3D/4D 几何一致性视频生成论文梳理：GeoFlow / VGGRPO / World-R1",
+    "date": "2026-08-18",
+    "tags": [
+      "几何一致性",
+      "视频生成",
+      "3D/4D"
+    ],
+    "summary": "检索与整理日期：2026-08-18 阅读范围：arXiv 摘要页、arXiv HTML 正文/附录中的方法与实验部分、项目页/代码页。 主题定位：这 3 篇并不是 hand-object interaction 专文，而是 通用 text-to-video / video generation 的 3D/4D 几何一致性后训练与奖励设计 。它们对 HOI world model 的价值主要在于：几何奖励、4D latent reward、3D foundation model critic、camera consistency、failure diagnosis。",
     "paper_ids": [
       "arxiv-2603-26599",
       "arxiv-2604-24764",
-      "arxiv-2605-18365",
-      "arxiv-2606-05645",
-      "arxiv-2608-11739",
-      "arxiv-2608-19556"
+      "arxiv-2605-18365"
     ],
-    "path": "content/reports/2026-08-31_r1_grpo_reward_optimization.md",
-    "source_file": "2026-08-31_r1_grpo_reward_optimization.md",
-    "content_sha1": "f8699ccb9598d5d8200054d2524734594c403436"
+    "path": "content/reports/geometric_consistency_video_generation_report.md",
+    "source_file": "geometric_consistency_video_generation_report.md",
+    "content_sha1": "13a7e23f3180bb005918ba783a6538bdb0c3fb01",
+    "archived": true
+  },
+  {
+    "id": "report-6fa37648ba",
+    "title": "因果世界模型：代表工作、技术脉络与因果边界",
+    "date": "2026-08-19",
+    "tags": [
+      "因果世界模型",
+      "反事实推理"
+    ],
+    "summary": "核心判断： 当前所谓 Causal World Model 实际横跨三种不同层级：正式因果结构学习、通过训练目标注入因果归纳偏置，以及仅具有时间因果顺序的生成式世界模型。三者不能混用。",
+    "paper_ids": [
+      "arxiv-2401-12497",
+      "arxiv-2402-10877",
+      "arxiv-2410-19923",
+      "arxiv-2511-14262",
+      "arxiv-2601-21998",
+      "arxiv-2602-11389",
+      "arxiv-2608-13456"
+    ],
+    "path": "content/reports/causal_world_models_2026_survey.md",
+    "source_file": "causal_world_models_2026_survey.md",
+    "content_sha1": "f2f6e054fa9ca5c1463f02e4c5536f2a3e5ebac9",
+    "archived": true
+  },
+  {
+    "id": "report-554de78a93",
+    "title": "因果世界模型（Causal World Models）最新代表工作梳理",
+    "date": "2026-08-19",
+    "tags": [
+      "因果世界模型",
+      "反事实推理"
+    ],
+    "summary": "本报告聚焦“world model + causality / intervention / counterfactual reasoning”，优先选择近年正式发表或较高质量的新预印本。 检索线索来自 arXiv、会议官网及作者公开页面；最终技术判断以 原论文、会议论文页、官方代码仓库 为准。 特别注意：近年来很多论文使用 “causal” 一词，但其含义并不相同。本报告严格区分： 1. 正式因果学习 / intervention / identifiability ； 2. causal inductive bias / counterfactual-like predictive learning ； 3. object dependency / causality-aware attention ；…",
+    "paper_ids": [
+      "arxiv-2401-12497",
+      "arxiv-2402-10877",
+      "arxiv-2410-19923",
+      "arxiv-2511-14262",
+      "arxiv-2601-21998",
+      "arxiv-2602-11389",
+      "arxiv-2608-13456"
+    ],
+    "path": "content/reports/causal_world_models_2026_survey.original.md",
+    "source_file": "causal_world_models_2026_survey.original.md",
+    "content_sha1": "caea8e84f2dbc432ca83bf04b63dcad20be65370",
+    "archived": true
+  },
+  {
+    "id": "report-90041fa2f9",
+    "title": "交互世界模型与人体/手物交互生成论文梳理",
+    "date": "2026-08-20",
+    "tags": [
+      "交互世界模型",
+      "HOI"
+    ],
+    "summary": "说明：每篇均基于原论文 arXiv / 项目页整理。代表图优先选论文中的方法总览图或最能说明问题设定的图；若本地 Markdown 预览器屏蔽远程图片，请点击对应论文链接或图片链接查看。",
+    "paper_ids": [
+      "arxiv-2505-16602",
+      "arxiv-2506-24086",
+      "arxiv-2507-01737",
+      "arxiv-2511-02225",
+      "arxiv-2512-17907",
+      "arxiv-2602-06035",
+      "arxiv-2602-09600",
+      "arxiv-2602-09638",
+      "arxiv-2603-13375",
+      "arxiv-2603-20169"
+    ],
+    "path": "content/reports/paper_reading_summary.md",
+    "source_file": "paper_reading_summary.md",
+    "content_sha1": "5903ca99a76af0b55ef49476d7996f41e0c8f504",
+    "archived": true
+  },
+  {
+    "id": "report-ce5d8128c6",
+    "title": "世界模型的因果建模与反事实推理：论文梳理与证据审计",
+    "date": "2026-08-20",
+    "tags": [
+      "因果世界模型",
+      "反事实推理",
+      "对象中心"
+    ],
+    "summary": "总判断： 这组论文中的“因果”至少有三种不同含义，不能混写： 1. 强因果： 明确变量、结构因果模型、干预语义、可识别性或反事实； 2. 中等强度： 通过对象遮挡、机制不变性、奖励祖先等归纳偏置学习稳定依赖，但不恢复完整 SCM； 3. 弱因果/时间因果： action-conditioned prediction、单向 attention 或“预测未来”，不等于 do(·) 或反事实识别。",
+    "paper_ids": [
+      "arxiv-2401-12497",
+      "arxiv-2402-10877",
+      "arxiv-2410-19923",
+      "arxiv-2511-14262",
+      "arxiv-2601-21998",
+      "arxiv-2602-10098",
+      "arxiv-2602-11389",
+      "arxiv-2604-19683",
+      "arxiv-2608-13456"
+    ],
+    "path": "content/reports/world_model_causality_counterfactual_survey_2026-08-20.md",
+    "source_file": "world_model_causality_counterfactual_survey_2026-08-20.md",
+    "content_sha1": "6c0ddbbc149421732b9b40c7f79c562ff8015444",
+    "archived": true
+  },
+  {
+    "id": "report-e81e6bd3a1",
+    "title": "World Action Model / Predictive Representation 论文梳理",
+    "date": "2026-08-20",
+    "tags": [
+      "World Action Model",
+      "机器人学习",
+      "预测表征"
+    ],
+    "summary": "说明：本文按“标题、发表情况、链接、核心概括 / Insight、Pipeline、实验概括、代表图”的标准整理。内容依据原论文 arXiv / CVF 页面和论文 HTML 图表信息重写。图片使用论文 HTML 中的原图链接；若 Markdown 预览器不显示远程图片，可点击论文链接查看。",
+    "paper_ids": [
+      "arxiv-2603-08254",
+      "arxiv-2606-03188",
+      "arxiv-2606-05645",
+      "arxiv-2606-10040",
+      "arxiv-2607-05468",
+      "arxiv-2607-13960",
+      "arxiv-2608-01397",
+      "arxiv-2608-02990",
+      "arxiv-2608-04996",
+      "arxiv-2608-07619",
+      "arxiv-2608-08558",
+      "arxiv-2608-09298",
+      "arxiv-2608-09771"
+    ],
+    "path": "content/reports/wam_paper_reading_summary.md",
+    "source_file": "wam_paper_reading_summary.md",
+    "content_sha1": "e6ee971e746b05bfbae39c4a6ab59cd2c6a55489",
+    "archived": true
+  },
+  {
+    "id": "report-77695ff321",
+    "title": "World Tracing：像素对齐的生成式多层几何",
+    "date": "2026-08-21",
+    "tags": [
+      "3D/4D",
+      "扩散与流匹配"
+    ],
+    "summary": "阅读总判断：World Tracing 的核心贡献不是把单目深度估计再做大，而是把“可见表面重建”和“遮挡后几何生成”统一为输入像素射线上的有序多层相机坐标点。公开实验支持它在作者设定的对象、场景与短动态片段上兼顾像素对齐和几何完整性；但 best-of-8 选样、内部场景测试集、合成深度剥离监督和固定六层表示限制了结论外推。",
+    "paper_ids": [
+      "arxiv-2606-13652"
+    ],
+    "path": "content/reports/2026-08-21_curated_papers_world_tracing.md",
+    "source_file": "2026-08-21_curated_papers_world_tracing.md",
+    "content_sha1": "bfadb54376e522b2516c527fe1f9b14514c804c9",
+    "archived": true
+  },
+  {
+    "id": "report-a77d9a7ad6",
+    "title": "Visual Action / Geometry Action：以视觉与几何形式统一跨本体动作",
+    "date": "2026-08-21",
+    "tags": [
+      "世界模型",
+      "动作表征",
+      "机器人学习",
+      "跨本体迁移"
+    ],
+    "summary": "报告标签 ：visual action, geometry action, world model, cross-embodiment, embodied AI",
+    "paper_ids": [
+      "arxiv-2507-13340",
+      "arxiv-2508-13104",
+      "arxiv-2511-01177",
+      "arxiv-2511-21690",
+      "arxiv-2512-13030",
+      "arxiv-2605-06192",
+      "arxiv-2606-03943",
+      "arxiv-2606-04463",
+      "arxiv-2606-09813",
+      "arxiv-2606-13769",
+      "arxiv-2607-13017",
+      "arxiv-2607-19343",
+      "arxiv-2607-22535",
+      "arxiv-2608-06332"
+    ],
+    "path": "content/reports/2026-08-21_visual_geometry_action.md",
+    "source_file": "2026-08-21_visual_geometry_action.md",
+    "content_sha1": "fc1de9acefc481d65caa45c7b1804fb9f0135c53",
+    "archived": true
+  },
+  {
+    "id": "report-365c2cc93b",
+    "title": "Galaxea G0.5 与 FlowWAM：自回归 VLA 与光流动作表征整理",
+    "date": "2026-08-21",
+    "tags": [
+      "VLA",
+      "World Action Model",
+      "机器人学习"
+    ],
+    "summary": "两篇工作同属机器人控制，但接口不同：G0.5 让 VLM 在同一自回归流中同时生成推理与动作 token；FlowWAM 把光流视频当作 WAM 的统一动作表征，同时服务策略解码与动作条件世界建模。二者都不是结构因果或反事实识别工作。",
+    "paper_ids": [
+      "arxiv-2607-13017",
+      "arxiv-2608-11739"
+    ],
+    "path": "content/reports/2026-08-21_curated_papers.md",
+    "source_file": "2026-08-21_curated_papers.md",
+    "content_sha1": "42a3fb430514d62a3b5b9e3919345ccac4b6c851",
+    "archived": true
+  },
+  {
+    "id": "report-af906c7fa2",
+    "title": "FACT、PSG-JEPA、Gaussian-JEPA 与 Masked Visual Actions：失败条件世界模型与 JEPA 表征整理",
+    "date": "2026-08-21",
+    "tags": [
+      "World Action Model",
+      "机器人学习",
+      "预测表征"
+    ],
+    "summary": "贯穿四篇的核心问题：预测模型究竟缺少哪一个接口，才会“能预测，却未必能服务于行动”？ 四篇给出的答案分别落在数据、表征、观察和动作四层：FACT 缺的是“失败动作—真实后果”的监督接口；PSG-JEPA 缺的是视觉 latent 与机器人本体状态/变化之间的 grounding；Gaussian-JEPA 缺的是跨 3D Gaussian 随机重采样仍稳定的学习目标；Masked Visual Actions 缺的是视频模型能够直接理解、且可跨本体迁移的动作表达。 阅读地图： 先读 FACT，看负样本如何只教“后果”而不教坏动作；再读 PSG-JEPA，看训练期特权状态如何让预测 latent 暴露控制相关变量；随后以 Gaussian-JEPA 作为边界清楚的 3D 表征对照，理解“预测潜空间而非重建一次观…",
+    "paper_ids": [
+      "arxiv-2607-19343",
+      "arxiv-2608-06799",
+      "arxiv-2608-10232",
+      "arxiv-2608-15651"
+    ],
+    "path": "content/reports/2026-08-21_curated_papers_jepa.md",
+    "source_file": "2026-08-21_curated_papers_jepa.md",
+    "content_sha1": "e35b22db357ab171c6ae490a41eebde34e35b93b",
+    "archived": true
+  },
+  {
+    "id": "report-f5f82689ca",
+    "title": "知域每周论文更新：2026-08-23",
+    "date": "2026-08-23",
+    "tags": [
+      "3D/4D",
+      "HOI",
+      "World Action Model",
+      "动作表征",
+      "因果建模",
+      "流式生成",
+      "第一视角"
+    ],
+    "summary": "报告标签 ：周报, World-Action-Model, HOI, 流式生成, 4D重建, 因果建模, 动作流, 自我中心视觉",
+    "paper_ids": [
+      "arxiv-2608-18077",
+      "arxiv-2608-18234",
+      "arxiv-2608-19085",
+      "arxiv-2608-19556",
+      "arxiv-2608-20308"
+    ],
+    "path": "content/reports/2026-08-23_weekly_paper_update.md",
+    "source_file": "2026-08-23_weekly_paper_update.md",
+    "content_sha1": "acb307071feccc5f67996f3072fce3803ed3eda8",
+    "archived": true
+  },
+  {
+    "id": "report-89efbb2378",
+    "title": "视频表征、潜在动作与世界动作模型论文整理",
+    "date": "2026-08-26",
+    "tags": [
+      "World Action Model",
+      "动作表征",
+      "机器人学习",
+      "视频生成",
+      "预测表征"
+    ],
+    "summary": "报告标签 ：video representation, latent action, world action model, robot learning, video generation",
+    "paper_ids": [
+      "arxiv-2606-13674",
+      "arxiv-2607-14088",
+      "arxiv-2608-19613"
+    ],
+    "path": "content/reports/2026-08-26_curated_papers.md",
+    "source_file": "2026-08-26_curated_papers.md",
+    "content_sha1": "cb14f9fea3d75129d1ac1ce1b17563f46b7f7f15",
+    "archived": true
+  },
+  {
+    "id": "report-5a20368080",
+    "title": "知域指定论文精读：3D/4D 重建、几何优化与生成式视图合成",
+    "date": "2026-08-26",
+    "tags": [
+      "3D/4D",
+      "几何一致性",
+      "视频生成"
+    ],
+    "summary": "本报告逐篇核验三项指定工作，覆盖原文方法与实验、官方项目页、代码开放状态及可复现边界。",
+    "paper_ids": [
+      "arxiv-2606-31388",
+      "arxiv-2607-09225",
+      "arxiv-2608-04701"
+    ],
+    "path": "content/reports/2026-08-26_3d_4d_curated_papers.md",
+    "source_file": "2026-08-26_3d_4d_curated_papers.md",
+    "content_sha1": "9810b3f9eee57c76438e88b9683433a5c4ebed7c",
+    "archived": true
+  },
+  {
+    "id": "report-ea0469615f",
+    "title": "ViDiHand：视频扩散表征用于第一视角 4D 双手运动重建",
+    "date": "2026-08-29",
+    "tags": [
+      "3D/4D",
+      "HOI",
+      "机器人学习",
+      "第一视角",
+      "视频生成",
+      "预测表征"
+    ],
+    "summary": "报告标签 ：4D hand reconstruction, egocentric vision, hand-object interaction, video diffusion model, diffusion features, MANO, embodied AI",
+    "paper_ids": [
+      "arxiv-2606-30308"
+    ],
+    "path": "content/reports/2026-08-29_curated_papers.md",
+    "source_file": "2026-08-29_curated_papers.md",
+    "content_sha1": "71d116a23811039d5ad812091a436790e841931b",
+    "archived": true
   },
   {
     "id": "report-a141624b1e",
@@ -307,373 +831,245 @@
     ],
     "path": "content/reports/2026-08-30_weekly_paper_update.md",
     "source_file": "2026-08-30_weekly_paper_update.md",
-    "content_sha1": "2db4d5d397e8eff5a8d79b18d6695e71dd6e02cc"
+    "content_sha1": "2db4d5d397e8eff5a8d79b18d6695e71dd6e02cc",
+    "archived": true
   },
   {
-    "id": "report-ea0469615f",
-    "title": "ViDiHand：视频扩散表征用于第一视角 4D 双手运动重建",
-    "date": "2026-08-29",
+    "id": "report-cedaa0825a",
+    "title": "R1 / GRPO / 奖励优化专题：从视频几何一致性到机器人策略",
+    "date": "2026-08-31",
     "tags": [
       "3D/4D",
-      "HOI",
+      "强化学习",
       "机器人学习",
-      "第一视角",
-      "视频生成",
-      "预测表征"
-    ],
-    "summary": "报告标签 ：4D hand reconstruction, egocentric vision, hand-object interaction, video diffusion model, diffusion features, MANO, embodied AI",
-    "paper_ids": [
-      "arxiv-2606-30308"
-    ],
-    "path": "content/reports/2026-08-29_curated_papers.md",
-    "source_file": "2026-08-29_curated_papers.md",
-    "content_sha1": "71d116a23811039d5ad812091a436790e841931b"
-  },
-  {
-    "id": "report-89efbb2378",
-    "title": "视频表征、潜在动作与世界动作模型论文整理",
-    "date": "2026-08-26",
-    "tags": [
-      "World Action Model",
-      "动作表征",
-      "机器人学习",
-      "视频生成",
-      "预测表征"
-    ],
-    "summary": "报告标签 ：video representation, latent action, world action model, robot learning, video generation",
-    "paper_ids": [
-      "arxiv-2606-13674",
-      "arxiv-2607-14088",
-      "arxiv-2608-19613"
-    ],
-    "path": "content/reports/2026-08-26_curated_papers.md",
-    "source_file": "2026-08-26_curated_papers.md",
-    "content_sha1": "cb14f9fea3d75129d1ac1ce1b17563f46b7f7f15"
-  },
-  {
-    "id": "report-5a20368080",
-    "title": "知域指定论文精读：3D/4D 重建、几何优化与生成式视图合成",
-    "date": "2026-08-26",
-    "tags": [
-      "3D/4D",
-      "几何一致性",
       "视频生成"
     ],
-    "summary": "本报告逐篇核验三项指定工作，覆盖原文方法与实验、官方项目页、代码开放状态及可复现边界。",
-    "paper_ids": [
-      "arxiv-2606-31388",
-      "arxiv-2607-09225",
-      "arxiv-2608-04701"
-    ],
-    "path": "content/reports/2026-08-26_3d_4d_curated_papers.md",
-    "source_file": "2026-08-26_3d_4d_curated_papers.md",
-    "content_sha1": "9810b3f9eee57c76438e88b9683433a5c4ebed7c"
-  },
-  {
-    "id": "report-f5f82689ca",
-    "title": "知域每周论文更新：2026-08-23",
-    "date": "2026-08-23",
-    "tags": [
-      "3D/4D",
-      "HOI",
-      "World Action Model",
-      "动作表征",
-      "因果建模",
-      "流式生成",
-      "第一视角"
-    ],
-    "summary": "报告标签 ：周报, World-Action-Model, HOI, 流式生成, 4D重建, 因果建模, 动作流, 自我中心视觉",
-    "paper_ids": [
-      "arxiv-2608-18077",
-      "arxiv-2608-18234",
-      "arxiv-2608-19085",
-      "arxiv-2608-19556",
-      "arxiv-2608-20308"
-    ],
-    "path": "content/reports/2026-08-23_weekly_paper_update.md",
-    "source_file": "2026-08-23_weekly_paper_update.md",
-    "content_sha1": "acb307071feccc5f67996f3072fce3803ed3eda8"
-  },
-  {
-    "id": "report-c7ced2c92d",
-    "title": "自回归交互视频：从 DMD 到 Causal Forcing++、LongLive-2.0 与 minWM",
-    "date": "2026-08-21",
-    "tags": [
-      "交互世界模型",
-      "自回归扩散",
-      "视频生成"
-    ],
-    "summary": "这是一条从单步图像蒸馏走向实时交互长视频的技术链： DMD 用 target score 与 fake score 之差近似分布级 KL 梯度； DMD2 去掉昂贵的 ODE 回归集，并以 two-time-scale 更新、GAN 项和推理态多步模拟稳定/增强蒸馏。 CausVid 随后把不对称 DMD 用于因果 4-step 视频学生； Self Forcing 指出 DMD 必须在自 rollout 分布上匹配； Causal Forcing / Causal Forcing++ 依次修正 ODE 初始化对象与轨迹成本； LongLive 解决分钟级流式与 prompt 切换， LongLive-2.0 再把长视频训练、少步 LoRA、NVFP4 与并行推理做成一套基础设施； minWM 把蒸馏配方接到…",
-    "paper_ids": [
-      "arxiv-2311-18828",
-      "arxiv-2405-14867",
-      "arxiv-2412-07772",
-      "arxiv-2505-13211",
-      "arxiv-2506-08009",
-      "arxiv-2509-22622",
-      "arxiv-2602-02214",
-      "arxiv-2605-15141",
-      "arxiv-2605-18739",
-      "arxiv-2605-30263"
-    ],
-    "path": "content/reports/2026-08-21_ar_interactive_video.md",
-    "source_file": "2026-08-21_ar_interactive_video.md",
-    "content_sha1": "2d9ff547c79075d478357cbc2472f6af5a882a5e"
-  },
-  {
-    "id": "report-77695ff321",
-    "title": "World Tracing：像素对齐的生成式多层几何",
-    "date": "2026-08-21",
-    "tags": [
-      "3D/4D",
-      "扩散与流匹配"
-    ],
-    "summary": "阅读总判断：World Tracing 的核心贡献不是把单目深度估计再做大，而是把“可见表面重建”和“遮挡后几何生成”统一为输入像素射线上的有序多层相机坐标点。公开实验支持它在作者设定的对象、场景与短动态片段上兼顾像素对齐和几何完整性；但 best-of-8 选样、内部场景测试集、合成深度剥离监督和固定六层表示限制了结论外推。",
-    "paper_ids": [
-      "arxiv-2606-13652"
-    ],
-    "path": "content/reports/2026-08-21_curated_papers_world_tracing.md",
-    "source_file": "2026-08-21_curated_papers_world_tracing.md",
-    "content_sha1": "bfadb54376e522b2516c527fe1f9b14514c804c9"
-  },
-  {
-    "id": "report-a77d9a7ad6",
-    "title": "Visual Action / Geometry Action：以视觉与几何形式统一跨本体动作",
-    "date": "2026-08-21",
-    "tags": [
-      "世界模型",
-      "动作表征",
-      "机器人学习",
-      "跨本体迁移"
-    ],
-    "summary": "报告标签 ：visual action, geometry action, world model, cross-embodiment, embodied AI",
-    "paper_ids": [
-      "arxiv-2507-13340",
-      "arxiv-2508-13104",
-      "arxiv-2511-01177",
-      "arxiv-2511-21690",
-      "arxiv-2512-13030",
-      "arxiv-2605-06192",
-      "arxiv-2606-03943",
-      "arxiv-2606-04463",
-      "arxiv-2606-09813",
-      "arxiv-2606-13769",
-      "arxiv-2607-13017",
-      "arxiv-2607-19343",
-      "arxiv-2607-22535",
-      "arxiv-2608-06332"
-    ],
-    "path": "content/reports/2026-08-21_visual_geometry_action.md",
-    "source_file": "2026-08-21_visual_geometry_action.md",
-    "content_sha1": "fc1de9acefc481d65caa45c7b1804fb9f0135c53"
-  },
-  {
-    "id": "report-365c2cc93b",
-    "title": "Galaxea G0.5 与 FlowWAM：自回归 VLA 与光流动作表征整理",
-    "date": "2026-08-21",
-    "tags": [
-      "VLA",
-      "World Action Model",
-      "机器人学习"
-    ],
-    "summary": "两篇工作同属机器人控制，但接口不同：G0.5 让 VLM 在同一自回归流中同时生成推理与动作 token；FlowWAM 把光流视频当作 WAM 的统一动作表征，同时服务策略解码与动作条件世界建模。二者都不是结构因果或反事实识别工作。",
-    "paper_ids": [
-      "arxiv-2607-13017",
-      "arxiv-2608-11739"
-    ],
-    "path": "content/reports/2026-08-21_curated_papers.md",
-    "source_file": "2026-08-21_curated_papers.md",
-    "content_sha1": "42a3fb430514d62a3b5b9e3919345ccac4b6c851"
-  },
-  {
-    "id": "report-af906c7fa2",
-    "title": "FACT、PSG-JEPA、Gaussian-JEPA 与 Masked Visual Actions：失败条件世界模型与 JEPA 表征整理",
-    "date": "2026-08-21",
-    "tags": [
-      "World Action Model",
-      "机器人学习",
-      "预测表征"
-    ],
-    "summary": "贯穿四篇的核心问题：预测模型究竟缺少哪一个接口，才会“能预测，却未必能服务于行动”？ 四篇给出的答案分别落在数据、表征、观察和动作四层：FACT 缺的是“失败动作—真实后果”的监督接口；PSG-JEPA 缺的是视觉 latent 与机器人本体状态/变化之间的 grounding；Gaussian-JEPA 缺的是跨 3D Gaussian 随机重采样仍稳定的学习目标；Masked Visual Actions 缺的是视频模型能够直接理解、且可跨本体迁移的动作表达。 阅读地图： 先读 FACT，看负样本如何只教“后果”而不教坏动作；再读 PSG-JEPA，看训练期特权状态如何让预测 latent 暴露控制相关变量；随后以 Gaussian-JEPA 作为边界清楚的 3D 表征对照，理解“预测潜空间而非重建一次观…",
-    "paper_ids": [
-      "arxiv-2607-19343",
-      "arxiv-2608-06799",
-      "arxiv-2608-10232",
-      "arxiv-2608-15651"
-    ],
-    "path": "content/reports/2026-08-21_curated_papers_jepa.md",
-    "source_file": "2026-08-21_curated_papers_jepa.md",
-    "content_sha1": "e35b22db357ab171c6ae490a41eebde34e35b93b"
-  },
-  {
-    "id": "report-90041fa2f9",
-    "title": "交互世界模型与人体/手物交互生成论文梳理",
-    "date": "2026-08-20",
-    "tags": [
-      "交互世界模型",
-      "HOI"
-    ],
-    "summary": "说明：每篇均基于原论文 arXiv / 项目页整理。代表图优先选论文中的方法总览图或最能说明问题设定的图；若本地 Markdown 预览器屏蔽远程图片，请点击对应论文链接或图片链接查看。",
-    "paper_ids": [
-      "arxiv-2505-16602",
-      "arxiv-2506-24086",
-      "arxiv-2507-01737",
-      "arxiv-2511-02225",
-      "arxiv-2512-17907",
-      "arxiv-2602-06035",
-      "arxiv-2602-09600",
-      "arxiv-2602-09638",
-      "arxiv-2603-13375",
-      "arxiv-2603-20169"
-    ],
-    "path": "content/reports/paper_reading_summary.md",
-    "source_file": "paper_reading_summary.md",
-    "content_sha1": "5903ca99a76af0b55ef49476d7996f41e0c8f504"
-  },
-  {
-    "id": "report-ce5d8128c6",
-    "title": "世界模型的因果建模与反事实推理：论文梳理与证据审计",
-    "date": "2026-08-20",
-    "tags": [
-      "因果世界模型",
-      "反事实推理",
-      "对象中心"
-    ],
-    "summary": "总判断： 这组论文中的“因果”至少有三种不同含义，不能混写： 1. 强因果： 明确变量、结构因果模型、干预语义、可识别性或反事实； 2. 中等强度： 通过对象遮挡、机制不变性、奖励祖先等归纳偏置学习稳定依赖，但不恢复完整 SCM； 3. 弱因果/时间因果： action-conditioned prediction、单向 attention 或“预测未来”，不等于 do(·) 或反事实识别。",
-    "paper_ids": [
-      "arxiv-2401-12497",
-      "arxiv-2402-10877",
-      "arxiv-2410-19923",
-      "arxiv-2511-14262",
-      "arxiv-2601-21998",
-      "arxiv-2602-10098",
-      "arxiv-2602-11389",
-      "arxiv-2604-19683",
-      "arxiv-2608-13456"
-    ],
-    "path": "content/reports/world_model_causality_counterfactual_survey_2026-08-20.md",
-    "source_file": "world_model_causality_counterfactual_survey_2026-08-20.md",
-    "content_sha1": "6c0ddbbc149421732b9b40c7f79c562ff8015444"
-  },
-  {
-    "id": "report-e81e6bd3a1",
-    "title": "World Action Model / Predictive Representation 论文梳理",
-    "date": "2026-08-20",
-    "tags": [
-      "World Action Model",
-      "机器人学习",
-      "预测表征"
-    ],
-    "summary": "说明：本文按“标题、发表情况、链接、核心概括 / Insight、Pipeline、实验概括、代表图”的标准整理。内容依据原论文 arXiv / CVF 页面和论文 HTML 图表信息重写。图片使用论文 HTML 中的原图链接；若 Markdown 预览器不显示远程图片，可点击论文链接查看。",
-    "paper_ids": [
-      "arxiv-2603-08254",
-      "arxiv-2606-03188",
-      "arxiv-2606-05645",
-      "arxiv-2606-10040",
-      "arxiv-2607-05468",
-      "arxiv-2607-13960",
-      "arxiv-2608-01397",
-      "arxiv-2608-02990",
-      "arxiv-2608-04996",
-      "arxiv-2608-07619",
-      "arxiv-2608-08558",
-      "arxiv-2608-09298",
-      "arxiv-2608-09771"
-    ],
-    "path": "content/reports/wam_paper_reading_summary.md",
-    "source_file": "wam_paper_reading_summary.md",
-    "content_sha1": "e6ee971e746b05bfbae39c4a6ab59cd2c6a55489"
-  },
-  {
-    "id": "report-6fa37648ba",
-    "title": "因果世界模型：代表工作、技术脉络与因果边界",
-    "date": "2026-08-19",
-    "tags": [
-      "因果世界模型",
-      "反事实推理"
-    ],
-    "summary": "核心判断： 当前所谓 Causal World Model 实际横跨三种不同层级：正式因果结构学习、通过训练目标注入因果归纳偏置，以及仅具有时间因果顺序的生成式世界模型。三者不能混用。",
-    "paper_ids": [
-      "arxiv-2401-12497",
-      "arxiv-2402-10877",
-      "arxiv-2410-19923",
-      "arxiv-2511-14262",
-      "arxiv-2601-21998",
-      "arxiv-2602-11389",
-      "arxiv-2608-13456"
-    ],
-    "path": "content/reports/causal_world_models_2026_survey.md",
-    "source_file": "causal_world_models_2026_survey.md",
-    "content_sha1": "f2f6e054fa9ca5c1463f02e4c5536f2a3e5ebac9"
-  },
-  {
-    "id": "report-554de78a93",
-    "title": "因果世界模型（Causal World Models）最新代表工作梳理",
-    "date": "2026-08-19",
-    "tags": [
-      "因果世界模型",
-      "反事实推理"
-    ],
-    "summary": "本报告聚焦“world model + causality / intervention / counterfactual reasoning”，优先选择近年正式发表或较高质量的新预印本。 检索线索来自 arXiv、会议官网及作者公开页面；最终技术判断以 原论文、会议论文页、官方代码仓库 为准。 特别注意：近年来很多论文使用 “causal” 一词，但其含义并不相同。本报告严格区分： 1. 正式因果学习 / intervention / identifiability ； 2. causal inductive bias / counterfactual-like predictive learning ； 3. object dependency / causality-aware attention ；…",
-    "paper_ids": [
-      "arxiv-2401-12497",
-      "arxiv-2402-10877",
-      "arxiv-2410-19923",
-      "arxiv-2511-14262",
-      "arxiv-2601-21998",
-      "arxiv-2602-11389",
-      "arxiv-2608-13456"
-    ],
-    "path": "content/reports/causal_world_models_2026_survey.original.md",
-    "source_file": "causal_world_models_2026_survey.original.md",
-    "content_sha1": "caea8e84f2dbc432ca83bf04b63dcad20be65370"
-  },
-  {
-    "id": "report-1818b05f33",
-    "title": "3D/4D 几何一致性视频生成论文梳理：GeoFlow / VGGRPO / World-R1",
-    "date": "2026-08-18",
-    "tags": [
-      "几何一致性",
-      "视频生成",
-      "3D/4D"
-    ],
-    "summary": "检索与整理日期：2026-08-18 阅读范围：arXiv 摘要页、arXiv HTML 正文/附录中的方法与实验部分、项目页/代码页。 主题定位：这 3 篇并不是 hand-object interaction 专文，而是 通用 text-to-video / video generation 的 3D/4D 几何一致性后训练与奖励设计 。它们对 HOI world model 的价值主要在于：几何奖励、4D latent reward、3D foundation model critic、camera consistency、failure diagnosis。",
+    "summary": "严格收录知域中直接使用 R1-style、GRPO、RL post-training 或显式奖励优化的 6 篇工作；不因标题、机器人型号或 on-policy 字样做表面匹配。",
     "paper_ids": [
       "arxiv-2603-26599",
       "arxiv-2604-24764",
-      "arxiv-2605-18365"
+      "arxiv-2605-18365",
+      "arxiv-2606-05645",
+      "arxiv-2608-11739",
+      "arxiv-2608-19556"
     ],
-    "path": "content/reports/geometric_consistency_video_generation_report.md",
-    "source_file": "geometric_consistency_video_generation_report.md",
-    "content_sha1": "13a7e23f3180bb005918ba783a6538bdb0c3fb01"
+    "path": "content/reports/2026-08-31_r1_grpo_reward_optimization.md",
+    "source_file": "2026-08-31_r1_grpo_reward_optimization.md",
+    "content_sha1": "f8699ccb9598d5d8200054d2524734594c403436",
+    "archived": true
   },
   {
-    "id": "report-0ad44831eb",
-    "title": "Hand-Object Interaction World Model：2D 视频结合 3D/4D 的最新工作梳理",
-    "date": "2026-08-15",
+    "id": "report-1950a5754f",
+    "title": "具身 In-Context Learning 专题：视频提示、长上下文与测试时适应",
+    "date": "2026-09-02",
     "tags": [
-      "HOI",
-      "3D/4D",
-      "第一视角"
+      "VLA",
+      "World Action Model",
+      "具身上下文学习",
+      "测试时适应",
+      "长时记忆"
     ],
-    "summary": "检索日期：2026-08-15 关注方向：egocentric hand-object interaction world model，尤其是 2D 视频生成 + 3D/4D 几何、手部动作、相机运动、物体状态、接触动力学 的结合。 说明：很多最新工作标题里都写 world model / egocentric interaction，但实际 3D/4D grounding 强度差异很大。因此本文先做分级，再逐篇介绍。",
+    "summary": "本专题以 Zero-WAM、RoboTTT、HOST、S1、GEN-1.5 和 Dyna-2 为主线，并保留 RA-VLA、PonderPounce 两项相关工作。统一比较上下文是什么、策略在测试时究竟改变了什么、实验探查了什么、证据实际支持什么。RoboTTT 与 HOST 有 arXiv 论文；S1、GEN-1.5 和 Dyna-2 目前只有机构官方研究长文或网页版技术报告，后者的结果均按“作者自报、未外部复现”处理。",
     "paper_ids": [
-      "arxiv-2505-16602",
-      "arxiv-2512-01677",
-      "arxiv-2512-13644",
-      "arxiv-2512-17907",
-      "arxiv-2601-01050",
-      "arxiv-2602-09600",
-      "arxiv-2602-09638",
-      "arxiv-2603-08254",
-      "arxiv-2603-13615",
-      "arxiv-2604-01001",
-      "arxiv-2604-10836",
-      "arxiv-2607-02075",
-      "paper-3cc64741b1"
+      "arxiv-2607-15275",
+      "arxiv-2607-20033",
+      "arxiv-2608-24115",
+      "arxiv-2608-25585",
+      "arxiv-2608-26103",
+      "paper-1d4c797b72",
+      "paper-5299527392",
+      "paper-d14a137e07"
     ],
-    "path": "content/reports/hoi_world_model_3d4d_report.md",
-    "source_file": "hoi_world_model_3d4d_report.md",
-    "content_sha1": "4dd34260be7eff347a7322a8acdc9aa628129e72"
+    "path": "content/reports/2026-08-31_embodied_in_context_learning.md",
+    "source_file": "2026-08-31_embodied_in_context_learning.md",
+    "content_sha1": "5cbcf668f2e0ee34230873895a91431734aef927",
+    "archived": true
+  },
+  {
+    "id": "report-f3ad8e6a32",
+    "title": "Dyna-2 技术报告精读：百万小时人类视频上的世界动作模型扩展律",
+    "date": "2026-09-02",
+    "tags": [
+      "World Action Model",
+      "扩散与流匹配",
+      "机器人学习",
+      "第一视角",
+      "视频生成",
+      "跨本体迁移",
+      "预训练与扩展律"
+    ],
+    "summary": "报告标签 ：World Action Model, scaling law, cross-embodiment transfer, 第一视角, 机器人学习, flow matching, video generation",
+    "paper_ids": [
+      "paper-1d4c797b72"
+    ],
+    "path": "content/reports/2026-09-02_dyna_2_technical_report.md",
+    "source_file": "2026-09-02_dyna_2_technical_report.md",
+    "content_sha1": "9da8ae6f0e2ec4c1f705c2fc777fe2cd4de136f0",
+    "archived": true
+  },
+  {
+    "id": "report-d2be249044",
+    "title": "物理世界模型与物理一致视频生成论文精读（2026-09-03）",
+    "date": "2026-09-03",
+    "tags": [
+      "世界模型",
+      "物理建模"
+    ],
+    "summary": "报告标签 ：Physical World Model, Physics-Aware Video Generation, World Simulator",
+    "paper_ids": [
+      "arxiv-2409-18964",
+      "arxiv-2509-09737",
+      "arxiv-2509-21309",
+      "arxiv-2512-05564",
+      "arxiv-2601-11087",
+      "arxiv-2603-05449",
+      "arxiv-2604-02296",
+      "arxiv-2606-28128",
+      "arxiv-2607-28624",
+      "arxiv-2608-27549"
+    ],
+    "path": "content/reports/2026-09-03_curated_papers.md",
+    "source_file": "2026-09-03_curated_papers.md",
+    "content_sha1": "6ca9eeee7ad7ca85381f9d53ad7c0a279436c8d0",
+    "archived": true
+  },
+  {
+    "id": "report-0d81d19c6c",
+    "title": "知域论文合并更新：2026-09-06",
+    "date": "2026-09-06",
+    "tags": [
+      "3D/4D",
+      "HOI",
+      "World Action Model",
+      "世界模型",
+      "具身上下文学习",
+      "因果建模",
+      "流式生成",
+      "物理建模",
+      "第一视角",
+      "跨本体迁移"
+    ],
+    "summary": "报告标签 ：周报, World Action Model, world model, Embodied In-context Learning, cross-embodiment, HOI, egocentric vision, 3D/4D Reconstruction, Streaming Generation, Causal Modeling, Physical Reasoning",
+    "paper_ids": [
+      "arxiv-2608-28549",
+      "arxiv-2608-28718",
+      "arxiv-2608-29242",
+      "arxiv-2608-29910",
+      "arxiv-2608-30237",
+      "arxiv-2608-30643",
+      "arxiv-2608-30692",
+      "arxiv-2608-30880",
+      "arxiv-2609-00161",
+      "arxiv-2609-00188",
+      "arxiv-2609-00610",
+      "arxiv-2609-01276",
+      "arxiv-2609-01596",
+      "arxiv-2609-01938",
+      "arxiv-2609-02159",
+      "arxiv-2609-02531",
+      "arxiv-2609-02886",
+      "arxiv-2609-03153",
+      "arxiv-2609-03199",
+      "arxiv-2609-03673",
+      "arxiv-2609-04196",
+      "arxiv-2609-04200"
+    ],
+    "path": "content/reports/2026-09-06_weekly_paper_update_merged.md",
+    "source_file": "2026-09-06_weekly_paper_update_merged.md",
+    "content_sha1": "a19f721bcf6a0f7426809c6140444f3b6acc4428",
+    "archived": true
+  },
+  {
+    "id": "report-37b94c4145",
+    "title": "从可预测到可执行：世界模型的记忆、物理约束与 4D 交互接口",
+    "date": "2026-09-14",
+    "tags": [
+      "3D/4D",
+      "HOI",
+      "World Action Model",
+      "世界模型",
+      "世界模型评测",
+      "具身上下文学习",
+      "第一视角",
+      "触觉与接触"
+    ],
+    "summary": "OpenWAM 双系统架构、预训练组成与统一动作空间",
+    "paper_ids": [
+      "arxiv-2609-04911",
+      "arxiv-2609-04958",
+      "arxiv-2609-05588",
+      "arxiv-2609-05834",
+      "arxiv-2609-05892",
+      "arxiv-2609-06009",
+      "arxiv-2609-06302",
+      "arxiv-2609-06578",
+      "arxiv-2609-06615",
+      "arxiv-2609-06852",
+      "arxiv-2609-07002",
+      "arxiv-2609-07126",
+      "arxiv-2609-07398",
+      "arxiv-2609-07581",
+      "arxiv-2609-07747",
+      "arxiv-2609-08636",
+      "arxiv-2609-08743",
+      "arxiv-2609-08848",
+      "arxiv-2609-09119",
+      "arxiv-2609-09210",
+      "arxiv-2609-09941",
+      "arxiv-2609-10050",
+      "arxiv-2609-10506",
+      "arxiv-2609-10540",
+      "arxiv-2609-10706",
+      "arxiv-2609-11172",
+      "arxiv-2609-11308",
+      "arxiv-2609-11445",
+      "arxiv-2609-11548",
+      "arxiv-2609-11561",
+      "arxiv-2609-11875",
+      "arxiv-2609-12036",
+      "arxiv-2609-12103",
+      "arxiv-2609-12441",
+      "arxiv-2609-12498",
+      "arxiv-2609-12549"
+    ],
+    "path": "content/reports/2026-09-14_predictive_to_executable_world_models.md",
+    "source_file": "2026-09-14_predictive_to_executable_world_models.md",
+    "content_sha1": "301f77f4f1a9bb4cf4dc274772f0633b907613b2",
+    "archived": true
+  },
+  {
+    "id": "report-1b1ffacf7d",
+    "title": "从视频预测到结构化世界状态：WAM、3D/4D 与具身交互新进展",
+    "date": "2026-09-16",
+    "tags": [
+      "3D/4D",
+      "HOI",
+      "World Action Model",
+      "人类视频",
+      "具身导航",
+      "前馈重建",
+      "因果审计",
+      "流式世界模型"
+    ],
+    "summary": "<!-- suggested filename: 2026-09-16 weekly paper update.md --",
+    "paper_ids": [
+      "arxiv-2609-06955",
+      "arxiv-2609-12155",
+      "arxiv-2609-13733",
+      "arxiv-2609-13812",
+      "arxiv-2609-13851",
+      "arxiv-2609-14462",
+      "arxiv-2609-14561",
+      "arxiv-2609-14833",
+      "arxiv-2609-15005",
+      "arxiv-2609-15870",
+      "arxiv-2609-16737",
+      "arxiv-2609-17372",
+      "arxiv-2609-17524"
+    ],
+    "path": "content/reports/2026-09-16_weekly_paper_update.md",
+    "source_file": "2026-09-16_weekly_paper_update.md",
+    "content_sha1": "b37d79b5c5d8c4a3ae1e90925e0bad1f776467cd",
+    "archived": true
   }
 ]

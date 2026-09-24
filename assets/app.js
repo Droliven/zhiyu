@@ -19,14 +19,13 @@ const LINK_LABELS = {
 };
 
 const GROUP_PRIORITY = [
-  "因果世界模型",
+  "因果与反事实",
   "World Action Model",
   "HOI",
-  "几何一致性",
   "视频生成",
   "3D/4D",
   "机器人学习",
-  "交互世界模型",
+  "Agent与可执行世界",
 ];
 
 const state = {
@@ -396,7 +395,7 @@ function mergeOverride(paper, override) {
 function renderAll() {
   const tags = allTags();
   elements.paperTotal.textContent = String(state.papers.length);
-  elements.reportTotal.textContent = String(state.reports.length);
+  elements.reportTotal.textContent = String(state.reports.filter((report) => !report.archived).length);
   elements.tagTotal.textContent = String(tags.length);
   renderTags();
   renderReadmeTagCloud();
@@ -612,7 +611,9 @@ function renderCardNarrative(paper) {
 }
 
 function renderReports() {
-  elements.reportList.innerHTML = state.reports
+  const active = state.reports.filter((report) => !report.archived);
+  const archived = state.reports.filter((report) => report.archived);
+  const items = (reports) => reports
     .map(
       (report) => `
         <article class="report-item">
@@ -629,6 +630,12 @@ function renderReports() {
         </article>`,
     )
     .join("");
+  elements.reportList.innerHTML = items(active) + (archived.length ? `
+    <details class="report-archive">
+      <summary>历史报告与入库记录 · ${archived.length} 份</summary>
+      <p>早期专题、周报和单篇精读保留在此，供核对来源与阅读历史；当前专题综述见上方。</p>
+      ${items(archived)}
+    </details>` : "");
 }
 
 function renderMaintenance() {

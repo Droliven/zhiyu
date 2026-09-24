@@ -440,6 +440,12 @@ python3 -m http.server 8080
 
 不要直接双击 `index.html`。地址栏为 `file://` 时，浏览器会阻止页面读取 JSON、Markdown 和 README 提示词；正确预览地址应以 `http://localhost:8080/` 开头。
 
+## 仅导入独立论文卡片
+
+不需要新增专题报告时，将每篇论文写为 `content/papers/[arxiv_id].md`。每个文件用一个一级标题记录准确论文名，保留作者、发表状态、原始论文链接、类别标签及证据等级；正文使用“当前挑战 / 研究动机 / 技术方案 / 实验结果 / 总结讨论 / 代码与数据 / 局限”小节，技术方案明确输入、过程和输出。
+
+运行 `python3 scripts/ingest_reports.py --papers-only` 仅导入独立论文，按 arXiv ID、DOI、规范化标题与现有馆藏去重，并原样保留报告索引。独立文件路径记录在论文的 `source_papers` 中；已有报告关联与审阅内容继续保留。默认全量导入也支持这个目录，但独立论文不会新增报告条目。随后运行数据和资产校验。正文应修改 Markdown 来源，不直接编辑生成 JSON。
+
 ## 审阅并提交 Pull Request
 
 AI 负责检索、编辑、重建数据和运行校验，但停在未提交状态。用户完成本地预览后检查 `git diff`，亲自选择文件、创建 commit、push 分支并发起 Pull Request。
@@ -583,3 +589,11 @@ XHS_DIGEST=1    ./xhs-update.command     # 抓取后运行 scripts/xhs/digest.py
 如果 `actions/configure-pages` 报 `Get Pages site failed` 和 `404 Not Found`，说明 GitHub 尚未为该仓库创建 Pages site，通常就是上面的 Source 尚未设置。Node 20 deprecation 信息只是 GitHub Runner 将旧 Action 自动运行在 Node 24 上的迁移提示，不是本次部署失败原因；不要设置 `ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true` 回退到 Node 20。
 
 不建议直接给 `configure-pages` 添加 `enablement: true`：该选项不能使用默认 `GITHUB_TOKEN` 自动启用站点，需要额外的 Personal Access Token 或 GitHub App 管理权限。团队仓库采用一次性 UI 启用更简单，也更安全。
+
+馆藏主题采用 `scripts/tag_taxonomy.json` 中的 26 个方向，近义标签与细分技术标签在导入时归并；原始细分关键词保留在来源 Markdown。主题归并只影响筛选与分组，不会合并论文条目。
+
+## 维护综合专题报告
+
+当前报告厅由一篇保留的精品报告和十一个综合专题组成；物理合理性、手物交互重建与生成、JEPA与隐式状态表征、流式与自回归交互视频生成均有独立入口。23份旧专题、周报和单篇精读保留在历史档案；流式专题沿用原报告ID，并链接原十篇精读正文。分类、合并去向与入口见 [专题目录说明](content/topics/README.md)。
+
+专题正文位于 `content/topics/`，由 `catalog.json` 管理。编辑后运行 `python3 scripts/ingest_reports.py --catalog-only`，只更新报告目录与引用关联，不覆盖现有论文卡片。随后运行数据和图片校验。精品报告《3D/4D Geometric World Action Model》继续保持原文和既有索引。

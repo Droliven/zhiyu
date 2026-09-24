@@ -1,4 +1,10 @@
 import unittest
+import json
+import tempfile
+from pathlib import Path
+from unittest.mock import patch
+
+from scripts import ingest_reports
 
 from scripts.ingest_reports import classify_links, extract_figure, merge_records, normalize_tag, parse_paper
 
@@ -55,8 +61,8 @@ class NormalizeTagTest(unittest.TestCase):
     def test_semantic_aliases_preserve_causal_boundary(self) -> None:
         self.assertEqual(normalize_tag("Agent Memory"), "长时记忆")
         self.assertEqual(normalize_tag("Causal History"), "长时记忆")
-        self.assertEqual(normalize_tag("Causal Modeling"), "因果建模")
-        self.assertEqual(normalize_tag("Counterfactual Reasoning"), "反事实推理")
+        self.assertEqual(normalize_tag("Causal Modeling"), "因果与反事实")
+        self.assertEqual(normalize_tag("Counterfactual Reasoning"), "因果与反事实")
         self.assertEqual(normalize_tag("周报"), "")
 
     def test_video_generation_uses_existing_library_casing(self) -> None:
@@ -178,6 +184,58 @@ S1 使用单段视频示范作为提示，在不更新模型参数的情况下�
         self.assertEqual(parsed["arxiv_id"], "")
         self.assertEqual(parsed["doi"], "")
         self.assertEqual(parsed["tags"], ["World Action Model", "预训练与扩展律"])
+
+
+
+
+class StandalonePaperTest(unittest.TestCase):
+    def test_standalone_source_deduplicates_without_creating_report(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            reports_dir = root / 'content/reports'
+            papers_dir = root / 'content/papers'
+            reports_dir.mkdir(parents=True)
+            papers_dir.mkdir()
+            section = '''- **论文**：[arXiv](https://arxiv.org/abs/2609.24981)
+- **类别标签**：3D/4D
+
+## 研究动机
+独立的详细论文叙事。
+
+## 技术方案
+- **输入**：图像。
+- **过程**：几何编码。
+- **输出**：状态。
+
+## 实验结果
+已核验的实验结果。
+'''
+            (papers_dir / '2609.24981.md').write_text('# GAE\n\n' + section)
+            old = parse_paper('GAE', section, {'tags': []}, 'historic-report')
+            old['source_reports'] = []
+            old['comments'] = 'reviewed comment'
+            old['insight'] = '历史审阅内容。' * 30
+            papers_path = root / 'papers.json'
+            papers_path.write_text(json.dumps([old]))
+            with patch.multiple(ingest_reports, ROOT=root, REPORT_DIR=reports_dir,
+                                PAPER_DIR=papers_dir, PAPERS_PATH=papers_path,
+                                REPORTS_PATH=root / 'reports.json', DISPLAY_ONLY_REPORTS=[],
+                                TOPIC_CATALOG_PATH=root / 'catalog.json'):
+                papers, reports = ingest_reports.build()
+                self.assertEqual(len(papers), 1)
+                self.assertEqual(reports, [])
+                self.assertEqual(papers[0]['source_reports'], [])
+                self.assertEqual(papers[0]['source_papers'], ['content/papers/2609.24981.md'])
+                self.assertEqual(papers[0]['comments'], old['comments'])
+                self.assertEqual(papers[0]['insight'], old['insight'])
+                papers_path.write_text(json.dumps(papers))
+                self.assertEqual(ingest_reports.build(), (papers, reports))
+                # The same source also works when rebuilding a new collection.
+                papers_path.write_text('[]')
+                fresh, reports = ingest_reports.build()
+                self.assertEqual(len(fresh), 1)
+                self.assertEqual(reports, [])
+                self.assertEqual(fresh[0]['pipeline']['input'], '图像。')
 
 
 if __name__ == "__main__":

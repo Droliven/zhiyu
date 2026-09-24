@@ -53,6 +53,9 @@ def main() -> None:
         unknown = set(paper.get("source_reports", [])) - report_ids
         if unknown:
             errors.append(f"{paper['id']}: unknown reports {sorted(unknown)}")
+        for source in paper.get("source_papers", []):
+            if not source.startswith("content/papers/") or not (ROOT / source).is_file():
+                errors.append(f"{paper['id']}: missing standalone paper {source}")
         figure = paper.get("figure")
         if figure and not figure.get("url", "").startswith("http"):
             figure_path = ROOT / figure["url"]

@@ -20,9 +20,11 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 REPORT_DIR = ROOT / "content" / "reports"
+PAPER_DIR = ROOT / "content" / "papers"
 DATA_DIR = ROOT / "data"
 PAPERS_PATH = DATA_DIR / "papers.json"
 REPORTS_PATH = DATA_DIR / "reports.json"
+TOPIC_CATALOG_PATH = ROOT / "content" / "topics" / "catalog.json"
 
 DISPLAY_ONLY_REPORTS = [
     {
@@ -686,6 +688,8 @@ def merge_records(
     old_sources = list(old.get("source_reports") or [])
     combined_sources = set(old_sources) | set(new.get("source_reports") or [])
     merged["source_reports"] = sorted(combined_sources) if combined_sources != set(old_sources) else old_sources
+    if old.get("source_papers") or new.get("source_papers"):
+        merged["source_papers"] = sorted(set(old.get("source_papers", [])) | set(new.get("source_papers", [])))
     for key in ("comments", "deleted", "arxiv"):
         if key in old:
             merged[key] = old[key]
@@ -764,7 +768,49 @@ def display_only_reports(papers: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return reports
 
 
-def build() -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+def curate_report_catalog(reports: list[dict[str, Any]], papers: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Index synthesis documents without re-importing their prose as paper cards."""
+    catalog = read_json(TOPIC_CATALOG_PATH, {})
+    if not catalog:
+        return reports
+    protected = set(catalog.get("protected_report_ids", []))
+    previous = {r["id"]: r for r in read_json(REPORTS_PATH, [])}
+    archived = set(catalog.get("archived_report_ids", []))
+    topics = catalog.get("topics", [])
+    topic_ids = {r["id"] for r in topics}
+    result = []
+    for report in reports:
+        if report["id"] in topic_ids:
+            continue
+        if report["id"] in protected:
+            result.append(dict(previous.get(report["id"], report)))
+        else:
+            result.append({**report, "archived": report["id"] in archived})
+    for topic in topics:
+        path = ROOT / topic["path"]
+        body = path.read_text(encoding="utf-8")
+        cited_arxiv = set(re.findall(r"arxiv\.org/(?:abs|html|pdf)/(\d{4}\.\d{4,5})", body))
+        known_arxiv = {p.get("arxiv_id") for p in papers}
+        # Older venue-indexed cards may carry the arXiv URL without an arxiv_id.
+        for paper in papers:
+            known_arxiv.update(re.findall(
+                r"arxiv\.org/(?:abs|html|pdf)/(\d{4}\.\d{4,5})",
+                paper.get("links", {}).get("paper", ""),
+            ))
+        if unknown := cited_arxiv - known_arxiv:
+            raise ValueError(f"Topic cites uncatalogued papers: {path}: {sorted(unknown)}")
+        cited = [p["id"] for p in papers if
+                 (p.get("arxiv_id") and p["arxiv_id"] in cited_arxiv) or
+                 (p.get("links", {}).get("paper") and p["links"]["paper"] in body)]
+        result.append({**topic, "source_file": path.name,
+                       "paper_ids": sorted(set(cited)), "kind": "synthesis", "archived": False})
+    order = {r["id"]: i for i, r in enumerate(topics)}
+    result.sort(key=lambda r: (bool(r.get("archived")), r["id"] not in protected,
+                               order.get(r["id"], len(order)), r.get("date", "")))
+    return result
+
+
+def build(*, papers_only: bool = False) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
     existing = read_json(PAPERS_PATH, [])
     papers = list(existing)
     for paper in papers:
@@ -782,8 +828,8 @@ def build() -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
         for item in read_json(REPORTS_PATH, [])
         if item.get("source_file")
     }
-    reports: list[dict[str, Any]] = []
-    for path in sorted(REPORT_DIR.glob("*.md")):
+    reports: list[dict[str, Any]] = read_json(REPORTS_PATH, []) if papers_only else []
+    for path in ([] if papers_only else sorted(REPORT_DIR.glob("*.md"))):
         text = path.read_text(encoding="utf-8")
         profile = report_profile(path, text)
         title_match = re.search(r"(?m)^#\s+(.+)$", text)
@@ -835,16 +881,47 @@ def build() -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
             }
         )
 
+    # Each standalone Markdown file is a paper source, never a report entry.
+    for path in sorted(PAPER_DIR.glob("*.md")):
+        text = path.read_text(encoding="utf-8")
+        title_match = re.search(r"(?m)^#\s+(.+)$", text)
+        if not title_match:
+            raise ValueError(f"Standalone paper has no title: {path}")
+        candidate = parse_paper(title_match.group(1).strip(), text, {"tags": []}, "")
+        if candidate is None:
+            raise ValueError(f"Standalone paper has no primary paper source: {path}")
+        candidate["source_reports"] = []
+        candidate["source_papers"] = [path.relative_to(ROOT).as_posix()]
+        matches = [key_to_index[key] for key in identity_keys(candidate) if key in key_to_index]
+        if matches:
+            index = matches[0]
+            papers[index] = merge_records(papers[index], candidate)
+        else:
+            index = len(papers)
+            papers.append(candidate)
+        for key in identity_keys(papers[index]):
+            key_to_index[key] = index
+
     for paper in papers:
         fill_completeness_status(paper)
     papers.sort(key=lambda item: (-(item.get("year") or 0), item["title"].casefold()))
-    reports.extend(display_only_reports(papers))
-    reports.sort(key=lambda item: (item["date"], item["title"]), reverse=True)
+    if not papers_only:
+        reports.extend(display_only_reports(papers))
+        reports.sort(key=lambda item: (item["date"], item["title"]), reverse=True)
+        reports = curate_report_catalog(reports, papers)
     return papers, reports
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--papers-only", action="store_true",
+        help="Import standalone content/papers files, preserving the report index",
+    )
+    parser.add_argument(
+        "--catalog-only", action="store_true",
+        help="Rebuild the curated report catalog without modifying paper cards",
+    )
     parser.add_argument("sources", nargs="*", type=Path, help="Markdown reports to add")
     parser.add_argument(
         "--copy",
@@ -853,6 +930,19 @@ def main() -> None:
     )
     args = parser.parse_args()
 
+    if args.catalog_only:
+        if args.sources or args.copy or args.papers_only:
+            parser.error("--catalog-only cannot be combined with paper/report import options")
+        papers = read_json(PAPERS_PATH, [])
+        reports = curate_report_catalog(read_json(REPORTS_PATH, []), papers)
+        write_json(REPORTS_PATH, reports)
+        print(f"Indexed {sum(not r.get('archived') for r in reports)} active reports and "
+              f"{sum(bool(r.get('archived')) for r in reports)} archived sources.")
+        return
+
+    if args.papers_only and args.sources:
+        parser.error("--papers-only cannot be combined with report sources")
+
     if args.sources and not args.copy:
         parser.error("use --copy when passing external source reports")
     for source in args.sources:
@@ -860,9 +950,10 @@ def main() -> None:
             parser.error(f"not a Markdown file: {source}")
         shutil.copy2(source, REPORT_DIR / source.name)
 
-    papers, reports = build()
+    papers, reports = build(papers_only=args.papers_only)
     write_json(PAPERS_PATH, papers)
-    write_json(REPORTS_PATH, reports)
+    if not args.papers_only:
+        write_json(REPORTS_PATH, reports)
     print(f"Built {len(papers)} papers from {len(reports)} reports.")
 
 
