@@ -367,6 +367,84 @@
     ]
   },
   {
+    "id": "arxiv-2610-30136",
+    "title": "Agentic World Action Models",
+    "authors": [
+      "Zhuoyang Liu",
+      "Dantong Niu",
+      "Botong Zhang",
+      "Boning Shao",
+      "Jing Wang",
+      "Ruijie Zheng",
+      "Yuvan Sharma",
+      "Runyu Lu",
+      "Jiaming Liu",
+      "Renrui Zhang",
+      "Roei Herzig",
+      "Yutong Bai",
+      "Ken Goldberg",
+      "Danfei Xu",
+      "Yuke Zhu",
+      "Guanzhi Wang",
+      "Linxi “Jim” Fan",
+      "Trevor Darrell"
+    ],
+    "year": 2026,
+    "publication": "2026，arXiv 预印本（v1，2026-10-21）；模型名 AW-0",
+    "arxiv_id": "2610.30136",
+    "doi": "10.48550/arXiv.2610.30136",
+    "links": {
+      "paper": "https://arxiv.org/abs/2610.30136",
+      "project": "https://agentic-wam.github.io/",
+      "code": "https://github.com/ZhuoyangLiu2005/agentic-wam",
+      "model": "https://huggingface.co/miniFranka/agentic-wam-pretrain-yamego3k-soup-e1",
+      "alphaxiv": "https://alphaxiv.org/abs/2610.30136"
+    },
+    "tags": [
+      "Agent与可执行世界",
+      "World Action Model",
+      "机器人学习",
+      "规划与控制",
+      "跨本体迁移",
+      "长时记忆"
+    ],
+    "figure": {
+      "url": "https://arxiv.org/html/2610.30136v1/method_v6_0926.png",
+      "alt": "Agentic World Action Models Fig. 2：三专家架构与联合去噪",
+      "label": "Agentic World Action Models，Fig. 2，代码、视频和动作三流联合去噪，以及默认动作执行与混合执行的接口。",
+      "paper_title": "Agentic World Action Models",
+      "source_url": "https://arxiv.org/html/2610.30136v1/method_v6_0926.png"
+    },
+    "summary": "AW-0 将程序作为世界动作模型内部可学习的计划表示：代码、未来视频与动作一起生成，让技能结构进入动态预测和控制。 相比仅在 WAM 外层增加 Agent，它在每层联合注意力中连接三个专家；相比只预测自然语言子目标，代码可表达参数、顺序与可重用函数。另设混合执行模式检验生成程序能否作为执行接口，而默认策略只将代码作为条件。",
+    "insight": "**AW-0 将程序作为世界动作模型内部可学习的计划表示：代码、未来视频与动作一起生成，让技能结构进入动态预测和控制。** 相比仅在 WAM 外层增加 Agent，它在每层联合注意力中连接三个专家；相比只预测自然语言子目标，代码可表达参数、顺序与可重用函数。另设混合执行模式检验生成程序能否作为执行接口，而默认策略只将代码作为条件。\n\n与本库 WAM、技能结构和 Agent 工具调用直接相关。其结果支持结构化程序监督改善所测任务的控制表现，尚未证明技能库能在部署时自行扩展或通过持续交互改进学习算法。",
+    "pipeline": {
+      "input": "当前三个 RGB 视角、任务指令、机器人本体状态，以及压缩后的历史程序片段。真实机器人及人手数据映射到 64 维状态/动作空间；RoboTwin 使用 14 维关节空间。",
+      "process": "Mixture-of-Transformers 连接代码、视频、动作专家，专家内双向注意力，跨专家按代码→视频→动作建立分块因果关系。SDAR-1.7B 初始化的代码专家读取冻结 Qwen3-VL 视觉塔特征，通过 LLaDA 风格离散掩码扩散生成程序；Cosmos-Predict2.5-2B 视频专家与动作 DiT 采用连续 flow matching。代码在去噪全过程指导视频和动作，动作还读取视频表示；视频噪声重采样与重要性权重平衡视频学习和控制指导。",
+      "output": "当前子任务的代码片段、未来视频和连续动作块。默认模式由动作块驱动机器人；混合模式只有在阶段、依赖、语法、API 白名单等检查通过时尝试执行代码，否则采用动作块。",
+      "details": "**输入**：当前三个 RGB 视角、任务指令、机器人本体状态，以及压缩后的历史程序片段。真实机器人及人手数据映射到 64 维状态/动作空间；RoboTwin 使用 14 维关节空间。\n\n**过程**：Mixture-of-Transformers 连接代码、视频、动作专家，专家内双向注意力，跨专家按代码→视频→动作建立分块因果关系。SDAR-1.7B 初始化的代码专家读取冻结 Qwen3-VL 视觉塔特征，通过 LLaDA 风格离散掩码扩散生成程序；Cosmos-Predict2.5-2B 视频专家与动作 DiT 采用连续 flow matching。代码在去噪全过程指导视频和动作，动作还读取视频表示；视频噪声重采样与重要性权重平衡视频学习和控制指导。\n\n**输出**：当前子任务的代码片段、未来视频和连续动作块。默认模式由动作块驱动机器人；混合模式只有在阶段、依赖、语法、API 白名单等检查通过时尝试执行代码，否则采用动作块。\n\n程序标注先从每任务一个 episode 发现可复用模式，再冻结包含 50 项的技能库（23 项 YAM、27 项人类技能），重标种子并缓存子任务到代码的映射，随后按接触/运动证据复用或重新标注。预训练语料为 248,642 episodes、606 任务、2,913.22 小时（YAM 1,919.30 小时、人类第一视角 993.91 小时）；下游仍需对任务示范标注和联合微调。\n\n混合执行调用独立感知与控制原语：仿真中包含 Molmo grounding、SAM 3、Contact-GraspNet 与 RoboTwin 原生运动规划器。评估时不读取特权状态；收集混合模式示范时使用特权物体状态和标注抓取。执行尝试报错后在下一轮重新观测与规划，并非自动修复本轮程序。[方法、附录 A/B/I/J](https://arxiv.org/html/2610.30136v1#S2)。"
+    },
+    "experiments": "| 设置 | 作者报告结果 | 证据边界 |\n| --- | --- | --- |\n| RoboTwin 2.0 默认模式 | Clean 80.8%、Random 20.6%、两者均值 50.7%；π₀.₅ 为 54.9/27.7/41.3，WLA 为 64.8/3.6/34.2 | 50 任务，每任务 50 条 clean 示范、每设置 50 rollouts；优势主要来自 clean，默认模式在 Random 低于 π₀.₅ |\n| RoboTwin 混合模式 | Clean 63.1%、Random 29.2%、均值 46.2% | 同时改变为 CaP 采集示范与混合执行，不能将相对默认模式的差值单独归因于代码执行 |\n| 两平台八项真机任务 | 平均 rubric score 71.1%，最强对比 DreamZero 为 46.0% | 每任务 100 示范，3 训练种子×16 rollouts；是可获得部分进度的评分，不是完整 episode 成功率 |\n| 真机折叠堆毛巾 | 混合执行 rubric score 90.6%，默认动作执行 84.4% | 同一后训练模型与任务条件下比较，证据比仿真混合对照更直接；仅 YAM 一项任务 |\n| 代码视觉输入消融 | ViT 平均 rubric score 71.1%，复用 VAE 特征为 55.6% | 八项任务同协议，支持专门语义视觉特征的价值 |\n| 联合去噪与自回归代码 | 联合模式平均 71.1%，AR 54.5%；端到端延迟 0.23 s 对 0.55 s | 单 RTX 5090；延迟包含视觉编码、去噪、视频解码与动作后处理，不能视为机器人控制频率 |\n\n相同预训练数据、预算与优化条件下，代码→视频→动作优于无代码及视频→代码→动作配置；删除技能调用、解释性注释也降低所测任务表现。这些消融支持程序内容及其信息流的作用，不能据此认定所有生成程序具有正确物理语义。[正文第 3 节、表 1–4 与附录 J](https://arxiv.org/html/2610.30136v1#S3)。",
+    "evidence_notes": "已核对本地 PDF、arXiv v1 方法与主实验、附录实现/混合执行/局限，以及官方代码与模型页；数字为作者报告，未独立复现。",
+    "code_data_status": "[官方仓库](https://github.com/ZhuoyangLiu2005/agentic-wam) 提供预训练、后训练、程序标注和部署代码，许可证为 BSD-2-Clause；[预训练权重](https://huggingface.co/miniFranka/agentic-wam-pretrain-yamego3k-soup-e1) 及 [RoboTwin 权重](https://huggingface.co/miniFranka/agentic-wam-posttrain-robotwin-suit) 已列出。完整预训练语料与初始化所用 Cosmos-Predict2.5-2B 视频 checkpoint 不包含在代码发布中；其余冻结组件需另取原始发布并遵循各自许可证。不能将完整代码发布等同于端到端训练材料全部可得。",
+    "limitations": "- 程序监督来自自动标注与有限技能库；函数参数错误、接触失败和物体属性误判仍会传递到控制，语法正确不保证执行正确。\n- 默认模式从 Clean 80.8% 降到 Random 20.6%，显示明显的视觉分布偏移；混合配置也未同时兼顾 clean 与随机环境。\n- 仿真混合结果同时改变示范采集与执行工具，缺少只切换执行模式的严格对照；真机混合证据仅覆盖 YAM 折叠任务。\n- 真机主指标是八任务平均进度评分；71.1% 不能改写为全任务成功率，少数任务不能代表广泛跨任务泛化。\n- 当前部署没有在线学习、自主技能库扩展或经受控验证的递归自我改进；完整预训练数据和部分初始化材料未随发布提供。",
+    "comments": "",
+    "source_reports": [],
+    "deleted": false,
+    "updated_at": "2026-11-11",
+    "challenges": "世界动作模型可以联合预测视频和动作，却缺少明确的技能调用、参数化与步骤组织；代码规划 Agent 能重用工具和技能，但往往没有与低层控制共同学习的动态预测。本文针对两者之间的接口：如何让程序结构在生成未来视频和动作时持续提供指导，并在适合时直接调用已有控制技能。",
+    "motivation": "**AW-0 将程序作为世界动作模型内部可学习的计划表示：代码、未来视频与动作一起生成，让技能结构进入动态预测和控制。** 相比仅在 WAM 外层增加 Agent，它在每层联合注意力中连接三个专家；相比只预测自然语言子目标，代码可表达参数、顺序与可重用函数。另设混合执行模式检验生成程序能否作为执行接口，而默认策略只将代码作为条件。\n\n与本库 WAM、技能结构和 Agent 工具调用直接相关。其结果支持结构化程序监督改善所测任务的控制表现，尚未证明技能库能在部署时自行扩展或通过持续交互改进学习算法。",
+    "technical_approach": "**输入**：当前三个 RGB 视角、任务指令、机器人本体状态，以及压缩后的历史程序片段。真实机器人及人手数据映射到 64 维状态/动作空间；RoboTwin 使用 14 维关节空间。\n\n**过程**：Mixture-of-Transformers 连接代码、视频、动作专家，专家内双向注意力，跨专家按代码→视频→动作建立分块因果关系。SDAR-1.7B 初始化的代码专家读取冻结 Qwen3-VL 视觉塔特征，通过 LLaDA 风格离散掩码扩散生成程序；Cosmos-Predict2.5-2B 视频专家与动作 DiT 采用连续 flow matching。代码在去噪全过程指导视频和动作，动作还读取视频表示；视频噪声重采样与重要性权重平衡视频学习和控制指导。\n\n**输出**：当前子任务的代码片段、未来视频和连续动作块。默认模式由动作块驱动机器人；混合模式只有在阶段、依赖、语法、API 白名单等检查通过时尝试执行代码，否则采用动作块。\n\n程序标注先从每任务一个 episode 发现可复用模式，再冻结包含 50 项的技能库（23 项 YAM、27 项人类技能），重标种子并缓存子任务到代码的映射，随后按接触/运动证据复用或重新标注。预训练语料为 248,642 episodes、606 任务、2,913.22 小时（YAM 1,919.30 小时、人类第一视角 993.91 小时）；下游仍需对任务示范标注和联合微调。\n\n混合执行调用独立感知与控制原语：仿真中包含 Molmo grounding、SAM 3、Contact-GraspNet 与 RoboTwin 原生运动规划器。评估时不读取特权状态；收集混合模式示范时使用特权物体状态和标注抓取。执行尝试报错后在下一轮重新观测与规划，并非自动修复本轮程序。[方法、附录 A/B/I/J](https://arxiv.org/html/2610.30136v1#S2)。",
+    "discussion": "贡献在于把代码从外层任务规划器推进到 WAM 内部，与视频和动作共同优化；自动标注与冻结技能库为这种接口提供规模化监督。默认模式检验程序计划对学习式控制的指导，混合模式进一步检验显式技能与动作专家的互补。\n\n混合执行的可靠性仍受感知、抓取和规划原语限制；通过有效性检查不代表比动作专家更优，因而混合模式在 clean 条件明显退化。与 PrimeSim 的接口区别是：PrimeSim 输入外部动作、模拟视觉后果，AW-0 自身联合产生计划和策略动作。AW-0 当前不从部署交互在线学习，其持续技能扩展和自我改进属于未来方向。",
+    "arxiv": {
+      "published": "2026-10-21T17:59:56Z",
+      "revised_at": "2026-10-21T17:59:56Z",
+      "primary_category": "cs.RO"
+    },
+    "source_papers": [
+      "content/papers/2610.30136.md"
+    ]
+  },
+  {
     "id": "arxiv-2609-24487",
     "title": "AgentSTAR: Agentic Shape Tracking and Reconstruction from Monocular Videos",
     "authors": [
@@ -3690,6 +3768,89 @@
     ]
   },
   {
+    "id": "arxiv-2610-30340",
+    "title": "Foundation4D: Towards a unified perception and reconstruction model for autonomous vehicles",
+    "authors": [
+      "NVIDIA",
+      "Sérgio Agostinho",
+      "Maximilian Apodaca",
+      "Emmanuel Attia",
+      "Guillem Braso",
+      "George Dong",
+      "Ilya Fedorov",
+      "Michele Fenzi",
+      "Gang Huang",
+      "Jiahui Huang",
+      "Shengyu Huang",
+      "Bingxin Ke",
+      "Laura Leal-Taixé",
+      "Kuan-Ting Lee",
+      "Mingxuan Liu",
+      "Tian Liu",
+      "Tim Meinhardt",
+      "Aljoša Ošep",
+      "Naveen Kumar Rai",
+      "Kefei Ren",
+      "Cristiano Saltori",
+      "Keqiang Wu",
+      "Ning Xu",
+      "Fei Xue",
+      "Jin-Bey Yu",
+      "Lei Zhang",
+      "Qunjie Zhou"
+    ],
+    "year": 2026,
+    "publication": "2026，arXiv 预印本（v1，2026-10-21；PDF 页眉日期为 2026-10-23）",
+    "arxiv_id": "2610.30340",
+    "doi": "10.48550/arXiv.2610.30340",
+    "links": {
+      "paper": "https://arxiv.org/abs/2610.30340",
+      "project": "https://research.nvidia.com/labs/sil/projects/foundation4d/",
+      "data": "https://huggingface.co/datasets/nvidia/PhysicalAI-Autonomous-Vehicles-Foundation4D",
+      "alphaxiv": "https://alphaxiv.org/abs/2610.30340"
+    },
+    "tags": [
+      "3D/4D",
+      "世界模型",
+      "多模态感知与提示"
+    ],
+    "figure": {
+      "url": "https://arxiv.org/html/2610.30340v1/architecture-v38.png",
+      "alt": "Foundation4D Fig. 2：统一感知与重建架构",
+      "label": "Foundation4D，Fig. 2，多摄像头共享时空表征与几何、检测、占据、Gaussian 重建任务头。",
+      "paper_title": "Foundation4D: Towards a unified perception and reconstruction model for autonomous vehicles",
+      "source_url": "https://arxiv.org/html/2610.30340v1/architecture-v38.png"
+    },
+    "summary": "Foundation4D 用同一多摄像头视频表征支持场景理解与可渲染重建，让几何、语义、物体及外观共享信息。 分解时空注意力降低窗口处理成本，视频级位姿优化与追踪连接跨窗口结果；配套标注流程为深度和占据提供更密集的几何依据。",
+    "insight": "**Foundation4D 用同一多摄像头视频表征支持场景理解与可渲染重建，让几何、语义、物体及外观共享信息。** 分解时空注意力降低窗口处理成本，视频级位姿优化与追踪连接跨窗口结果；配套标注流程为深度和占据提供更密集的几何依据。\n\n它与本库的 3D/4D 世界表示和仿真素材构建直接相关，与机器人策略学习间接相关。这里的“世界”主要是观测场景的几何、外观和轨迹重建，不包含动作条件下的未来动力学或控制策略。",
+    "pipeline": {
+      "input": "多摄像头驾驶视频窗口。几何分支估计深度、相机间变换和自车运动；检测/占据使用已知相机内参与固定 rig 标定进行投影，Gaussian 分支也使用已知 rig 标定，因此不能将整个系统称为无标定输入。",
+      "process": "DINOv2 ViT-L/14 提取图像特征，将聚合用空间 token 降为原来的四分之一，交替执行图像内、同时间相机间和同相机时间间注意力；任务头共同学习几何、三维目标与速度、语义占据及静态/动态 Gaussian。重叠窗口通过顺序 Sim(3) 拼接或全局 SE(3) 位姿图优化组装，离线关联与后向平滑连接物体轨迹。",
+      "output": "深度与相机/自车位姿、三维框及轨迹、语义占据、可用于新视角渲染的 Gaussian 场景。没有车辆控制动作或闭环驾驶决策输出。",
+      "details": "**输入**：多摄像头驾驶视频窗口。几何分支估计深度、相机间变换和自车运动；检测/占据使用已知相机内参与固定 rig 标定进行投影，Gaussian 分支也使用已知 rig 标定，因此不能将整个系统称为无标定输入。\n\n**过程**：DINOv2 ViT-L/14 提取图像特征，将聚合用空间 token 降为原来的四分之一，交替执行图像内、同时间相机间和同相机时间间注意力；任务头共同学习几何、三维目标与速度、语义占据及静态/动态 Gaussian。重叠窗口通过顺序 Sim(3) 拼接或全局 SE(3) 位姿图优化组装，离线关联与后向平滑连接物体轨迹。\n\n**输出**：深度与相机/自车位姿、三维框及轨迹、语义占据、可用于新视角渲染的 Gaussian 场景。没有车辆控制动作或闭环驾驶决策输出。\n\n训练分三步：短窗口联合训练几何/检测/占据，冻结图像编码器并延长窗口，最后添加 Gaussian 头再联合微调。内部 NRE、PlanNet、MLMCF 数据集各约 68k、76k、60k clips，集合有重叠，论文报告合计约 695 小时。另发布的 PAI–Foundation4D 为 1,253 clips 的密集深度与占据评测标注，不能将其当作预训练语料规模。[方法、训练与视频处理：正文第 3–6 节](https://arxiv.org/html/2610.30340v1#S3)。"
+    },
+    "experiments": "| 设置 | 作者报告结果 | 必要限定 |\n| --- | --- | --- |\n| nuScenes 三维检测 | 60.9 mAP / 66.5 NDS；GeoUP-Joint 为 59.2/65.3 | 经 nuScenes 微调，使用八关键帧离线窗口与未来帧；不能直接解释为因果在线检测优势 |\n| OpenOccupancy | 18.1 mIoU / 27.4 IoU；SPSC-temporal 为 16.2/25.5 | 经相应基准微调，采用 0.2 m 体素与该基准类别定义 |\n| Waymo / nuScenes 深度 | AbsRel 0.09 / 0.15；GeoUP 为 0.13/0.19 | 每个 48 帧窗口独立做尺度对齐，不是无尺度修正的米制深度精度 |\n| 多任务对检测的影响 | DET-only Top-mAP 40.94→GEO+DET+OCC 42.14 | 四相机、80k updates；在 300 个 PlanNet clips 上计算五个主类均值，与公共榜单 mAP 口径不同 |\n| 多任务收益与负迁移 | OCC-only 11.00→GEO+OCC 11.82，但三任务为 11.53 mIoU | 同一任务研究支持几何监督有效，也显示增加任务并不总能互利 |\n| 几何互益 | GEO-only rig 平移误差 7.53→GEO+DET 6.52 cm，下降 13.4% | 同时并非所有深度/旋转指标改善，不宜概括为几何全面提升 |\n| 成本 | 单 H100 80GB，六相机×48 时刻，完整前向中位数 19.782 s、峰值 58.41 GiB | 主要服务离线感知重建，不是在线驾驶闭环频率 |\n\n论文还将预测几何和轨迹作为 lidarless NuRec 的初始化先验。该下游流程仍逐场景优化，与模型自身的前馈 Gaussian 头不同；NuRec 的系统速度对比涉及版本、软硬件及相机设置差异，不能归为单一模型模块的受控加速。[实验与表 2/7/12/16/17：正文第 7–8 节](https://arxiv.org/html/2610.30340v1#S7)。",
+    "evidence_notes": "已核对本地 PDF 方法与实验、arXiv v1、NVIDIA 项目及数据页；实验数字为作者报告，未独立复现。",
+    "code_data_status": "NVIDIA [项目页](https://research.nvidia.com/labs/sil/projects/foundation4d/) 发布论文与 [PAI–Foundation4D 数据入口](https://huggingface.co/datasets/nvidia/PhysicalAI-Autonomous-Vehicles-Foundation4D)，访问文件需接受 NVIDIA AV Dataset 许可。核验时未在项目入口发现可确认的完整模型代码或权重发布，内部训练语料也未随评测集完整公开；这限制端到端复现，不代表确定不存在其他后续发布。",
+    "limitations": "- 检测依赖未来上下文、轨迹使用离线关联与后向平滑，未验证在线实时闭环使用。\n- 远距离、细结构与物体边界深度退化，罕见类别占据易错，检测漏检会造成追踪断裂。\n- 异步相机监督可能混合固定 rig 标定与曝光间自车运动，轨迹插值尚未消除该歧义。\n- 多任务存在负迁移；几何与渲染从训练起点共同学习的收益、损失权重和数据采样仍缺系统研究。\n- 各公开榜单采用相应微调配置，不能写成同一统一 checkpoint 在全部任务零样本领先；完整代码、权重和内部语料的开放范围仍有限。",
+    "comments": "",
+    "source_reports": [],
+    "deleted": false,
+    "updated_at": "2026-11-11",
+    "challenges": "自动驾驶感知需要恢复物体、几何、运动与占据空间，仿真重建还需要可重渲染的外观；两者共享信息，却常由独立网络重复处理。将 VGGT 式全局注意力直接用于多摄像头长视频成本很高，窗口预测也容易产生位姿漂移与物体身份断裂。密集监督还受异步采集、rolling shutter 和动态物体对齐误差影响。",
+    "motivation": "**Foundation4D 用同一多摄像头视频表征支持场景理解与可渲染重建，让几何、语义、物体及外观共享信息。** 分解时空注意力降低窗口处理成本，视频级位姿优化与追踪连接跨窗口结果；配套标注流程为深度和占据提供更密集的几何依据。\n\n它与本库的 3D/4D 世界表示和仿真素材构建直接相关，与机器人策略学习间接相关。这里的“世界”主要是观测场景的几何、外观和轨迹重建，不包含动作条件下的未来动力学或控制策略。",
+    "technical_approach": "**输入**：多摄像头驾驶视频窗口。几何分支估计深度、相机间变换和自车运动；检测/占据使用已知相机内参与固定 rig 标定进行投影，Gaussian 分支也使用已知 rig 标定，因此不能将整个系统称为无标定输入。\n\n**过程**：DINOv2 ViT-L/14 提取图像特征，将聚合用空间 token 降为原来的四分之一，交替执行图像内、同时间相机间和同相机时间间注意力；任务头共同学习几何、三维目标与速度、语义占据及静态/动态 Gaussian。重叠窗口通过顺序 Sim(3) 拼接或全局 SE(3) 位姿图优化组装，离线关联与后向平滑连接物体轨迹。\n\n**输出**：深度与相机/自车位姿、三维框及轨迹、语义占据、可用于新视角渲染的 Gaussian 场景。没有车辆控制动作或闭环驾驶决策输出。\n\n训练分三步：短窗口联合训练几何/检测/占据，冻结图像编码器并延长窗口，最后添加 Gaussian 头再联合微调。内部 NRE、PlanNet、MLMCF 数据集各约 68k、76k、60k clips，集合有重叠，论文报告合计约 695 小时。另发布的 PAI–Foundation4D 为 1,253 clips 的密集深度与占据评测标注，不能将其当作预训练语料规模。[方法、训练与视频处理：正文第 3–6 节](https://arxiv.org/html/2610.30340v1#S3)。",
+    "discussion": "真正增量是把几何、物体、体积占据和场景外观放入共享架构，并给出从窗口预测到长视频重建的完整流程。任务组合实验比各自榜单更能解释共享表示的价值，同时明确暴露负迁移。\n\n它适合为数据标注、场景重建及仿真构建提供底座。与 PrimeSim 的区别是：Foundation4D 重建已观测驾驶过程，PrimeSim 根据外部动作递推视觉后果；两者并未在论文中组合验证。Foundation4D 未展示动作条件预测、规划或闭环驾驶成功率，不能用感知榜单替代这些能力证据。",
+    "arxiv": {
+      "published": "2026-10-21T19:00:46Z",
+      "revised_at": "2026-10-21T19:00:46Z",
+      "primary_category": "cs.CV"
+    },
+    "source_papers": [
+      "content/papers/2610.30340.md"
+    ]
+  },
+  {
     "id": "arxiv-2609-08636",
     "title": "From Where to How: Continuous 4D Interaction Forecasting from Egocentric Video",
     "authors": [
@@ -5081,6 +5242,90 @@
     }
   },
   {
+    "id": "arxiv-2609-39601",
+    "title": "GroundingPI: A Grounding Foundation Model towards Physical Intelligence with Visual Primitives",
+    "authors": [
+      "Qize Yu",
+      "Lianrui Fan",
+      "Boyu Chen",
+      "Jiaqi Liang",
+      "Xini Ding",
+      "Yue Chen",
+      "Zetian Song",
+      "Yuran Wang",
+      "Yi Zou",
+      "Kaixuan Wang",
+      "Tianxing Chen",
+      "Wenxuan Song",
+      "Bohan Zhou",
+      "Mingleyang Li",
+      "Siqiao Huang",
+      "Yuqi Ye",
+      "Caigao Jiang",
+      "Wei Wei",
+      "Ruihai Wu",
+      "Hang Zhang",
+      "Yixiao Ge",
+      "Shuchang Zhou",
+      "Shilong Liu",
+      "Xianming Liu",
+      "Ping Luo",
+      "Shiyu Huang"
+    ],
+    "year": 2026,
+    "publication": "2026，arXiv 预印本（v1 首发 2026-09-30，v2 修订 2026-10-16）",
+    "arxiv_id": "2609.39601",
+    "doi": "10.48550/arXiv.2609.39601",
+    "links": {
+      "paper": "https://arxiv.org/abs/2609.39601",
+      "project": "https://groundingpi.github.io/",
+      "code": "https://github.com/groundingpi/GroundingPI",
+      "model": "https://huggingface.co/GroundingPI/GroundingPI",
+      "alphaxiv": "https://alphaxiv.org/abs/2609.39601"
+    },
+    "tags": [
+      "VLA",
+      "多模态感知与提示",
+      "机器人学习",
+      "适应与泛化"
+    ],
+    "figure": {
+      "url": "https://arxiv.org/html/2609.39601v2/GroundingPI_Architectures.png",
+      "alt": "GroundingPI Fig. 1：视觉基元与统一 grounding 输出",
+      "label": "GroundingPI，公开 v2 Fig. 1，视觉编码、语言解码与点/框的统一坐标输出接口。",
+      "paper_title": "GroundingPI: A Grounding Foundation Model towards Physical Intelligence with Visual Primitives",
+      "source_url": "https://arxiv.org/html/2609.39601v2/GroundingPI_Architectures.png"
+    },
+    "summary": "GroundingPI 将精准、语言条件化的视觉 grounding 作为可迁移的基础能力，先学习点和框等视觉基元，再适配动作。 作者用统一坐标输出覆盖检测、指代定位、指点、OCR、GUI 与文档布局，并在固定下游动作模块的条件下检验：更好的感知预训练能否降低动作学习的数据负担。",
+    "insight": "**GroundingPI 将精准、语言条件化的视觉 grounding 作为可迁移的基础能力，先学习点和框等视觉基元，再适配动作。** 作者用统一坐标输出覆盖检测、指代定位、指点、OCR、GUI 与文档布局，并在固定下游动作模块的条件下检验：更好的感知预训练能否降低动作学习的数据负担。\n\n它与本库的具身感知和 VLA 表征直接相关。其核心贡献是感知基础与受控迁移验证，尚不能从定位成绩推导出完整动力学理解或通用机器人控制能力。",
+    "pipeline": {
+      "input": "图像与语言查询；下游机器人策略还接收本体状态，驾驶适配接收前相机图像与历史自车状态。",
+      "process": "MoonViT-V2 视觉编码器通过可学习投影连接 Qwen3-4B 解码器，语义标签、协议标记及 1,000 个量化坐标 token 共用输出词表。基础多模态训练后，SFT 学习结构化坐标与输出格式，GRPO 用目标覆盖、定位严格度、重复/过大框惩罚及 OCR 文本—几何一致性奖励优化。数据引擎融合多教师字段、按任务校验并迭代标注。用于机器人时，将各层骨干特征注入固定 flow-matching Action DiT，训练连续动作块。",
+      "output": "基础模型自回归产生点、框及相关语义文本，查询不存在时返回 None；完成下游适配后，可分别输出机器人连续动作或三秒驾驶轨迹。发布的 grounding checkpoint 本身不等于可直接部署的动作策略。",
+      "details": "**输入**：图像与语言查询；下游机器人策略还接收本体状态，驾驶适配接收前相机图像与历史自车状态。\n\n**过程**：MoonViT-V2 视觉编码器通过可学习投影连接 Qwen3-4B 解码器，语义标签、协议标记及 1,000 个量化坐标 token 共用输出词表。基础多模态训练后，SFT 学习结构化坐标与输出格式，GRPO 用目标覆盖、定位严格度、重复/过大框惩罚及 OCR 文本—几何一致性奖励优化。数据引擎融合多教师字段、按任务校验并迭代标注。用于机器人时，将各层骨干特征注入固定 flow-matching Action DiT，训练连续动作块。\n\n**输出**：基础模型自回归产生点、框及相关语义文本，查询不存在时返回 None；完成下游适配后，可分别输出机器人连续动作或三秒驾驶轨迹。发布的 grounding checkpoint 本身不等于可直接部署的动作策略。\n\n受控骨干比较在每个 benchmark 内固定 Action DiT、动作数据、动作表征、优化预算与推理流程，仅更换预训练感知基础；但不同骨干的预训练数据量、结构与目标仍不相同，不能把差异全部归因于单一 grounding 训练因素。[方法：v2 第 3–4 节](https://arxiv.org/html/2609.39601v2#S3)。"
+    },
+    "experiments": "| 设置 | 作者报告结果 | 可支持的结论与口径 |\n| --- | --- | --- |\n| 综合感知 | 34 基准、11 类能力、44 个对比模型，聚合得分 73.68；GPT-6 Astra 为 71.54 | 表明所选感知套件总体较强，不是每个任务都最优；不能将异质指标均值视为机器人成功率 |\n| RoboTwin 2.0 Full | 成功率 66.20% | Full 同时使用 Clean 与 Randomized 数据训练/评估，不能与只用 Clean 示范的结果直接排名 |\n| RoboTwin Clean2Random | 17.60%，Rex-Omni 为 14.10% | 相同动作学习设置下支持场景随机化迁移收益，绝对成功率仍低 |\n| RoboCasa-GR1 Full | 37.75%，RynnBrain 为 39.00% | GroundingPI 在该 ID 设置并非最高；三种 OOD 套件均领先所列骨干 |\n| 动作数据效率 | 50% 示范达到 28.75%，超过对比骨干用 75% 示范的最高 27.75% | RoboCasa-GR1 ID；固定其余动作学习设置，支持预训练感知改善示范效率 |\n| nuScenes 轨迹预测 | 平均开放环 L2 0.296 m，Qwen3-VL 为 0.301 m | 六个 waypoint 覆盖三秒；只验证记录轨迹上的开放环误差，没有闭环驾驶验证 |\n\n论文中的“四个 OOD”是 RoboTwin Clean2Random 与 RoboCasa 的 Appearance、Combinations/Container、Object Types 三套合计，不能写成 RoboTwin 自己有四种 OOD。感知数据规模增加时，下游表现总体改善；分组消融显示密集定位监督有迁移价值。OCR 可促进其他感知能力的解释仍属于机制假说，分组混合结果并非严格独立效应量。[主实验与消融：v2 第 5 节、附录第 8–10 节](https://arxiv.org/html/2609.39601v2#S5)。",
+    "evidence_notes": "已核对本地 PDF 方法与实验、公开 v2 对应正文/补充材料，以及官方项目、代码和模型页；数字为作者报告，未独立复现。",
+    "code_data_status": "[官方仓库](https://github.com/groundingpi/GroundingPI) 已提供服务、评测、SFT 训练与下游骨干比较工作流，[模型页](https://huggingface.co/GroundingPI/GroundingPI) 发布 grounding 权重。项目原创代码标注 Apache-2.0，Kimi-derived 组件仍保留 Kimi K3 上游条款，不能将整个模型包概括为无附加上游条件的 Apache-2.0。\n\n仓库说明下游比较依赖单独环境和策略 checkpoint，未提供发布版 GroundingPI 权重可直接使用的动作策略适配器；完整预训练标注语料与全部训练阶段的重建条件也未核验为公开。开放 grounding 模型不等于全部机器人控制实验可以直接复现。",
+    "limitations": "- 四个 OOD 设置分属两套操控基准；总体/相对提升不能扩大为每项感知、每个本体或所有环境领先。\n- 未隔离骨干预训练数据、模型结构与目标的全部混杂；受控下游比较不等于统一预训练预算的因果消融。\n- RoboTwin Clean2Random 绝对成功率仍低，RoboCasa ID 也存在更强骨干；精确定位不是控制成功的充分条件。\n- nuScenes 仅开放环轨迹误差，没有真实闭环驾驶或真实机器人策略迁移的充分证据。\n- 自动标注可能保留教师错误；OCR 的跨能力促进机制、训练语料开放范围和下游直接部署接口仍需进一步验证。",
+    "comments": "",
+    "source_reports": [],
+    "deleted": false,
+    "updated_at": "2026-11-11",
+    "challenges": "通用视觉语言骨干擅长解释图像，却未必能在密集场景里准确选中微小目标、区分相邻实例或定位交互部位。直接用少量机器人动作示范同时补齐感知和控制，容易把数据消耗在重新学习“在哪里操作”。对需要闭环动作的任务，语义正确而坐标不准仍会失败。",
+    "motivation": "**GroundingPI 将精准、语言条件化的视觉 grounding 作为可迁移的基础能力，先学习点和框等视觉基元，再适配动作。** 作者用统一坐标输出覆盖检测、指代定位、指点、OCR、GUI 与文档布局，并在固定下游动作模块的条件下检验：更好的感知预训练能否降低动作学习的数据负担。\n\n它与本库的具身感知和 VLA 表征直接相关。其核心贡献是感知基础与受控迁移验证，尚不能从定位成绩推导出完整动力学理解或通用机器人控制能力。",
+    "technical_approach": "**输入**：图像与语言查询；下游机器人策略还接收本体状态，驾驶适配接收前相机图像与历史自车状态。\n\n**过程**：MoonViT-V2 视觉编码器通过可学习投影连接 Qwen3-4B 解码器，语义标签、协议标记及 1,000 个量化坐标 token 共用输出词表。基础多模态训练后，SFT 学习结构化坐标与输出格式，GRPO 用目标覆盖、定位严格度、重复/过大框惩罚及 OCR 文本—几何一致性奖励优化。数据引擎融合多教师字段、按任务校验并迭代标注。用于机器人时，将各层骨干特征注入固定 flow-matching Action DiT，训练连续动作块。\n\n**输出**：基础模型自回归产生点、框及相关语义文本，查询不存在时返回 None；完成下游适配后，可分别输出机器人连续动作或三秒驾驶轨迹。发布的 grounding checkpoint 本身不等于可直接部署的动作策略。\n\n受控骨干比较在每个 benchmark 内固定 Action DiT、动作数据、动作表征、优化预算与推理流程，仅更换预训练感知基础；但不同骨干的预训练数据量、结构与目标仍不相同，不能把差异全部归因于单一 grounding 训练因素。[方法：v2 第 3–4 节](https://arxiv.org/html/2609.39601v2#S3)。",
+    "discussion": "论文最有分量的证据是固定动作头和训练流程后，不同感知基础仍带来明显的数据效率与 OOD 差异，说明策略底座应评估细粒度 grounding，而不只看通用视觉问答能力。点/框协议也使感知输出更适合工具调用和自动标注。\n\n与 SLA 的区别是：GroundingPI 先训练感知专用骨干，再连接动作学习器；SLA 用冻结三维教师对齐已有 VLA 的中间视觉特征。两者都关注控制可利用的视觉表示，但论文没有验证将它们叠加后的收益。GroundingPI 不负责长期未来仿真，也没有展示在线技能学习或递归自我改进。",
+    "arxiv": {
+      "published": "2026-09-30T12:20:54Z",
+      "revised_at": "2026-10-16T12:38:38Z",
+      "primary_category": "cs.CV"
+    },
+    "source_papers": [
+      "content/papers/2609.39601.md"
+    ]
+  },
+  {
     "arxiv": {
       "published": "2026-08-07T06:41:51Z",
       "revised_at": "2026-08-07T06:41:51Z",
@@ -5939,6 +6184,7 @@
       "paper": "https://arxiv.org/abs/2609.19138",
       "project": "https://cheng-haha.github.io/GPT-Policy/",
       "code": "https://github.com/cheng-haha/GPT-Policy",
+      "data": "https://huggingface.co/datasets/SII-CDZ/gpt-policy-robodojo-contexts",
       "alphaxiv": "https://alphaxiv.org/abs/2609.19138"
     },
     "tags": [
@@ -5953,26 +6199,26 @@
       "paper_title": "In-Context Robot Learning with VLM Agents",
       "source_url": "https://arxiv.org/html/2609.19138v1/overview.png"
     },
-    "summary": "该工作不训练新的机器人 foundation policy，而是让固定 VLM 在 inference context 中读取任务 demonstration。作者提出 context compiler，把机器人或人类演示压缩成保留 task-relevant state transition 的视觉上下文，VLM随后提出工具化的机器人动作，并由受约束 controller执行和检查结果。",
-    "insight": "该工作不训练新的机器人 foundation policy，而是让固定 VLM 在 inference context 中读取任务 demonstration。作者提出 context compiler，把机器人或人类演示压缩成保留 task-relevant state transition 的视觉上下文，VLM随后提出工具化的机器人动作，并由受约束 controller执行和检查结果。\n\n关键点是 human video可以直接作为 in-context experience，而无需动作标签；对 contact-sensitive任务，带 aligned action reference 的 robot demonstration仍明显更有效。",
+    "summary": "GPT-Policy 用示范和交互历史引导冻结 VLM，使同一模型能从新初态执行任务。上下文编译器保留关键视觉状态变化及可用动作参考，工具层执行结构化动作并返回结果，形成无需参数更新的适应闭环。",
+    "insight": "GPT-Policy 用示范和交互历史引导冻结 VLM，使同一模型能从新初态执行任务。上下文编译器保留关键视觉状态变化及可用动作参考，工具层执行结构化动作并返回结果，形成无需参数更新的适应闭环。\n\n人类视频无需机器人动作标签即可提供操作示例；对接触敏感的任务，带时间对齐动作参考的机器人示范更有效。",
     "pipeline": {
-      "input": "当前视觉观察、任务指令、human/robot demonstration、可选动作参考。",
-      "process": "context compiler提取关键视觉状态变化 → VLM根据 context提出 robot-tool action → constrained controller执行 → observation反馈重新进入上下文。",
-      "output": "可执行机器人动作以及跨尝试更新的任务 context。",
-      "details": "**过程**：context compiler提取关键视觉状态变化 → VLM根据 context提出 robot-tool action → constrained controller执行 → observation反馈重新进入上下文。\n\n**输入**：当前视觉观察、任务指令、human/robot demonstration、可选动作参考。\n\n**输出**：可执行机器人动作以及跨尝试更新的任务 context。\n\n上下文来源包括人类视频、机器人视频及对齐动作、目标图、机器人自己的执行历史和在线人类反馈。视觉转移描述与控制工具之间仍需要空间定位、IK、轨迹限幅和实测执行检查；VLM 输出并不直接等于底层电机控制。\n\n[原文方法](https://arxiv.org/html/2609.19138)\n\n### 方法细节与实现\n\n**上下文不是一段笼统摘要。**输入把任务指令、带视角标识的当前图像、机器人状态、目标图或示范关键帧、可选动作参考和本轮执行历史分开组织。示范记录按时间顺序交错图像与状态/动作文本，在线历史另存工具请求及执行结果；旧实时图像可以截断，任务参考则保留，避免把示范动作误认成当前已执行动作。\n\n**工具到控制的完整链条。**VLM 通过结构化调用选择 move_to、move_eef_chunk 或夹爪命令。笛卡尔目标使用各手臂基座坐标系和 xyzw 四元数；控制器对位置线性插值、对旋转做 SLERP，再以前一解为初值逐点求 IK。Ruckig 分配时间并满足采样轨迹的速度、加速度和 jerk 限制，执行后回传实测状态、端点误差及稳定情况。\n\n**在线适应发生在哪里。**VLM 参数固定，行为变化来自参考示范、历史结果与人工反馈的上下文变化。请求被拒绝也产生下一轮可用的反馈；模型宣称完成与物理任务实际成功分别记录。工具层运动学和标定承担大量可执行性保障，因此不能把该系统等价于仅靠视觉语言推理直接控制电机。\n\n[对应方法原文](https://arxiv.org/html/2609.19138#S3)"
+      "input": "当前视觉观测、机器人状态、任务指令，以及人类或机器人示范、可选动作参考、目标图、执行历史和在线人类反馈。",
+      "process": "上下文编译器整理示范中的关键视觉变化及动作参考；固定 VLM 根据任务参考、当前观测和历史提出工具调用；受约束控制器完成空间定位、IK、轨迹限幅与实测执行检查，再将新观测和结果送回下一轮决策。",
+      "output": "工具化机器人动作，以及随交互与尝试更新的任务上下文。",
+      "details": "**输入**：当前视觉观测、机器人状态、任务指令，以及人类或机器人示范、可选动作参考、目标图、执行历史和在线人类反馈。\n\n**过程**：上下文编译器整理示范中的关键视觉变化及动作参考；固定 VLM 根据任务参考、当前观测和历史提出工具调用；受约束控制器完成空间定位、IK、轨迹限幅与实测执行检查，再将新观测和结果送回下一轮决策。\n\n**输出**：工具化机器人动作，以及随交互与尝试更新的任务上下文。\n\n### 方法细节与实现\n\n**上下文组织。**任务指令、带视角标识的当前图像、机器人状态、目标图或示范关键帧、可选动作参考和本轮历史分开组织。示范按时间顺序交错图像与状态/动作文本，在线历史另存工具请求和执行结果；旧实时图像可以截断，任务参考则保留，避免混淆示范动作与当前已执行动作。\n\n**控制链条。**VLM 结构化调用 move_to、move_eef_chunk 或夹爪命令。笛卡尔目标采用各手臂基座坐标系和 xyzw 四元数；控制器对位置做线性插值、对旋转做球面线性插值（SLERP），再以前一解为初值逐点求逆运动学（IK）。Ruckig 分配时间，满足采样轨迹的速度、加速度和加加速度（jerk）限制，执行后回传实测状态、端点误差及稳定情况。\n\n**反馈与适应。**VLM 参数始终固定，行为变化来自示范、历史结果和人工反馈。被拒绝的请求也为下一轮提供信息；模型宣称完成与物理任务实际成功分别记录。运动学、标定和控制工具承担执行保障，VLM 的动作提议并非底层电机命令。\n\n[方法与控制接口：原文第 3 节](https://arxiv.org/html/2609.19138#S3)。"
     },
-    "experiments": "官方项目覆盖十个机器人任务，每种条件仅约 3 次 trial，因此统计规模较小。部分任务从无 demonstration 的 0/3提升到 human-video的2/3；contact-sensitive任务中，video+action reference可进一步达到3/3或2/3。这些结果支持“视觉示例可以驱动 in-context robot adaptation”，但不足以证明大规模任务泛化。\n\n\n表 1 将成功数、决策次数和耗时同时报告。Pick Up Notebook 从无示范 0/3 变为人类视频 2/3，平均时间从 24.6 分钟降到 16.1 分钟；拔插插头由机器人视频的 0/3 变为视频+动作的 2/3，但平均时间从 7.9 分钟增至 10.8 分钟。上下文改善成功率不代表每个任务都更快。\n\n[原文实验与表格](https://arxiv.org/html/2609.19138)\n\n**比较动作参考的条件。**若要判断动作数值本身是否有用，必须固定示范图像和非动作文本，并说明是否额外提供实测状态。否则所谓“视频加动作”的收益可能同时来自更多程序描述或状态信息。论文小样本结果说明上下文接口可工作；商业模型版本、控制工具、示范挑选和额外尝试预算限制了横向可比性。\n\n[实验与设置原文](https://arxiv.org/html/2609.19138)",
-    "evidence_notes": "已核验原文方法与实验；关键比较与限制见各节",
-    "code_data_status": "GitHub公开了主要框架、ARX X5 与 I2RT/YAM 等接口，但仓库明确说明真实部署 host、私有 prompts、录制数据、calibration 和部分完整 real-robot pipeline 尚未全部公开，因此目前不是完全一键复现状态。",
-    "limitations": "试验次数少；性能受商业 VLM 版本影响；系统 latency、inter-arm collision和 demonstration selection仍明显影响结果。当前证据更适合证明“VLM上下文可以承载操作经验”，而不是证明已获得稳定的一般机器人 in-context learner。",
+    "experiments": "**arXiv v1。** 原文覆盖十个机器人任务，每条件仅 3 次试验。人类视频使部分任务从无示范的 0/3 提升至 2/3；接触敏感任务加入视频与动作参考后可达 3/3 或 2/3。表 1 同时报告成功数、决策次数和耗时：拾取笔记本从 0/3 升至 2/3，平均时间由 24.6 降至 16.1 分钟；拔插插头从仅视频的 0/3 升至视频加动作的 2/3，平均时间却由 7.9 增至 10.8 分钟。上下文可改善操作，但成功率提高不保证执行更快，小样本也不足以证明大规模泛化。\n\n判断动作数值的独立作用，需要固定示范图像和非动作文本，并说明实测状态是否同时加入；否则增益也可能来自额外的程序描述或状态信息。商业模型版本、控制工具、示范挑选和尝试预算同样限制横向比较。[v1 实验与表 1](https://arxiv.org/html/2609.19138#S4)。\n\n**官网后续结果（2026-11-11 核验）。** arXiv 仍仅有 v1；项目页将四个示范任务扩至每条件 10 次，并增加 RoboDojo 结果。两组样本分开记录。\n\n| 真机任务 | 无示范 | 视频示范 | 视频与动作参考 |\n| --- | --- | --- | --- |\n| 拾取红毛巾 | 2/10 | 人类视频 9/10 | 不适用 |\n| 拾取笔记本 | 2/10 | 人类视频 8/10 | 不适用 |\n| 拧开瓶盖 | 0/10 | 机器人视频 7/10 | 8/10 |\n| 拔出并重新插入插头 | 0/10 | 机器人视频 0/10 | 7/10 |\n\n上述四任务在完整示范条件下平均成功率为 80%，无示范为 10%；每任务耗时约 9–15 分钟，推理延迟仍明显。目标图、自交互历史和人机交互的六任务仍各仅 3 次，3/3 不代表稳定的 100% 能力。部分对照跨越提示词、示范和试验批次修订，也不能视作严格的单因素消融。\n\nRoboDojo 使用十任务、每任务五场景和一份固定示范，报告成功 36/50（72%），平均分 80.20/100。这组任务参与系统开发，结果合并了记录版本和选定替换尝试，基线沿用各自已发表协议；其价值是开发集系统演示，尚不能支持未见任务盲测或严格公平排名。[官网结果及计数说明](https://cheng-haha.github.io/GPT-Policy/#experiments)。",
+    "evidence_notes": "已核验 arXiv v1 方法与实验、官网后续结果及官方代码/数据页；v1 与官网新增试验分开记录，未独立复现",
+    "code_data_status": "GitHub 公开主要框架、ARX X5 与 I2RT/YAM 适配及机器标定配置；私有任务提示词、真机演示记录和完整评测历史仍未发布。LICENSE 仅允许审阅与评估，未授予再分发或商用许可，尚非标准开源许可。[代码与开放范围](https://github.com/cheng-haha/GPT-Policy)、[许可证](https://github.com/cheng-haha/GPT-Policy/blob/main/LICENSE)。\n\n已发布 [RoboDojo 上下文数据](https://huggingface.co/datasets/SII-CDZ/gpt-policy-robodojo-contexts)：十个固定专家示范，每任务 16 个时间点、三视角，共 480 张图片，附阶段、实测状态和数值动作参考，用于上下文而非更新 VLM。数据页对匹配仿真后端仍保留开放限制，代码 README 已介绍可选仿真接口，两者更新不同步，复现需核对版本。系统使用商业 VLM，未发布独立机器人模型权重。",
+    "limitations": "- v1 每条件仅 3 次，官网扩展示范任务至 10 次后仍是小样本；新版结果不等于 arXiv v1 已更新。\n- RoboDojo 场景参与系统开发，含选定替换尝试，与外部基线协议不同，不能据此宣称盲测泛化或模型排名。\n- 上下文条件同时受示范选择、状态信息、提示词修订和商业 VLM 版本影响，动作参考的独立贡献仍需更严格控制。\n- 真机执行缓慢，接触精度、碰撞和完成判断仍会失败；工具校验通过不等于物理任务成功。\n- 完整真机记录及评测环境未全部公开，代码许可仍待确定，商业 VLM 也限制可复现性。",
     "comments": "",
     "source_reports": [],
     "deleted": false,
-    "updated_at": "2026-09-24",
-    "challenges": "机器人示范通常被当作离线训练数据；对于新任务，重新训练代价高。冻结 VLM 即使理解画面，也未必知道双臂命令、接触顺序和具体位移，因此需要把示范中可执行的经验压缩进上下文。",
-    "motivation": "该工作不训练新的机器人 foundation policy，而是让固定 VLM 在 inference context 中读取任务 demonstration。作者提出 context compiler，把机器人或人类演示压缩成保留 task-relevant state transition 的视觉上下文，VLM随后提出工具化的机器人动作，并由受约束 controller执行和检查结果。\n\n关键点是 human video可以直接作为 in-context experience，而无需动作标签；对 contact-sensitive任务，带 aligned action reference 的 robot demonstration仍明显更有效。",
-    "technical_approach": "**过程**：context compiler提取关键视觉状态变化 → VLM根据 context提出 robot-tool action → constrained controller执行 → observation反馈重新进入上下文。\n\n**输入**：当前视觉观察、任务指令、human/robot demonstration、可选动作参考。\n\n**输出**：可执行机器人动作以及跨尝试更新的任务 context。\n\n上下文来源包括人类视频、机器人视频及对齐动作、目标图、机器人自己的执行历史和在线人类反馈。视觉转移描述与控制工具之间仍需要空间定位、IK、轨迹限幅和实测执行检查；VLM 输出并不直接等于底层电机控制。\n\n[原文方法](https://arxiv.org/html/2609.19138)\n\n### 方法细节与实现\n\n**上下文不是一段笼统摘要。**输入把任务指令、带视角标识的当前图像、机器人状态、目标图或示范关键帧、可选动作参考和本轮执行历史分开组织。示范记录按时间顺序交错图像与状态/动作文本，在线历史另存工具请求及执行结果；旧实时图像可以截断，任务参考则保留，避免把示范动作误认成当前已执行动作。\n\n**工具到控制的完整链条。**VLM 通过结构化调用选择 move_to、move_eef_chunk 或夹爪命令。笛卡尔目标使用各手臂基座坐标系和 xyzw 四元数；控制器对位置线性插值、对旋转做 SLERP，再以前一解为初值逐点求 IK。Ruckig 分配时间并满足采样轨迹的速度、加速度和 jerk 限制，执行后回传实测状态、端点误差及稳定情况。\n\n**在线适应发生在哪里。**VLM 参数固定，行为变化来自参考示范、历史结果与人工反馈的上下文变化。请求被拒绝也产生下一轮可用的反馈；模型宣称完成与物理任务实际成功分别记录。工具层运动学和标定承担大量可执行性保障，因此不能把该系统等价于仅靠视觉语言推理直接控制电机。\n\n[对应方法原文](https://arxiv.org/html/2609.19138#S3)",
-    "discussion": "**阅读者分析**：直接对应 embodied in-context learning，并补充 S1、RoboTTT、HOST 等路线：这里上下文是**外部视觉演示和交互历史**，而不是模型参数更新。",
+    "updated_at": "2026-11-11",
+    "challenges": "机器人示范通常用于离线训练，新任务需要重新训练，代价较高。冻结 VLM 即使理解画面，也未必能确定双臂命令、接触顺序和具体位移，因此需要将示范中的操作经验转成可用于当前决策的上下文。",
+    "motivation": "GPT-Policy 用示范和交互历史引导冻结 VLM，使同一模型能从新初态执行任务。上下文编译器保留关键视觉状态变化及可用动作参考，工具层执行结构化动作并返回结果，形成无需参数更新的适应闭环。\n\n人类视频无需机器人动作标签即可提供操作示例；对接触敏感的任务，带时间对齐动作参考的机器人示范更有效。",
+    "technical_approach": "**输入**：当前视觉观测、机器人状态、任务指令，以及人类或机器人示范、可选动作参考、目标图、执行历史和在线人类反馈。\n\n**过程**：上下文编译器整理示范中的关键视觉变化及动作参考；固定 VLM 根据任务参考、当前观测和历史提出工具调用；受约束控制器完成空间定位、IK、轨迹限幅与实测执行检查，再将新观测和结果送回下一轮决策。\n\n**输出**：工具化机器人动作，以及随交互与尝试更新的任务上下文。\n\n### 方法细节与实现\n\n**上下文组织。**任务指令、带视角标识的当前图像、机器人状态、目标图或示范关键帧、可选动作参考和本轮历史分开组织。示范按时间顺序交错图像与状态/动作文本，在线历史另存工具请求和执行结果；旧实时图像可以截断，任务参考则保留，避免混淆示范动作与当前已执行动作。\n\n**控制链条。**VLM 结构化调用 move_to、move_eef_chunk 或夹爪命令。笛卡尔目标采用各手臂基座坐标系和 xyzw 四元数；控制器对位置做线性插值、对旋转做球面线性插值（SLERP），再以前一解为初值逐点求逆运动学（IK）。Ruckig 分配时间，满足采样轨迹的速度、加速度和加加速度（jerk）限制，执行后回传实测状态、端点误差及稳定情况。\n\n**反馈与适应。**VLM 参数始终固定，行为变化来自示范、历史结果和人工反馈。被拒绝的请求也为下一轮提供信息；模型宣称完成与物理任务实际成功分别记录。运动学、标定和控制工具承担执行保障，VLM 的动作提议并非底层电机命令。\n\n[方法与控制接口：原文第 3 节](https://arxiv.org/html/2609.19138#S3)。",
+    "discussion": "**阅读者分析**：GPT-Policy 直接研究具身上下文学习，与 S1、RoboTTT、HOST 等路线互补：适应依靠外部视觉示范和交互历史改变当前决策，而非更新模型参数。现有结果证明这种接口可以承载操作经验；可靠执行、接触控制和推广到更多任务仍需进一步验证。",
     "arxiv": {
       "published": "2026-09-16",
       "revised_at": "",
@@ -6150,6 +6396,48 @@
     ],
     "deleted": false,
     "updated_at": "2026-09-02"
+  },
+  {
+    "id": "paper-4d0d39571e",
+    "title": "Introducing System One Models & Jev",
+    "authors": [
+      "Diogo Almeida（TypeSafe AI）"
+    ],
+    "year": 2026,
+    "publication": "2026，TypeSafe 官方产品与技术介绍（2026-09-15；非学术论文）",
+    "arxiv_id": "",
+    "doi": "",
+    "links": {
+      "paper": "https://typesafe.ai/blog/introducing-system-one-models-and-jev"
+    },
+    "tags": [
+      "Agent与可执行世界",
+      "数据与评测"
+    ],
+    "figure": null,
+    "summary": "将模型能力封装为可组合的结构化判断，让程序负责流程、模型负责局部不确定性。 TypeSafe 的 Jev 以类型约束输出和并行问题求值为核心，官方称使用 Reinforcement Learning for Calibrated Decisions（RLCD）训练。与具身 Agent 间接相关，可借鉴的是受约束接口和不确定性表达，尚无所给来源中的机器人控制证据。",
+    "insight": "**将模型能力封装为可组合的结构化判断，让程序负责流程、模型负责局部不确定性。** TypeSafe 的 Jev 以类型约束输出和并行问题求值为核心，官方称使用 Reinforcement Learning for Calibrated Decisions（RLCD）训练。与具身 Agent 间接相关，可借鉴的是受约束接口和不确定性表达，尚无所给来源中的机器人控制证据。",
+    "pipeline": {
+      "input": "应用状态及预先定义的独立问题、选项或评分标准。官方当前文档还列出图像 Box 定位接口，不应将产品永久限定为纯文本输入。",
+      "process": "对同一状态中的多个原子问题并行求值，程序组合判断并执行分支；RLCD 的目标是输出校准决策，但公开材料未提供足够的模型架构、损失与训练数据细节以复现算法。",
+      "output": "Choice 选项与概率、Score 分数与分布、Noul 真值概率，以及当前文档中的 Box。部分类型含 confidence；它是输出分布的统计量，不等于独立估计的正确率。",
+      "details": "**输入**：应用状态及预先定义的独立问题、选项或评分标准。官方当前文档还列出图像 Box 定位接口，不应将产品永久限定为纯文本输入。\n\n**过程**：对同一状态中的多个原子问题并行求值，程序组合判断并执行分支；RLCD 的目标是输出校准决策，但公开材料未提供足够的模型架构、损失与训练数据细节以复现算法。\n\n**输出**：Choice 选项与概率、Score 分数与分布、Noul 真值概率，以及当前文档中的 Box。部分类型含 confidence；它是输出分布的统计量，不等于独立估计的正确率。"
+    },
+    "experiments": "发布文章自报端到端响应约 70–500 毫秒，并提供四类工作流的质量、时间和成本比较。参考答案主要来自 GPT-6 Astra 与 Claude Fable 5.1 高推理档位的共识，其他被测配置使用供应商默认档位；因此这衡量对参考模型和指定工作流的吻合程度，不能直接解释成真实业务决策正确率。官方也说明服务延迟测量与部署地点有关，示例输入长度及工作流设计会影响收益。\n\n本文记录这些数字为官方产品主张，不将“两个数量级”当作跨任务性能保证；未见机器人成功率或真实闭环控制评测。类型约束可排除非法输出格式，不能保证选项内容或事实判断正确。[评测口径](https://evals.typesafe.ai/)、[产品发布中的限制说明](https://typesafe.ai/blog/introducing-system-one-models-and-jev)。",
+    "evidence_notes": "仅据官方发布、文档与自建评测；未发现所给来源对应的正式论文或完整算法披露，未独立测量服务性能。作为产业参照收录，不与机器人论文混作同等证据。",
+    "code_data_status": "官方提供 API、客户端 SDK 文档和工作流示例；这些不等于 Jev 模型权重、训练代码与数据已经开放。本次未核验到可自托管的完整模型发布，也未调用付费 API。",
+    "limitations": "- 产品介绍不是经过完整方法披露的学术论文，算法与数据无法据现有来源复现。\n- 格式正确与事实正确、置信分布集中与经验校准应分别检验；不能沿用“不会幻觉”的广义宣传。\n- 工作流参考标签来自其他模型共识，任务、地域、推理设置与输入长度影响比较。\n- 没有机器人动态、接触或闭环控制证据；部署价值须在具体业务上独立测量。",
+    "comments": "",
+    "source_reports": [],
+    "deleted": false,
+    "updated_at": "2026-11-11",
+    "challenges": "软件工作流需要分类、路由和评分等窄判断。用自由文本生成承接这些判断，会引入串行输出、解析与格式验证成本；即使格式正确，决策是否准确、概率是否校准仍是另外的问题。",
+    "motivation": "**将模型能力封装为可组合的结构化判断，让程序负责流程、模型负责局部不确定性。** TypeSafe 的 Jev 以类型约束输出和并行问题求值为核心，官方称使用 Reinforcement Learning for Calibrated Decisions（RLCD）训练。与具身 Agent 间接相关，可借鉴的是受约束接口和不确定性表达，尚无所给来源中的机器人控制证据。",
+    "technical_approach": "**输入**：应用状态及预先定义的独立问题、选项或评分标准。官方当前文档还列出图像 Box 定位接口，不应将产品永久限定为纯文本输入。\n\n**过程**：对同一状态中的多个原子问题并行求值，程序组合判断并执行分支；RLCD 的目标是输出校准决策，但公开材料未提供足够的模型架构、损失与训练数据细节以复现算法。\n\n**输出**：Choice 选项与概率、Score 分数与分布、Noul 真值概率，以及当前文档中的 Box。部分类型含 confidence；它是输出分布的统计量，不等于独立估计的正确率。",
+    "discussion": "可借鉴的系统原则是把复杂任务拆成可检查的窄判断，并在代码中保留组合逻辑。它与 GPT Policy、S-Agent 2.0 的接口设计形成产业层面的参照，但不能用业务工作流成绩证明空间推理、动作生成或机器人安全。对 RLCD 的机制判断应等待完整技术披露和独立校准测试。",
+    "source_papers": [
+      "content/papers/typesafe-jev-system-one-models.md"
+    ]
   },
   {
     "id": "arxiv-2608-06799",
@@ -8935,6 +9223,79 @@
     }
   },
   {
+    "id": "arxiv-2611-04870",
+    "title": "PrimeSim: A Generalist World Model Simulator from Large-Scale Cross-Embodiment Demonstrations",
+    "authors": [
+      "Travis Davies",
+      "Wentao Ma",
+      "Lihao Guo",
+      "Tengfei Ma",
+      "Xiaowen Chang",
+      "Jiafeng Xu",
+      "Shilong Wang",
+      "Yiqi Deng",
+      "Shaowen He",
+      "Xiaoqi Li",
+      "Qian Zhu",
+      "Ran Cheng",
+      "Hao Dong"
+    ],
+    "year": 2026,
+    "publication": "2026，arXiv 预印本（v1，2026-11-03）",
+    "arxiv_id": "2611.04870",
+    "doi": "10.48550/arXiv.2611.04870",
+    "links": {
+      "paper": "https://arxiv.org/abs/2611.04870",
+      "project": "https://primebottech.github.io/PrimeSim-website/",
+      "code": "https://github.com/PrimebotTech/PrimeSim",
+      "model": "https://huggingface.co/qiyuan-robot/PrimeSim",
+      "alphaxiv": "https://alphaxiv.org/abs/2611.04870"
+    },
+    "tags": [
+      "世界模型",
+      "强化与模仿学习",
+      "机器人学习",
+      "流式与自回归",
+      "跨本体迁移",
+      "长时记忆"
+    ],
+    "figure": {
+      "url": "https://arxiv.org/html/2611.04870v1/images/architecture.png",
+      "alt": "PrimeSim Fig. 4：多视角世界模型与逐帧动作条件化",
+      "label": "PrimeSim，Fig. 4，动作条件化与多视角视频生成架构；右侧为逐帧动作注意力和动作注入分支。",
+      "paper_title": "PrimeSim: A Generalist World Model Simulator from Large-Scale Cross-Embodiment Demonstrations",
+      "source_url": "https://arxiv.org/html/2611.04870v1/images/architecture.png"
+    },
+    "summary": "PrimeSim 将视频模型改造成可交互的学习式仿真器：给定观测与动作，生成后续多视角观测，再用这些观测评估和训练策略。 核心思路是分开解决三个瓶颈：用跨本体动作接口和逐帧条件化建立控制对应，用视角身份与交替注意力维持多视角一致，用少步自回归生成、自生成历史训练和分层记忆缓解长程漂移。",
+    "insight": "**PrimeSim 将视频模型改造成可交互的学习式仿真器：给定观测与动作，生成后续多视角观测，再用这些观测评估和训练策略。** 核心思路是分开解决三个瓶颈：用跨本体动作接口和逐帧条件化建立控制对应，用视角身份与交替注意力维持多视角一致，用少步自回归生成、自生成历史训练和分层记忆缓解长程漂移。\n\n与本库的交互世界模型、跨本体迁移和长时记忆直接相关。其研究重点从“未来视频是否相似”推进到“在模型里得到的策略评价与改进是否能迁移到参考环境”。后者已有物理仿真证据，真机上的策略优化迁移仍待验证。",
+    "pipeline": {
+      "input": "初始或历史多视角 RGB、机器人本体状态、后续动作序列及可选任务文本。各数据集统一为三个摄像头槽位；视角不足时重复主相机。动作采用 31 维共享布局，包含双臂末端位姿、夹爪、头/躯干/腰部关节与底盘速度；缺失部位填零。",
+      "process": "以 Wan2.2-TI2V-5B 为初始化，在 30,110 小时、22 平台的机器人示范上中训练；将动作转换为相对参考状态的变化，通过逐帧注意力掩码与残差动作注入两条路径绑定动作和视频 latent；显式视角编码配合视角内/跨视角交替注意力，联合生成三视角。后训练依次执行因果自回归适配、50 步到 4 步的一致性蒸馏、短片段自 rollout 与非对称分布匹配、完整 episode 自 rollout 与分层 KV 记忆。",
+      "output": "动作条件下的未来多视角视频观测，可作为策略的交互环境；模型本身不输出控制策略动作、显式三维物理状态或接触力。",
+      "details": "**输入**：初始或历史多视角 RGB、机器人本体状态、后续动作序列及可选任务文本。各数据集统一为三个摄像头槽位；视角不足时重复主相机。动作采用 31 维共享布局，包含双臂末端位姿、夹爪、头/躯干/腰部关节与底盘速度；缺失部位填零。\n\n**过程**：以 Wan2.2-TI2V-5B 为初始化，在 30,110 小时、22 平台的机器人示范上中训练；将动作转换为相对参考状态的变化，通过逐帧注意力掩码与残差动作注入两条路径绑定动作和视频 latent；显式视角编码配合视角内/跨视角交替注意力，联合生成三视角。后训练依次执行因果自回归适配、50 步到 4 步的一致性蒸馏、短片段自 rollout 与非对称分布匹配、完整 episode 自 rollout 与分层 KV 记忆。\n\n**输出**：动作条件下的未来多视角视频观测，可作为策略的交互环境；模型本身不输出控制策略动作、显式三维物理状态或接触力。\n\n动作相对量在中训练时锚定窗口初始状态；长程后训练则保持 episode 级参考，避免续接窗口反复改变坐标系。分层记忆在固定 21 个 latent 槽位内保存初始场景（3）、稀疏长期历史（9）和密集近期历史（9）；除初始观测外，历史来自模型自身生成，与推理时的输入分布一致。后训练使用冻结的双向教师监督因果学生，自 rollout 不意味着模型自主修改学习算法。[方法：正文第 2–3 节](https://arxiv.org/html/2611.04870v1#S3)。"
+    },
+    "experiments": "**训练与泛化。** 中训练语料含约 152 万 episodes，真实/模拟数据比例约 84:16。xArm 7、ViperX 300 和原版 Stanford UMI 是保留平台，分别用自身数据适配 200、100、200 梯度步；这是少样本跨本体适配。XVLA 零样本实验迁移场景、衣物与相机位姿，其 AgileX Piper 本体已在训练语料出现，不能解释为未见本体零样本仿真。\n\n| 证据 | 作者报告结果 | 评测口径与边界 |\n| --- | --- | --- |\n| 动作跟随与交互 | WorldSimProbe 五套测试领先四套，平均 66.6；局部标定 T1 为 70.2，低于 LingBot-VA 的 77.0 | 在 LIBERO 上对比五个开源动作条件模型；总体领先仍保留精细控制短板 |\n| 视频与语义评价 | EWMBench 总分 6.09，GE-Sim 两版本为 5.82/5.79 | 七任务、21 episodes；在相应数据集微调后评测，AgiBot 来源已进入中训练；50 步采样，不是零样本结果或 4 步速度配置 |\n| 策略评价 | Pearson r=0.99，Spearman ρ=1.00；平均绝对差 2.8 个百分点 | 8 个 OpenVLA-OFT 策略，每策略在模型与 LIBERO-Spatial 各执行同 300 初态（10 任务×30）；相关性计算对象是 8 个策略的汇总成功率 |\n| 模型内策略优化 | 200 步 GRPO 后，LIBERO 成功率 61.7%→73.2%（+11.5 点） | 训练仅在 PrimeSim 内交互，由微调 ResNet 成功分类器奖励；参考物理仿真器仅用于最终评估，没有真机闭环验证 |\n| 推理吞吐 | Stage 3 为 10.12 个模拟时间步/秒；长 continuous-KV 测得 7.63 | 单 A100-80GB、三视角、每视角 288×384、4 步采样；不含策略决策的端到端控制频率 |\n| 长程稳定性 | 10 条保留 RoboTwin 轨迹生成 610–1,046 帧，即 61.0–104.6 秒模拟时长 | Stage 4 只从首帧真值启动，其后使用自身历史；不能将 105 秒时长与短窗口 10.1 FPS 合并成同一性能保证 |\n\n**消融支持的机制。** 同为 21 槽位，分层记忆相对保留初始状态的滚动缓存，将长程首尾 PSNR 退化从 8.427 降至 6.008 dB。三视角从直接拼接到加入视角编码和视角内注意力，PSNR 从 16.30 升至 24.56。此类组件消融主要在单本体数据上完成，支持对应设置中的作用，未独立隔离其跨本体收益。4 步学生相对 50 步因果教师约提速 9 倍，同时存在生成质量损失；质量榜单、吞吐与长程实验须分别解读。[实验与表 1–11：正文第 4 节](https://arxiv.org/html/2611.04870v1#S4)。",
+    "evidence_notes": "已核对本地 PDF、arXiv v1 的方法与实验、官方项目、代码及模型页；实验数字为作者报告，未独立复现。",
+    "code_data_status": "[官方仓库](https://github.com/PrimebotTech/PrimeSim) 已提供中训练、后训练和推理代码，仓库许可证为 Apache-2.0。[官方模型页](https://huggingface.co/qiyuan-robot/PrimeSim) 列出中训练权重与 G2 后训练权重，并声明 Apache-2.0；推理仍依赖 Wan2.2 的文本编码器、VAE 与 tokenizer。模型页明确说明完整训练语料不随权重发布，开放代码与权重不等于可重建全部 30,110 小时训练数据。[代码许可证](https://github.com/PrimebotTech/PrimeSim/blob/main/LICENSE)。",
+    "limitations": "- 所有闭环策略评价与改进证据均来自仿真；真实平台实验主要检验动作条件视频生成，尚未验证真机上的策略优化迁移。\n- 未见平台需要自身数据进行少样本适配；跨场景零样本实验不等于跨本体零样本泛化，接触复杂时布料状态仍可能漂移。\n- 局部动作标定仍落后于对比方法；视觉一致不能保证精细接触和动力学准确。\n- 策略评价仅覆盖 8 个策略与一个任务套件，RL 仅 200 步；模型误差和视觉奖励误判可能在更长优化中被策略利用，缺少多随机种子置信区间。\n- 质量、速度和长程结果对应不同阶段及采样配置；训练数据含私有来源，并过滤灵巧手和腿部运动，不能扩大为全身全动作通用仿真。",
+    "comments": "",
+    "source_reports": [],
+    "deleted": false,
+    "updated_at": "2026-11-11",
+    "challenges": "机器人仿真需要准确实现给定动作，并让物体对实际生成的机器人运动作出相应反应。视频看起来合理，并不足以说明动作可控：模型可能忽略动作、让尚未接触的物体移动，或让不同摄像头呈现不一致的状态。长时间递推还会不断使用自身预测作为输入，累积训练时只见真实历史所没有的误差；常规多步视频采样也难支撑策略交互。",
+    "motivation": "**PrimeSim 将视频模型改造成可交互的学习式仿真器：给定观测与动作，生成后续多视角观测，再用这些观测评估和训练策略。** 核心思路是分开解决三个瓶颈：用跨本体动作接口和逐帧条件化建立控制对应，用视角身份与交替注意力维持多视角一致，用少步自回归生成、自生成历史训练和分层记忆缓解长程漂移。\n\n与本库的交互世界模型、跨本体迁移和长时记忆直接相关。其研究重点从“未来视频是否相似”推进到“在模型里得到的策略评价与改进是否能迁移到参考环境”。后者已有物理仿真证据，真机上的策略优化迁移仍待验证。",
+    "technical_approach": "**输入**：初始或历史多视角 RGB、机器人本体状态、后续动作序列及可选任务文本。各数据集统一为三个摄像头槽位；视角不足时重复主相机。动作采用 31 维共享布局，包含双臂末端位姿、夹爪、头/躯干/腰部关节与底盘速度；缺失部位填零。\n\n**过程**：以 Wan2.2-TI2V-5B 为初始化，在 30,110 小时、22 平台的机器人示范上中训练；将动作转换为相对参考状态的变化，通过逐帧注意力掩码与残差动作注入两条路径绑定动作和视频 latent；显式视角编码配合视角内/跨视角交替注意力，联合生成三视角。后训练依次执行因果自回归适配、50 步到 4 步的一致性蒸馏、短片段自 rollout 与非对称分布匹配、完整 episode 自 rollout 与分层 KV 记忆。\n\n**输出**：动作条件下的未来多视角视频观测，可作为策略的交互环境；模型本身不输出控制策略动作、显式三维物理状态或接触力。\n\n动作相对量在中训练时锚定窗口初始状态；长程后训练则保持 episode 级参考，避免续接窗口反复改变坐标系。分层记忆在固定 21 个 latent 槽位内保存初始场景（3）、稀疏长期历史（9）和密集近期历史（9）；除初始观测外，历史来自模型自身生成，与推理时的输入分布一致。后训练使用冻结的双向教师监督因果学生，自 rollout 不意味着模型自主修改学习算法。[方法：正文第 2–3 节](https://arxiv.org/html/2611.04870v1#S3)。",
+    "discussion": "贡献是把跨本体数据、准确动作接口、多视角生成和长程后训练组成可用的视觉仿真环境，并用策略排序与模型内 RL 检验仿真用途。对选题的启发是：动作实现、交互响应、长程状态保持和策略效用应分别测量，PSNR 或视频观感不能替代这些证据。\n\n与前述论文的关系可以按接口区分：Foundation4D 由视频恢复几何与可渲染场景；PrimeSim 根据外部动作递推视觉后果；UniWAM 联合学习语义、未来视频与策略动作。PrimeSim 能为策略改进提供虚拟交互，但其模型内 RL 和自 rollout 训练仍未证明《Toward Recursive Self-Improvement in Physical AI》所要求的“改进机制本身随经验而改进”。这些是阅读者的跨论文比较，不是已经验证的组合系统。",
+    "arxiv": {
+      "published": "2026-11-03T13:25:52Z",
+      "revised_at": "2026-11-03T13:25:52Z",
+      "primary_category": "cs.RO"
+    },
+    "source_papers": [
+      "content/papers/2611.04870.md"
+    ]
+  },
+  {
     "id": "arxiv-2609-04200",
     "title": "Principia: Relational Physics Tests for Video Models",
     "authors": [
@@ -9791,6 +10152,72 @@
     }
   },
   {
+    "id": "arxiv-2610-40207",
+    "title": "RoboAtom: Large-scale Atomic-Action Supervision for Robot Learning",
+    "authors": [
+      "Xueyuan Wei",
+      "Xuanxu Wang",
+      "Xudong Li",
+      "Yuping He",
+      "Wanshui Gan",
+      "Jiaqi Peng",
+      "Wenqi Guo",
+      "Jianjun Zhou",
+      "Junting Dong",
+      "Chunhua Shen",
+      "Haoyu Guo",
+      "Mulin Yu",
+      "Tao Lu"
+    ],
+    "year": 2026,
+    "publication": "2026，arXiv 预印本（v1，2026-10-29）",
+    "arxiv_id": "2610.40207",
+    "doi": "10.48550/arXiv.2610.40207",
+    "links": {
+      "paper": "https://arxiv.org/abs/2610.40207",
+      "project": "https://internrobotics.github.io/RoboAtom/",
+      "code": "https://github.com/InternRobotics/RoboAtom",
+      "data": "https://huggingface.co/datasets/InternRobotics/RoboAtom",
+      "model": "https://huggingface.co/InternRobotics/RoboAtom",
+      "alphaxiv": "https://alphaxiv.org/abs/2610.40207"
+    },
+    "tags": [
+      "多模态感知与提示",
+      "强化与模仿学习",
+      "数据与评测",
+      "机器人学习"
+    ],
+    "figure": null,
+    "summary": "RoboAtom 为已有机器人示范建立统一的“技能类别＋动作描述＋起止时间”监督层。 它利用重复任务的动作顺序结构，将少量人工种子标注传播到更多轨迹，再用质量控制校正；这比只为整段视频生成一句任务描述提供更明确的时间与动作结构。其贡献主要是数据、构建流程和评测接口。",
+    "insight": "**RoboAtom 为已有机器人示范建立统一的“技能类别＋动作描述＋起止时间”监督层。** 它利用重复任务的动作顺序结构，将少量人工种子标注传播到更多轨迹，再用质量控制校正；这比只为整段视频生成一句任务描述提供更明确的时间与动作结构。其贡献主要是数据、构建流程和评测接口。",
+    "pipeline": {
+      "input": "多源机器人视频与状态/动作记录，以及人工校验的种子轨迹；PhysExtend 要求目标轨迹与参考具有相同的有序原子动作结构。",
+      "process": "先统一词表与分段规则；PhysExtend 利用夹爪事件、关节/末端运动进度、停顿和底盘状态，以有序候选边界的动态规划传播分段，再做语义和边界质量检查。整理为 RoboAtom-Data，建立 RoboAtom-Bench，并训练自动标注模型 RoboAtom-Anno；下游用原子动作条件训练执行器，由 System 2 选择当前步骤。",
+      "output": "时间对齐的原子动作标注、自动标注模型与技能条件策略接口。标注类别不是已经验证可任意组合调用的通用技能库。",
+      "details": "**输入**：多源机器人视频与状态/动作记录，以及人工校验的种子轨迹；PhysExtend 要求目标轨迹与参考具有相同的有序原子动作结构。\n\n**过程**：先统一词表与分段规则；PhysExtend 利用夹爪事件、关节/末端运动进度、停顿和底盘状态，以有序候选边界的动态规划传播分段，再做语义和边界质量检查。整理为 RoboAtom-Data，建立 RoboAtom-Bench，并训练自动标注模型 RoboAtom-Anno；下游用原子动作条件训练执行器，由 System 2 选择当前步骤。\n\n**输出**：时间对齐的原子动作标注、自动标注模型与技能条件策略接口。标注类别不是已经验证可任意组合调用的通用技能库。\n\n数据汇总约 145 万轨迹、688 万片段、16,882.1 小时，覆盖 29 类统一技能。基准含 500 轨迹，分短、中、长序列与多视角子集；标签准确和时间重合需分别评测。[数据与方法第 3–5 节](https://arxiv.org/html/2610.40207v1#S3)。"
+    },
+    "experiments": "| 证据 | 作者报告结果 | 解释 |\n| --- | --- | --- |\n| 自动标注 | RoboAtom-Anno-9B 的 Skill F1@0.7 为 30.1；最强通用对比为 21.4 | 同时要求技能类别正确和时间 IoU≥0.7，不是单纯分类准确率 |\n| 标注序列长度 | 9B 在短序列为 71.1，长序列为 17.3 | 长任务的细粒度分段仍明显困难，不能只看总体领先 |\n| 长程控制 | LIBERO-Long 95.00%→98.20% | 相同后训练预算、观测和动作空间；同时改变原子条件与上层调度 |\n| 扰动鲁棒性 | LIBERO-Plus 总体 84.05%→88.18% | 共 10,030 次评估；并非所有子项都改善 |\n| 双臂操作 | RoboTwin Clean/Random 平均 64.37%→66.17% | 原子动作条件与分层执行整体方案的收益 |\n\n控制实验双方均关闭图像增强，避免其在特定基准上降低基线表现；主结果支持整套监督与执行方案，不能单独归因于数据标注。论文明确尚未验证这些标注在大规模策略预训练中的作用。[实验表 3–4 与附录 C](https://arxiv.org/html/2610.40207v1#S5)。",
+    "evidence_notes": "已核对正文方法、实验及官方项目、代码/数据/模型入口；数字为作者报告，未独立复现。",
+    "code_data_status": "官方 GitHub 提供构建/评测及模型使用入口，仓库标明 MIT；Hugging Face 数据页提供 RoboAtom-Bench 与标注资源入口、模型页提供自动标注模型。源数据来自多个既有集合，新增标注的许可不自动覆盖全部原视频；完整重建语料需逐来源取得数据。本次未下载全集或运行模型。",
+    "limitations": "- PhysExtend 依赖相同动作顺序，重试、跳步或任务结构变化会破坏传播假设。\n- 长序列精确分段仍弱，500 条基准不能覆盖所有本体、任务与粒度。\n- 控制增益同时涉及原子动作条件与 System 2 调度，尚未隔离标注本身的全部作用。\n- 主要验证下游适配，未建立大规模策略预训练、任意技能组合或真机泛化收益。\n- 人类第一视角尚未纳入主体数据，短暂且碎片化的人类动作需要重新设计标注粒度。",
+    "comments": "",
+    "source_reports": [],
+    "deleted": false,
+    "updated_at": "2026-11-11",
+    "challenges": "任务级指令只给最终目标，缺少中间动作和切换时间；已有子任务标注又存在词表、粒度及边界差异，难以跨来源共同训练。逐轨迹精细人工标注昂贵，通用视频模型也难准确定位抓取、松开等短暂物理事件。",
+    "motivation": "**RoboAtom 为已有机器人示范建立统一的“技能类别＋动作描述＋起止时间”监督层。** 它利用重复任务的动作顺序结构，将少量人工种子标注传播到更多轨迹，再用质量控制校正；这比只为整段视频生成一句任务描述提供更明确的时间与动作结构。其贡献主要是数据、构建流程和评测接口。",
+    "technical_approach": "**输入**：多源机器人视频与状态/动作记录，以及人工校验的种子轨迹；PhysExtend 要求目标轨迹与参考具有相同的有序原子动作结构。\n\n**过程**：先统一词表与分段规则；PhysExtend 利用夹爪事件、关节/末端运动进度、停顿和底盘状态，以有序候选边界的动态规划传播分段，再做语义和边界质量检查。整理为 RoboAtom-Data，建立 RoboAtom-Bench，并训练自动标注模型 RoboAtom-Anno；下游用原子动作条件训练执行器，由 System 2 选择当前步骤。\n\n**输出**：时间对齐的原子动作标注、自动标注模型与技能条件策略接口。标注类别不是已经验证可任意组合调用的通用技能库。\n\n数据汇总约 145 万轨迹、688 万片段、16,882.1 小时，覆盖 29 类统一技能。基准含 500 轨迹，分短、中、长序列与多视角子集；标签准确和时间重合需分别评测。[数据与方法第 3–5 节](https://arxiv.org/html/2610.40207v1#S3)。",
+    "discussion": "价值在于把跨数据源的动作语义与时间边界变成可复用监督，连接自动标注和分层控制。它与 GroundingPI 的精确空间定位互补：一个补动作的时间结构，一个补视觉 grounding；两者均需在固定策略和预算下检验对控制的独立作用。",
+    "arxiv": {
+      "published": "2026-10-29T14:55:42Z",
+      "revised_at": "2026-10-29T14:55:42Z",
+      "primary_category": "cs.RO"
+    },
+    "source_papers": [
+      "content/papers/2610.40207.md"
+    ]
+  },
+  {
     "id": "arxiv-2608-28718",
     "title": "RoboPhys-3D: A Comprehensive Embodied World Model Evaluation via 3D Reconstruction",
     "authors": [
@@ -10226,6 +10653,76 @@
     }
   },
   {
+    "id": "arxiv-2610-28354",
+    "title": "S-Agent 2.0: Spatial Reasoning with a General Coding Agent",
+    "authors": [
+      "Rui Gong",
+      "Ruoyu Wang",
+      "Yalun Dai",
+      "Hao Li",
+      "Sidi Yang",
+      "Qihao Zhao",
+      "Hongyu Li",
+      "Zeyang Guan",
+      "Fangzhou Hong",
+      "Zhaoxi Chen",
+      "Kim-Hui Yap",
+      "Ziwei Liu"
+    ],
+    "year": 2026,
+    "publication": "2026，arXiv 预印本（v1，2026-10-20）",
+    "arxiv_id": "2610.28354",
+    "doi": "10.48550/arXiv.2610.28354",
+    "links": {
+      "paper": "https://arxiv.org/abs/2610.28354",
+      "project": "https://ropedia.github.io/S-Agent-2.0/",
+      "code": "https://github.com/Ropedia/S-Agent-2.0",
+      "alphaxiv": "https://alphaxiv.org/abs/2610.28354"
+    },
+    "tags": [
+      "3D/4D",
+      "Agent与可执行世界",
+      "多模态感知与提示",
+      "数据与评测",
+      "长时记忆"
+    ],
+    "figure": {
+      "url": "https://arxiv.org/html/2610.28354v1/framework.png",
+      "alt": "S-Agent 2.0 Fig. 2：通用编程 Agent 与场景记忆",
+      "label": "S-Agent 2.0，Fig. 2，通用编程 Agent、命令行感知工具与持久场景记忆组成的空间证据循环。",
+      "paper_title": "S-Agent 2.0: Spatial Reasoning with a General Coding Agent",
+      "source_url": "https://arxiv.org/html/2610.28354v1/framework.png"
+    },
+    "summary": "把通用编程 Agent 已有的检查与修订能力用于空间推理，并让工具接口负责保存和解释证据。 Agent 选择要测什么；工具将结果写入可按名称查询的场景记忆，并把数值转成带单位、参考系和方向含义的空间陈述。贡献主要是场景状态、模型与工具之间的接口设计，VLM 与感知模型均不进行本工作新增训练。",
+    "insight": "**把通用编程 Agent 已有的检查与修订能力用于空间推理，并让工具接口负责保存和解释证据。** Agent 选择要测什么；工具将结果写入可按名称查询的场景记忆，并把数值转成带单位、参考系和方向含义的空间陈述。贡献主要是场景状态、模型与工具之间的接口设计，VLM 与感知模型均不进行本工作新增训练。\n\n与本库的空间推理、3D 感知和 Agent 工具使用直接相关；与机器人策略间接相关，可借鉴其对象身份、观察者参考系和证据读出接口，当前实验尚未检验动作执行。",
+    "pipeline": {
+      "input": "空间问题及多视角图片或视频帧，外加固定的工具教程与推荐工作流。主实验使用 OpenHands 承载 Qwen3.8-27B（FP8）或 Gemini-3.8-Flash。",
+      "process": "Agent 通过普通 shell 调用感知 CLI。Depth Anything 3 恢复米制几何与相机位姿，GeoCalib 对齐重力方向，π³-MOS 提供运动掩码，SAM 3 根据文本分割对象。工具维护每个问题 episode 内的场景记忆，保存原帧、融合点云，以及有名称的位置、范围和可选 6-DoF 位姿。Agent 可添加问题隐含的观察者、修改朝向或删除错误实例；距离、深度、方位、运动等读出从存储几何计算，并同时返回数值与空间语言结论。",
+      "output": "空间问题的最终答案，以及可检查的测量、实例注册和图像文件；不输出机器人控制动作。",
+      "details": "**输入**：空间问题及多视角图片或视频帧，外加固定的工具教程与推荐工作流。主实验使用 OpenHands 承载 Qwen3.8-27B（FP8）或 Gemini-3.8-Flash。\n\n**过程**：Agent 通过普通 shell 调用感知 CLI。Depth Anything 3 恢复米制几何与相机位姿，GeoCalib 对齐重力方向，π³-MOS 提供运动掩码，SAM 3 根据文本分割对象。工具维护每个问题 episode 内的场景记忆，保存原帧、融合点云，以及有名称的位置、范围和可选 6-DoF 位姿。Agent 可添加问题隐含的观察者、修改朝向或删除错误实例；距离、深度、方位、运动等读出从存储几何计算，并同时返回数值与空间语言结论。\n\n**输出**：空间问题的最终答案，以及可检查的测量、实例注册和图像文件；不输出机器人控制动作。\n\n区别于专用状态机 Agent，它保留通用编程 Agent 的文件、看图、代码执行与修订能力，通过同一工作区检查感知结果。记忆是外部几何状态，而非要求模型在不断变长的对话中复述全部测量。读出声明对象、单位、参考系和方向，减少把裸数值重新翻译为题目关系时的错误。[方法与工具接口：正文第 2 节、附录 B](https://arxiv.org/html/2610.28354v1#S2)。"
+    },
+    "experiments": "评测包括 MMSI-Bench、MindCube、SPAR-Bench、MMSI-Video-Bench 和 ReVSI。主比较保持相同 VLM 骨干与感知后端；“同一编程 Agent 有/无工具”更直接衡量整套工具接口的增益，单组件消融则检验记忆、语言解释和模型写入接口的作用。\n\n| 设置 | MMSI-Bench | ReVSI | 解释 |\n| --- | ---: | ---: | --- |\n| Qwen3.8-27B，通用编程 Agent 无工具 | 52.6 | 61.8 | 与完整系统相同 Agent、相同题目 |\n| Qwen3.8-27B，SpatialClaw | 62.6 | 74.5 | 相同骨干与感知后端的专用 Agent 对照 |\n| Qwen3.8-27B，S-Agent 2.0 | 66.5 | 82.3 | 相对自身无工具基线提升 13.9 / 20.5 点 |\n| Gemini-3.8-Flash，通用编程 Agent 无工具 | 62.9 | 80.9 | 更强骨干的对应对照 |\n| Gemini-3.8-Flash，S-Agent 2.0 | 74.1 | 90.5 | 工具仍带来 11.2 / 9.6 点增益 |\n\nMMSI-Bench 为总体准确率；ReVSI 按题型宏平均，其中数值题用官方 mean relative accuracy、其余题用选择准确率，因此 **82.3 是协议总体得分，不宜写成全部问题统一计数的准确率**。ReVSI 主表中 Agent 使用 64 帧。\n\nQwen 骨干消融：删除场景记忆后 MMSI/ReVSI 降至 63.0/79.8；删除解释式读出为 65.2/81.1；禁止模型添加或删除实例降至 57.7/76.4。这支持三部分都有作用，其中允许模型把题意写入场景的接口影响最大。相同工具也可运行在 Codex 和 Claude Code，但 ReVSI 分别为 76.6 和 79.1，低于 OpenHands 的 82.3，表明外层 Agent 的差异仍影响结果。[表 1–6 与评测口径](https://arxiv.org/html/2610.28354v1#S3)。",
+    "evidence_notes": "已核对本地 PDF、arXiv v1 的方法、实验与消融，以及官方代码 README；项目页链接由论文与仓库交叉确认，但本轮网页读取失败。数字为作者报告，未独立复现。",
+    "code_data_status": "[正确官方仓库](https://github.com/Ropedia/S-Agent-2.0) 已公开任务指令、工具教程、场景记忆 gateway、基准加载器、Agent harness 和感知服务配置；用户粘贴的 `S-Agent-2.0Hugging` 是链接粘连。模型权重不随代码提供，需按设置说明获取或调用相应模型。\n\n许可证须分组件理解：`agent/` 与 `docs/` 为 Apache-2.0；`perception/` 包装的 SpatialClaw 子模块保留 NVIDIA Source Code License-NC，模型依赖另有许可证，不能将整个系统笼统视为全 Apache-2.0。数据使用现有基准，论文声称公开各报告运行轨迹，本轮未逐条下载检查。[官方 README](https://github.com/Ropedia/S-Agent-2.0)。",
+    "limitations": "- 证据来自空间问答基准，没有机器人策略、闭环操控或真实硬件任务成功率。\n- 无新增训练依赖预训练 VLM 与多个冻结感知模型的既有能力；重建、分割和坐标误差仍会传播到答案。\n- 问题中的想象视角与被测量的物理量可能被错误 grounding；绝对距离类别并非最优。\n- 场景记忆在单 episode 内持久，不是跨任务终身学习；Agent 检查与工具调用的时间、token 成本缺少充分统一比较。\n- 整体接口和 harness 对照并非只改变一项因素；消融支持组件在当前实现中的作用，不能扩大为所有骨干与任务的普遍因果结论。",
+    "comments": "",
+    "source_reports": [],
+    "deleted": false,
+    "updated_at": "2026-11-11",
+    "challenges": "空间问答中的失败不一定来自感知模型。即使工具给出正确的分割、坐标和运动，VLM 仍可能颠倒观察者、误读坐标系、遗忘中间证据，或凭图片直觉推翻测量结果。继续增加工具不足以解决“测到了，但没有用对”的接口缺口。",
+    "motivation": "**把通用编程 Agent 已有的检查与修订能力用于空间推理，并让工具接口负责保存和解释证据。** Agent 选择要测什么；工具将结果写入可按名称查询的场景记忆，并把数值转成带单位、参考系和方向含义的空间陈述。贡献主要是场景状态、模型与工具之间的接口设计，VLM 与感知模型均不进行本工作新增训练。\n\n与本库的空间推理、3D 感知和 Agent 工具使用直接相关；与机器人策略间接相关，可借鉴其对象身份、观察者参考系和证据读出接口，当前实验尚未检验动作执行。",
+    "technical_approach": "**输入**：空间问题及多视角图片或视频帧，外加固定的工具教程与推荐工作流。主实验使用 OpenHands 承载 Qwen3.8-27B（FP8）或 Gemini-3.8-Flash。\n\n**过程**：Agent 通过普通 shell 调用感知 CLI。Depth Anything 3 恢复米制几何与相机位姿，GeoCalib 对齐重力方向，π³-MOS 提供运动掩码，SAM 3 根据文本分割对象。工具维护每个问题 episode 内的场景记忆，保存原帧、融合点云，以及有名称的位置、范围和可选 6-DoF 位姿。Agent 可添加问题隐含的观察者、修改朝向或删除错误实例；距离、深度、方位、运动等读出从存储几何计算，并同时返回数值与空间语言结论。\n\n**输出**：空间问题的最终答案，以及可检查的测量、实例注册和图像文件；不输出机器人控制动作。\n\n区别于专用状态机 Agent，它保留通用编程 Agent 的文件、看图、代码执行与修订能力，通过同一工作区检查感知结果。记忆是外部几何状态，而非要求模型在不断变长的对话中复述全部测量。读出声明对象、单位、参考系和方向，减少把裸数值重新翻译为题目关系时的错误。[方法与工具接口：正文第 2 节、附录 B](https://arxiv.org/html/2610.28354v1#S2)。",
+    "discussion": "核心启发是把空间证据做成可保留、可修改且可解释的接口：VLM 负责语义选择与证据组织，专门工具负责几何测量，统一场景状态连接两者。它展示了无需训练新基础模型的测试时能力提升，不意味着推理免费，也未证明获得通用机器人控制能力。\n\n局限也集中在接口入口：题目要求想象一个观察者时，Agent 可能注册错误位置或朝向；题目问物体自身高度时，可能误测物体离地高度。持久记忆能保留错误证据，解释式读出也可能流畅地解释错误测量，因此仍需检验问题到测量的 grounding。[定性失败：正文第 3.4 节、Fig. 4](https://arxiv.org/html/2610.28354v1#S3.SS4)。",
+    "arxiv": {
+      "published": "2026-10-20T15:20:00Z",
+      "revised_at": "2026-10-20T15:20:00Z",
+      "primary_category": "cs.AI"
+    },
+    "source_papers": [
+      "content/papers/2610.28354.md"
+    ]
+  },
+  {
     "id": "arxiv-2609-01276",
     "title": "Seeing the World and the Self from Egocentric Video",
     "authors": [
@@ -10657,6 +11154,69 @@
     ]
   },
   {
+    "id": "arxiv-2611-08373",
+    "title": "SLA: Scaling Spatial-Language-Action Model via Continual Pre-training",
+    "authors": [
+      "Fuhao Li",
+      "Wenxuan Song",
+      "Qizhou Huang",
+      "Ziyang Zhou",
+      "Jingbo Wang",
+      "Junwu E",
+      "Pengwei Wang",
+      "Yan Wang",
+      "Shunbo Zhou",
+      "Haoang Li"
+    ],
+    "year": 2026,
+    "publication": "2026，arXiv 预印本（v1，2026-11-05）",
+    "arxiv_id": "2611.08373",
+    "doi": "10.48550/arXiv.2611.08373",
+    "links": {
+      "paper": "https://arxiv.org/abs/2611.08373",
+      "project": "https://sla-team.github.io/omnisf_projectpage/",
+      "code": "https://github.com/OpenHelix-Team/Spatial-Forcing/tree/master/SLA",
+      "model": "https://huggingface.co/collections/haofuly/sla-collection",
+      "alphaxiv": "https://alphaxiv.org/abs/2611.08373"
+    },
+    "tags": [
+      "3D/4D",
+      "VLA",
+      "机器人学习",
+      "跨本体迁移",
+      "适应与泛化"
+    ],
+    "figure": null,
+    "summary": "SLA 把三维教师监督从下游适配前移到持续预训练，并在后训练保留，使空间理解成为策略可迁移的表征能力。 它延伸 Spatial Forcing 路线，让已有 VLA 从更广的机器人经验学习几何知识，而不要求部署时运行三维教师。这里持续预训练指继续训练已有策略，未证明在线终身学习或学习算法自我改进。",
+    "insight": "**SLA 把三维教师监督从下游适配前移到持续预训练，并在后训练保留，使空间理解成为策略可迁移的表征能力。** 它延伸 Spatial Forcing 路线，让已有 VLA 从更广的机器人经验学习几何知识，而不要求部署时运行三维教师。这里持续预训练指继续训练已有策略，未证明在线终身学习或学习算法自我改进。",
+    "pipeline": {
+      "input": "策略使用图像、任务语言与本体状态；训练教师另外使用可用的深度、相机内外参。异构机器人数据统一末端位姿和坐标约定后参与训练。",
+      "process": "初始化 π₀.₅，同时优化动作预测与空间特征对齐；冻结的 OmniVGGT 提供几何特征，多层 VLA 视觉 token 经特征依赖门控融合、投影后与对应位置教师特征做余弦对齐。随机丢弃整段状态 token，减少轨迹记忆捷径；持续预训练与后训练均保留对齐目标。",
+      "output": "连续机器人动作。三维教师、投影器和门控仅用于训练；RoboDojo 的独立历史图像 memory 配置则在推理时保留，须与空间辅助分支区别。",
+      "details": "**输入**：策略使用图像、任务语言与本体状态；训练教师另外使用可用的深度、相机内外参。异构机器人数据统一末端位姿和坐标约定后参与训练。\n\n**过程**：初始化 π₀.₅，同时优化动作预测与空间特征对齐；冻结的 OmniVGGT 提供几何特征，多层 VLA 视觉 token 经特征依赖门控融合、投影后与对应位置教师特征做余弦对齐。随机丢弃整段状态 token，减少轨迹记忆捷径；持续预训练与后训练均保留对齐目标。\n\n**输出**：连续机器人动作。三维教师、投影器和门控仅用于训练；RoboDojo 的独立历史图像 memory 配置则在推理时保留，须与空间辅助分支区别。\n\n对齐发生在 VLA 中间视觉特征与三维教师特征之间，并非直接把动作表示与三维表示对齐；三维信息通过用于动作生成的视觉 token 进入策略。[方法第 3 节](https://arxiv.org/html/2611.08373v1#S3)。"
+    },
+    "experiments": "| 评测 | 成功率 | 关键设置 |\n| --- | --- | --- |\n| LIBERO-Plus | SLA 87.4%，π₀.₅ 84.4% | 标准 LIBERO 训练；七类扰动，共 10,030 次 rollout，按 episode 数加权 |\n| RoboTwin Clean2Random | 72.3%，π₀.₅ 46.0% | 50 任务，每任务 50 条 clean 示范，每任务每设置 100 次评估 |\n| RoboCasa-Panda | 68.4% | 24 任务，每任务 50 条下游示范；3 seeds×每任务 50 次 |\n| RoboDojo-Real | 33.9%，π₀.₅ 12.8% | 三本体、18 任务；另加入并部署历史图像 memory，不能无条件归因于训练期空间对齐 |\n\n最直接的机制证据来自同数据的两阶段消融：RoboTwin C2R 两阶段均无对齐为 48.2%，仅后训练 57.1%，仅持续预训练 63.2%，两阶段均对齐 72.3%。这支持预训练和适配同时施加空间监督；状态 dropout、门控及旋转表示也改变结果，整套收益不能全归因于教师特征。\n\n源数据表的 171.39 万 episodes、14,330 小时是筛选前统计，不是最终实际训练规模。自建真机八条件平均 83.8%，比 π₀.₅ 高 24.0 点；每条件按 50 个对象实例计，部分 rollout 含多个对象，不能称 400 个独立完整回合。[实验第 4 节](https://arxiv.org/html/2611.08373v1#S4)。",
+    "evidence_notes": "已核对公开正文、关键实验表与官方项目/模型集合；未运行训练或复现实验。",
+    "code_data_status": "官方项目链接 Spatial-Forcing 仓库的 SLA 目录，以及 Hugging Face 集合中的 base、训练组件、benchmark checkpoints 与真机示例数据。此次代码目录的网页抓取未成功，未核验其完整可运行内容或独立 SLA 许可证；模型集合可访问不等于完整筛选语料和全部训练流程已复现。",
+    "limitations": "- 更强控制来自多项训练设计，三维对齐的独立收益需结合消融而非只看主榜单。\n- RoboDojo 额外 memory 在推理时保留，“部署无新增空间模块”不能扩大成所有实验配置完全无额外输入。\n- 原始数据规模与最终保留规模不同，教师利用的深度和标定也不在所有来源中可用。\n- 视觉特征更接近三维教师不等于恢复了正确物理机制；未来动力学、因果识别及终身适应未由当前实验建立。",
+    "comments": "",
+    "source_reports": [],
+    "deleted": false,
+    "updated_at": "2026-11-11",
+    "challenges": "二维图文预训练带来的视觉特征未必包含精细操作所需的三维结构；只在少量下游数据上补空间监督，又容易把空间能力限制在特定任务。跨本体数据的深度、标定与动作格式不一致，也阻碍统一训练。",
+    "motivation": "**SLA 把三维教师监督从下游适配前移到持续预训练，并在后训练保留，使空间理解成为策略可迁移的表征能力。** 它延伸 Spatial Forcing 路线，让已有 VLA 从更广的机器人经验学习几何知识，而不要求部署时运行三维教师。这里持续预训练指继续训练已有策略，未证明在线终身学习或学习算法自我改进。",
+    "technical_approach": "**输入**：策略使用图像、任务语言与本体状态；训练教师另外使用可用的深度、相机内外参。异构机器人数据统一末端位姿和坐标约定后参与训练。\n\n**过程**：初始化 π₀.₅，同时优化动作预测与空间特征对齐；冻结的 OmniVGGT 提供几何特征，多层 VLA 视觉 token 经特征依赖门控融合、投影后与对应位置教师特征做余弦对齐。随机丢弃整段状态 token，减少轨迹记忆捷径；持续预训练与后训练均保留对齐目标。\n\n**输出**：连续机器人动作。三维教师、投影器和门控仅用于训练；RoboDojo 的独立历史图像 memory 配置则在推理时保留，须与空间辅助分支区别。\n\n对齐发生在 VLA 中间视觉特征与三维教师特征之间，并非直接把动作表示与三维表示对齐；三维信息通过用于动作生成的视觉 token 进入策略。[方法第 3 节](https://arxiv.org/html/2611.08373v1#S3)。",
+    "discussion": "关键启发是将几何监督放进基础策略的规模化训练，而非把三维传感器简单叠在推理输入上。它验证的是三维教师指导下的视觉表征与控制泛化，尚未学习动作条件的未来世界演化；与 UniWAM、PrimeSim 应按这一接口边界比较。",
+    "arxiv": {
+      "published": "2026-11-05T17:52:16Z",
+      "revised_at": "2026-11-05T17:52:16Z",
+      "primary_category": "cs.RO"
+    },
+    "source_papers": [
+      "content/papers/2611.08373.md"
+    ]
+  },
+  {
     "arxiv": {
       "published": "2026-08-10T15:58:39Z",
       "revised_at": "2026-08-10T15:58:39Z",
@@ -10793,6 +11353,69 @@
       "revised_at": "2026-09-02T17:59:41Z",
       "primary_category": "cs.CV"
     }
+  },
+  {
+    "id": "arxiv-2610-12457",
+    "title": "SpatialHarness: Test-Time Spatial Scaffolding for Fine Robotic Manipulation",
+    "authors": [
+      "Jiayu Wang",
+      "Yue Yu",
+      "Bin Zhu",
+      "Zhiyao Yang",
+      "Jingjing Chen"
+    ],
+    "year": 2026,
+    "publication": "2026，arXiv 预印本（v1，2026-10-08）",
+    "arxiv_id": "2610.12457",
+    "doi": "10.48550/arXiv.2610.12457",
+    "links": {
+      "paper": "https://arxiv.org/abs/2610.12457",
+      "project": "https://emilia113.github.io/SpatialHarness/",
+      "code": "https://github.com/emilia113/SpatialHarness",
+      "alphaxiv": "https://alphaxiv.org/abs/2610.12457"
+    },
+    "tags": [
+      "3D/4D",
+      "Agent与可执行世界",
+      "多模态感知与提示",
+      "机器人学习",
+      "物理建模与仿真"
+    ],
+    "figure": {
+      "url": "https://arxiv.org/html/2610.12457v1/fig/teaser.png",
+      "alt": "SpatialHarness Fig. 1：真实与虚拟视角及任务成功率",
+      "label": "SpatialHarness，Fig. 1，真实视角与辅助虚拟视角，以及四项真机任务的成功率。",
+      "paper_title": "SpatialHarness: Test-Time Spatial Scaffolding for Fine Robotic Manipulation",
+      "source_url": "https://arxiv.org/html/2610.12457v1/fig/teaser.png"
+    },
+    "summary": "给冻结策略补充“能看清关键几何关系”的观测，并在交互中持续校正这些观测的来源。 SpatialHarness 将同步的仿真场景作为运行时空间接口，渲染物理相机难以获得的视角，并提供物体位姿与可靠性提示。其价值在于改善测试时可观测性，相关能力来自整个感知、仿真与程序校正系统，不能归结为多加两张图片。",
+    "insight": "**给冻结策略补充“能看清关键几何关系”的观测，并在交互中持续校正这些观测的来源。** SpatialHarness 将同步的仿真场景作为运行时空间接口，渲染物理相机难以获得的视角，并提供物体位姿与可靠性提示。其价值在于改善测试时可观测性，相关能力来自整个感知、仿真与程序校正系统，不能归结为多加两张图片。",
+    "pipeline": {
+      "input": "任务文本、腕部与第三人称 RGB-D 观测、相机标定、机器人状态和执行反馈；初始化还需要物体多视图照片及标注尺寸。冻结策略实际接收真实 RGB、两个虚拟 RGB、物体 6-DoF 位姿及渲染可靠性信息。",
+      "process": "多模态模型构建 CAD 资产并生成几何约束程序，用分割轮廓和深度对齐初始场景；MuJoCo 根据实测机器人运动推进状态。静止物体用视觉与约束校正，持握物体用运动和夹爪几何检查，抓取/释放过渡则从接触前检查点重放多组位姿假设，以交互一致性和轮廓匹配选出状态。执行前选定互补虚拟视角，执行中固定视点、更新渲染内容；策略通过工具调用输出动作。",
+      "output": "连续更新的空间观测，以及七维末端增量和夹爪动作块；动作块长度从 10、20、30 中选择。系统维护显式仿真状态，未训练新的动作基础模型。",
+      "details": "**输入**：任务文本、腕部与第三人称 RGB-D 观测、相机标定、机器人状态和执行反馈；初始化还需要物体多视图照片及标注尺寸。冻结策略实际接收真实 RGB、两个虚拟 RGB、物体 6-DoF 位姿及渲染可靠性信息。\n\n**过程**：多模态模型构建 CAD 资产并生成几何约束程序，用分割轮廓和深度对齐初始场景；MuJoCo 根据实测机器人运动推进状态。静止物体用视觉与约束校正，持握物体用运动和夹爪几何检查，抓取/释放过渡则从接触前检查点重放多组位姿假设，以交互一致性和轮廓匹配选出状态。执行前选定互补虚拟视角，执行中固定视点、更新渲染内容；策略通过工具调用输出动作。\n\n**输出**：连续更新的空间观测，以及七维末端增量和夹爪动作块；动作块长度从 10、20、30 中选择。系统维护显式仿真状态，未训练新的动作基础模型。\n\n视角选择使用 GPT-6 Astra 的 xhigh 推理档位，动作策略使用同模型 low 档位。比较中动作接口与物理相机配置一致，但 SpatialHarness 使用了额外的深度处理、资产、仿真和高档位配置计算。[方法：第 3 节](https://arxiv.org/html/2610.12457v1#S3)。"
+    },
+    "experiments": "Franka Research 3 单臂，两个 Intel RealSense RGB-D 相机。基线与 SpatialHarness 各执行四任务、每任务 15 次，共 120 次真机试验。以下为论文 Fig. 4 的结果，括号保留成功次数；Tower of Hanoi 在此指将带孔物件套到目标柱，并非完整多盘汉诺塔规划。\n\n| 任务 | 同一冻结策略基线 | SpatialHarness |\n| --- | ---: | ---: |\n| 方块堆叠 | 46.67%（7/15） | 100%（15/15） |\n| 插头插接 | 26.67%（4/15） | 66.67%（10/15） |\n| 带孔物件套柱 | 0%（0/15） | 100%（15/15） |\n| 开抽屉并放入方块 | 0%（0/15） | 66.67%（10/15） |\n| 四任务平均 | 18.33% | 83.33% |\n\n作者另报告堆叠、套柱的策略决策调用数约减少 30%、21%。这只统计动作决策调用，不能据此声称包含场景构建、同步和视角选择在内的端到端延迟或总成本下降。论文主要对比完整 harness 与基线，没有充分分离虚拟视角、数值位姿和交互校正各自的贡献；15/15 也不是普遍可靠性的保证。[实验：第 4 节](https://arxiv.org/html/2610.12457v1#S4)。",
+    "evidence_notes": "已核对本地 PDF 的方法与实验、arXiv v1、项目及官方仓库；未独立复现。",
+    "code_data_status": "官方项目标记代码 Coming soon。核验时仓库可访问，但主要为 README 与展示文档，未确认完整控制/同步实现、可复现环境、模型权重或软件许可证。项目提供演示与完整结果入口；展示视频不能替代算法实现。",
+    "limitations": "- 初始化依赖多视图照片、物体尺寸、RGB-D、标定与 CAD 建模，尚非任意场景的即插即用方案。\n- 四项刚体/关节物体任务、单平台和有限试验数；可变形物体及小型模型有效性未验证。\n- 接触过渡的假设重放和匹配带来额外时间开销，策略查询数没有覆盖全部系统成本。\n- 基线与完整 harness 之间同时增加多个信息与计算来源，缺少完整的组件消融。\n- 仿真同步失败会让虚拟观测误导策略；渲染可靠性判断的校准及困难接触下的恢复能力仍需独立测试。",
+    "comments": "",
+    "source_reports": [],
+    "deleted": false,
+    "updated_at": "2026-11-11",
+    "challenges": "插接、套孔和抓取抽屉把手常在最后几厘米失败：固定相机可能看不到接触部位，二维投影又会掩盖实际偏移。即使语言模型知道应该怎样完成任务，当前观测也未必提供足够的空间证据。直接让物理仿真随动作运行还会在抓取和释放时偏离真实状态，导致虚拟视角展示错误几何。",
+    "motivation": "**给冻结策略补充“能看清关键几何关系”的观测，并在交互中持续校正这些观测的来源。** SpatialHarness 将同步的仿真场景作为运行时空间接口，渲染物理相机难以获得的视角，并提供物体位姿与可靠性提示。其价值在于改善测试时可观测性，相关能力来自整个感知、仿真与程序校正系统，不能归结为多加两张图片。",
+    "technical_approach": "**输入**：任务文本、腕部与第三人称 RGB-D 观测、相机标定、机器人状态和执行反馈；初始化还需要物体多视图照片及标注尺寸。冻结策略实际接收真实 RGB、两个虚拟 RGB、物体 6-DoF 位姿及渲染可靠性信息。\n\n**过程**：多模态模型构建 CAD 资产并生成几何约束程序，用分割轮廓和深度对齐初始场景；MuJoCo 根据实测机器人运动推进状态。静止物体用视觉与约束校正，持握物体用运动和夹爪几何检查，抓取/释放过渡则从接触前检查点重放多组位姿假设，以交互一致性和轮廓匹配选出状态。执行前选定互补虚拟视角，执行中固定视点、更新渲染内容；策略通过工具调用输出动作。\n\n**输出**：连续更新的空间观测，以及七维末端增量和夹爪动作块；动作块长度从 10、20、30 中选择。系统维护显式仿真状态，未训练新的动作基础模型。\n\n视角选择使用 GPT-6 Astra 的 xhigh 推理档位，动作策略使用同模型 low 档位。比较中动作接口与物理相机配置一致，但 SpatialHarness 使用了额外的深度处理、资产、仿真和高档位配置计算。[方法：第 3 节](https://arxiv.org/html/2610.12457v1#S3)。",
+    "discussion": "实质贡献是用真实观测约束持续更新的仿真场景，再把它转为策略能直接利用的空间证据。与 S-Agent 2.0 的问答工具不同，它把空间结构带入真机动作闭环；与 PrimeSim 的动作条件视觉仿真不同，它依赖显式资产、物理引擎和在线真实观测校正。该结果支持“可观测性是细操作瓶颈之一”，没有单独证明冻结策略原本已掌握全部所需技能。",
+    "arxiv": {
+      "published": "2026-10-08T17:59:20Z",
+      "revised_at": "2026-10-08T17:59:20Z",
+      "primary_category": "cs.RO"
+    },
+    "source_papers": [
+      "content/papers/2610.12457.md"
+    ]
   },
   {
     "id": "arxiv-2609-02531",
@@ -11424,6 +12047,76 @@
     }
   },
   {
+    "id": "arxiv-2610-29677",
+    "title": "Toward Recursive Self-Improvement in Physical AI",
+    "authors": [
+      "Meng Luo",
+      "Zechen Bai",
+      "Shanqing Xu",
+      "Yanlin Li",
+      "Kaixin Li",
+      "Mengchen Qian",
+      "Weifeng Lu",
+      "Ran Zhang",
+      "Yingtian Zou",
+      "Ziyang Luo",
+      "Wei Chen",
+      "Hongzhan Lin"
+    ],
+    "year": 2026,
+    "publication": "2026，arXiv 预印本（v1，2026-10-21）；综述与研究框架",
+    "arxiv_id": "2610.29677",
+    "doi": "10.48550/arXiv.2610.29677",
+    "links": {
+      "paper": "https://arxiv.org/abs/2610.29677",
+      "project": "https://physical2rsi.github.io/",
+      "code": "https://github.com/Physical2RSI/Awesome-Physical2RSI",
+      "alphaxiv": "https://alphaxiv.org/abs/2610.29677"
+    },
+    "tags": [
+      "Agent与可执行世界",
+      "强化与模仿学习",
+      "数据与评测",
+      "机器人学习",
+      "适应与泛化"
+    ],
+    "figure": {
+      "url": "https://physical2rsi.github.io/assets/readme/figures/figure-2.png",
+      "alt": "Physical RSI Fig. 2：行为改进、流程改进与递归",
+      "label": "Toward Recursive Self-Improvement in Physical AI，Fig. 2，区分学习器、学习流程与改进器，以及递归需要的 R1/R2 两条回路。",
+      "paper_title": "Toward Recursive Self-Improvement in Physical AI",
+      "source_url": "https://physical2rsi.github.io/assets/readme/figures/figure-2.png"
+    },
+    "summary": "把“机器人做得更好”与“系统越来越会改进学习方法”分开，并为后者提出可检验的证据标准。 综述沿经验如何留下可复用变化梳理策略、世界模型、知识与学习流程，再追问这些变化能否反过来增强改进器。它提供的是研究框架、证据审查和实验路线，没有训练并验证一个新的物理 RSI 系统。",
+    "insight": "**把“机器人做得更好”与“系统越来越会改进学习方法”分开，并为后者提出可检验的证据标准。** 综述沿经验如何留下可复用变化梳理策略、世界模型、知识与学习流程，再追问这些变化能否反过来增强改进器。它提供的是研究框架、证据审查和实验路线，没有训练并验证一个新的物理 RSI 系统。\n\n与本库世界模型、策略学习及 Agent 记忆的联系在于：预测模型、工具和代码都可能进入后续学习循环，但它们是否改善学习机制，需要单独的下游实验，而不能由组件分数或数据规模推断。",
+    "pipeline": {
+      "input": "综述分析的对象是机器人实践、失败与修复记录，以及策略、世界模型、记忆、代码、数据收集和更新流程等可保留变化；这不是一个已实现模型的推理输入接口。",
+      "process": "区分三类角色：learner 学习任务能力；learning procedure 决定收集什么经验、如何评价与构造更新；improver 修改该流程。以匹配学习器和固定结果判据检验流程价值，再用冻结修复知识的对照区分 R1 与 R2 的递归收益。",
+      "output": "概念定义、已有研究的证据分级、物理约束及递归实验建议；无新的策略权重、控制器或已验证的递归系统。",
+      "details": "**输入**：综述分析的对象是机器人实践、失败与修复记录，以及策略、世界模型、记忆、代码、数据收集和更新流程等可保留变化；这不是一个已实现模型的推理输入接口。\n\n**过程**：区分三类角色：learner 学习任务能力；learning procedure 决定收集什么经验、如何评价与构造更新；improver 修改该流程。以匹配学习器和固定结果判据检验流程价值，再用冻结修复知识的对照区分 R1 与 R2 的递归收益。\n\n**输出**：概念定义、已有研究的证据分级、物理约束及递归实验建议；无新的策略权重、控制器或已验证的递归系统。\n\n| 主张 | 需要观察到什么 | 关键对照 |\n| --- | --- | --- |\n| 行为改进 | 当前执行效果提高 | 相同任务结果判据 |\n| 后续学习收益 | 保留的数据、模型或技能帮助新的学习器 | 匹配初态、资源与评测的学习器 |\n| 学习流程改进 | 修订后的收集器、评价器、编辑器或更新器教出更强学习器 | 只改变待测流程组件 |\n| R1：经验改善改进器 | 过去修复积累的知识，使改进器在新失败上提出更有效的学习流程 | 旧知识与新增修复知识版本，在共同新失败、工具与预算下比较 |\n| R2：更强改进器继续改善自身 | 已改进的改进器用所得知识产生更强的自身后继 | 后继同时优于父改进器，以及从同一父版本出发但冻结新增知识的修订 |\n\nR2 的冻结必须匹配知识载体。可分离记忆快照能在保持相同父系统时移除新增知识；若知识直接写入权重，恢复旧 checkpoint 同时改变了父系统，不能直接充当干净的 R2 对照。[定义与形式化：正文第 2.2 节](https://arxiv.org/html/2610.29677v1#S2.SS2)。"
+    },
+    "experiments": "**无新的实证实验。** 本文是 93 页综述，其表格汇总已有论文并审查证据边界，不报告新系统的成功率。作者的归纳是：已有物理研究支持行为改进、后续学习收益，以及部分流程组件的改进；某些系统也会改变改进器的知识或工具，但所综述的物理研究尚未通过受控比较隔离出 R1/R2 递归收益。数字领域有更强的递归对照，不能直接转写为真机结论。[证据分级：正文第 3.3–3.4 节、表 11/13](https://arxiv.org/html/2610.29677v1#S3.SS3)。\n\n建议的实验先让旧、更新后的改进器面对同一批保留的新失败，分别产生学习流程，训练匹配学习器，再以不能被候选修改的共同结果判据评估；随后检验更新后的改进器能否利用所学修复知识改善自身。需同时报告数据、计算、硬件试验、重置及人工监督成本。文中“四个硬件学习器/每个 seed”是每个改进器各筛出一个候选时的建议测试成本，不是已经完成的机器人实验规模。[递归测试：正文第 4.4 节、Fig. 9](https://arxiv.org/html/2610.29677v1#S4.SS4)。",
+    "evidence_notes": "已核对本地 PDF 与 arXiv v1 的定义、证据分级及评测建议，并核对官方项目与资料仓库；本卡片概括综述判断，不将被引工作的结果视为独立复现。",
+    "code_data_status": "[官方资料仓库](https://github.com/Physical2RSI/Awesome-Physical2RSI) 提供综述概览、开放参考文献库、图表和网站维护资源，仓库显示 MIT 许可证。它是文献与资料工程，不是新的递归机器人训练实现；论文没有对应的新模型权重或机器人训练数据发布。被引工作的代码、数据和许可证需分别核对。",
+    "limitations": "- 主要结论来自对现有研究的综合审查，没有新受控实验验证 R1/R2；“未隔离出收益”限定于本综述覆盖的证据。\n- 研究集中于操作任务，不同系统的硬件、判据、试验预算和人工参与差异限制横向排名。\n- 新失败家族需从改进器已见经验中保留，否则记忆检索或任务熟悉度可能被误解释为改进机制提升。\n- 学习评价器与最终结果判据若不独立，可能把迎合奖励、判据漂移或自生成标签误差误认为进步。\n- R2 的可比冻结依赖知识载体；参数化改进器、硬件变化与长期资源维护仍需要更具体的实验设计。",
+    "comments": "",
+    "source_reports": [],
+    "deleted": false,
+    "updated_at": "2026-11-11",
+    "challenges": "机器人能通过新示范、奖励、世界模型或外部记忆变得更强，但成功率提高并不说明改进机制本身也从经验中学习。固定流程反复训练、工程师逐轮修复，以及系统自主产生越来越好的学习方法，常被共同称为“自我改进”，缺乏区分这些主张的对照。\n\n物理世界又增加了评估噪声、昂贵试验、硬件与环境漂移，以及软件回滚无法撤销的物体损坏。因此数字 Agent 中便宜的代码测试不能直接充当物理递归收益的证据。",
+    "motivation": "**把“机器人做得更好”与“系统越来越会改进学习方法”分开，并为后者提出可检验的证据标准。** 综述沿经验如何留下可复用变化梳理策略、世界模型、知识与学习流程，再追问这些变化能否反过来增强改进器。它提供的是研究框架、证据审查和实验路线，没有训练并验证一个新的物理 RSI 系统。\n\n与本库世界模型、策略学习及 Agent 记忆的联系在于：预测模型、工具和代码都可能进入后续学习循环，但它们是否改善学习机制，需要单独的下游实验，而不能由组件分数或数据规模推断。",
+    "technical_approach": "**输入**：综述分析的对象是机器人实践、失败与修复记录，以及策略、世界模型、记忆、代码、数据收集和更新流程等可保留变化；这不是一个已实现模型的推理输入接口。\n\n**过程**：区分三类角色：learner 学习任务能力；learning procedure 决定收集什么经验、如何评价与构造更新；improver 修改该流程。以匹配学习器和固定结果判据检验流程价值，再用冻结修复知识的对照区分 R1 与 R2 的递归收益。\n\n**输出**：概念定义、已有研究的证据分级、物理约束及递归实验建议；无新的策略权重、控制器或已验证的递归系统。\n\n| 主张 | 需要观察到什么 | 关键对照 |\n| --- | --- | --- |\n| 行为改进 | 当前执行效果提高 | 相同任务结果判据 |\n| 后续学习收益 | 保留的数据、模型或技能帮助新的学习器 | 匹配初态、资源与评测的学习器 |\n| 学习流程改进 | 修订后的收集器、评价器、编辑器或更新器教出更强学习器 | 只改变待测流程组件 |\n| R1：经验改善改进器 | 过去修复积累的知识，使改进器在新失败上提出更有效的学习流程 | 旧知识与新增修复知识版本，在共同新失败、工具与预算下比较 |\n| R2：更强改进器继续改善自身 | 已改进的改进器用所得知识产生更强的自身后继 | 后继同时优于父改进器，以及从同一父版本出发但冻结新增知识的修订 |\n\nR2 的冻结必须匹配知识载体。可分离记忆快照能在保持相同父系统时移除新增知识；若知识直接写入权重，恢复旧 checkpoint 同时改变了父系统，不能直接充当干净的 R2 对照。[定义与形式化：正文第 2.2 节](https://arxiv.org/html/2610.29677v1#S2.SS2)。",
+    "discussion": "价值在于为主张匹配证据：反复执行固定 RL 流程、更新世界模型、增加记忆或自动修改任务代码，各自可以有用，但不足以单独证明递归。需要进一步说明过去修复改变了哪个改进机制，以及该变化如何在新失败上教出更强学习器。\n\n综述归纳四个持续积累条件：反馈针对当前瓶颈，接收组件能使用变化，收益经任务或硬件变化后仍有效，后续试验仍安全且成本可承受。这里的自主程度与递归证据是两条不同维度：有人类示范、纠正或重置并不自动排除 RSI；高度自动化也不自动证明 RSI。",
+    "arxiv": {
+      "published": "2026-10-21T12:54:50Z",
+      "revised_at": "2026-10-21T12:54:50Z",
+      "primary_category": "cs.RO"
+    },
+    "source_papers": [
+      "content/papers/2610.29677.md"
+    ]
+  },
+  {
     "id": "arxiv-2606-30598",
     "title": "Towards in-the-wild Egocentric 3D Hand-Object Pose Estimation",
     "authors": [
@@ -11745,6 +12438,75 @@
       "revised_at": "2026-09-10T17:45:03Z",
       "primary_category": "cs.RO"
     }
+  },
+  {
+    "id": "arxiv-2610-02054",
+    "title": "UniWAM: Unified World-Action Model",
+    "authors": [
+      "Wenxuan Song",
+      "Jiayi Chen",
+      "Jingbo Wang",
+      "Shuai Zhou",
+      "Xicheng Gong",
+      "Zehua Fan",
+      "Ziyang Zhou",
+      "Junwu E",
+      "Haodong Yan",
+      "Fuhao Li",
+      "Qize Yu",
+      "Xu Huang",
+      "Pengwei Wang",
+      "Wen Chen",
+      "Shunbo Zhou",
+      "Haoang Li"
+    ],
+    "year": 2026,
+    "publication": "2026，arXiv 预印本（公开版本 v4，2026-10-14）",
+    "arxiv_id": "2610.02054",
+    "doi": "10.48550/arXiv.2610.02054",
+    "links": {
+      "paper": "https://arxiv.org/abs/2610.02054",
+      "project": "https://uniwam.github.io/",
+      "code": "https://github.com/UniWAM/UniWAM",
+      "alphaxiv": "https://alphaxiv.org/abs/2610.02054"
+    },
+    "tags": [
+      "VLA",
+      "World Action Model",
+      "世界模型",
+      "机器人学习",
+      "第一视角与人类视频",
+      "跨本体迁移"
+    ],
+    "figure": null,
+    "summary": "UniWAM 让语言理解、未来视频和连续动作在同一模型内交换信息，并为不同数据源提供兼容的监督。 它将末端运动描述成自然语言，让人类和机器人的局部动作具有共同语义；再联合机器人示范、第一视角人类数据及问答数据，把语义与动态知识用于动作生成。重点是统一架构与训练配方共同起作用，而非单纯增加一个视频预测头。",
+    "insight": "**UniWAM 让语言理解、未来视频和连续动作在同一模型内交换信息，并为不同数据源提供兼容的监督。** 它将末端运动描述成自然语言，让人类和机器人的局部动作具有共同语义；再联合机器人示范、第一视角人类数据及问答数据，把语义与动态知识用于动作生成。重点是统一架构与训练配方共同起作用，而非单纯增加一个视频预测头。",
+    "pipeline": {
+      "input": "当前图像、任务指令、机器人本体状态；后训练动作生成还使用近期执行历史。人类数据经筛选、子任务切分、语言标注及相机坐标下的手腕运动标准化后参与预训练。",
+      "process": "Qwen3-VL-2B 语义分支、Wan2.2-TI2V-5B 视频分支与动作专家组成 Mixture-of-Transformers；每层将三类 token 投影到共同注意力空间，再回到各自的前馈网络。自然语言末端运动监督配合视频/动作 flow matching；后训练对未来视觉 latent 加噪，迫使动作容忍预测误差，并以“历史动作＋小噪声”替代纯高斯初始化动作流。",
+      "output": "语言描述或问答、未来视频 latent，以及连续动作块；附录配置为 14 维动作、16 步动作块、8 个未来帧。默认使用 4 步历史条件动作生成。",
+      "details": "**输入**：当前图像、任务指令、机器人本体状态；后训练动作生成还使用近期执行历史。人类数据经筛选、子任务切分、语言标注及相机坐标下的手腕运动标准化后参与预训练。\n\n**过程**：Qwen3-VL-2B 语义分支、Wan2.2-TI2V-5B 视频分支与动作专家组成 Mixture-of-Transformers；每层将三类 token 投影到共同注意力空间，再回到各自的前馈网络。自然语言末端运动监督配合视频/动作 flow matching；后训练对未来视觉 latent 加噪，迫使动作容忍预测误差，并以“历史动作＋小噪声”替代纯高斯初始化动作流。\n\n**输出**：语言描述或问答、未来视频 latent，以及连续动作块；附录配置为 14 维动作、16 步动作块、8 个未来帧。默认使用 4 步历史条件动作生成。\n\n物理语言模板将末端平移、转动和夹爪状态表达成固定格式文本；它提供共享运动语义，不意味着语言输出已经构成可靠的物理推理证明。不同源数据按可用监督训练相应分支；论文引言与图注对人类动作分支监督的表述并不完全一致，因此不把“所有人类数据都提供精确机器人动作监督”作为已确认事实。[架构与训练：正文第 3–4 节](https://arxiv.org/html/2610.02054v4#S4)。"
+    },
+    "experiments": "| 评测 | 作者报告结果 | 设置与理解边界 |\n| --- | --- | --- |\n| LIBERO / LIBERO-Plus | 平均成功率 99.2% / 92.6% | 前者接近饱和；后者检验七类扰动，不能视为所有未见任务泛化 |\n| RoboTwin 2.0 | Clean2Clean 75.14%，Clean2Random 68.32% | 50 任务，每任务 50 条 clean 示范，每任务每设置评估 100 次；clean→random 下降 6.82 点 |\n| 四类真机指令任务 | 成功率 67.5%，指令跟随率 82.5% | 双 Piper；各方法每任务 200 条示范、共同训练 80K 步；正确选对象/交互与完整完成任务是两个指标 |\n| 真机长程整理 | 平均进度 5.0/6；π₀.₅ 为 4.8，Motus 为 3.2 | 六个里程碑的部分完成分数，不是 5/6 的完整成功率 |\n\n数据扩展实验覆盖约 250–5,000 小时机器人数据，混入相应比例的人类数据。小规模时人类数据可能降低表现，约 1,000 小时后才开始产生收益；验证损失的对数线性拟合仅描述所测范围。表 1 的机器人小计约 4,958 小时、人类约 5,072 小时，但正文机器人时长写为 4,363 小时，表内总计也有加和差异，具体保留规模应以训练清单复核，不把这些数字合成精确统一总量。\n\n动作消融表明历史初始化和未来视觉增强改善成功率并减少去噪步数；多源预训练也有增益。但多因素累积消融与 t-SNE 混合现象，不能单独证明已识别跨本体物理机制。[实验与附录](https://arxiv.org/html/2610.02054v4#S5)。",
+    "evidence_notes": "已核对本地 PDF 方法、实验与附录，并对照公开 v4 和官方代码；实验数字为作者报告，未独立复现。",
+    "code_data_status": "[官方代码](https://github.com/UniWAM/UniWAM) 标明 Apache-2.0，提供 RoboTwin、LIBERO 的训练与推理流程及预训练/后训练权重入口；仍依赖 Wan 与 Qwen 预训练资产。README 明确 Bridge、DROID、Fractal 和真机推理不在此次发布范围，故不能称所有数据处理与真机系统均完整开源。训练语料来自多源数据，应分别核对下载与许可。",
+    "limitations": "- 真机任务覆盖有限，长程指标主要反映里程碑推进，不能替代完整成功率和更多环境验证。\n- 人类数据收益随规模变化，小规模混入可能负迁移，不能假定更多异构数据必然更好。\n- 数据时长、部分监督说明及若干消融数字存在内部不一致，需要训练清单与代码配置进一步核实。\n- 三专家模型和联合视频训练有计算成本；较少去噪步数不等于已证明任意硬件上的实时控制。\n- 策略成功和表征可视化不充分证明长期动力学正确、因果机制可识别或递归自我改进。",
+    "comments": "",
+    "source_reports": [],
+    "deleted": false,
+    "updated_at": "2026-11-11",
+    "challenges": "VLA 从视觉语言模型继承语义能力，但仅用动作监督难充分学习世界演化；视频骨干的 WAM 擅长时空建模，却可能在复杂指令和分布外场景中理解不足。直接联合训练还要解决异构数据的监督分配、VLM 知识保持，以及动作对不可靠未来视觉预测的过度依赖。",
+    "motivation": "**UniWAM 让语言理解、未来视频和连续动作在同一模型内交换信息，并为不同数据源提供兼容的监督。** 它将末端运动描述成自然语言，让人类和机器人的局部动作具有共同语义；再联合机器人示范、第一视角人类数据及问答数据，把语义与动态知识用于动作生成。重点是统一架构与训练配方共同起作用，而非单纯增加一个视频预测头。",
+    "technical_approach": "**输入**：当前图像、任务指令、机器人本体状态；后训练动作生成还使用近期执行历史。人类数据经筛选、子任务切分、语言标注及相机坐标下的手腕运动标准化后参与预训练。\n\n**过程**：Qwen3-VL-2B 语义分支、Wan2.2-TI2V-5B 视频分支与动作专家组成 Mixture-of-Transformers；每层将三类 token 投影到共同注意力空间，再回到各自的前馈网络。自然语言末端运动监督配合视频/动作 flow matching；后训练对未来视觉 latent 加噪，迫使动作容忍预测误差，并以“历史动作＋小噪声”替代纯高斯初始化动作流。\n\n**输出**：语言描述或问答、未来视频 latent，以及连续动作块；附录配置为 14 维动作、16 步动作块、8 个未来帧。默认使用 4 步历史条件动作生成。\n\n物理语言模板将末端平移、转动和夹爪状态表达成固定格式文本；它提供共享运动语义，不意味着语言输出已经构成可靠的物理推理证明。不同源数据按可用监督训练相应分支；论文引言与图注对人类动作分支监督的表述并不完全一致，因此不把“所有人类数据都提供精确机器人动作监督”作为已确认事实。[架构与训练：正文第 3–4 节](https://arxiv.org/html/2610.02054v4#S4)。",
+    "discussion": "UniWAM 的价值在于把语义、动态预测与动作作为共同学习的接口，并检验异构数据如何支持控制。它与 PrimeSim 的用途不同：UniWAM 联合学习策略动作，PrimeSim 用外部动作递推观测以供策略交互。现有证据支持鲁棒操作与指令执行，尚未隔离验证长期物理推演或显式搜索规划能力。",
+    "arxiv": {
+      "published": "2026-10-01T17:01:27Z",
+      "revised_at": "2026-10-14T16:45:53Z",
+      "primary_category": "cs.RO"
+    },
+    "source_papers": [
+      "content/papers/2610.02054.md"
+    ]
   },
   {
     "id": "arxiv-2608-04701",

@@ -29,6 +29,34 @@
   ],
   "topics": [
     {
+      "id": "topic-physical-knowledge-to-control",
+      "title": "物理知识如何进入机器人：从空间感知、动作监督到世界仿真",
+      "date": "2026-11-11",
+      "tags": [
+        "世界模型",
+        "机器人学习",
+        "跨本体迁移",
+        "预训练与扩展律",
+        "数据与评测"
+      ],
+      "summary": "以 Foundation4D、GroundingPI、SLA、RoboAtom、UniWAM 和 PrimeSim 区分场景表示、空间特征、动作阶段、联合策略与动作条件仿真，沿表示、控制和交互逐层检验证据。",
+      "path": "content/topics/physical-knowledge-to-control.md"
+    },
+    {
+      "id": "topic-embodied-agents-improvement",
+      "title": "具身 Agent 如何获得执行能力：上下文、空间工具、程序与改进闭环",
+      "date": "2026-11-11",
+      "tags": [
+        "Agent与可执行世界",
+        "具身上下文学习",
+        "长时记忆",
+        "机器人学习",
+        "数据与评测"
+      ],
+      "summary": "比较 GPT Policy、S-Agent 2.0、SpatialHarness 和 AW-0 的能力载体与执行接口，再用物理 RSI 框架区分行为改善与改进机制的进步；Jev 单列为结构化决策的产业参照。",
+      "path": "content/topics/embodied-agents-improvement.md"
+    },
+    {
       "id": "topic-visual-action",
       "title": "Visual Action：从视觉运动到跨本体动作接口",
       "date": "2026-09-24",
