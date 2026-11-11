@@ -435,7 +435,7 @@
     "challenges": "世界动作模型可以联合预测视频和动作，却缺少明确的技能调用、参数化与步骤组织；代码规划 Agent 能重用工具和技能，但往往没有与低层控制共同学习的动态预测。本文针对两者之间的接口：如何让程序结构在生成未来视频和动作时持续提供指导，并在适合时直接调用已有控制技能。",
     "motivation": "**AW-0 将程序作为世界动作模型内部可学习的计划表示：代码、未来视频与动作一起生成，让技能结构进入动态预测和控制。** 相比仅在 WAM 外层增加 Agent，它在每层联合注意力中连接三个专家；相比只预测自然语言子目标，代码可表达参数、顺序与可重用函数。另设混合执行模式检验生成程序能否作为执行接口，而默认策略只将代码作为条件。\n\n与本库 WAM、技能结构和 Agent 工具调用直接相关。其结果支持结构化程序监督改善所测任务的控制表现，尚未证明技能库能在部署时自行扩展或通过持续交互改进学习算法。",
     "technical_approach": "**输入**：当前三个 RGB 视角、任务指令、机器人本体状态；论文设计还包含压缩后的历史程序片段，但公开默认配置是否启用须另核对（见下文）。真实机器人及人手数据映射到 64 维状态/动作空间；RoboTwin 使用 14 维关节空间。YAM 是 I2RT 的 **Yet Another Manipulator** 机械臂；本文 YAM station 使用两条 6-DoF 手臂与平行夹爪。[厂商定义](https://doc.i2rt.com/products/yam)。\n\n**过程**：Mixture-of-Transformers 连接代码、视频、动作专家，专家内双向注意力，跨专家按代码→视频→动作建立分块因果关系。SDAR-1.7B 初始化的代码专家读取冻结 Qwen3-VL 视觉塔特征，通过 LLaDA 风格离散掩码扩散生成程序；Cosmos-Predict2.5-2B 视频专家与动作 DiT 采用连续 flow matching。代码在去噪全过程指导视频和动作，动作还读取视频表示；视频噪声重采样与重要性权重平衡视频学习和控制指导。\n\n**输出**：当前子任务的代码片段、未来视频和连续动作块。默认模式由动作块驱动机器人；混合模式只有在阶段、依赖、语法、API 白名单等检查通过时尝试执行代码，否则采用动作块。\n\n程序标注先从每任务一个 episode 发现可复用模式，再冻结包含 50 项的技能库（23 项 YAM、27 项人类技能），重标种子并缓存子任务到代码的映射，随后按接触/运动证据复用或重新标注。预训练语料为 248,642 episodes、606 任务、2,913.22 小时（YAM 1,919.30 小时、人类第一视角 993.91 小时）；下游仍需对任务示范标注和联合微调。\n\n混合执行调用独立感知与控制原语：仿真中包含 Molmo grounding、SAM 3、Contact-GraspNet 与 RoboTwin 原生运动规划器。评估时不读取特权状态；收集混合模式示范时使用特权物体状态和标注抓取。执行尝试报错后在下一轮重新观测与规划，并非自动修复本轮程序。[方法、附录 A/B/I/J](https://arxiv.org/html/2610.30136v1#S2)。\n\n### 从演示到程序监督\n\n附录 K 描述的是把**已经发生的演示翻译成程序标签**。这里的标注 VLM 与协调 Agent 是离线数据工具，不是部署时的 code expert；后者学习预测这些标签。\n\n1. **取得语义子任务及时间范围。** 例如把一次演示划为“抓杯子”“把杯子放进托盘”。官方实现优先读取已有的人工 `annotation.sub_task`；也支持以夹爪开闭或触觉接触变化确定边界，再让 VLM 命名。预训练若没有子任务来源，还可退化为整 episode 一段。不能把这些边界一概说成模型自动发现。\n2. **给标注器证据。** 每次输入总体指令、当前子任务文字、带时间戳的画面、前面子任务已写的程序；YAM 另有传感器导出的夹爪事件列表。\n3. **按限定词汇写当前块。** 标注器只能调用给定 primitive API 和已批准技能；匹配时优先使用较高层技能，只输出当前子任务的新代码，并以完整语句结束。此处 API 主要是声明和语义契约，并不执行机器人。\n4. **检查标签。** 静态检查语法、函数、参数绑定及允许的字面量，失败则反馈重写；再核对代码隐含的接触/开闭事件与演示是否一致。YAM 的事件列表是硬约束；第一视角人手没有向标注器提供权威接触列表，需从画面及文字推断。事件匹配不等于轨迹、几何参数和接触力均正确。\n5. **建立并冻结技能库。** 种子阶段每任务取一个 episode，协调 Agent 审阅反复出现的模式，将跨任务复用、可参数化的动作组合纳入库。协调器负责审阅与技能准入，程序由标注器生成。库冻结后，用最终词汇重标种子并缓存映射。\n6. **扩展到全语料。** 证据匹配时复用缓存，否则重新标注并加入缓存。YAM 核对接触序列，允许左右镜像并重新推导运动参数；人手按手部运动轮廓筛选，循环模板不直接复用。新增缓存条目不等于部署中学习了新技能。\n\n因此，“自动代码标注”不意味着无人工语义来源，也不意味着程序已在环境里执行通过。官方文档另支持针对窄任务手写标准程序的路线；RoboTwin 的 CaP 采集则先执行程序并记录动作来源行，具有执行来源信息，应与真实/人手演示的事后语义标注区分。[附录 K](https://arxiv.org/html/2610.30136v1#A11)、[官方标注文档](https://github.com/ZhuoyangLiu2005/agentic-wam/blob/275818e5787d59012eba4c43504342f1201ad25b/docs/CODE_ANNOTATION.md)。\n\n### 训练窗口与程序片段的时间关系\n\n**语义子任务的 code slice 与固定长度的动作窗口是两种粒度。** 标注先给子任务一整块程序，再把该子任务内的每帧映射到这整个块；不是按帧数比例把 Python token 切碎。源文件中 `frame_src_block[f] = [a,b]` 表示帧 `f` 使用程序第 `a` 至 `b` 行，训练缓存再把代码字符串去重，按当前采样帧查标签。\n\n下面是为解释机制构造的例子，不是论文实验记录：\n\n| 演示帧范围 | 语义子任务 | 所挂的完整代码块 |\n| --- | --- | --- |\n| 0–79 | 右手抓起杯子 | `robot.pick('cup', 'right')` |\n| 80–159 | 放入托盘 | `robot.place('cup', 'tray', 'right')` |\n| 160–239 | 左手拿起另一物体 | 另一个完整子任务块 |\n\n从第 100 帧、第 110 帧分别抽取训练窗口时，两个样本的动作/未来视频目标不同，code target 却可以相同，都是完整的“放入托盘”块。公开配置的动作 horizon 是 32 步，视频取偏移 `0,4,…,32` 的九帧；**代码块可以概括更长的子任务，并不与这 32 步逐行同步**。已核对的 flat-cache 路径按窗口起点取 code；起点接近子任务末尾时，不能据此宣称窗口跨到的后续代码也会拼进目标。\n\n论文所谓历史 code 是前面已标注/生成的程序片段，active slice 是当前要预测的子任务程序；“未来”指当前观测之后要做或继续做的操作，不是整份 Python 尚未写出的 token 后缀。训练只遮盖当前程序目标并预测被遮住的 token，观测和普通条件保持可读。去噪前后与机器人时间先后是两条轴：公式的 `C_0` 表示干净代码，不是 episode 第零段。[整块映射源码](https://github.com/ZhuoyangLiu2005/agentic-wam/blob/275818e5787d59012eba4c43504342f1201ad25b/codegen/pretrain/pipeline/codegen/pipeline/episode.py#L344)、[窗口起点查标签](https://github.com/ZhuoyangLiu2005/agentic-wam/blob/275818e5787d59012eba4c43504342f1201ad25b/src/agenticwam/datasets/lerobot/robot_video_dataset.py#L355)、[附录 A](https://arxiv.org/html/2610.30136v1#A1)。\n\n### 闭环推理怎样接续程序计划\n\n每次 replanning 都重新读当前画面、任务及状态，重建 prompt，并接上全新的 `[MASK]` canvas；在联合去噪中产生本轮 code、video、action。默认执行本轮动作块，取得新的真实观测后再次预测。**接续的是任务语义与状态，不是从上轮代码最后一个 token 接着写。** 同一子任务尚未完成时，下一轮仍可能输出同类甚至相同代码；默认模式不会因此重新从头执行那个完整技能。\n\n按论文 §2.3 的 memory 设计，已生成的片段追加到 episode 历史，压缩进可学习 memory slots，供下一轮读回；训练主要使用先前标注片段，并以概率用模型预测替换。必须注意：历史记录的是“生成过的计划”，不保证计划对应动作已经成功完成；真实进度还需当前观测提供证据。Hybrid 在通过检查后才切到代码执行，并另有共享执行命名空间及进度/依赖检查，不宜把它当成默认模式的代码续写机制。[§2.3](https://arxiv.org/html/2610.30136v1#S2.SS3)、[新 canvas 与历史追加的推理实现](https://github.com/ZhuoyangLiu2005/agentic-wam/blob/275818e5787d59012eba4c43504342f1201ad25b/src/agenticwam/models/cosmos_mot/agenticwam_model.py)。",
-    "discussion": "贡献在于把代码从外层任务规划器推进到 WAM 内部，与视频和动作共同优化；自动标注与冻结技能库为这种接口提供规模化监督。默认模式检验程序计划对学习式控制的指导，混合模式进一步检验显式技能与动作专家的互补。\n\n混合执行的可靠性仍受感知、抓取和规划原语限制；通过有效性检查不代表比动作专家更优，因而混合模式在 clean 条件明显退化。与 PrimeSim 的接口区别是：PrimeSim 输入外部动作、模拟视觉后果，AW-0 自身联合产生计划和策略动作。AW-0 当前不从部署交互在线学习，其持续技能扩展和自我改进属于未来方向。\n\n### 阅读讨论（2026-11-11）\n\n**默认 code branch 可理解为学习得到的结构化语义计划条件。** 它对“操作谁、用哪只手、调用什么技能、按什么顺序和次数”作显式表达，通过隐藏表示和逐层注意力影响视频及动作；默认控制输出仍由 action expert 产生。把它类比为更细的任务提示有助理解，但“只是普通文本提示，作用有限”比证据走得更远：论文对自然语言 subgoal、移除技能调用和改变信息流的消融支持结构化代码在所测任务上的价值，未证明这种表示在所有任务中必要或最优。\n\n用户指出的**生成代码缺少稳定直接执行保证**是成立的边界。附录 F 展示选对技能但参数错误，以及正确技能调用伴随注释格式错误的情形；附录 L 也明确说语法有效不等于执行正确。但这不能归因于采用离散掩码生成：`[MASK]` 遮的是代码 token，与图像 segmentation mask 无关，也不能单凭生成范式判断几何能力。\n\n**语义视觉 grounding、显式几何定位、实际执行可靠性须分别验证。** code expert 有当前多视角 ViT 条件；人手标注明确采用无坐标的语义运动，YAM 代码则可通过感知 API 取得 pose，hybrid 更会调用外部定位、分割、抓取和规划系统。因此不能说整套系统完全没有 2D/3D grounding；更准确的阅读判断是：默认 code stream 没有被证明能独立维护精细、可靠的几何状态与接触约束，给出对象名或技能名也不保证动作参数和物理执行正确。[§3.3、附录 F/K/L](https://arxiv.org/html/2610.30136v1)、[作者项目页](https://agentic-wam.github.io/)。\n\n### 论文设计与公开配置的差别\n\n当前公开实现提供 `LearnedCodeMemory`，以及 `code_slices` 路径中的历史/当前片段分离，但基础模型配置设 `code_memory: false`，公开预训练配置使用 flat frame cache 且 `code_slices: false`。这说明记忆路径的代码存在，**不能据此认定所有公开训练配方或发布 checkpoint 默认都启用论文所述 memory**；本次未逐个检查 checkpoint 的实际配置及权重。复现历史接续能力时，应核对模型开关、数据是否真的提供历史和部署 reset/追加逻辑，而非只引用论文框架图。[模型基础配置](https://github.com/ZhuoyangLiu2005/agentic-wam/blob/275818e5787d59012eba4c43504342f1201ad25b/configs/model/agenticwam_cosmos.yaml#L62)、[预训练数据配置](https://github.com/ZhuoyangLiu2005/agentic-wam/blob/275818e5787d59012eba4c43504342f1201ad25b/configs/real_pre_train/data/pretrain_magic_soup.yaml#L43)、[记忆模块](https://github.com/ZhuoyangLiu2005/agentic-wam/blob/275818e5787d59012eba4c43504342f1201ad25b/src/agenticwam/models/experts/code_memory.py)。",
+    "discussion": "贡献在于把代码从外层任务规划器推进到 WAM 内部，与视频和动作共同优化；自动标注与冻结技能库为这种接口提供规模化监督。默认模式检验程序计划对学习式控制的指导，混合模式进一步检验显式技能与动作专家的互补。\n\n混合执行的可靠性仍受感知、抓取和规划原语限制；通过有效性检查不代表比动作专家更优，因而混合模式在 clean 条件明显退化。与 PrimeSim 的接口区别是：PrimeSim 输入外部动作、模拟视觉后果，AW-0 自身联合产生计划和策略动作。AW-0 当前不从部署交互在线学习，其持续技能扩展和自我改进属于未来方向。\n\n### 阅读讨论（2026-11-11）\n\n**默认 code branch 可理解为学习得到的结构化语义计划条件。** 它对“操作谁、用哪只手、调用什么技能、按什么顺序和次数”作显式表达，通过隐藏表示和逐层注意力影响视频及动作；默认控制输出仍由 action expert 产生。把它类比为更细的任务提示有助理解，但“只是普通文本提示，作用有限”比证据走得更远：论文对自然语言 subgoal、移除技能调用和改变信息流的消融支持结构化代码在所测任务上的价值，未证明这种表示在所有任务中必要或最优。\n\n用户指出的**生成代码缺少稳定直接执行保证**是成立的边界。附录 F 展示选对技能但参数错误，以及正确技能调用伴随注释格式错误的情形；附录 L 也明确说语法有效不等于执行正确。但这不能归因于采用离散掩码生成：`[MASK]` 遮的是代码 token，与图像 segmentation mask 无关，也不能单凭生成范式判断几何能力。\n\n**语义视觉 grounding、显式几何定位、实际执行可靠性须分别验证。** code expert 有当前多视角 ViT 条件；人手标注明确采用无坐标的语义运动，YAM 代码则可通过感知 API 取得 pose，hybrid 更会调用外部定位、分割、抓取和规划系统。因此不能说整套系统完全没有 2D/3D grounding；更准确的阅读判断是：默认 code stream 没有被证明能独立维护精细、可靠的几何状态与接触约束，给出对象名或技能名也不保证动作参数和物理执行正确。[§3.3、附录 F/K/L](https://arxiv.org/html/2610.30136v1)、[作者项目页](https://agentic-wam.github.io/)。\n\n### Agentic 命名的含义与边界\n\n“代码生成只是离线单次”的说法需要区分标签与模型输出：离线标注 Agent 生成训练程序并整理技能库；部署时的 code expert 则在每个 replanning point 根据当前观测重新生成片段，与视频和动作共同去噪。它不需要持续调用离线标注所用的外部 Gemini/Claude，也不是 episode 开始时只生成一次完整程序。[§2.3](https://arxiv.org/html/2610.30136v1#S2.SS3)。\n\n本文的 agentic 有三层来源：离线阶段有分工、审阅与技能整理的 Agent 工作流；默认策略把对象参数、技能调用和程序结构引入 WAM 的计划表示；hybrid 进一步在环境中实际调用感知/控制 API，并在下一轮观测后重新决策。默认策略具有闭环动作控制，但没有逐段执行生成程序的工具调用闭环。仅凭生成代码这一点，还不足以证明自主程序调试、执行反馈驱动的技能改进或开放式长期任务管理。\n\n因此，阅读判断是：默认 AW-0 的 agentic 主要体现为程序化计划及可复用技能接口，hybrid 才进一步检验程序作为执行接口。它确实超出了纯离线标签，但也不能据名称扩大成持续运行的通用 coding agent。附录 L 将技能扩展、进一步的计划修订与持续交互自主学习列为未来方向，并明确当前系统不从交互在线学习。持续学习与 agentic 是不同维度；固定权重系统也可以循环决策、调用工具，缺少在线学习本身不能否定全部 agentic 行为。[附录 I、L](https://arxiv.org/html/2610.30136v1#A12)、[作者项目页](https://agentic-wam.github.io/)。\n\n### 论文设计与公开配置的差别\n\n当前公开实现提供 `LearnedCodeMemory`，以及 `code_slices` 路径中的历史/当前片段分离，但基础模型配置设 `code_memory: false`，公开预训练配置使用 flat frame cache 且 `code_slices: false`。这说明记忆路径的代码存在，**不能据此认定所有公开训练配方或发布 checkpoint 默认都启用论文所述 memory**；本次未逐个检查 checkpoint 的实际配置及权重。复现历史接续能力时，应核对模型开关、数据是否真的提供历史和部署 reset/追加逻辑，而非只引用论文框架图。[模型基础配置](https://github.com/ZhuoyangLiu2005/agentic-wam/blob/275818e5787d59012eba4c43504342f1201ad25b/configs/model/agenticwam_cosmos.yaml#L62)、[预训练数据配置](https://github.com/ZhuoyangLiu2005/agentic-wam/blob/275818e5787d59012eba4c43504342f1201ad25b/configs/real_pre_train/data/pretrain_magic_soup.yaml#L43)、[记忆模块](https://github.com/ZhuoyangLiu2005/agentic-wam/blob/275818e5787d59012eba4c43504342f1201ad25b/src/agenticwam/models/experts/code_memory.py)。",
     "arxiv": {
       "published": "2026-10-21T17:59:56Z",
       "revised_at": "2026-10-21T17:59:56Z",
@@ -829,6 +829,74 @@
       "revised_at": "2026-09-11T06:59:21Z",
       "primary_category": "cs.RO"
     }
+  },
+  {
+    "id": "arxiv-2607-00272",
+    "title": "ASPIRE: Agentic /Skills Discovery for Robotics",
+    "authors": [
+      "Runyu Lu",
+      "Yubo Wu",
+      "Ethan Kou",
+      "Haotian Lin",
+      "Letian Fu",
+      "Wenli Xiao",
+      "Ajay Mandlekar",
+      "Yinzhen Xu",
+      "Guanya Shi",
+      "Ken Goldberg",
+      "Ang Chen",
+      "Mosharaf Chowdhury",
+      "Jan Kautz",
+      "Yuke Zhu",
+      "Linxi “Jim” Fan",
+      "Guanzhi Wang（按 v2 正文与官方 BibTeX）"
+    ],
+    "year": 2026,
+    "publication": "2026，arXiv 预印本，v2",
+    "arxiv_id": "2607.00272",
+    "doi": "10.48550/arXiv.2607.00272",
+    "links": {
+      "paper": "https://arxiv.org/abs/2607.00272",
+      "project": "https://research.nvidia.com/labs/gear/aspire/",
+      "code": "https://github.com/NVlabs/ASPIRE",
+      "alphaxiv": "https://alphaxiv.org/abs/2607.00272"
+    },
+    "tags": [
+      "Agent与可执行世界",
+      "数据与评测",
+      "机器人学习",
+      "跨本体迁移",
+      "长时记忆"
+    ],
+    "figure": null,
+    "summary": "把失败后的局部修复沉淀为有适用条件的技能，而非只保存成功脚本。 ASPIRE 在冻结语言模型之外积累程序与经验，直接对应本库关注的跨回合自我改进；模型权重不更新。",
+    "insight": "**把失败后的局部修复沉淀为有适用条件的技能，而非只保存成功脚本。** ASPIRE 在冻结语言模型之外积累程序与经验，直接对应本库关注的跨回合自我改进；模型权重不更新。",
+    "pipeline": {
+      "input": "任务、预定义机器人 API、当前程序、逐原语执行记录及共享技能库；记录包含调用参数、状态、前后图像和规划结果。",
+      "process": "Actor 诊断、改程序并重执行；进化搜索提出多个候选。技能保存失败特征、适用条件、修复策略和可选代码草图，由新 verifier 独立复现后入库。Coordinator 编排任务，并允许早期低分任务利用最终技能库再调试。",
+      "output": "可执行程序与可检索的修复知识。它改变后续求解的起点，未证明搜索或验证算法自身获得递归改进。方法 §2。",
+      "details": "**输入**：任务、预定义机器人 API、当前程序、逐原语执行记录及共享技能库；记录包含调用参数、状态、前后图像和规划结果。\n\n**过程**：Actor 诊断、改程序并重执行；进化搜索提出多个候选。技能保存失败特征、适用条件、修复策略和可选代码草图，由新 verifier 独立复现后入库。Coordinator 编排任务，并允许早期低分任务利用最终技能库再调试。\n\n**输出**：可执行程序与可检索的修复知识。它改变后续求解的起点，未证明搜索或验证算法自身获得递归改进。[方法 §2](https://arxiv.org/html/2607.00272v2#S2)。"
+    },
+    "experiments": "调试与评估 seeds 分离；LIBERO-Pro/Robosuite 每任务保留一个程序，不能与逐 seed 重写、重试的基线视为等预算比较。\n\n| 证据 | 作者报告与口径 |\n| --- | --- |\n| 未见长任务迁移 | Opus 4.6，LIBERO-90 积累库→LIBERO-Pro Long；两种扰动各十任务、每任务50 seeds，每任务一个程序，测试无调试、重试或库更新。附录表8空库为4.7%，90任务库为30.5% |\n| 真机跨本体适配 | 拾罐由13/20→19/20；达到首个成功程序的总 token 由61.94M→6.58M。仍在真机调试，并非仿真程序直接部署 |\n\n迁移表8与表9逐任务均值略有出入，上表保留表8口径。魔方三回合仅提供同 session 经验积累的案例，且需人工打乱和重置；搜索成本不能只用部署调用量概括。[§3.3–3.7、附录C](https://arxiv.org/html/2607.00272v2#S3)。",
+    "evidence_notes": "已核对 v2 方法、迁移协议、成本与局限，以及官方项目和代码仓库；结果为作者报告，未独立复现。",
+    "code_data_status": "[官方仓库](https://github.com/NVlabs/ASPIRE) 已公开代码、技能与实验流程，项目自有材料采用 Apache-2.0，第三方组件另依原许可。商业模型、仿真资产和真机配置仍需另备；没有新增策略模型权重，未运行端到端复现。",
+    "limitations": "- 技能仅在入库时验证，规模增长后可能过期、冲突或误导新任务。\n- 受冻结模型和预定义 API 限制，搜索消耗大量调用与 rollout。\n- 真机任务与样本有限，尚无自主重置和长期无人值守证据。",
+    "comments": "",
+    "source_reports": [],
+    "deleted": false,
+    "updated_at": "2026-11-11",
+    "challenges": "任务失败并不说明应修改感知、抓取还是规划。单回合重试即使找到修复，新任务也可能重新踩坑；完整历史又难以检索。缺的是可归因的执行证据，以及经过验证、能供后来程序使用的修复知识。",
+    "motivation": "**把失败后的局部修复沉淀为有适用条件的技能，而非只保存成功脚本。** ASPIRE 在冻结语言模型之外积累程序与经验，直接对应本库关注的跨回合自我改进；模型权重不更新。",
+    "technical_approach": "**输入**：任务、预定义机器人 API、当前程序、逐原语执行记录及共享技能库；记录包含调用参数、状态、前后图像和规划结果。\n\n**过程**：Actor 诊断、改程序并重执行；进化搜索提出多个候选。技能保存失败特征、适用条件、修复策略和可选代码草图，由新 verifier 独立复现后入库。Coordinator 编排任务，并允许早期低分任务利用最终技能库再调试。\n\n**输出**：可执行程序与可检索的修复知识。它改变后续求解的起点，未证明搜索或验证算法自身获得递归改进。[方法 §2](https://arxiv.org/html/2607.00272v2#S2)。",
+    "discussion": "最有价值的增量是“执行证据→验证修复→后续复用”。它比当前回合恢复多了持久变化，但库增长、模型变强或反复运行固定搜索，都不足以证明改进机制自身越来越有效。",
+    "arxiv": {
+      "published": "2026-06-30T23:38:46Z",
+      "revised_at": "2026-10-20T17:41:12Z",
+      "primary_category": "cs.RO"
+    },
+    "source_papers": [
+      "content/papers/2607.00272.md"
+    ]
   },
   {
     "id": "arxiv-2609-07126",
@@ -2075,6 +2143,61 @@
     "year": 2026
   },
   {
+    "id": "arxiv-2611-05058",
+    "title": "Do Agentic Policies Need to Look at Every Step? Geometric Abstraction for Reasoning and Action",
+    "authors": [
+      "Yihang Liu",
+      "Yiming Chen",
+      "Mingzhe Zheng"
+    ],
+    "year": 2026,
+    "publication": "2026，CoRL 2026 Workshop on Agentic Robotics 海报；arXiv v1（2026-11-03）",
+    "arxiv_id": "2611.05058",
+    "doi": "10.48550/arXiv.2611.05058",
+    "links": {
+      "paper": "https://arxiv.org/abs/2611.05058",
+      "project": "https://geometric-abstraction.github.io/",
+      "code": "https://github.com/Spectraorder/geometric-abstraction",
+      "alphaxiv": "https://alphaxiv.org/abs/2611.05058"
+    },
+    "tags": [
+      "3D/4D",
+      "Agent与可执行世界",
+      "多模态感知与提示",
+      "数据与评测",
+      "机器人学习"
+    ],
+    "figure": null,
+    "summary": "用持续刷新、有证据状态的几何引用连接程序和观测。 复用的是 red.bottom face 等几何角色，具体位置随当前观测重新绑定。与普通文字描述相比，接口提供可计算残差与缺失证据。",
+    "insight": "**用持续刷新、有证据状态的几何引用连接程序和观测。** 复用的是 `red.bottom_face` 等几何角色，具体位置随当前观测重新绑定。与普通文字描述相比，接口提供可计算残差与缺失证据。",
+    "pipeline": {
+      "input": "标定的侧视和腕部 RGB-D、机器人状态及初始化形状信息；不向 Agent 提供仿真真值位姿或私有评测状态。",
+      "process": "局部感知估计中心、边、定向面，记录时间戳及 observed/inferred/unavailable。程序通过 reference、relation、align 查询几何或求放置变换；每动作后返回 checkpoint，遮挡时不拿过期位姿计算残差。",
+      "output": "离线模式在 rollout 间修订可执行程序；在线模式依据新 checkpoint 选择技能和恢复动作。模型权重始终冻结。方法 §3。",
+      "details": "**输入**：标定的侧视和腕部 RGB-D、机器人状态及初始化形状信息；不向 Agent 提供仿真真值位姿或私有评测状态。\n\n**过程**：局部感知估计中心、边、定向面，记录时间戳及 observed/inferred/unavailable。程序通过 reference、relation、align 查询几何或求放置变换；每动作后返回 checkpoint，遮挡时不拿过期位姿计算残差。\n\n**输出**：离线模式在 rollout 间修订可执行程序；在线模式依据新 checkpoint 选择技能和恢复动作。模型权重始终冻结。[方法 §3](https://arxiv.org/html/2611.05058v1#S3)。"
+    },
+    "experiments": "全部实验为模拟 SO-100。离线模式每任务五条训练链、三次程序修订，冻结后在100个共享留出布局评测；三方块堆叠最终70.8%→81.4%，但这一结果包含程序学习和局部几何执行的共同作用。[§4.1、Table2](https://arxiv.org/html/2611.05058v1#S4.SS1)。\n\n在线每任务50对布局，两条件共享技能、传感器和动作接口。200秒预算包含模型等待，物理持续运行：桥上搭塔24%→56%，塔搬移30%→84%；套环98%→100%，平均封顶完成时间115.8→77.2秒，记录token减少52.8%。这支持几何接口改善所测控制效率，不能将收益只解释为文本压缩。[§4.2、Table3](https://arxiv.org/html/2611.05058v1#S4.SS2)。",
+    "evidence_notes": "已核对 arXiv v1 的方法、实验和附录，以及官方仓库的符号接口实现；未独立复现。",
+    "code_data_status": "MIT代码含 RGB-D 感知、符号状态、Agent 循环与实验脚本；SO-100资产另保留 Apache-2.0。仓库有导出结果和小型测试，完整原始观测、转录及rollout档案未入Git；重跑模型实验需要模型访问权限。",
+    "limitations": "- 规则刚体、颜色分割和形状先验限制了当前证据范围，尚无真机验证。\n- 缺少同几何数值、不同接口格式的充分拆分，不能只归因于符号表示。\n- 时间戳与 unavailable 标记能暴露证据缺口，尚未解决遮挡中的接触状态推断。",
+    "comments": "",
+    "source_reports": [],
+    "deleted": false,
+    "updated_at": "2026-11-11",
+    "challenges": "Agent 每步重新看图会重复恢复几何，还可能忽略动作后的真实偏差。只有物体中心的接口又不足以表达面与面的对齐；自然语言摘要可能丢失这些细节。",
+    "motivation": "**用持续刷新、有证据状态的几何引用连接程序和观测。** 复用的是 `red.bottom_face` 等几何角色，具体位置随当前观测重新绑定。与普通文字描述相比，接口提供可计算残差与缺失证据。",
+    "technical_approach": "**输入**：标定的侧视和腕部 RGB-D、机器人状态及初始化形状信息；不向 Agent 提供仿真真值位姿或私有评测状态。\n\n**过程**：局部感知估计中心、边、定向面，记录时间戳及 observed/inferred/unavailable。程序通过 reference、relation、align 查询几何或求放置变换；每动作后返回 checkpoint，遮挡时不拿过期位姿计算残差。\n\n**输出**：离线模式在 rollout 间修订可执行程序；在线模式依据新 checkpoint 选择技能和恢复动作。模型权重始终冻结。[方法 §3](https://arxiv.org/html/2611.05058v1#S3)。",
+    "discussion": "本文提供“保留程序结构、更新度量证据”的针对性案例。它尚未建立通用4D状态：源码明确当前角点不是材料点追踪，几何支持关系也不认证接触或稳定性。[实现](https://github.com/Spectraorder/geometric-abstraction/blob/main/src/aspire_so100/symbolic_scene.py)。",
+    "arxiv": {
+      "published": "2026-11-03T15:22:46Z",
+      "revised_at": "2026-11-03T15:22:46Z",
+      "primary_category": "cs.RO"
+    },
+    "source_papers": [
+      "content/papers/2611.05058.md"
+    ]
+  },
+  {
     "id": "arxiv-2609-03673",
     "title": "Do Video Generators Track the World Across Segments? A Benchmark and Method for World-State Reasoning in Video Continuation",
     "authors": [
@@ -3082,6 +3205,69 @@
     "updated_at": "2026-08-23",
     "year": 2026,
     "discussion": "- 如果你要强调 3D/4D，EgoSim 比纯视频生成更重要。\n- 它提供了一个可讲的核心卖点：**persistent 3D state update**。\n- 可扩展方向：把 state update 细化到 object-centric 4D state、contact state、hand-object relation graph。\n\n---"
+  },
+  {
+    "id": "arxiv-2610-18867",
+    "title": "EmbodiedEvo: Self-Evolving Coding Agent For Physical Intelligence",
+    "authors": [
+      "Wenyi Li",
+      "Yizhe Chi",
+      "Youjie Zheng",
+      "Chunyu Liu",
+      "Xiaoqiu Wang",
+      "Mingju Gao",
+      "Zheng Jiang",
+      "Deyao Hong",
+      "Calvin Xiao",
+      "Kaisen Yang",
+      "Qinhuai Na"
+    ],
+    "year": 2026,
+    "publication": "2026，arXiv 预印本，v2",
+    "arxiv_id": "2610.18867",
+    "doi": "10.48550/arXiv.2610.18867",
+    "links": {
+      "paper": "https://arxiv.org/abs/2610.18867",
+      "project": "https://lab.einsia.ai/embodiedevo/",
+      "code": "https://github.com/Einsia/EmbodiedEvo",
+      "alphaxiv": "https://alphaxiv.org/abs/2610.18867"
+    },
+    "tags": [
+      "Agent与可执行世界",
+      "数据与评测",
+      "机器人学习",
+      "适应与泛化",
+      "长时记忆"
+    ],
+    "figure": null,
+    "summary": "把交互经验保存为可执行操作与适用条件，分开检验获取经验和使用经验的能力。 相比单回合恢复，本文关注过去探索能否帮助新场景；相比 ASPIRE 的跨任务库，主要协议是每任务单场景探索后冻结，测同任务新布局。",
+    "insight": "**把交互经验保存为可执行操作与适用条件，分开检验获取经验和使用经验的能力。** 相比单回合恢复，本文关注过去探索能否帮助新场景；相比 ASPIRE 的跨任务库，主要协议是每任务单场景探索后冻结，测同任务新布局。",
+    "pipeline": {
+      "input": "任务描述、可选官方 wiki、相机观察、机器人状态与程序化接口。",
+      "process": "Playground 允许同场景重置，Agent 写程序、看反馈，修改代码 Skills 与文字 Lessons；前者保存操作，后者保存前置条件、失败及恢复建议。随后仅将两类只读文件交给全新 Test Agent；测试无重置、不积累跨 Test 经验，当前程序仍可据反馈修改。",
+      "output": "控制程序和冻结经验文件。模型参数、任务目标与机器人接口保持固定，学习发生在外部经验中。§3.4、4.1。",
+      "details": "**输入**：任务描述、可选官方 wiki、相机观察、机器人状态与程序化接口。\n\n**过程**：Playground 允许同场景重置，Agent 写程序、看反馈，修改代码 Skills 与文字 Lessons；前者保存操作，后者保存前置条件、失败及恢复建议。随后仅将两类只读文件交给全新 Test Agent；测试无重置、不积累跨 Test 经验，当前程序仍可据反馈修改。\n\n**输出**：控制程序和冻结经验文件。模型参数、任务目标与机器人接口保持固定，学习发生在外部经验中。[§3.4、4.1](https://arxiv.org/html/2610.18867v2#S3.SS4)。"
+    },
+    "experiments": "RoboDojo-Sim 共42任务；完整评估每任务50场景，报告类别平衡成功率37.82%，部分完成得分44.48。更直接的机制比较使用同一 Astra/xhigh、每任务五个配对场景：\n\n| 经验 | 成功率 | 每个 Test 回合估算成本 |\n| --- | ---: | ---: |\n| 无经验 | 8.50% | $4.058 |\n| 同源完整历史 | 29.78% | $12.203 |\n| Skills/Lessons | 30.17% | $5.732 |\n\n结构经验较完整历史省53.0%，较无经验却贵41.3%；成本包含测试失败和重试，排除 Playground 获取成本。跨模型时 Astra 经验使 Sol/Luna 成功率提高8.86/5.50点；获取与使用知识确有区别。[§4.4–4.6](https://arxiv.org/html/2610.18867v2#S4.SS6)。",
+    "evidence_notes": "已核对 v2 方法、冻结测试协议、成本表与失败分析，以及官方项目和代码仓库；未独立复现。",
+    "code_data_status": "[官方仓库](https://github.com/Einsia/EmbodiedEvo) 已公开编排、执行接口和42任务经验文件；全项目许可证尚未确定，不能称标准许可开源。RoboDojo/Isaac Sim 及资产需另行配置；公开快照默认含公共任务 recipes，复现须核对知识权限，历史结果归档不在发行范围。",
+    "limitations": "- 证据全部来自仿真，精细接触、插接和液体操作仍困难。\n- 完整评估与配对消融规模、输入不同，不能混用数字解释增益。\n- 成本未含经验获取；缺少严格等总预算与真实时间响应比较。",
+    "comments": "",
+    "source_reports": [],
+    "deleted": false,
+    "updated_at": "2026-11-11",
+    "challenges": "Agent 在当前场景里反复试错，可能掌握抓取、搬运与检查条件，但新 Agent 会重新探索。只保存“成功了什么”也不够：到达目标位姿不代表仍握住物体，动作顺序正确不代表接触过程可靠。",
+    "motivation": "**把交互经验保存为可执行操作与适用条件，分开检验获取经验和使用经验的能力。** 相比单回合恢复，本文关注过去探索能否帮助新场景；相比 ASPIRE 的跨任务库，主要协议是每任务单场景探索后冻结，测同任务新布局。",
+    "technical_approach": "**输入**：任务描述、可选官方 wiki、相机观察、机器人状态与程序化接口。\n\n**过程**：Playground 允许同场景重置，Agent 写程序、看反馈，修改代码 Skills 与文字 Lessons；前者保存操作，后者保存前置条件、失败及恢复建议。随后仅将两类只读文件交给全新 Test Agent；测试无重置、不积累跨 Test 经验，当前程序仍可据反馈修改。\n\n**输出**：控制程序和冻结经验文件。模型参数、任务目标与机器人接口保持固定，学习发生在外部经验中。[§3.4、4.1](https://arxiv.org/html/2610.18867v2#S3.SS4)。",
+    "discussion": "最强证据来自“冻结经验→全新执行者”的配对设计。未完成探索也能留下有效操作；但相关任务来源并不总优于打乱来源，任务名相似不能代替适用性检查。这是外部知识自改进，尚未检验改进器在新失败上是否更会改进。",
+    "arxiv": {
+      "published": "2026-10-13T17:59:51Z",
+      "revised_at": "2026-10-14T17:45:55Z",
+      "primary_category": "cs.RO"
+    },
+    "source_papers": [
+      "content/papers/2610.18867.md"
+    ]
   },
   {
     "arxiv": {
@@ -5123,6 +5309,70 @@
     }
   },
   {
+    "id": "arxiv-2611-02474",
+    "title": "Gnomon4D: Learning Where and When to Focus for Geometric Motion-Grounded World-Action Modeling",
+    "authors": [
+      "Lingwei Dang",
+      "Yan Zhou",
+      "Juntong Li",
+      "Zhenhao Zhang",
+      "Yiteng Chen",
+      "Xiaoqiang Liu",
+      "Liang An",
+      "Hongwen Zhang",
+      "Wei Min",
+      "Guoxin Zhang",
+      "Pengfei Wan",
+      "Yebin Liu",
+      "Qingyao Wu"
+    ],
+    "year": 2026,
+    "publication": "2026，arXiv 预印本（v1 首发 2026-11-02，v2 修订 2026-11-04）",
+    "arxiv_id": "2611.02474",
+    "doi": "10.48550/arXiv.2611.02474",
+    "links": {
+      "paper": "https://arxiv.org/abs/2611.02474",
+      "project": "https://droliven.github.io/Gnomon4D/",
+      "code": "https://github.com/Droliven/Gnomon4D",
+      "alphaxiv": "https://alphaxiv.org/abs/2611.02474"
+    },
+    "tags": [
+      "3D/4D",
+      "World Action Model",
+      "机器人学习",
+      "第一视角与人类视频"
+    ],
+    "figure": null,
+    "summary": "同时决定未来编码什么，以及动作从未来何处、何时读取证据。 GeoDelta 将本体与物体表面运动置于共享时空场，供动作专家在推理时使用。",
+    "insight": "**同时决定未来编码什么，以及动作从未来何处、何时读取证据。** GeoDelta 将本体与物体表面运动置于共享时空场，供动作专家在推理时使用。",
+    "pipeline": {
+      "input": "多视角 RGB、本体状态、指令，以及当前深度和前景掩码。",
+      "process": "视频、GeoDelta、动作三专家联合去噪。GeoDelta 记录同一物理点的图像位移与深度变化；InSAttn 按物体—本体相对运动选择空间区域，TransAgg 围绕该关系变化聚合时间证据，再通过注意力注入动作专家。动作与 GeoDelta 在第 10 个求解步完成；其余步骤仅在需要视频时继续细化。",
+      "output": "32 步动作块及几何未来；真机执行前 16 步后重新观测。动作由学习式联合生成产生，没有外部成本优化器枚举并选择轨迹；几何预测确实参与动作推理。第 3.4–3.6 节。",
+      "details": "**输入**：多视角 RGB、本体状态、指令，以及当前深度和前景掩码。\n\n**过程**：视频、GeoDelta、动作三专家联合去噪。GeoDelta 记录同一物理点的图像位移与深度变化；InSAttn 按物体—本体相对运动选择空间区域，TransAgg 围绕该关系变化聚合时间证据，再通过注意力注入动作专家。动作与 GeoDelta 在第 10 个求解步完成；其余步骤仅在需要视频时继续细化。\n\n**输出**：32 步动作块及几何未来；真机执行前 16 步后重新观测。动作由学习式联合生成产生，没有外部成本优化器枚举并选择轨迹；几何预测确实参与动作推理。[第 3.4–3.6 节](https://arxiv.org/html/2611.02474v2#S3.SS4)。"
+    },
+    "experiments": "表 4 十任务消融：RGB 为 80.0%，加入完整 GeoDelta 为 83.4%，再加空间/时间读出为 86.2%；各组为累积设置。UR5e 五任务、各 50 示范，评测共 400 次，ID/OOD 成功率 82.5%/78.0%。[第 4 节](https://arxiv.org/html/2611.02474v2#S4)。",
+    "evidence_notes": "已核对 v2 方法、实验与局限、官方项目及代码目录说明；未独立复现。",
+    "code_data_status": "官方仓库有项目素材，但 `codes/README.md` 仍标记 Code coming soon；未确认训练实现、权重或完整标注集公开。",
+    "limitations": "- 真实 GeoDelta 依赖深度、掩码与光流，反光、透明和细表面有误差。\n- 人类预训练仅有手部运动，缺少完整物体响应。\n- 动作块间重规划不等于块内持续纠偏；真机推理时机械臂保持位置。",
+    "comments": "",
+    "source_reports": [],
+    "deleted": false,
+    "updated_at": "2026-11-11",
+    "challenges": "RGB 未来混合外观与运动，逐帧深度缺少跨时对应；即使预测几何，动作模型也可能主要关注机械臂整体，忽视物体交互和接触转换。",
+    "motivation": "**同时决定未来编码什么，以及动作从未来何处、何时读取证据。** GeoDelta 将本体与物体表面运动置于共享时空场，供动作专家在推理时使用。",
+    "technical_approach": "**输入**：多视角 RGB、本体状态、指令，以及当前深度和前景掩码。\n\n**过程**：视频、GeoDelta、动作三专家联合去噪。GeoDelta 记录同一物理点的图像位移与深度变化；InSAttn 按物体—本体相对运动选择空间区域，TransAgg 围绕该关系变化聚合时间证据，再通过注意力注入动作专家。动作与 GeoDelta 在第 10 个求解步完成；其余步骤仅在需要视频时继续细化。\n\n**输出**：32 步动作块及几何未来；真机执行前 16 步后重新观测。动作由学习式联合生成产生，没有外部成本优化器枚举并选择轨迹；几何预测确实参与动作推理。[第 3.4–3.6 节](https://arxiv.org/html/2611.02474v2#S3.SS4)。",
+    "discussion": "联合生成同样能够使用预测后果，不能因没有显式候选评分而否认其世界信息。本文验证交互读出的控制收益，尚未建立跨窗口身份、失败归因或主动恢复机制。",
+    "arxiv": {
+      "published": "2026-11-02T03:45:07Z",
+      "revised_at": "2026-11-04T13:57:33Z",
+      "primary_category": "cs.CV"
+    },
+    "source_papers": [
+      "content/papers/2611.02474.md"
+    ]
+  },
+  {
     "id": "arxiv-2609-20012",
     "title": "GRF-Recon: Global Ray-Field Optimization for Long-Sequence Feed-forward Reconstruction",
     "authors": [
@@ -6626,6 +6876,78 @@
       "revised_at": "2026-09-07T02:47:45Z",
       "primary_category": "cs.CV"
     }
+  },
+  {
+    "id": "arxiv-2610-23334",
+    "title": "LAW: Unifying Language, Action, and World Modeling for Agentic Physical Intelligence",
+    "authors": [
+      "Jiajun Cao",
+      "Kai Tang",
+      "Bohua Zhang",
+      "Zezhong Qian",
+      "Ying Li",
+      "Xiaozhu Ju",
+      "Xiaobao Wei",
+      "Jiaming Liu",
+      "Yang Ding",
+      "Sixiang Chen",
+      "Yiding Sun",
+      "Siyuan Qian",
+      "Tinghao Wang",
+      "Jixian Wu",
+      "Yichen Guo",
+      "Yi Zhang",
+      "Shilong Zou",
+      "Zhiyuan qin",
+      "Yong Dai",
+      "Jian Tang",
+      "Shanghang Zhang"
+    ],
+    "year": 2026,
+    "publication": "2026，arXiv 预印本（v1 首发 2026-10-16，v2 修订 2026-10-25）",
+    "arxiv_id": "2610.23334",
+    "doi": "10.48550/arXiv.2610.23334",
+    "links": {
+      "paper": "https://arxiv.org/abs/2610.23334",
+      "code": "https://github.com/hey-cjj/LAW",
+      "alphaxiv": "https://alphaxiv.org/abs/2610.23334"
+    },
+    "tags": [
+      "Agent与可执行世界",
+      "VLA",
+      "World Action Model",
+      "机器人学习",
+      "长时记忆"
+    ],
+    "figure": null,
+    "summary": "把语义子任务进展作为规划、控制、价值学习和记忆的共同接口。 LAW 的关键不是反复调用大模型，而是让不同控制职能按合适的时点运行，与本库的分层执行和 WAM 主线直接相关。",
+    "insight": "**把语义子任务进展作为规划、控制、价值学习和记忆的共同接口。** LAW 的关键不是反复调用大模型，而是让不同控制职能按合适的时点运行，与本库的分层执行和 WAM 主线直接相关。",
+    "pipeline": {
+      "input": "任务语言、多视角 RGB、本体状态与 episode 内视觉历史。",
+      "process": "共享冻结 Qwen3-VL-2B 骨干上的 planner、state、value adapters 分别预测剩余子任务、异步判断完成、评价动作。WAM 按当前子任务产生 32 个动作候选，保留前八个加权融合；语义边界触发重规划并保留高分辨率观测，较旧历史压缩。MoTE 为视频与动作增加私有及共享专家。离线先训练规划、状态与 WAM，再冻结它们训练 value；成功子任务的回报在边界截断，使失败 episode 的成功前缀仍有正监督。",
+      "output": "32 步末端动作块的执行前缀及更新后的子任务状态；部署不生成显式未来视频。全部参数在评测时冻结。第 3 节、4.1 节。",
+      "details": "**输入**：任务语言、多视角 RGB、本体状态与 episode 内视觉历史。\n\n**过程**：共享冻结 Qwen3-VL-2B 骨干上的 planner、state、value adapters 分别预测剩余子任务、异步判断完成、评价动作。WAM 按当前子任务产生 32 个动作候选，保留前八个加权融合；语义边界触发重规划并保留高分辨率观测，较旧历史压缩。MoTE 为视频与动作增加私有及共享专家。离线先训练规划、状态与 WAM，再冻结它们训练 value；成功子任务的回报在边界截断，使失败 episode 的成功前缀仍有正监督。\n\n**输出**：32 步末端动作块的执行前缀及更新后的子任务状态；部署不生成显式未来视频。全部参数在评测时冻结。[第 3 节、4.1 节](https://arxiv.org/html/2610.23334v2#S3)。"
+    },
+    "experiments": "RoboTwin 50 任务 Clean/Random 平均成功率 94.21%。表 5 同协议消融：Fast-WAM 91.83%，仅 MoTE 92.67%，仅子任务 92.68%，二者 93.16%，再加记忆 93.80%、value 94.21%；后两项为累积增益，不能视为独立效应。\n\n表 10 五项多阶段任务中，子任务级 value 为 90.80%，优于无 value 的 88.20%及整回合监督的 87.90%，直接支持按语义边界分配信用。真机三任务各 20 次，完整成功率 65%，π₀.₅ 为 28.33%、Fast-WAM 为 25%；进度分另计，不等同成功率。[第 4–5 节](https://arxiv.org/html/2610.23334v2#S4)。",
+    "evidence_notes": "已核对公开 v2 方法、主要实验、消融与官方仓库；结果为作者报告，未独立复现。",
+    "code_data_status": "[官方仓库](https://github.com/hey-cjj/LAW) 已有实现、配置及训练/评测说明，并提供四组 checkpoint 和 RoboTwin 训练数据入口；未下载运行。根代码 MIT，自有权重 Apache-2.0、自有标注 CC-BY-4.0，上游资产保留原条款；完整真机复现条件未核验。",
+    "limitations": "- 依赖语义阶段标注；自适应划分与跨本体迁移仍待验证。\n- value 训练用记录动作，部署评价采样候选，分布差异尚未独立隔离。\n- 32 候选与异步评估仍有成本；吞吐收益不等于端到端任务时间下降。\n- 真机仅三任务、单平台；RoboDojo 平均成功率仍为 3.82%。",
+    "comments": "",
+    "source_reports": [],
+    "deleted": false,
+    "updated_at": "2026-11-11",
+    "challenges": "长程操作需要判断抓取是否成功、何时切换阶段，以及当前动作是否服务于正确目标。仅在策略前放一个语言规划器，仍未明确连接执行进展、候选动作评价与历史保留。",
+    "motivation": "**把语义子任务进展作为规划、控制、价值学习和记忆的共同接口。** LAW 的关键不是反复调用大模型，而是让不同控制职能按合适的时点运行，与本库的分层执行和 WAM 主线直接相关。",
+    "technical_approach": "**输入**：任务语言、多视角 RGB、本体状态与 episode 内视觉历史。\n\n**过程**：共享冻结 Qwen3-VL-2B 骨干上的 planner、state、value adapters 分别预测剩余子任务、异步判断完成、评价动作。WAM 按当前子任务产生 32 个动作候选，保留前八个加权融合；语义边界触发重规划并保留高分辨率观测，较旧历史压缩。MoTE 为视频与动作增加私有及共享专家。离线先训练规划、状态与 WAM，再冻结它们训练 value；成功子任务的回报在边界截断，使失败 episode 的成功前缀仍有正监督。\n\n**输出**：32 步末端动作块的执行前缀及更新后的子任务状态；部署不生成显式未来视频。全部参数在评测时冻结。[第 3 节、4.1 节](https://arxiv.org/html/2610.23334v2#S3)。",
+    "discussion": "贡献是让“当前在完成哪一步”同时约束执行、评估和记忆。反馈改变本次计划与状态，未证明跨回合在线学习或改进器自我改进。完成判断也未解释失败源于定位、接触前提还是动力学，不能据此称为显式 4D 纠错。",
+    "arxiv": {
+      "published": "2026-10-16T11:39:21Z",
+      "revised_at": "2026-10-25T08:27:07Z",
+      "primary_category": "cs.RO"
+    },
+    "source_papers": [
+      "content/papers/2610.23334.md"
+    ]
   },
   {
     "id": "arxiv-2608-24882",
@@ -8310,6 +8632,71 @@
     "year": 2026
   },
   {
+    "id": "arxiv-2611-09892",
+    "title": "On Agentic Manipulation Policies",
+    "authors": [
+      "Chen Chen",
+      "Omid Bagherieh",
+      "Naveen Nikamanth Appiah Balaji",
+      "Jesse T. Gonzalez",
+      "Negin Heravi",
+      "Fahad Islam",
+      "Xueting Li",
+      "Jean-Baptiste Regli",
+      "Kejia Ren",
+      "Petr Švec",
+      "David J. Yoon",
+      "Matthias Müller",
+      "Vladlen Koltun"
+    ],
+    "year": 2026,
+    "publication": "2026，arXiv 预印本（v1，2026-11-06）；系统名 AMP1",
+    "arxiv_id": "2611.09892",
+    "doi": "10.48550/arXiv.2611.09892",
+    "links": {
+      "paper": "https://arxiv.org/abs/2611.09892",
+      "project": "https://apple-aiml-research.github.io/ml-amp/",
+      "code": "https://github.com/apple-aiml-research/ml-amp",
+      "alphaxiv": "https://alphaxiv.org/abs/2611.09892"
+    },
+    "tags": [
+      "3D/4D",
+      "Agent与可执行世界",
+      "数据与评测",
+      "机器人学习",
+      "长时记忆"
+    ],
+    "figure": null,
+    "summary": "让通用模型持续参与控制，把感知、几何计算与动作执行暴露为可检查的接口。 核心贡献是机器人 harness 和系统性实证；没有提出新的空间表征学习或追踪算法。",
+    "insight": "**让通用模型持续参与控制，把感知、几何计算与动作执行暴露为可检查的接口。** 核心贡献是机器人 harness 和系统性实证；没有提出新的空间表征学习或追踪算法。",
+    "pipeline": {
+      "input": "任务、机器人状态，以及按需读取的图像、深度、标定和场景对象；具体权限随基准变化。",
+      "process": "冻结模型在持久 Python 内核中测量几何、编写动作代码并检查结果。SDK 提供对象跟踪、渲染、轨迹检查和执行；基本接口不替模型选择抓取或放置策略。AMP1+另将代码和经验保存在跨 episode 记忆中。",
+      "output": "带时间的末端位姿轨迹和夹爪指令；反馈可改变当回合策略，部署不更新模型权重。方法 §4。",
+      "details": "**输入**：任务、机器人状态，以及按需读取的图像、深度、标定和场景对象；具体权限随基准变化。\n\n**过程**：冻结模型在持久 Python 内核中测量几何、编写动作代码并检查结果。SDK 提供对象跟踪、渲染、轨迹检查和执行；基本接口不替模型选择抓取或放置策略。AMP1+另将代码和经验保存在跨 episode 记忆中。\n\n**输出**：带时间的末端位姿轨迹和夹爪指令；反馈可改变当回合策略，部署不更新模型权重。[方法 §4](https://arxiv.org/html/2611.09892v1#S4)。"
+    },
+    "experiments": "RoboLab-120 零样本成功率最高为85.6%；真机十二任务、三台机器人共104/108次成功。更有区分力的是同 Opus 5.5 的消融：完整几何工具82.8%，去工具81.9%，平均模型调用34.8→38.7。工具对强模型主要体现效率价值，主成功率不能归于新的定位机制。[分析 §2D、Fig.5](https://arxiv.org/html/2611.09892v1#S2.SS4)。\n\nAMP1+在 RoboDojo 从26.4%升至84.1%，但每任务最多48次练习，五次练习运行择优后冻结记忆评测。RoboLab、CaP-Gym 和 RoboDojo 在模型推理时暂停仿真；前两者提供无噪深度和精确标定。作者按论文时 API 价格计算 Opus 5.5 平均每 episode **1.39美元**，不含全部系统成本。[§2C、§4C–G、补充S7](https://arxiv.org/html/2611.09892v1)。",
+    "evidence_notes": "已核对 arXiv v1 的方法、实验与补充协议，以及官方项目和代码仓库；未独立复现。",
+    "code_data_status": "官方仓库已公开策略与仿真评测代码，依赖第三方基准和模型服务；使用 Apple 自定义许可证，不能笼统写成 MIT。[许可证](https://github.com/apple-aiml-research/ml-amp/blob/main/LICENSE)。",
+    "limitations": "- 模型执行轨迹时不能重新考虑，准静态结果不能外推到快速滑落或移动目标。\n- 与 Astranomy 的同模型比较同时改变代码执行、动作粒度和场景模型，未隔离各项贡献。\n- 暂停仿真使成功率与真实等待成本分离，部署比较需同时报告调用、token和端到端时间。",
+    "comments": "",
+    "source_reports": [],
+    "deleted": false,
+    "updated_at": "2026-11-11",
+    "challenges": "动作策略会在陌生物体、指令和失败情形中失效；高层 Agent 调用固定技能也可能看不到失败细节。本文检验通用模型直接编写、执行并检查动作代码，能否减少这些限制。",
+    "motivation": "**让通用模型持续参与控制，把感知、几何计算与动作执行暴露为可检查的接口。** 核心贡献是机器人 harness 和系统性实证；没有提出新的空间表征学习或追踪算法。",
+    "technical_approach": "**输入**：任务、机器人状态，以及按需读取的图像、深度、标定和场景对象；具体权限随基准变化。\n\n**过程**：冻结模型在持久 Python 内核中测量几何、编写动作代码并检查结果。SDK 提供对象跟踪、渲染、轨迹检查和执行；基本接口不替模型选择抓取或放置策略。AMP1+另将代码和经验保存在跨 episode 记忆中。\n\n**输出**：带时间的末端位姿轨迹和夹爪指令；反馈可改变当回合策略，部署不更新模型权重。[方法 §4](https://arxiv.org/html/2611.09892v1#S4)。",
+    "discussion": "本文支持强通用模型通过适当接口完成复杂闭环操作。跨回合记忆改善了任务表现，但尚未证明改进机制本身递归增强；场景跟踪也不足以使其成为精细4D定位方法的代表。",
+    "arxiv": {
+      "published": "2026-11-06T18:59:34Z",
+      "revised_at": "2026-11-06T18:59:34Z",
+      "primary_category": "cs.RO"
+    },
+    "source_papers": [
+      "content/papers/2611.09892.md"
+    ]
+  },
+  {
     "id": "arxiv-2609-01938",
     "title": "One Demonstration, Many Objects: Generalizing Manipulation via Local Contact Geometry",
     "authors": [
@@ -9157,6 +9544,66 @@
       "revised_at": "2026-06-02T17:30:50Z",
       "primary_category": "cs.RO"
     }
+  },
+  {
+    "id": "arxiv-2601-03782",
+    "title": "PointWorld: Scaling 3D World Models for In-The-Wild Robotic Manipulation",
+    "authors": [
+      "Wenlong Huang",
+      "Yu-Wei Chao",
+      "Arsalan Mousavian",
+      "Ming-Yu Liu",
+      "Dieter Fox",
+      "Kaichun Mo",
+      "Li Fei-Fei"
+    ],
+    "year": 2026,
+    "publication": "2026，CVPR 2026；本卡方法核对 arXiv v1",
+    "arxiv_id": "2601.03782",
+    "doi": "10.48550/arXiv.2601.03782",
+    "links": {
+      "paper": "https://arxiv.org/abs/2601.03782v1",
+      "publication": "https://openaccess.thecvf.com/content/CVPR2026/papers/Huang_PointWorld_Scaling_3D_World_Models_for_In-The-Wild_Robotic_Manipulation_CVPR_2026_paper.pdf",
+      "project": "https://point-world.github.io/",
+      "code": "https://github.com/NVlabs/PointWorld",
+      "model": "https://huggingface.co/nvidia/PointWorld_models",
+      "alphaxiv": "https://alphaxiv.org/abs/2601.03782"
+    },
+    "tags": [
+      "3D/4D",
+      "世界模型",
+      "机器人学习",
+      "物理建模与仿真"
+    ],
+    "figure": null,
+    "summary": "把机器人运动与环境响应都表示为三维点轨迹，让可调用动力学模型为动作优化提供后果。 这与仅将未来预测作为策略训练辅助的接口不同。",
+    "insight": "**把机器人运动与环境响应都表示为三维点轨迹，让可调用动力学模型为动作优化提供后果。** 这与仅将未来预测作为策略训练辅助的接口不同。",
+    "pipeline": {
+      "input": "标定 RGB-D 构建的场景点云，以及由机器人几何和正向运动学生成的候选夹爪点轨迹。",
+      "process": "PointWorld 预测动作条件场景点位移。部署时 MPPI 在末端轨迹附近采样扰动，把每个候选转换为机器人点运动、调用模型预测物体后果，再按目标点距离、路径长度与可达性成本加权更新轨迹。任务对象掩码与目标位置由人工 GUI 指定；动作由外部优化器求解。",
+      "output": "模型输出场景点轨迹；规划器输出末端位姿序列，再经 IK 转为关节命令。第 3.2、5.4 节。",
+      "details": "**输入**：标定 RGB-D 构建的场景点云，以及由机器人几何和正向运动学生成的候选夹爪点轨迹。\n\n**过程**：PointWorld 预测动作条件场景点位移。部署时 MPPI 在末端轨迹附近采样扰动，把每个候选转换为机器人点运动、调用模型预测物体后果，再按目标点距离、路径长度与可达性成本加权更新轨迹。任务对象掩码与目标位置由人工 GUI 指定；动作由外部优化器求解。\n\n**输出**：模型输出场景点轨迹；规划器输出末端位姿序列，再经 IK 转为关节命令。[第 3.2、5.4 节](https://arxiv.org/html/2601.03782v1#S3.SS2)。"
+    },
+    "experiments": "约 200 万轨迹、500 小时训练；真机覆盖刚体推移、形变、关节物体与工具操作。模型批量 forward 约 0.1 秒；实际规划为 20 轮、每轮 256 候选，耗时数秒。附录 A.6.1 明确真机实验未执行重规划，不能把 MPC 接口写成已验证实时闭环控制。",
+    "evidence_notes": "已核对 v1 方法、规划与局限、官方项目及发布仓库；未独立复现。",
+    "code_data_status": "官方仓库已提供训练、评测、数据准备及模型/数据下载入口。代码 Apache-2.0，权重另循 NVIDIA Open Model License；未下载运行。",
+    "limitations": "- 初始世界假设静止，未输入历史速度。\n- 目标成本人工指定；部分形变与工具任务从预抓取状态开始。\n- 深度与标定误差影响细物体；规划器可能利用模型误差。",
+    "comments": "",
+    "source_reports": [],
+    "deleted": false,
+    "updated_at": "2026-11-11",
+    "challenges": "真实操作需要回答“这条机械臂轨迹会怎样移动物体”。视频外观不直接表达米制位移，不同机器人关节动作也难直接合并训练。",
+    "motivation": "**把机器人运动与环境响应都表示为三维点轨迹，让可调用动力学模型为动作优化提供后果。** 这与仅将未来预测作为策略训练辅助的接口不同。",
+    "technical_approach": "**输入**：标定 RGB-D 构建的场景点云，以及由机器人几何和正向运动学生成的候选夹爪点轨迹。\n\n**过程**：PointWorld 预测动作条件场景点位移。部署时 MPPI 在末端轨迹附近采样扰动，把每个候选转换为机器人点运动、调用模型预测物体后果，再按目标点距离、路径长度与可达性成本加权更新轨迹。任务对象掩码与目标位置由人工 GUI 指定；动作由外部优化器求解。\n\n**输出**：模型输出场景点轨迹；规划器输出末端位姿序列，再经 IK 转为关节命令。[第 3.2、5.4 节](https://arxiv.org/html/2601.03782v1#S3.SS2)。",
+    "discussion": "它明确展示了“候选动作→预测后果→成本→动作更新”。三维点对应只在单次预测内保持，尚非持续对象记忆；预测有效也不等于恢复了因果结构。[附录 A.1、A.6](https://arxiv.org/html/2601.03782v1#A1.SS1)。",
+    "arxiv": {
+      "published": "2026-01-07T10:29:12Z",
+      "revised_at": "2026-01-07T10:29:12Z（v1）",
+      "primary_category": "cs.RO"
+    },
+    "source_papers": [
+      "content/papers/2601.03782.md"
+    ]
   },
   {
     "id": "arxiv-2608-24115",
@@ -10844,6 +11291,64 @@
       "revised_at": "2026-09-15T07:11:21Z",
       "primary_category": "cs.RO"
     }
+  },
+  {
+    "id": "arxiv-2606-30613",
+    "title": "Sequential Planning via Anchored Robotic Keypoints",
+    "authors": [
+      "Bryce Grant",
+      "Aryeh Rothenberg",
+      "Logan Senning",
+      "Zonghe Chua",
+      "Zach Patterson",
+      "Peng Wang"
+    ],
+    "year": 2026,
+    "publication": "2026，arXiv 预印本（v5，2026-11-02）；系统名 SPARK",
+    "arxiv_id": "2606.30613",
+    "doi": "10.48550/arXiv.2606.30613",
+    "links": {
+      "paper": "https://arxiv.org/abs/2606.30613",
+      "project": "https://cwru-aism.github.io/spark-page/",
+      "code": "https://github.com/CWRU-AISM/sparkbot",
+      "alphaxiv": "https://alphaxiv.org/abs/2606.30613"
+    },
+    "tags": [
+      "3D/4D",
+      "Agent与可执行世界",
+      "多模态感知与提示",
+      "数据与评测",
+      "机器人学习"
+    ],
+    "figure": null,
+    "summary": "将任务顺序与场景中的执行位置分开。 先在原行为树内纠正动作、更新对象绑定，失败后才重新规划。它针对“执行偏差未必意味着计划错误”，并未学习通用的失败归因器。",
+    "insight": "**将任务顺序与场景中的执行位置分开。** 先在原行为树内纠正动作、更新对象绑定，失败后才重新规划。它针对“执行偏差未必意味着计划错误”，并未学习通用的失败归因器。",
+    "pipeline": {
+      "input": "指令、平台相机、深度、标定和机器人反馈；模拟主结果使用本地4位 Qwen3.8-27B，实机使用 Gemini。",
+      "process": "模型生成调用固定技能库的类型化行为树。SAM3掩码中心和中值深度反投影为3D关键点；技能调用时按对象标签绑定当前位置。后置条件失败依次触发局部修正、重新感知和重新规划。",
+      "output": "由技能与控制器执行的机器人动作；前两级恢复保留原树，无需新的规划调用。部署不更新模型权重。方法 §4。",
+      "details": "**输入**：指令、平台相机、深度、标定和机器人反馈；模拟主结果使用本地4位 Qwen3.8-27B，实机使用 Gemini。\n\n**过程**：模型生成调用固定技能库的类型化行为树。SAM3掩码中心和中值深度反投影为3D关键点；技能调用时按对象标签绑定当前位置。后置条件失败依次触发局部修正、重新感知和重新规划。\n\n**输出**：由技能与控制器执行的机器人动作；前两级恢复保留原树，无需新的规划调用。部署不更新模型权重。[方法 §4](https://arxiv.org/html/2606.30613v5#S4)。"
+    },
+    "experiments": "LIBERO-PRO六设置各10任务×50次，v5平均75.1%；这一协议允许每次attempt读取基准成功信号，决定是否重试。仅机器人自身抓持与场景检查启动恢复时为67.5%，中位总时53.4秒。未读取真值物体位姿，不等于没有评测器反馈。[§5.1、Table1、附录I](https://arxiv.org/html/2606.30613v5#S5.SS1)。\n\n固定脚本在三任务、三扰动阶段、五初态上测试，每距离45次。10厘米移动时完整检查与恢复30/45成功，对照1/45；关闭每attempt成功信号后为12/45，对照仍1/45。两组件共同开关，不能隔离各自贡献。三机器人11个任务平台设置、每格20次，共150/220成功。[§5.2/5.4、Table2、附录K](https://arxiv.org/html/2606.30613v5#S5)。",
+    "evidence_notes": "已核对 arXiv v5 的方法、主表及附录I/K，以及官方项目与代码仓库；未独立复现。主结果采用v5，不能沿用v4数字。",
+    "code_data_status": "官方 sparkbot 仓库采用 Apache-2.0，公开规划、感知绑定、仿真执行、实机驱动和复现实验入口；SAM3等第三方依赖各有授权及模型获取要求。",
+    "limitations": "- 技能库和部分关系绑定规则由作者预先构造；无任务训练不等于没有人工控制知识。\n- 关键点主要表示对象或部件位置，不提供精细材料对应和完整接触状态。\n- 如何仅凭机载反馈选择重定位、局部动作或改计划，仍未形成经过验证的通用机制。",
+    "comments": "",
+    "source_reports": [],
+    "deleted": false,
+    "updated_at": "2026-11-11",
+    "challenges": "物体移动后，原任务步骤可能仍然正确，但动作指向的位置已经过期。重新生成整个程序会重复规划；只保留程序又可能反复在旧位置执行。",
+    "motivation": "**将任务顺序与场景中的执行位置分开。** 先在原行为树内纠正动作、更新对象绑定，失败后才重新规划。它针对“执行偏差未必意味着计划错误”，并未学习通用的失败归因器。",
+    "technical_approach": "**输入**：指令、平台相机、深度、标定和机器人反馈；模拟主结果使用本地4位 Qwen3.8-27B，实机使用 Gemini。\n\n**过程**：模型生成调用固定技能库的类型化行为树。SAM3掩码中心和中值深度反投影为3D关键点；技能调用时按对象标签绑定当前位置。后置条件失败依次触发局部修正、重新感知和重新规划。\n\n**输出**：由技能与控制器执行的机器人动作；前两级恢复保留原树，无需新的规划调用。部署不更新模型权重。[方法 §4](https://arxiv.org/html/2606.30613v5#S4)。",
+    "discussion": "实验支持部分失败可通过重新绑定和局部恢复解决，保留原计划有实际价值。但自主检测失败是关键瓶颈：依赖评测器触发的66.7%不能写成纯视觉闭环恢复能力。",
+    "arxiv": {
+      "published": "2026-06-29T17:48:01Z",
+      "revised_at": "2026-11-02T18:53:25Z",
+      "primary_category": "cs.RO"
+    },
+    "source_papers": [
+      "content/papers/2606.30613.md"
+    ]
   },
   {
     "arxiv": {

@@ -47,25 +47,33 @@
   },
   {
     "id": "topic-embodied-agents-improvement",
-    "title": "具身 Agent 如何获得执行能力：上下文、空间工具、程序与改进闭环",
+    "title": "具身 Agent 的执行范式与自我改进",
     "date": "2026-11-11",
     "tags": [
       "Agent与可执行世界",
-      "具身上下文学习",
-      "长时记忆",
       "机器人学习",
+      "World Action Model",
+      "具身上下文学习",
       "数据与评测"
     ],
-    "summary": "比较 GPT Policy、S-Agent 2.0、SpatialHarness 和 AW-0 的能力载体与执行接口，再用物理 RSI 框架区分行为改善与改进机制的进步；Jev 单列为结构化决策的产业参照。",
+    "summary": "沿实际执行路径区分动作与程序生成、世界预测的训练和部署用途、以及反馈的写回对象。比较 AMP1、LAW、AW-0、SpatialHarness、GroundingPI，并用 Gnomon4D、PointWorld、ASPIRE 与 EmbodiedEvo 明确研究边界。",
     "path": "content/topics/embodied-agents-improvement.md",
     "source_file": "embodied-agents-improvement.md",
     "paper_ids": [
+      "arxiv-2601-03782",
+      "arxiv-2606-30613",
+      "arxiv-2607-00272",
       "arxiv-2609-19138",
+      "arxiv-2609-39601",
       "arxiv-2610-12457",
+      "arxiv-2610-18867",
+      "arxiv-2610-23334",
       "arxiv-2610-28354",
       "arxiv-2610-29677",
       "arxiv-2610-30136",
-      "paper-4d0d39571e"
+      "arxiv-2611-02474",
+      "arxiv-2611-05058",
+      "arxiv-2611-09892"
     ],
     "kind": "synthesis",
     "archived": false
