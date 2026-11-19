@@ -35,6 +35,14 @@ DISPLAY_ONLY_REPORTS = [
         "summary": "论文分享：围绕几何监督、未来状态、运动接口与跨本体迁移，梳理 15 篇主题论文，并附 27 篇分类参考文献。",
         "path": "docs/talks/2026-09-15_wam_depth/3D-4D Geometric World Action Model_汇报正文.md",
     },
+    {
+        "id": "report-robodojo-talk-20261118",
+        "title": "具身操作的两条路线：从 VLA/WAM 到自进化 Agent",
+        "date": "2026-11-18",
+        "tags": ["VLA", "World Action Model", "Agent与可执行世界", "3D/4D", "数据与评测"],
+        "summary": "RoboDojo 七项代表工作的定量对比：端到端策略与闭环 Agent 两派的轨道优劣势与总分归因，VLA 与 WAM 的耦合方式、Agent 调度契约与 RSI 的工程分野，以及结合 3D/4D 几何的投稿切入方案。",
+        "path": "docs/talks/2026-11-18_robodojo/汇报正文.md",
+    },
 ]
 
 PROFILES = {

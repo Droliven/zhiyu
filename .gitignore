@@ -15,6 +15,9 @@ Desktop.ini
 *.swo
 *~
 
+# Node build cache (Slidev builds write .slidev caches next to the entry)
+node_modules/
+
 # Python bytecode, environments, and tool caches
 __pycache__/
 *.py[cod]
