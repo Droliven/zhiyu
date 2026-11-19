@@ -1,0 +1,10 @@
+project:
+  type: default
+  render:
+    - slides.qmd
+    - report.qmd
+
+format:
+  html:
+    embed-resources: true
+    theme: cosmo
