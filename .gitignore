@@ -53,6 +53,9 @@ dist/
 .jekyll-cache/
 .sass-cache/
 
+# Local Slidev workspace and exports; PDFs rebuild from docs/talks sources
+/reports/
+
 # Browser-exported overrides must be reviewed and moved into data/ explicitly
 /paper_overrides.json
 
