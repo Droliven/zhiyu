@@ -42,3 +42,80 @@ PhysicalRSI
 
 请你基于我们最关心的四个问题再重新调整。(1)可以把这些工作分成两派,一派是传统的 vla and or wam, 一派是 agent with optional vla or wam. 根据他们在 robodojo 榜单的表现,看看各自擅长的是什么轨道?相对差异有多大,总体排名主要是由什么因素促成的. 是不是只要某些轨道提高就会让总体分数大幅上涨? 给我们一些定性定量的启发, vla/wam, agent 的优势和不足到底是什么?对于提高最终效果来说,到底什么才是最重要的.模型参数量?数据规模?还是什么? (2) 逐个工作介绍;(3) 我希望 take away 的方面包括: 结合现有工作回答vla 是怎么和wam 一起分工配合使用的? agent范式是如何与wam 或 vla 结合的? agent/harness/rsi 范式下不同方法各自区别到底是什么?我对这个路线不熟悉,主观偏见觉得 agentic 就是改改提示词,让 ai 自己观察,规划,执行,验证形成 loop? 你需要通过列表中的代表性工作教会我这类方法的贡献. （4）围绕 4d 信息、表征、模型，这块，我们还能做些什么工作？
 
+----
+
+我投递完 gnomon4d 之后，最近在调研和思考，下一个工作究竟做什么，在发现问题，并酝酿 proposal.
+主要的方向还是 3d/4d 世界动作模型。再尝试考虑结合 agentic 的热点。
+
+周四初步理了一些汇报内容：/Users/sanqilu/codes/zhiyu/reports/robodojo-slidev/slides.md，/Users/sanqilu/codes/zhiyu/slides/robodojo-2026-11/index.html
+
+你看看写得到不到位，目前我担心的有三个点：
+- 有没有更相关的更契合的新的工作出来但没写上的，比如这两天看到的：π^4: A Foundation Model for 4D Scene Geometry and Motion
+- 目前的 proposal 不是特别深入或 make sense, 没有真正地深入发现问题。proposal 也不够具体和细致，看不出到底是否可行。
+- 总体的把握要参考围绕我们课题组领导的大的逻辑框架，可以参考：/Users/sanqilu/files/专家报告/4D数据及其世界模型.pdf，他在最后提到：更原生的4D场景token表征、融入物理的4D原生具身世界模型
+
+总之我希望你帮我把周四初版的那个报告细化完善，我明天要再拿去汇报。
+原则上一定要逻辑清晰结构严谨，思路明确。
+一般来说，好的报告页面不需要密密麻麻的小字，那样没法让读者很快抓到重点，既不方便读，也不方便讲。
+
+---
+
+## 自动抓取任务
+
+我打算构建一个自动任务，帮我检索抓取最新的工作。但你现在的任务仅仅是帮我修改润色这个定时任务的提示词。/Users/sanqilu/codes/zhiyu/methods/论文周报抓取.md  line 3-401 中是旧版提示词，现在我的关注可能有些调整。一个大的方面是具身智能，细分包括：
+（1）gnomon4d代表的 3d/4d 几何增强:/Users/sanqilu/papers/gnomon4d_main.pdf, /Users/sanqilu/papers/gnomon4d_supp.pdf，以及柴颖代表的的几何 wam 特色: /Users/sanqilu/papers/gaf.pdf, /Users/sanqilu/papers/chaiying_GF_WAM-1.pdf;
+（2）物理增强, 可能涉及 vlm 的理解；
+（3）动态操作，比如 dynamic-wam 等；
+（4）agent/harness/rsi；
+（5）in context learning 人类示教高效迁移；
+可能还有其他的我没写全；
+
+另一个大的方面是：手物交互理解、生成、重建。
+
+这一块现在已经有不少新的进展了，包括：
+
+黎峻佟的 hoi 理解表示学习；邱梓彦的 ego-exo HOI 理解；
+李宗翰代表的单图优化式重建 realhoi: /Users/sanqilu/papers/lizonghan_RealHOI_Recurrent_Alignme.pdf，
+张家珺代表的序列优化式重建: /Users/sanqilu/papers/zhangjiajun_EgoMetriCap_Egocentric_H.pdf，
+张子沐代表的单视角视频生成式重建：/Users/sanqilu/papers/zhangzimu_HandCrafter_Monocular_3D_.pdf
+尚士朔代表的 像素对齐、遮挡鲁棒、拓扑一致的生成式重建：/Users/sanqilu/papers/尚士朔-像素对齐、遮挡鲁棒、拓扑一致的生成式重建.pdf
+刘攀代表的 2d-3d hoi 共生生成：'/Users/sanqilu/papers/刘攀2d-3d hoi 共生生成.pdf'
+邓肯代表的：vlm 物理感知的 hoi 视频生成与强化学习优化; 黎峻佟代表的：agentic vlm规划的2d 3d hoi生成
+程嘉嘉代表的 agentic embodied manipulation 生成：
+
+但我上面的罗列的逻辑比较零散，你看看这些课题彼此之间有什么有机的逻辑关系。
+帮我重写一遍这个任务的提示词，每周都帮我检索高质量的相关的论文，然后针对每个论文要出一个逻辑清晰结构严谨有taste 的论文卡片。
+
+---
+
+
+帮我调研一下这几个工作:
+ARROW: ARBITRARY RECONSTRUCTIONAND TRACKING OF 4D OBSERVATIONS IN THE WILD, 
+sla scaling spatial language action model via continual pre-training
+pi^4,
+spatial harness
+针对每个论文要出一个逻辑清晰结构严谨有taste 的论文卡片，入库 zhiyu. 已有的话，看看是不是写的够好，不够好可以调整。关键是让人读完之后就能理解精髓。
+
+
+## 大组课题逻辑与规划
+
+我现在正在思考和规划课题组全部人员具身智能发面的研究规划。
+我初步思考大致分类可能包括：
+细分包括：
+（1）已经产出的 gnomon4d代表的 3d/4d 几何增强: /Users/sanqilu/papers/gnomon4d_main.pdf, /Users/sanqilu/papers/gnomon4d_supp.pdf，以及柴颖代表的的几何 wam 特色: /Users/sanqilu/papers/gaf.pdf, /Users/sanqilu/papers/chaiying_GF_WAM-1.pdf;
+（2）物理增强, 可能涉及 vlm 的理解；
+（3）agent/harness/rsi；
+（4）动态操作，比如 dynamic-wam 等；
+（5）in context learning 人类示教高效迁移；
+可能还有其他的我没写全；
+
+现在请你结合现有的成果，包括 gnomon4d, gaf, gaf-wam 等，以及网络上能检索到的最新的质量比较高的工作：
+- /Users/sanqilu/codes/zhiyu/docs/talks/2026-09-15_wam_depth/3D-4D Geometric World Action Model_汇报正文.md
+- /Users/sanqilu/files/专家报告/4D数据及其世界模型.pdf
+- /Users/sanqilu/codes/zhiyu/reports/robodojo-slidev/slides.md
+
+帮我思考规划设计一下课题组的研究框架。最好逻辑清晰结构严谨，彼此关联。
+结果帮我出个 slidev 吧，保存到：/Users/sanqilu/codes/zhiyu/slides/
+
+gpt 6 astra 出的这个版本：/Users/sanqilu/codes/zhiyu/slides/embodied-research-framework-v2/slides.md 我不太喜欢，感觉没什么清晰的逻辑框架或 insight，看着又凌乱有肤浅
+
