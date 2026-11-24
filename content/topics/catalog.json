@@ -29,23 +29,51 @@
   ],
   "topics": [
     {
-      "id": "topic-physical-knowledge-to-control",
-      "title": "物理知识如何进入机器人：从空间感知、动作监督到世界仿真",
-      "date": "2026-11-11",
+      "id": "topic-4d-geometric-manipulation",
+      "title": "3D/4D 几何增强具身操作：从免标定 4D 底座、空间内化到几何世界动作模型",
+      "date": "2026-11-23",
       "tags": [
+        "3D/4D",
+        "World Action Model",
+        "VLA",
+        "机器人学习",
+        "动作表征"
+      ],
+      "summary": "沿免标定 4D 感知底座（π⁴、ARROW）→ 几何原生潜空间与隐式空间内化（GAE、Spatial Forcing → SLA、MECo-WAM）→ 动作耦合 4D WAM（Gnomon4D、TCP4D、AffordanceWAM、PointWorld）三层接口，梳理 3D/4D 几何赋能具身操作的演进与切口。",
+      "path": "content/topics/4d-geometric-manipulation.md"
+    },
+    {
+      "id": "topic-physical-knowledge-to-control",
+      "title": "物理增强具身控制：从 VLM 空间先验、可交互资产到动作条件动力学",
+      "date": "2026-11-23",
+      "tags": [
+        "物理建模与仿真",
         "世界模型",
         "机器人学习",
         "跨本体迁移",
-        "预训练与扩展律",
         "数据与评测"
       ],
-      "summary": "以 Foundation4D、GroundingPI、SLA、RoboAtom、UniWAM 和 PrimeSim 区分场景表示、空间特征、动作阶段、联合策略与动作条件仿真，沿表示、控制和交互逐层检验证据。",
+      "summary": "区分 VLM/空间先验（Foundation4D、GroundingPI、SLA、RoboAtom）、实时可交互物理子空间与测力辨识（PRIO、ForceTwin）及动作条件世界预测（UniWAM、PointWorld、PrimeSim），建立分层验证边界。",
       "path": "content/topics/physical-knowledge-to-control.md"
     },
     {
+      "id": "topic-dynamic-manipulation-realtime",
+      "title": "动态操作与实时闭环：运动感知、异步执行与流式世界模型",
+      "date": "2026-11-23",
+      "tags": [
+        "World Action Model",
+        "VLA",
+        "机器人学习",
+        "流式与自回归",
+        "规划与控制"
+      ],
+      "summary": "围绕运动感知与破除静态偏置（DynamicWAM、FlowWAM、DPP 反事实规划）、推理滞后与快慢解耦（RTC、DynamicVLA LAAS、AHA-WAM、DualWAM、Efficient-WAM）及流式世界模型底座与几何前瞻（LynnReal-Hand、PrimeSim、RodForesight），梳理动态操作的核心取舍。",
+      "path": "content/topics/dynamic-manipulation-realtime.md"
+    },
+    {
       "id": "topic-embodied-agents-improvement",
-      "title": "具身 Agent 的执行范式与自我改进",
-      "date": "2026-11-11",
+      "title": "具身 Agent、测试时 Harness 与递归自改进（RSI）",
+      "date": "2026-11-23",
       "tags": [
         "Agent与可执行世界",
         "机器人学习",
@@ -53,8 +81,22 @@
         "具身上下文学习",
         "数据与评测"
       ],
-      "summary": "沿实际执行路径区分动作与程序生成、世界预测的训练和部署用途、以及反馈的写回对象。比较 AMP1、LAW、AW-0、SpatialHarness、GroundingPI，并用 Gnomon4D、PointWorld、ASPIRE 与 EmbodiedEvo 明确研究边界。",
+      "summary": "正交拆解 Agent、Harness 与 RSI 三层职责，沿动作/程序生成、世界预测用法与反馈写回梳理 AMP1、LAW、AW-0、AR-WAM、SpatialHarness、ASPIRE、EmbodiedEvo 与 Physical RSI，并衔接 π⁴/ARROW 指向 Verify in 4D。",
       "path": "content/topics/embodied-agents-improvement.md"
+    },
+    {
+      "id": "topic-in-context-learning",
+      "title": "具身上下文学习与人类示教高效迁移：从示范对齐到跨本体 4D 桥梁",
+      "date": "2026-11-23",
+      "tags": [
+        "具身上下文学习",
+        "跨本体迁移",
+        "第一视角与人类视频",
+        "长时记忆",
+        "适应与泛化"
+      ],
+      "summary": "前半以部署期更新对象分类 ICL 与回合记忆（HOST、ContextFlow、ICI-VLA、PonderPounce、2AM、RoboTTT 等），后半系统串联人类示教跨本体迁移桥梁（TCP4D、A4A、Skel-WAM、HuRo、ReCHOIR）。",
+      "path": "content/topics/in-context-learning.md"
     },
     {
       "id": "topic-visual-action",
@@ -67,18 +109,6 @@
       ],
       "summary": "按控制意图、实际运动与环境响应区分视觉动作，比较渲染、光流、轨迹、骨架和潜在动作，并审查它们怎样变成可执行控制。",
       "path": "content/topics/visual-action.md"
-    },
-    {
-      "id": "topic-in-context-learning",
-      "title": "具身上下文学习：示范、记忆、检索与测试时适应",
-      "date": "2026-09-24",
-      "tags": [
-        "具身上下文学习",
-        "长时记忆",
-        "适应与泛化"
-      ],
-      "summary": "用部署时到底改变了什么来分类：外部示范、回合记忆、检索结果、快速权重和持久参数，分别评估新任务学习与长任务执行。",
-      "path": "content/topics/in-context-learning.md"
     },
     {
       "id": "topic-code-agentic-world",
