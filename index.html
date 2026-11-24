@@ -11,7 +11,7 @@
     <title>知域 · 研究知识库</title>
     <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png" />
-    <link rel="stylesheet" href="assets/styles.css?v=20260924-topics" />
+    <link rel="stylesheet" href="assets/styles.css?v=20261123-report-search" />
     <script>
       window.MathJax = {
         tex: {
@@ -22,7 +22,7 @@
       };
     </script>
     <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
-    <script defer src="assets/app.js?v=20260924-topics"></script>
+    <script defer src="assets/app.js?v=20261123-report-search"></script>
   </head>
   <body>
     <header class="site-header">
@@ -117,7 +117,46 @@
           </div>
           <p>按研究问题组织技术路线、关键证据与适用边界；历史周报和精读记录收于档案。</p>
         </div>
-        <div id="report-list" class="report-list"></div>
+        <div class="filter-band report-filters">
+          <div class="filter-row primary-filters">
+            <label class="search-field">
+              <span class="sr-only">检索专题报告</span>
+              <input id="report-search" type="search" placeholder="检索专题标题、摘要、标签、关联论文标题或 arXiv ID…" autocomplete="off" />
+            </label>
+            <label class="select-field">
+              <span>排序</span>
+              <select id="report-sort">
+                <option value="curated">推荐顺序</option>
+                <option value="newest">更新日期：新 → 旧</option>
+                <option value="oldest">更新日期：旧 → 新</option>
+                <option value="papers-desc">关联论文：多 → 少</option>
+                <option value="papers-asc">关联论文：少 → 多</option>
+                <option value="title-asc">标题：A → Z</option>
+              </select>
+            </label>
+          </div>
+          <div class="tag-tools">
+            <div class="mode-control" role="group" aria-label="报告标签组合方式">
+              <button class="mode-button is-active" type="button" data-report-tag-mode="all">同时满足</button>
+              <button class="mode-button" type="button" data-report-tag-mode="any">任一匹配</button>
+            </div>
+            <button class="text-button" id="clear-report-tags" type="button">清除标签</button>
+            <label class="check-control">
+              <input id="show-archived-reports" type="checkbox" />
+              <span>合并检索历史档案</span>
+            </label>
+          </div>
+          <div class="tag-list" id="report-tag-list" aria-label="专题报告类别标签"></div>
+        </div>
+        <div class="results-heading">
+          <p><strong id="report-count">0</strong> 份专题报告</p>
+          <p id="report-filter-summary">全部活跃专题</p>
+        </div>
+        <div id="report-list" class="report-list" aria-live="polite"></div>
+        <div class="empty-state" id="report-empty" hidden>
+          <strong>没有匹配的专题报告</strong>
+          <span>调整检索词、标签组合，或勾选“合并检索历史档案”。</span>
+        </div>
       </section>
 
       <section class="view" id="feed-view" aria-labelledby="feed-heading" hidden>

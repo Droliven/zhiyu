@@ -40,6 +40,13 @@ const state = {
   group: "none",
   showHidden: false,
   view: "readme",
+  reportFilter: {
+    query: "",
+    sort: "curated",
+    tags: new Set(),
+    tagMode: "all",
+    includeArchived: false,
+  },
   feed: {
     index: null,
     watchlist: { topics: [], creators: [] },
@@ -170,7 +177,15 @@ function cacheElements() {
     activeFilterSummary: document.querySelector("#active-filter-summary"),
     paperResults: document.querySelector("#paper-results"),
     paperEmpty: document.querySelector("#paper-empty"),
+    reportSearch: document.querySelector("#report-search"),
+    reportSort: document.querySelector("#report-sort"),
+    clearReportTags: document.querySelector("#clear-report-tags"),
+    showArchivedReports: document.querySelector("#show-archived-reports"),
+    reportTagList: document.querySelector("#report-tag-list"),
+    reportCount: document.querySelector("#report-count"),
+    reportFilterSummary: document.querySelector("#report-filter-summary"),
     reportList: document.querySelector("#report-list"),
+    reportEmpty: document.querySelector("#report-empty"),
     maintenanceMetrics: document.querySelector("#maintenance-metrics"),
     sourceList: document.querySelector("#source-list"),
     localChangeList: document.querySelector("#local-change-list"),
@@ -266,6 +281,43 @@ function bindEvents() {
     if (openButton) openPaper(openButton.dataset.openPaper);
     const hideButton = event.target.closest("[data-toggle-hidden]");
     if (hideButton) toggleHidden(hideButton.dataset.toggleHidden);
+  });
+
+  elements.reportSearch.addEventListener("input", (event) => {
+    state.reportFilter.query = event.target.value.trim();
+    renderReports();
+  });
+  elements.reportSort.addEventListener("change", (event) => {
+    state.reportFilter.sort = event.target.value;
+    renderReports();
+  });
+  elements.showArchivedReports.addEventListener("change", (event) => {
+    state.reportFilter.includeArchived = event.target.checked;
+    renderReportTags();
+    renderReports();
+  });
+  elements.clearReportTags.addEventListener("click", () => {
+    state.reportFilter.tags.clear();
+    renderReportTags();
+    renderReports();
+  });
+  document.querySelectorAll("[data-report-tag-mode]").forEach((button) => {
+    button.addEventListener("click", () => {
+      state.reportFilter.tagMode = button.dataset.reportTagMode;
+      document.querySelectorAll("[data-report-tag-mode]").forEach((item) => {
+        item.classList.toggle("is-active", item === button);
+      });
+      renderReports();
+    });
+  });
+  elements.reportTagList.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-report-tag]");
+    if (!button) return;
+    const tag = button.dataset.reportTag;
+    if (state.reportFilter.tags.has(tag)) state.reportFilter.tags.delete(tag);
+    else state.reportFilter.tags.add(tag);
+    renderReportTags();
+    renderReports();
   });
 
   elements.reportList.addEventListener("click", (event) => {
@@ -398,6 +450,7 @@ function renderAll() {
   elements.reportTotal.textContent = String(state.reports.filter((report) => !report.archived).length);
   elements.tagTotal.textContent = String(tags.length);
   renderTags();
+  renderReportTags();
   renderReadmeTagCloud();
   renderPapers();
   renderReports();
@@ -610,14 +663,90 @@ function renderCardNarrative(paper) {
     .join("")}</dl>`;
 }
 
-function renderReports() {
-  const active = state.reports.filter((report) => !report.archived);
-  const archived = state.reports.filter((report) => report.archived);
-  const items = (reports) => reports
+function renderReportTags() {
+  const rf = state.reportFilter;
+  const pool = rf.includeArchived ? state.reports : state.reports.filter((report) => !report.archived);
+  const counts = new Map();
+  pool.forEach((report) => {
+    (report.tags || []).forEach((tag) => counts.set(tag, (counts.get(tag) || 0) + 1));
+  });
+  const tags = [...new Set([...counts.keys(), ...rf.tags])].sort((a, b) => a.localeCompare(b, "zh-CN"));
+  elements.reportTagList.innerHTML = tags
     .map(
-      (report) => `
+      (tag) => `
+        <button class="tag-chip ${rf.tags.has(tag) ? "is-active" : ""}"
+          type="button" data-report-tag="${escapeAttr(tag)}" aria-pressed="${rf.tags.has(tag)}">
+          ${escapeHtml(tag)} <small>${counts.get(tag) || 0}</small>
+        </button>`,
+    )
+    .join("");
+}
+
+function filterAndSortReports(reports, orderMap, paperById) {
+  const rf = state.reportFilter;
+  const tokens = rf.query
+    .toLocaleLowerCase("zh-CN")
+    .split(/\s+/)
+    .filter(Boolean);
+  const tags = [...rf.tags];
+  const collator = new Intl.Collator(["zh-CN", "en"], { sensitivity: "base" });
+
+  const matched = reports.filter((report) => {
+    if (tags.length) {
+      const reportTags = report.tags || [];
+      const hits = tags.map((tag) => reportTags.includes(tag));
+      if (rf.tagMode === "all" && !hits.every(Boolean)) return false;
+      if (rf.tagMode === "any" && !hits.some(Boolean)) return false;
+    }
+    if (tokens.length) {
+      const linkedPapers = (report.paper_ids || [])
+        .map((pid) => {
+          const paper = paperById.get(pid);
+          return paper
+            ? `${pid} ${paper.arxiv_id || ""} ${paper.title || ""} ${(paper.authors || []).slice(0, 4).join(" ")}`
+            : pid;
+        })
+        .join(" ");
+      const haystack = [
+        report.id,
+        report.title,
+        report.summary,
+        report.date,
+        report.source_file,
+        (report.tags || []).join(" "),
+        linkedPapers,
+      ]
+        .join(" ")
+        .toLocaleLowerCase("zh-CN");
+      if (!tokens.every((token) => haystack.includes(token))) return false;
+    }
+    return true;
+  });
+
+  return matched.sort((a, b) => {
+    const idxDiff = (orderMap.get(a.id) ?? 0) - (orderMap.get(b.id) ?? 0);
+    if (rf.sort === "newest") return String(b.date || "").localeCompare(String(a.date || "")) || idxDiff;
+    if (rf.sort === "oldest") return String(a.date || "").localeCompare(String(b.date || "")) || idxDiff;
+    if (rf.sort === "papers-desc") return (b.paper_ids?.length || 0) - (a.paper_ids?.length || 0) || idxDiff;
+    if (rf.sort === "papers-asc") return (a.paper_ids?.length || 0) - (b.paper_ids?.length || 0) || idxDiff;
+    if (rf.sort === "title-asc") return collator.compare(a.title || "", b.title || "") || idxDiff;
+    return idxDiff;
+  });
+}
+
+function renderReports() {
+  const rf = state.reportFilter;
+  const orderMap = new Map(state.reports.map((report, index) => [report.id, index]));
+  const paperById = new Map(state.papers.map((paper) => [paper.id, paper]));
+  const hasFilter = Boolean(rf.query || rf.tags.size);
+  const tagText = [...rf.tags].join(rf.tagMode === "all" ? " + " : " / ");
+
+  const renderItem = (report, showArchiveBadge = false) => `
         <article class="report-item">
-          <time class="report-date" datetime="${escapeAttr(report.date)}">${escapeHtml(report.date)}</time>
+          <div class="report-date-wrap">
+            <time class="report-date" datetime="${escapeAttr(report.date)}">${escapeHtml(report.date)}</time>
+            ${showArchiveBadge && report.archived ? '<span class="report-archive-badge">历史档案</span>' : ""}
+          </div>
           <div>
             <h3>${escapeHtml(report.title)}</h3>
             <p>${escapeHtml(report.summary || "专题论文梳理与趋势分析。")}</p>
@@ -627,15 +756,46 @@ function renderReports() {
             </div>
           </div>
           <button class="button secondary" type="button" data-open-report="${escapeAttr(report.id)}">打开报告</button>
-        </article>`,
-    )
-    .join("");
-  elements.reportList.innerHTML = items(active) + (archived.length ? `
-    <details class="report-archive">
-      <summary>历史报告与入库记录 · ${archived.length} 份</summary>
+        </article>`;
+
+  if (rf.includeArchived) {
+    const merged = filterAndSortReports(state.reports, orderMap, paperById);
+    elements.reportCount.textContent = String(merged.length);
+    const parts = [tagText, rf.query ? `检索：${rf.query}` : "", "含历史档案"].filter(Boolean);
+    elements.reportFilterSummary.textContent = parts.join(" · ");
+    elements.reportList.innerHTML = merged.map((report) => renderItem(report, true)).join("");
+    elements.reportEmpty.hidden = merged.length !== 0;
+    return;
+  }
+
+  const active = filterAndSortReports(
+    state.reports.filter((report) => !report.archived),
+    orderMap,
+    paperById,
+  );
+  const archived = filterAndSortReports(
+    state.reports.filter((report) => report.archived),
+    orderMap,
+    paperById,
+  );
+  elements.reportCount.textContent = String(active.length);
+  const summaryParts = [];
+  if (tagText) summaryParts.push(tagText);
+  if (rf.query) summaryParts.push(`检索：${rf.query}`);
+  if (hasFilter && archived.length) summaryParts.push(`另有 ${archived.length} 份历史档案匹配`);
+  elements.reportFilterSummary.textContent = summaryParts.join(" · ") || "全部活跃专题";
+
+  const archiveBlock = archived.length
+    ? `
+    <details class="report-archive"${hasFilter && active.length === 0 ? " open" : ""}>
+      <summary>${hasFilter ? "匹配的历史报告与入库记录" : "历史报告与入库记录"} · ${archived.length} 份</summary>
       <p>早期专题、周报和单篇精读保留在此，供核对来源与阅读历史；当前专题综述见上方。</p>
-      ${items(archived)}
-    </details>` : "");
+      ${archived.map((report) => renderItem(report, false)).join("")}
+    </details>`
+    : "";
+
+  elements.reportList.innerHTML = active.map((report) => renderItem(report, false)).join("") + archiveBlock;
+  elements.reportEmpty.hidden = active.length + archived.length !== 0;
 }
 
 function renderMaintenance() {
