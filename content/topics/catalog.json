@@ -29,6 +29,20 @@
   ],
   "topics": [
     {
+      "id": "topic-looped-transformers",
+      "title": "Looped Transformer 专题：用循环计算深度解耦参数规模与推理能力",
+      "date": "2026-11-28",
+      "tags": [
+        "预训练与扩展律",
+        "世界模型",
+        "3D/4D",
+        "扩散与流匹配",
+        "表征学习与潜空间"
+      ],
+      "summary": "拆解 Looped Transformer“前端—共享循环核—末端”的统一机制与三大工程拼图，横向对比 GLM-5.4（预训练改造与隐式思考内化）、π⁴（权重共享换 64 视角上下文）、Loop4D（双流循环扩散 4D 世界模型）与 General Looped Model / LoopWM（极限参数压缩），总结选型权衡与具身启示。",
+      "path": "content/topics/looped-transformers.md"
+    },
+    {
       "id": "topic-4d-geometric-manipulation",
       "title": "3D/4D 几何增强具身操作：从免标定 4D 底座、空间内化到几何世界动作模型",
       "date": "2026-11-23",

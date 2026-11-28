@@ -21,6 +21,29 @@
     ]
   },
   {
+    "id": "topic-looped-transformers",
+    "title": "Looped Transformer 专题：用循环计算深度解耦参数规模与推理能力",
+    "date": "2026-11-28",
+    "tags": [
+      "预训练与扩展律",
+      "世界模型",
+      "3D/4D",
+      "扩散与流匹配",
+      "表征学习与潜空间"
+    ],
+    "summary": "拆解 Looped Transformer“前端—共享循环核—末端”的统一机制与三大工程拼图，横向对比 GLM-5.4（预训练改造与隐式思考内化）、π⁴（权重共享换 64 视角上下文）、Loop4D（双流循环扩散 4D 世界模型）与 General Looped Model / LoopWM（极限参数压缩），总结选型权衡与具身启示。",
+    "path": "content/topics/looped-transformers.md",
+    "source_file": "looped-transformers.md",
+    "paper_ids": [
+      "arxiv-2606-18208",
+      "arxiv-2611-23144",
+      "arxiv-2611-34199",
+      "paper-1cd0ca6d39"
+    ],
+    "kind": "synthesis",
+    "archived": false
+  },
+  {
     "id": "topic-4d-geometric-manipulation",
     "title": "3D/4D 几何增强具身操作：从免标定 4D 底座、空间内化到几何世界动作模型",
     "date": "2026-11-23",
@@ -564,9 +587,7 @@
     "summary": "RoboDojo 七项代表工作的定量对比：端到端策略与闭环 Agent 两派的轨道优劣势与总分归因，VLA 与 WAM 的耦合方式、Agent 调度契约与 RSI 的工程分野，以及结合 3D/4D 几何的投稿切入方案。",
     "path": "docs/talks/2026-11-18_robodojo/汇报正文.md",
     "source_file": "汇报正文.md",
-    "paper_ids": [
-      "arxiv-2610-12457"
-    ],
+    "paper_ids": [],
     "archived": false
   },
   {
@@ -822,7 +843,7 @@
     "tags": [
       "World Action Model",
       "机器人学习",
-      "预测表征"
+      "自监督与预测表征"
     ],
     "summary": "贯穿四篇的核心问题：预测模型究竟缺少哪一个接口，才会“能预测，却未必能服务于行动”？ 四篇给出的答案分别落在数据、表征、观察和动作四层：FACT 缺的是“失败动作—真实后果”的监督接口；PSG-JEPA 缺的是视觉 latent 与机器人本体状态/变化之间的 grounding；Gaussian-JEPA 缺的是跨 3D Gaussian 随机重采样仍稳定的学习目标；Masked Visual Actions 缺的是视频模型能够直接理解、且可跨本体迁移的动作表达。 阅读地图： 先读 FACT，看负样本如何只教“后果”而不教坏动作；再读 PSG-JEPA，看训练期特权状态如何让预测 latent 暴露控制相关变量；随后以 Gaussian-JEPA 作为边界清楚的 3D 表征对照，理解“预测潜空间而非重建一次观…",
     "paper_ids": [
@@ -845,9 +866,9 @@
       "HOI",
       "World Action Model",
       "动作表征",
-      "因果建模",
-      "流式生成",
-      "第一视角"
+      "因果与反事实",
+      "流式与自回归",
+      "第一视角与人类视频"
     ],
     "summary": "报告标签 ：周报, World-Action-Model, HOI, 流式生成, 4D重建, 因果建模, 动作流, 自我中心视觉",
     "paper_ids": [
@@ -870,8 +891,8 @@
       "World Action Model",
       "动作表征",
       "机器人学习",
-      "视频生成",
-      "预测表征"
+      "自监督与预测表征",
+      "视频生成"
     ],
     "summary": "报告标签 ：video representation, latent action, world action model, robot learning, video generation",
     "paper_ids": [
@@ -890,7 +911,6 @@
     "date": "2026-08-26",
     "tags": [
       "3D/4D",
-      "几何一致性",
       "视频生成"
     ],
     "summary": "本报告逐篇核验三项指定工作，覆盖原文方法与实验、官方项目页、代码开放状态及可复现边界。",
@@ -912,9 +932,9 @@
       "3D/4D",
       "HOI",
       "机器人学习",
-      "第一视角",
-      "视频生成",
-      "预测表征"
+      "第一视角与人类视频",
+      "自监督与预测表征",
+      "视频生成"
     ],
     "summary": "报告标签 ：4D hand reconstruction, egocentric vision, hand-object interaction, video diffusion model, diffusion features, MANO, embodied AI",
     "paper_ids": [
@@ -936,10 +956,9 @@
       "World Action Model",
       "世界模型",
       "具身上下文学习",
-      "前馈重建",
-      "因果建模",
-      "流式生成",
-      "第一视角",
+      "因果与反事实",
+      "流式与自回归",
+      "第一视角与人类视频",
       "长时记忆"
     ],
     "summary": "本报告合并两份独立 agent 的 2026-08-30 周报，按 arXiv ID 和规范化标题去重，并补入用户指定的 One Video, One World 与 Towards in-the-wild Egocentric 3D Hand-Object Pose Estimation。最终形成 34 篇正式条目。",
@@ -990,7 +1009,7 @@
     "date": "2026-08-31",
     "tags": [
       "3D/4D",
-      "强化学习",
+      "强化与模仿学习",
       "机器人学习",
       "视频生成"
     ],
@@ -1016,7 +1035,7 @@
       "VLA",
       "World Action Model",
       "具身上下文学习",
-      "测试时适应",
+      "适应与泛化",
       "长时记忆"
     ],
     "summary": "本专题以 Zero-WAM、RoboTTT、HOST、S1、GEN-1.5 和 Dyna-2 为主线，并保留 RA-VLA、PonderPounce 两项相关工作。统一比较上下文是什么、策略在测试时究竟改变了什么、实验探查了什么、证据实际支持什么。RoboTTT 与 HOST 有 arXiv 论文；S1、GEN-1.5 和 Dyna-2 目前只有机构官方研究长文或网页版技术报告，后者的结果均按“作者自报、未外部复现”处理。",
@@ -1043,7 +1062,7 @@
       "World Action Model",
       "扩散与流匹配",
       "机器人学习",
-      "第一视角",
+      "第一视角与人类视频",
       "视频生成",
       "跨本体迁移",
       "预训练与扩展律"
@@ -1063,7 +1082,7 @@
     "date": "2026-09-03",
     "tags": [
       "世界模型",
-      "物理建模"
+      "物理建模与仿真"
     ],
     "summary": "报告标签 ：Physical World Model, Physics-Aware Video Generation, World Simulator",
     "paper_ids": [
@@ -1093,10 +1112,10 @@
       "World Action Model",
       "世界模型",
       "具身上下文学习",
-      "因果建模",
-      "流式生成",
-      "物理建模",
-      "第一视角",
+      "因果与反事实",
+      "流式与自回归",
+      "物理建模与仿真",
+      "第一视角与人类视频",
       "跨本体迁移"
     ],
     "summary": "报告标签 ：周报, World Action Model, world model, Embodied In-context Learning, cross-embodiment, HOI, egocentric vision, 3D/4D Reconstruction, Streaming Generation, Causal Modeling, Physical Reasoning",
@@ -1138,10 +1157,10 @@
       "HOI",
       "World Action Model",
       "世界模型",
-      "世界模型评测",
       "具身上下文学习",
-      "第一视角",
-      "触觉与接触"
+      "数据与评测",
+      "第一视角与人类视频",
+      "触觉与灵巧操作"
     ],
     "summary": "OpenWAM 双系统架构、预训练组成与统一动作空间",
     "paper_ids": [
@@ -1195,11 +1214,10 @@
       "3D/4D",
       "HOI",
       "World Action Model",
-      "人类视频",
       "具身导航",
-      "前馈重建",
-      "因果审计",
-      "流式世界模型"
+      "因果与反事实",
+      "流式世界模型",
+      "第一视角与人类视频"
     ],
     "summary": "<!-- suggested filename: 2026-09-16 weekly paper update.md --",
     "paper_ids": [
