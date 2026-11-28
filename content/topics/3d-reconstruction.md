@@ -185,6 +185,13 @@ DynamicVGGT 将静态 pointmap 扩展为动态点图，引入时序注意力、�
 
 阅读上建议先看 Gen3R、GAE、PixWorld 的表示与目标函数差异，再看 RecGen3D 和 World Tracing 的几何补全接口；最后进入 UniWorld-View、DynamicVGGT 与 WorldCrafter 的视角、时间和记忆问题。这样能形成连续的问题链，而不是把所有涉及“三维”和“生成”的工作平铺在一起。
 
+## 十、SIGGRAPH Asia 2026 前沿增补：几何感知隐式记忆与生成式 3D 代理（2026-11-28）
+
+呼应上文“走向持久 4D 世界”与“可修正的生成假设”，SIGGRAPH Asia 2026 在世界模型的长程记忆与单图 3D 代理上给出两条代表新解：
+
+- **[GIM-World](../../index.html#paper=arxiv-2606-02436)**：将变长历史视频压缩进固定大小的隐式记忆 Token，并在训练期施加显式跨视角几何监督，缓解长程视频世界模型在有限上下文下的视角漂移与重访失忆。
+- **[SpatialCrafter](../../index.html#paper=arxiv-2608-27073)**：采用“全局生成式 3D 代理 + 延迟精修”两阶段框架，把单图世界建模从容易飘移的纯像素外推锚定到一致的 3D 代理结构上。
+
 ## 参考文献与馆藏入口
 
 以下按正文首次出现顺序列出。详细实现、资源状态和单篇实验见馆藏卡片；跨论文判断保留在本专题。
@@ -207,3 +214,5 @@ DynamicVGGT 将静态 pointmap 扩展为动态点图，引入时序注意力、�
 16. [AgentSTAR: Agentic Shape Tracking and Reconstruction from Monocular Videos](https://arxiv.org/abs/2609.24487) · [馆藏卡片](../../index.html#paper=arxiv-2609-24487)
 17. [ForceTwin: Physics-informed Digital Twins for Robotic Manipulation from Instrumented Human Interaction](https://arxiv.org/abs/2609.21751) · [馆藏卡片](../../index.html#paper=arxiv-2609-21751)
 18. [RoboPhys-3D: A Comprehensive Embodied World Model Evaluation via 3D Reconstruction](https://arxiv.org/abs/2608.28718) · [馆藏卡片](../../index.html#paper=arxiv-2608-28718)
+19. [Geometry-Aware Implicit Memory for Video World Models（GIM-World）](https://arxiv.org/abs/2606.02436) · [馆藏卡片](../../index.html#paper=arxiv-2606-02436)
+20. [SpatialCrafter: Single Image World Modeling with Generative 3D Proxies](https://arxiv.org/abs/2608.27073) · [馆藏卡片](../../index.html#paper=arxiv-2608-27073)

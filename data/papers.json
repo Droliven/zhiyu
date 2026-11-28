@@ -1853,6 +1853,69 @@
     }
   },
   {
+    "id": "arxiv-2609-07498",
+    "title": "CosmoH2G: A Hand-to-Gripper Transfer Dataset and Baseline Method for Object Manipulation with Complex Spatial Movements",
+    "authors": [
+      "Hongxiang Zhao",
+      "Mutian Xu",
+      "Zeyu Jin",
+      "Yiming Hao",
+      "Shuguang Cui",
+      "Xiaoguang Han"
+    ],
+    "year": 2026,
+    "publication": "2026，SIGGRAPH Asia 2026（ACM TOG；arXiv 预印本 v1，2026-09-07）",
+    "arxiv_id": "2609.07498",
+    "doi": "10.48550/arXiv.2609.07498",
+    "links": {
+      "paper": "https://arxiv.org/abs/2609.07498",
+      "project": "https://cosmoh2g.github.io",
+      "alphaxiv": "https://alphaxiv.org/abs/2609.07498"
+    },
+    "tags": [
+      "扩散与流匹配",
+      "数据与评测",
+      "机器人学习",
+      "第一视角与人类视频",
+      "跨本体迁移"
+    ],
+    "figure": {
+      "url": "https://arxiv.org/html/2609.07498v1/overview.png",
+      "alt": "CosmoH2G Fig. 6：起止关键帧生成与“学习姿态+优化位置”解耦的两阶段人手到夹爪迁移框架",
+      "label": "CosmoH2G，Fig. 6，两阶段人手到夹爪迁移框架总览（起止关键帧生成 + 姿态序列扩散与位置三步后优化解耦）。",
+      "paper_title": "CosmoH2G: A Hand-to-Gripper Transfer Dataset and Baseline Method for Object Manipulation with Complex Spatial Movements",
+      "source_url": "https://arxiv.org/html/2609.07498v1/overview.png"
+    },
+    "summary": "核心 Insight：面对复杂空间翻转，人手到夹爪的迁移必须同时做两层破局——数据层用低成本 UMI 手持夹爪按严格复杂度协议规模化采集“自然人手—夹爪”配对 3D 动作；算法层则将“位置”与“朝向”按物理先验强弱彻底解耦：先预测起止关键帧锚定边界，再在连续序列阶段“只用扩散学习难以规则化的夹爪朝向，而用人手接触中心先验 + 三步几何/运动学后优化求解夹爪位置”。",
+    "insight": "**核心 Insight：面对复杂空间翻转，人手到夹爪的迁移必须同时做两层破局——数据层用低成本 UMI 手持夹爪按严格复杂度协议规模化采集“自然人手—夹爪”配对 3D 动作；算法层则将“位置”与“朝向”按物理先验强弱彻底解耦：先预测起止关键帧锚定边界，再在连续序列阶段“只用扩散学习难以规则化的夹爪朝向，而用人手接触中心先验 + 三步几何/运动学后优化求解夹爪位置”。**\n\n这套设计背后的核心判断非常精准：\n\n- **UMI + 免高频标定视觉管线打破配对数据瓶颈**：相比笨重且难以完成复杂翻转的遥操作（如 Human2Robot），手持 UMI 夹爪能无缝复刻人类的复杂空间旋转与翻转；配合单目 RGB-D + ReconViaGen + WiLoR + FoundationPose++ 自动提取统一全局系下的 3D 点云与 6-DoF 姿态，并用 3D 轨迹相似度 $>0.9$ 严格过滤（保留均值 `0.957`），产出 **6,189 条轨迹、1,254 个独特物体**的大规模高复杂度配对数据集。\n- **起止关键帧先行（Two-Stage）消灭长程朝向漂移**：单阶段直接生成全序列时，起点抓取与终点摆放没有显式锚点约束；先由 Stage I 单独预测高精度的起始与终止 6-DoF 夹爪姿态，再作为条件注入 Stage II，将终态摆放朝向误差 TOPA 从 `47.83°` 直接砍到 `10.27°`（Table 3）。\n- **“学习朝向 + 优化位置”与“三关键点动作表征”双管齐下**：平移轨迹在人手与夹爪之间存在强几何先验（抓握接触区域近似对齐），适合从人手轨迹初始化并做接触/防穿透/平滑/IK 三步精修；而朝向在五指手与二指夹爪间不存在简单解析映射，必须靠配对数据隐式学习。同时，用**夹爪中心 + 左右指尖三个 3D 关键点**参数化 $SE(3)$ 动作，使动作输出与手/物输入点云处于同一欧氏 3D 空间，免去旋转矩阵/四元数的跨域映射困难。",
+    "pipeline": {
+      "input": "单段人类演示的单目 RGB-D 视频（深度可来自真实深度相机或 Video Depth Anything 预测），经预处理提取起止帧物体点云 p i=0^o, p i=-1^o、手-物粗接触图 m 与完整 MANO 手部点云序列 p i^h 。",
+      "process": "Stage I 采用基于 Point Transformer 编码器 + Denoising Transformer（1000 步余弦调度，推理 500 步 DDPM）独立预测起始帧与终止帧的夹爪三关键点动作 hata 0, hata -1；Stage II 条件于物体点云、接触图、完整手部点云序列与起止关键帧，仅扩散生成夹爪相对三关键点表示的 朝向序列 ；推理期将人手接触中心轨迹作为夹爪 位置序列 初值，依次执行起止帧接触/防穿透精修、中间帧参考曲线平滑与机械臂逆运动学（IK）可行性投影，合成最终可执行动作。",
+      "output": "可直接部署在二指平行夹爪机械臂（如 Galaxea R1 Lite 7-DoF 双臂）上的 6-DoF 末端连续动作序列。",
+      "details": "**输入**：单段人类演示的单目 RGB-D 视频（深度可来自真实深度相机或 Video Depth Anything 预测），经预处理提取起止帧物体点云 $p_{i=0}^o, p_{i=-1}^o$、手-物粗接触图 $m$ 与完整 MANO 手部点云序列 $\\{p_i^h\\}$。\n\n**过程**：Stage I 采用基于 Point Transformer 编码器 + Denoising Transformer（1000 步余弦调度，推理 500 步 DDPM）独立预测起始帧与终止帧的夹爪三关键点动作 $\\hat{a}_0, \\hat{a}_{-1}$；Stage II 条件于物体点云、接触图、完整手部点云序列与起止关键帧，仅扩散生成夹爪相对三关键点表示的**朝向序列**；推理期将人手接触中心轨迹作为夹爪**位置序列**初值，依次执行起止帧接触/防穿透精修、中间帧参考曲线平滑与机械臂逆运动学（IK）可行性投影，合成最终可执行动作。\n\n**输出**：可直接部署在二指平行夹爪机械臂（如 Galaxea R1 Lite 7-DoF 双臂）上的 6-DoF 末端连续动作序列。\n\n核心模块与工程细节拆解（[数据集：第 3 节](https://arxiv.org/html/2609.07498v1#S3) & [方法：第 4 节](https://arxiv.org/html/2609.07498v1#S4)）：\n\n- **CosmoH2G 配对数据集管线**：涵盖 Food (23.03%)、Decor (27.88%)、Beauty (3.64%)、Necessities (12.12%)、Toys (33.33%) 五大类共 1,254 个物体（每物体 3–5 条配对演示，总计 6,189 条）。采集协议强制要求无约束多样化人手抓姿以及包含平面旋转、竖直翻转的大幅度朝向变换；利用首尾无遮挡帧做 SAM2 + FoundationPose++ 物体配准，逐帧用 WiLoR 重建手部网格，用 UMI CAD 网格跟踪夹爪 6-DoF 轨迹。\n- **粗接触图与三关键点欧氏表征**：作者指出无需精确指尖级接触（WiLoR 误差集中在指尖，且二指夹爪不关心五指细节），仅需物体级粗抓握区域作为点云附加通道。动作表示为 3 个 3D 关键点 $a_0 \\in \\mathbb{R}^{3\\times 3}$（中心定位置，左右指尖相对中心定朝向），训练直接采用 MSE 损失，单张 A100 训练 20,000 步（batch size 32，AdamW `lr=1e-4`）。\n- **Stage II 位置序列三步后优化**：(1) 对起止帧位置施加修正 $\\Delta x$，最小化接触对齐 $L_{contact}$ + 物体穿透 $L_{pen}$ + 正则项；(2) 固定起止帧后，最小化二阶差分平滑项 $L_{smooth}$ 与到人手初始化参考曲线的贴合项 $L_{ref}$；(3) 将优化后的位置与扩散生成的朝向拼接，经 IK 目标 $L_{ik}(a_i) + \\lambda_{reg}\\|a_i - \\bar{a}_i\\|^2$ 消除关节限位违规与末端残差。"
+    },
+    "experiments": "评测在 40 个训练未见物体上的 **186 个复杂空间操作测试案例**（GalaxeaManipSim 仿真 + Galaxea R1 Lite 真机）上进行，指标包括抓取朝向误差 GOA（$\\downarrow$）、位置摆放成功率 SR（$\\uparrow$，距目标 $\\le 10\\%$ 桌宽）、轨迹相似度 TS（$\\uparrow$，FastDTW 归一化）与目标朝向摆放误差 TOPA（$\\downarrow$）：\n\n| 方法类别 | 方法 | 仿真 GOA ↓ | 仿真 SR ↑ | 仿真 TS ↑ | 仿真 TOPA ↓ | 真机 GOA ↓ | 真机 SR ↑ | 真机 TS ↑ | 真机 TOPA ↓ |\n| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |\n| 优化/重定向 | MimicFunc | 19.37° | 56.45% | 0.7673 | 32.47° | 19.37° | 43.01% | 0.7714 | 44.84° |\n| 优化/重定向 | 3DFlowAction | 20.84° | 44.62% | 0.6752 | 29.17° | 20.84° | 36.02% | 0.7936 | 47.27° |\n| 学习式（流） | Im2Flow2Act | 29.86° | 57.53% | 0.7835 | 50.27° | 29.86° | 51.61% | 0.7381 | 57.89° |\n| 学习式（重训） | Track2Act（3D 手流重训） | 10.67° | 77.42% | 0.9015 | 12.48° | 10.67° | 60.22% | 0.8732 | 20.58° |\n| **本文方法** | **CosmoH2G (Ours)** | **7.53°** | **83.87%** | **0.9672** | **10.27°** | **7.53°** | **70.43%** | **0.9413** | **19.34°** |\n\n**最具价值的四组消融与泛化结论（Table 3–6 & Appendix Table 7–8）**：\n1. **两阶段关键帧解耦带来断崖式提升**（Table 3）：三种单阶段端到端基线（Denoising Transformer / Diffusion Policy / ACT）仿真成功率仅 `58.60%–64.52%`、TOPA 高达 `47.83°–52.84°`，两阶段将 SR 拉升至 **83.87%**、TOPA 压低至 **10.27°**；去掉终止帧条件（`w/o ending action`，Table 4）后 TOPA 立刻翻倍恶化至 `21.79°`，证明终态锚点是复杂翻转精准摆放的关键。\n2. **三关键点欧氏表征大幅碾压矩阵与四元数**（Table 5）：同样两阶段架构下，用齐次矩阵（SR `69.89%`, TOPA `28.47°`）或四元数（SR `72.58%`, TOPA `24.63°`）均远不如三关键点（SR **83.87%**, TOPA **10.27°**）。\n3. **“学习朝向 + 优化位置”显著优于全学习与纯优化**（Table 6）：全端到端生成 `Direct (pos + ori)` 受配对轨迹微小错位拖累（TS `0.9176`, TOPA `13.23°`）；纯几何推演+SLERP 优化 `Computed (pos + ori)` 在翻转任务中因初值离真解太远与多解跳变直接崩坏（SR `67.20%`, TOPA `26.78°`）；二者解耦互补达到最优。\n4. **去掉接触图仍全面击败所有基线，且具备跨视角与跨成人手尺度的强泛化**（Table 4 & Appendix Table 7–8）：`w/o contact map` 仍有 `80.11%` SR / `11.96°` TOPA（胜过所有基线）；在第一人称、第三人称、俯视等 4 种未见视角上仿真 SR 稳定在 `75%–90%`；对不同男女成人演示者 SR 达 `83.33%–91.67%`，但在训练分布外的儿童小手上跌至 `33.33%`。",
+    "evidence_notes": "已核对 arXiv v1 正文与附录（Appendix A–E），覆盖数据集统计（Table 1）、仿真与真机主对比（Table 2）、单阶段/条件/动作表征/后优化四组消融（Table 3–6）以及跨演示者/跨视角泛化分析（Appendix Table 7–8）；未运行复现实验。",
+    "code_data_status": "官方项目页 [cosmoh2g.github.io](https://cosmoh2g.github.io) 已上线，作者承诺数据集（6,189 条配对轨迹、1,254 个物体）、采集处理管线与两阶段算法代码将全部开源；具体仓库地址与许可协议待正式发布后核验。",
+    "limitations": "- **纯开环执行缺乏在线纠错与动态避碰**：作者在第七节明确指出，当前系统无实时视觉/触觉闭环反馈，也缺少显式环境避碰规划；真机大角度旋转时的物体滑移与提离不足摩擦会直接导致掉落且无法补救。\n- **任务类型局限于单刚体抓放**：实验只覆盖单物体的复杂空间抓取与摆放，尚未扩展至工具使用、多物体交互、关节物体操控或非抓取类操作。\n- **演示者手部尺度 OOD 边界明显**：在儿童手部测试集上，仿真成功率从成人的 `83.87%` 骤降至 `33.33%`、TOPA 恶化至 `51.80°`（Appendix Table 7），表明手部点云尺度归一化或尺度增强仍是必要改进点。\n- **两阶段与 500 步 DDPM 的推理开销**：虽然两阶段在当前数据规模下显著优于单阶段，但引入了串联依赖与 500 步 DDPM 采样延迟；作者认为随配对数据进一步扩大，向更轻快的单阶段统一架构或流匹配演进是后续方向。",
+    "comments": "",
+    "source_reports": [],
+    "deleted": false,
+    "updated_at": "2026-11-28",
+    "challenges": "从单目人类视频零样本/单样本迁移到二指平行夹爪，现有方法在简单桌面平移（pick-and-place / pushing）上已较成熟，但一旦进入**包含大角度平面旋转、竖直翻转与杂乱环境精准摆放的复杂空间运动**，两条主流路线同时失效：\n\n- **规则式运动学重定向（Rule-based Retargeting）在自然抓握下全面崩盘**：如 Phantom 默认把拇指与食指中点映射为夹爪中心，只适用于捏取（pinch）。面对人类自然多样的全掌包裹、侧抓与空中翻转，五指灵巧手与刚性二指夹爪的形态/接触拓扑鸿沟巨大，硬规则生成的夹爪位姿甚至无法完成基础抓取（Fig. 4）。\n- **物体/点轨迹条件化方法遭遇大旋转遮挡漂移与手姿信息丢失**：依赖 2D/3D 点跟踪（如 CoTracker）恢复物体变换的方法（MimicFunc、3DFlowAction、Im2Flow2Act），在物体大幅翻转时侧面跟踪点被手或自身严重遮挡，跟踪点被迫漂移到瓶口等可见部位导致流场崩溃（Fig. 3）；同时，纯物体轨迹丢失了人类手部姿态中隐含的避碰与功能朝向调整先验。\n- **朴素端到端序列学习在复杂动态下误差滚雪球**：即便拿到配对数据，直接用单阶段 DiT / Diffusion Policy / ACT 端到端回归整条 6-DoF 夹爪轨迹，微小位姿偏差会在大旋转动态中迅速累积放大，导致最终朝向摆放误差（TOPA）高达 $47^\\circ\\text{–}53^\\circ$（Table 3）。",
+    "motivation": "**核心 Insight：面对复杂空间翻转，人手到夹爪的迁移必须同时做两层破局——数据层用低成本 UMI 手持夹爪按严格复杂度协议规模化采集“自然人手—夹爪”配对 3D 动作；算法层则将“位置”与“朝向”按物理先验强弱彻底解耦：先预测起止关键帧锚定边界，再在连续序列阶段“只用扩散学习难以规则化的夹爪朝向，而用人手接触中心先验 + 三步几何/运动学后优化求解夹爪位置”。**\n\n这套设计背后的核心判断非常精准：\n\n- **UMI + 免高频标定视觉管线打破配对数据瓶颈**：相比笨重且难以完成复杂翻转的遥操作（如 Human2Robot），手持 UMI 夹爪能无缝复刻人类的复杂空间旋转与翻转；配合单目 RGB-D + ReconViaGen + WiLoR + FoundationPose++ 自动提取统一全局系下的 3D 点云与 6-DoF 姿态，并用 3D 轨迹相似度 $>0.9$ 严格过滤（保留均值 `0.957`），产出 **6,189 条轨迹、1,254 个独特物体**的大规模高复杂度配对数据集。\n- **起止关键帧先行（Two-Stage）消灭长程朝向漂移**：单阶段直接生成全序列时，起点抓取与终点摆放没有显式锚点约束；先由 Stage I 单独预测高精度的起始与终止 6-DoF 夹爪姿态，再作为条件注入 Stage II，将终态摆放朝向误差 TOPA 从 `47.83°` 直接砍到 `10.27°`（Table 3）。\n- **“学习朝向 + 优化位置”与“三关键点动作表征”双管齐下**：平移轨迹在人手与夹爪之间存在强几何先验（抓握接触区域近似对齐），适合从人手轨迹初始化并做接触/防穿透/平滑/IK 三步精修；而朝向在五指手与二指夹爪间不存在简单解析映射，必须靠配对数据隐式学习。同时，用**夹爪中心 + 左右指尖三个 3D 关键点**参数化 $SE(3)$ 动作，使动作输出与手/物输入点云处于同一欧氏 3D 空间，免去旋转矩阵/四元数的跨域映射困难。",
+    "technical_approach": "**输入**：单段人类演示的单目 RGB-D 视频（深度可来自真实深度相机或 Video Depth Anything 预测），经预处理提取起止帧物体点云 $p_{i=0}^o, p_{i=-1}^o$、手-物粗接触图 $m$ 与完整 MANO 手部点云序列 $\\{p_i^h\\}$。\n\n**过程**：Stage I 采用基于 Point Transformer 编码器 + Denoising Transformer（1000 步余弦调度，推理 500 步 DDPM）独立预测起始帧与终止帧的夹爪三关键点动作 $\\hat{a}_0, \\hat{a}_{-1}$；Stage II 条件于物体点云、接触图、完整手部点云序列与起止关键帧，仅扩散生成夹爪相对三关键点表示的**朝向序列**；推理期将人手接触中心轨迹作为夹爪**位置序列**初值，依次执行起止帧接触/防穿透精修、中间帧参考曲线平滑与机械臂逆运动学（IK）可行性投影，合成最终可执行动作。\n\n**输出**：可直接部署在二指平行夹爪机械臂（如 Galaxea R1 Lite 7-DoF 双臂）上的 6-DoF 末端连续动作序列。\n\n核心模块与工程细节拆解（[数据集：第 3 节](https://arxiv.org/html/2609.07498v1#S3) & [方法：第 4 节](https://arxiv.org/html/2609.07498v1#S4)）：\n\n- **CosmoH2G 配对数据集管线**：涵盖 Food (23.03%)、Decor (27.88%)、Beauty (3.64%)、Necessities (12.12%)、Toys (33.33%) 五大类共 1,254 个物体（每物体 3–5 条配对演示，总计 6,189 条）。采集协议强制要求无约束多样化人手抓姿以及包含平面旋转、竖直翻转的大幅度朝向变换；利用首尾无遮挡帧做 SAM2 + FoundationPose++ 物体配准，逐帧用 WiLoR 重建手部网格，用 UMI CAD 网格跟踪夹爪 6-DoF 轨迹。\n- **粗接触图与三关键点欧氏表征**：作者指出无需精确指尖级接触（WiLoR 误差集中在指尖，且二指夹爪不关心五指细节），仅需物体级粗抓握区域作为点云附加通道。动作表示为 3 个 3D 关键点 $a_0 \\in \\mathbb{R}^{3\\times 3}$（中心定位置，左右指尖相对中心定朝向），训练直接采用 MSE 损失，单张 A100 训练 20,000 步（batch size 32，AdamW `lr=1e-4`）。\n- **Stage II 位置序列三步后优化**：(1) 对起止帧位置施加修正 $\\Delta x$，最小化接触对齐 $L_{contact}$ + 物体穿透 $L_{pen}$ + 正则项；(2) 固定起止帧后，最小化二阶差分平滑项 $L_{smooth}$ 与到人手初始化参考曲线的贴合项 $L_{ref}$；(3) 将优化后的位置与扩散生成的朝向拼接，经 IK 目标 $L_{ik}(a_i) + \\lambda_{reg}\\|a_i - \\bar{a}_i\\|^2$ 消除关节限位违规与末端残差。",
+    "discussion": "### 核心 Takeaway 与可迁移启示\n\n1. **给跨本体人-机迁移（Human-to-Robot Transfer）：按“物理先验强弱”切分学习与优化的边界，不要强求端到端一锅炖**。位置平移在人手与夹爪间具有明确的接触中心对齐先验，用解析初始化 + 几何/IK 后优化最稳；而复杂翻转中的夹爪朝向受形态差异支配、缺乏可靠启发式，最应该交由大规模配对数据驱动的扩散模型学习。\n2. **给机器人动作表征设计：将 $SE(3)$ 末端动作转为与输入点云同域的“3D 关键点坐标”**。无论是本作的三关键点夹爪，还是同期 SK-HOI 的物体表面三关键点，都反复印证了一个高复用规律——在 3D 点云条件扩散模型中，消除观测（欧氏点）与动作（流形旋转）的表示域差，往往比换更重的网络结构收益更大。\n3. **给机器人数据采集：手持 UMI + 复杂度导向协议 + 3D 视觉自动配准是获取高难空间操作配对数据的实用范式**。绕开昂贵遥操作与频繁外参标定，并引入轨迹相似度阈值（$>0.9$）自动清洗，能以极低成本补齐传统机器人数据集“重平移、轻旋转”的短板。\n\n### 批判性审视与适用边界\n\nCosmoH2G 当前的评测严格限定在**单物体、刚体、开环执行的抓取-复杂翻转-摆放（pick-and-place with 3D reorientation）**范畴：不处理双手协同、关节物体或接触力敏感的装配/擦拭任务；此外真机 70.43%（vs. 仿真 83.87%）的掉点主要来自大旋转下的物体滑移与未完全离桌时的桌面摩擦，暴露出纯视觉开环执行的物理脆弱性。",
+    "arxiv": {
+      "published": "2026-09-07",
+      "revised_at": "2026-09-07",
+      "primary_category": "cs.RO"
+    },
+    "source_papers": [
+      "content/papers/2609.07498.md"
+    ]
+  },
+  {
     "id": "arxiv-2609-06302",
     "title": "CST-WM: A Causally Structured World Model for Embodied Visual Tracking",
     "authors": [
@@ -1967,6 +2030,71 @@
       "revised_at": "2026-08-20T06:46:02Z",
       "primary_category": "cs.RO"
     }
+  },
+  {
+    "id": "arxiv-2606-29924",
+    "title": "DCGrasp: Distance-aware Controllable Grasp Generation",
+    "authors": [
+      "Hiroyasu Akada",
+      "Jesús Pérez",
+      "Emre Aksan",
+      "Vasileios Choutas",
+      "Cristian Romero",
+      "Alberto Garcia-Garcia",
+      "Vladislav Golyanik",
+      "Christian Theobalt",
+      "Thabo Beeler"
+    ],
+    "year": 2026,
+    "publication": "2026，SIGGRAPH Asia 2026（arXiv 预印本，v2，2026-10-26；SA Conference Papers ’26）",
+    "arxiv_id": "2606.29924",
+    "doi": "10.1145/3829340.3842350",
+    "links": {
+      "paper": "https://arxiv.org/abs/2606.29924",
+      "project": "https://4dqv.mpi-inf.mpg.de/DCGrasp/",
+      "alphaxiv": "https://alphaxiv.org/abs/2606.29924"
+    },
+    "tags": [
+      "HOI",
+      "扩散与流匹配",
+      "触觉与灵巧操作",
+      "适应与泛化"
+    ],
+    "figure": {
+      "url": "https://arxiv.org/html/2606.29924v2/method_overview_new.png",
+      "alt": "DCGrasp Fig. 3：距离感知可控抓取生成方法总览",
+      "label": "DCGrasp，Fig. 3，基于多模态条件扩散模型与距离感知抓取能量优化的两阶段可控抓取生成框架总览。",
+      "paper_title": "DCGrasp: Distance-aware Controllable Grasp Generation",
+      "source_url": "https://arxiv.org/html/2606.29924v2/method_overview_new.png"
+    },
+    "summary": "核心 Insight：语义相近的抓取动作（如 pinch、grab、poke、touch）在“近接触区域”具有高度一致的“手部顶点到最近物体表面有符号距离”分布，且这种一维单侧距离分布天然对物体具体形状、尺度与手部身份不敏感。因此，应将“交互语义建模”与“特定物体几何适配”解耦——让扩散模型在统一前向中联合生成初始位姿与手部中心化的 Distance Profile，再用指数衰减的近接触加权抓取能量将手部精准吸附到任意目标物体表面。",
+    "insight": "**核心 Insight：语义相近的抓取动作（如 pinch、grab、poke、touch）在“近接触区域”具有高度一致的“手部顶点到最近物体表面有符号距离”分布，且这种一维单侧距离分布天然对物体具体形状、尺度与手部身份不敏感。因此，应将“交互语义建模”与“特定物体几何适配”解耦——让扩散模型在统一前向中联合生成初始位姿与手部中心化的 Distance Profile，再用指数衰减的近接触加权抓取能量将手部精准吸附到任意目标物体表面。**\n\n这一设计相较替代方案具备三点核心优势：\n\n- **手部中心化的单侧表征优于双向/物体中心表征**：只在手掌内侧与手指高频接触区域预采样固定索引的 $k$ 个顶点，计算单侧有符号距离 $\\mathbf{D}\\in\\mathbb{R}^k$（而非对称手-物双向距离或物体顶点接触图），彻底切断表征对物体网格拓扑和尺寸的依赖，即使仅用单尺度（100%）数据训练也能直接泛化到 70%–120% 缩放的未见物体。\n- **指数近接触加权避免远端几何干扰**：通过 $w_i=\\exp(-\\delta(\\hat{\\mathbf{D}}^i)^2)$（$\\delta=5000$，超过 3 cm 权重几乎归零）将优化梯度精准聚焦在决定力学功能的近接触手指/掌心区域，允许非接触手指随物体尺寸自然舒展，而不强行对齐远端距离。\n- **两阶段联合生成取代三阶段割裂管线**：同一个条件 DiT 在相同控制信号下同步去噪输出 Distance Profile $\\hat{\\mathbf{D}}$ 与初始位姿 $(\\hat{\\boldsymbol{\\gamma}}, \\hat{\\boldsymbol{\\theta}}_{\\text{6D}})$，确保目标交互剖面与初始手姿在语义和空间上天然自洽，大幅降低下游优化陷入坏局部极小的概率。",
+    "pipeline": {
+      "input": "未做尺度归一化的物体 Basis Point Sets（BPS，BinmathbbR^4096，150 mm 球内采样）及目标物体带法向点云 (O, N obj)，配合多模态用户控制信号——手部形状参数 boldsymbolbeta（转换为静止手部网格 H rest）、手掌外侧固定两点定义的朝向向量 boldsymboldinmathbbR^3、手腕根节点到物体最近点距离 rinmathbbR。",
+      "process": "第一阶段通过条件扩散 Transformer（DDPM X 0 预测 + 多模态分组 CFG + DDIM 加速采样）在联合潜空间中同步生成目标 Distance Profile hatD 与初始候选手部参数 (hatboldsymbolgamma, hatboldsymboltheta 6D)；第二阶段将旋转转为轴角表示，在目标物体点云上最小化由近接触加权抓取能量、根距离约束、关节先验正则与双向法向防穿模损失构成的组合能量函数，完成手部姿态细化。",
+      "output": "严格响应手型、方向与距离控制信号、在近接触区无穿模且具功能合理性的 3D 参数化手部抓取网格 mathcalH(boldsymbolgamma opt, boldsymboltheta opt, boldsymbolbeta)。",
+      "details": "**输入**：未做尺度归一化的物体 Basis Point Sets（BPS，$\\mathbf{B}\\in\\mathbb{R}^{4096}$，150 mm 球内采样）及目标物体带法向点云 $(\\mathbf{O}, \\mathbf{N}_{\\text{obj}})$，配合多模态用户控制信号——手部形状参数 $\\boldsymbol{\\beta}$（转换为静止手部网格 $\\mathbf{H}_{\\text{rest}}$）、手掌外侧固定两点定义的朝向向量 $\\boldsymbol{d}\\in\\mathbb{R}^3$、手腕根节点到物体最近点距离 $r\\in\\mathbb{R}$。\n\n**过程**：第一阶段通过条件扩散 Transformer（DDPM $X_0$ 预测 + 多模态分组 CFG + DDIM 加速采样）在联合潜空间中同步生成目标 Distance Profile $\\hat{\\mathbf{D}}$ 与初始候选手部参数 $(\\hat{\\boldsymbol{\\gamma}}, \\hat{\\boldsymbol{\\theta}}_{\\text{6D}})$；第二阶段将旋转转为轴角表示，在目标物体点云上最小化由近接触加权抓取能量、根距离约束、关节先验正则与双向法向防穿模损失构成的组合能量函数，完成手部姿态细化。\n\n**输出**：严格响应手型、方向与距离控制信号、在近接触区无穿模且具功能合理性的 3D 参数化手部抓取网格 $\\mathcal{H}(\\boldsymbol{\\gamma}_{\\text{opt}}, \\boldsymbol{\\theta}_{\\text{opt}}, \\boldsymbol{\\beta})$。\n\n核心模块与数学机制拆解（[方法：第 3 节](https://arxiv.org/html/2606.29924v2#S3)）：\n\n- **手部中心化 Distance Profile 与多模态 DiT（Sec. 3.1–3.2）**：在手部参数化模型（MANO 风格 $\\mathcal{H}(\\boldsymbol{\\gamma},\\boldsymbol{\\theta},\\boldsymbol{\\beta})$）的内掌与手指面预采样 $k$ 个顶点，利用手部顶点法向与手-物最近点向量的点积决定有符号距离正负。去噪器将加噪的 $(\\mathbf{D}', \\boldsymbol{\\gamma}', \\boldsymbol{\\theta}'_{\\text{6D}})$ 编码为 $J+2$ 个 Token 经自注意力交互，再通过交叉注意力注入 BPS、$\\mathbf{H}_{\\text{rest}}$、$\\boldsymbol{d}$、$r$ 与时间步 $t$。为实现灵活的多条件强度调节，将条件划分为必选基础组 $\\mathbf{C}_{\\text{base}}=\\{\\mathbf{B}\\}$ 与随机丢弃的 $\\mathbf{C}_{\\text{shape}}=\\{\\boldsymbol{\\beta}\\}$、$\\mathbf{C}_{\\text{pose}}=\\{\\boldsymbol{d}, r\\}$，推理期以独立引导系数 $\\lambda_{\\text{shape}}$、$\\lambda_{\\text{pose}}$ 执行多模态 CFG。\n- **距离感知抓取能量优化（Sec. 3.3）**：以扩散输出的 $\\mathbf{H}_{\\text{init}}$ 为初值，每步重算当前手姿的 Distance Profile $\\mathbf{D}_{\\text{opt}}$ 并优化总能量 $\\mathcal{L}_{\\text{opt}} = \\mathcal{L}_{\\text{ge}} + \\gamma_{\\text{root}}\\mathcal{L}_{\\text{root}} + \\gamma_{\\text{reg}}\\mathcal{L}_{\\text{reg}} + \\gamma_{\\text{col}}\\mathcal{L}_{\\text{col}}$：\n  1. **近接触加权能量** $\\mathcal{L}_{\\text{ge}} = \\frac{\\sum_{i=1}^k w_i (\\mathbf{D}_{\\text{opt}}^i - \\hat{\\mathbf{D}}^i)^2}{\\sum_{i=1}^k w_i + \\epsilon}$，权重 $w_i=\\exp(-\\delta(\\hat{\\mathbf{D}}^i)^2)$（$\\delta=5000$），集中对齐 3 cm 以内的关键接触几何；\n  2. **根距离约束** $\\mathcal{L}_{\\text{root}} = \\|r_{\\text{opt}} - \\hat{r}\\|_2^2$，锁定整体手物亲疏度；\n  3. **旋转先验正则** $\\mathcal{L}_{\\text{reg}} = \\sum_{j=1}^J \\|\\boldsymbol{\\theta}_{\\text{opt}}^j - \\hat{\\boldsymbol{\\theta}}^j\\|_2^2$，锚定扩散先验以维持解剖学自然度；\n  4. **双向容差碰撞损失** $\\mathcal{L}_{\\text{col}}$，分别基于手顶点法向与物体点法向计算双向穿透深度，对超过容差 $\\tau_{\\text{col}}$ 的穿模施加平方惩罚，保护远端未受 $\\mathcal{L}_{\\text{ge}}$ 强约束区域的几何合理性。"
+    },
+    "experiments": "评测在自建 100 人手型数据集 **GraspShape**（35 万帧，5 类物体；取 3 类训练同源物体在未见 70%–120% 尺度上测试）与 **GRAB** 子集（3 类完全未见物体：Apple、Doorknob、Torus，70%–120% 尺度）上进行，所有训练物体均仅保持 100% 原始尺度，基线为同构条件 DiT（仅预测平移旋转，无 Distance Profile）。\n\n| 评测基准与方法 | 穿模率 Pen [%] ↓ | 帧接触 F-Con [%] ↑ | 顶点接触 V-Con [%] | 根距误差 $r$-Dist [mm] ↓ | 方向误差 Angle [°] ↓ | 多样性 Div [mm] ↑ |\n| --- | --- | --- | --- | --- | --- | --- |\n| **GraspShape（70–120% 全部尺度）** — Baseline | 65.89 (39.62) | 99.57 (3.03) | 23.55 (9.69) | 11.99 (6.50) | **3.95** (2.06) | 18.31 (6.48) |\n| **GraspShape（全部尺度）** — Ours (Init) | 22.60 (16.73) | 98.16 (7.19) | 23.78 (10.19) | 10.13 (5.78) | 5.49 (2.29) | **20.43** (6.80) |\n| **GraspShape（全部尺度）** — **Ours (GE-opt)** | **5.52** (3.86) | **100.00** (0.00) | 31.81 (9.12) | **5.74** (5.60) | 6.02 (3.11) | 20.23 (6.77) |\n| **GRAB 未见物体（70–120% 全部尺度）** — Baseline | 76.88 (33.15) | 97.09 (2.72) | 10.34 (4.89) | 24.71 (8.61) | 4.07 (2.21) | 14.02 (6.77) |\n| **GRAB 未见物体（全部尺度）** — Ours (Init) | 54.69 (29.70) | 99.74 (1.66) | 21.21 (7.38) | 9.38 (6.03) | **3.83** (1.67) | 14.01 (5.02) |\n| **GRAB 未见物体（全部尺度）** — **Ours (GE-opt)** | **0.00** (0.00) | **100.00** (0.00) | 24.27 (6.53) | **6.48** (4.83) | 4.07 (2.13) | **14.11** (4.78) |\n\n**四条最具信息量的消融与专项归因（Tables 1–4）**：\n\n1. **Distance Profile 联合训练本身就是强空间正则（Init vs. Baseline）**：尚未执行任何后优化，仅靠在扩散模型中联合预测 Distance Profile，GraspShape 上的初始穿模率就从 **65.89%** 骤降至 **22.60%**，GRAB 上的根距误差从 **24.71 mm** 骤降至 **9.38 mm**，证明显式距离剖面监督显著改善了网络对 3D 手物空间关系的隐式建模。\n2. **GE-opt 将“伪接触”真正转化为零穿模功能抓取**：在 70% 缩小的 GRAB 物体上，Baseline 虽有 97.92% F-Con 但穿模高达 71.88% 且 V-Con 仅 4.77%（表面擦边）；GE-opt 在不损失多样性（14.01 → 14.11 mm）的前提下，将 GRAB 全尺度穿模压到 **0.00%**、F-Con 推至 **100.00%**、V-Con 提升至 **24.27%**。\n3. **根距离条件平滑调制接触紧密度而不破坏稳定性（Table 3）**：在 5 cm / 8 cm / 11 cm 三档目标根距下，穿模率维持 **0.00% / 0.52% / 0.00%**、F-Con 恒定 **100%**，而 V-Con 从 24.40% / 26.23% 平滑降至 17.64%，实现连续可解释的抓握松紧控制。\n4. **极端手型分布外鲁棒性（Table 4）**：即便从均匀分布 $[-3.0, 3.0]$ 采样极端纤细或宽厚手型，系统仍保持 **0.00%** 穿模与 **100.00%** 帧接触，方向误差仅 5.80°，验证了抓取能量对执行器形态变化的高度不变性。[实验与分析：第 4 节](https://arxiv.org/html/2606.29924v2#S4)。",
+    "evidence_notes": "已核对 arXiv v2 正文、方法公式（第 3 节）、全部定量评测表（Tables 1–4）与讨论/局限（第 4.2、5 节），以及官方项目页链接；未核验补充材料与代码复现。",
+    "code_data_status": "官方项目页（[4dqv.mpi-inf.mpg.de/DCGrasp](https://4dqv.mpi-inf.mpg.de/DCGrasp/)）已公开动态可视化补充视频；论文正文未给出 GitHub 代码仓库链接，且用于验证百人手型控制的 **GraspShape**（350k 帧，100 名受试者，5 类物体）为团队内部采集数据集，GRAB 也因许可限制仅使用了 25/51 个物体。代码、预训练权重及数据开放状态需以项目页后续更新为准。",
+    "limitations": "- **薄片几何与严重初始穿模引发的优化局部极小**：在 Table 2 的单物体评测中，Smartphone（薄板几何）的最终穿模率高达 **12.81%**（显著高于 Mug 0.63%、Can 3.13% 及 GRAB 物体的 0.00%）。作者指出当初始扩散预测存在深度穿模时，双向碰撞梯度会将手部拉向相反方向，导致优化陷入局部极小。\n- **静态单手范式，尚未覆盖动态进近、双手协作与关节物体**：当前仅生成单帧静态单手抓握，未建模手部接近-抓握-操纵的连续时序动力学、双手协同接触或可动部件（articulated objects）的运动约束。\n- **缺乏动力学力封闭检验**：优化目标与评测指标（Pen / F-Con / V-Con）纯属几何接触层面，未纳入静摩擦锥、力封闭（force closure）或物理引擎抓取成功率验证，对于重物或光滑物体可能出现几何贴合但力学易滑脱的情况。\n- **未涵盖真实不完整感知输入**：BPS 编码与优化均假设拥有完整、带精确表面法向的物体点云，在遮挡严重的单目 RGB-D 场景下法向噪声会直接干扰有符号距离符号判断与碰撞项收敛。",
+    "comments": "",
+    "source_reports": [],
+    "deleted": false,
+    "updated_at": "2026-11-28",
+    "challenges": "面向机器人操作、AR/VR 与合成数据生成的 3D 手物交互（HOI）抓取合成，长期受限于三个交织的结构性瓶颈：\n\n- **物体几何过拟合与跨尺度崩塌**：直接从物体点云/BPS 回归手部全局平移与关节旋转的生成模型，把“抓取语义”硬绑定到了训练物体的绝对几何和尺度上。一旦面对未见物体类别，或仅仅将训练物体缩放到 70%–120%，就会出现严重穿模（纯 DiT 基线在缩放 GraspShape 与 GRAB 物体上的穿模率高达 **65.89%** 与 **76.88%**）或表面接触失效。\n- **多维细粒度可控性缺位与手型泛化脆弱**：既有抓取方法大多只支持无条件生成或单一朝向控制，缺乏对手型身份（shape）、进近方向（direction）与手腕距离（root distance）的联合显式控制；同时主流公开数据集手型多样性极窄（如 GRAB、ARCTIC 仅约 10 名受试者），难以支撑极端手型变化。\n- **传统接触优化的三阶段割裂**：ContactOpt、GraspTTA 等经典接触细化管线需要“独立生成初始位姿 → 独立预测接触图 → 接触优化”三个串行模型，不仅训练繁琐，还容易在初始位姿与预测接触图不一致时产生优化冲突；而 D(R,O) Grasp 等稠密点对点距离矩阵表征仍强耦合于物体采样与相对位姿。",
+    "motivation": "**核心 Insight：语义相近的抓取动作（如 pinch、grab、poke、touch）在“近接触区域”具有高度一致的“手部顶点到最近物体表面有符号距离”分布，且这种一维单侧距离分布天然对物体具体形状、尺度与手部身份不敏感。因此，应将“交互语义建模”与“特定物体几何适配”解耦——让扩散模型在统一前向中联合生成初始位姿与手部中心化的 Distance Profile，再用指数衰减的近接触加权抓取能量将手部精准吸附到任意目标物体表面。**\n\n这一设计相较替代方案具备三点核心优势：\n\n- **手部中心化的单侧表征优于双向/物体中心表征**：只在手掌内侧与手指高频接触区域预采样固定索引的 $k$ 个顶点，计算单侧有符号距离 $\\mathbf{D}\\in\\mathbb{R}^k$（而非对称手-物双向距离或物体顶点接触图），彻底切断表征对物体网格拓扑和尺寸的依赖，即使仅用单尺度（100%）数据训练也能直接泛化到 70%–120% 缩放的未见物体。\n- **指数近接触加权避免远端几何干扰**：通过 $w_i=\\exp(-\\delta(\\hat{\\mathbf{D}}^i)^2)$（$\\delta=5000$，超过 3 cm 权重几乎归零）将优化梯度精准聚焦在决定力学功能的近接触手指/掌心区域，允许非接触手指随物体尺寸自然舒展，而不强行对齐远端距离。\n- **两阶段联合生成取代三阶段割裂管线**：同一个条件 DiT 在相同控制信号下同步去噪输出 Distance Profile $\\hat{\\mathbf{D}}$ 与初始位姿 $(\\hat{\\boldsymbol{\\gamma}}, \\hat{\\boldsymbol{\\theta}}_{\\text{6D}})$，确保目标交互剖面与初始手姿在语义和空间上天然自洽，大幅降低下游优化陷入坏局部极小的概率。",
+    "technical_approach": "**输入**：未做尺度归一化的物体 Basis Point Sets（BPS，$\\mathbf{B}\\in\\mathbb{R}^{4096}$，150 mm 球内采样）及目标物体带法向点云 $(\\mathbf{O}, \\mathbf{N}_{\\text{obj}})$，配合多模态用户控制信号——手部形状参数 $\\boldsymbol{\\beta}$（转换为静止手部网格 $\\mathbf{H}_{\\text{rest}}$）、手掌外侧固定两点定义的朝向向量 $\\boldsymbol{d}\\in\\mathbb{R}^3$、手腕根节点到物体最近点距离 $r\\in\\mathbb{R}$。\n\n**过程**：第一阶段通过条件扩散 Transformer（DDPM $X_0$ 预测 + 多模态分组 CFG + DDIM 加速采样）在联合潜空间中同步生成目标 Distance Profile $\\hat{\\mathbf{D}}$ 与初始候选手部参数 $(\\hat{\\boldsymbol{\\gamma}}, \\hat{\\boldsymbol{\\theta}}_{\\text{6D}})$；第二阶段将旋转转为轴角表示，在目标物体点云上最小化由近接触加权抓取能量、根距离约束、关节先验正则与双向法向防穿模损失构成的组合能量函数，完成手部姿态细化。\n\n**输出**：严格响应手型、方向与距离控制信号、在近接触区无穿模且具功能合理性的 3D 参数化手部抓取网格 $\\mathcal{H}(\\boldsymbol{\\gamma}_{\\text{opt}}, \\boldsymbol{\\theta}_{\\text{opt}}, \\boldsymbol{\\beta})$。\n\n核心模块与数学机制拆解（[方法：第 3 节](https://arxiv.org/html/2606.29924v2#S3)）：\n\n- **手部中心化 Distance Profile 与多模态 DiT（Sec. 3.1–3.2）**：在手部参数化模型（MANO 风格 $\\mathcal{H}(\\boldsymbol{\\gamma},\\boldsymbol{\\theta},\\boldsymbol{\\beta})$）的内掌与手指面预采样 $k$ 个顶点，利用手部顶点法向与手-物最近点向量的点积决定有符号距离正负。去噪器将加噪的 $(\\mathbf{D}', \\boldsymbol{\\gamma}', \\boldsymbol{\\theta}'_{\\text{6D}})$ 编码为 $J+2$ 个 Token 经自注意力交互，再通过交叉注意力注入 BPS、$\\mathbf{H}_{\\text{rest}}$、$\\boldsymbol{d}$、$r$ 与时间步 $t$。为实现灵活的多条件强度调节，将条件划分为必选基础组 $\\mathbf{C}_{\\text{base}}=\\{\\mathbf{B}\\}$ 与随机丢弃的 $\\mathbf{C}_{\\text{shape}}=\\{\\boldsymbol{\\beta}\\}$、$\\mathbf{C}_{\\text{pose}}=\\{\\boldsymbol{d}, r\\}$，推理期以独立引导系数 $\\lambda_{\\text{shape}}$、$\\lambda_{\\text{pose}}$ 执行多模态 CFG。\n- **距离感知抓取能量优化（Sec. 3.3）**：以扩散输出的 $\\mathbf{H}_{\\text{init}}$ 为初值，每步重算当前手姿的 Distance Profile $\\mathbf{D}_{\\text{opt}}$ 并优化总能量 $\\mathcal{L}_{\\text{opt}} = \\mathcal{L}_{\\text{ge}} + \\gamma_{\\text{root}}\\mathcal{L}_{\\text{root}} + \\gamma_{\\text{reg}}\\mathcal{L}_{\\text{reg}} + \\gamma_{\\text{col}}\\mathcal{L}_{\\text{col}}$：\n  1. **近接触加权能量** $\\mathcal{L}_{\\text{ge}} = \\frac{\\sum_{i=1}^k w_i (\\mathbf{D}_{\\text{opt}}^i - \\hat{\\mathbf{D}}^i)^2}{\\sum_{i=1}^k w_i + \\epsilon}$，权重 $w_i=\\exp(-\\delta(\\hat{\\mathbf{D}}^i)^2)$（$\\delta=5000$），集中对齐 3 cm 以内的关键接触几何；\n  2. **根距离约束** $\\mathcal{L}_{\\text{root}} = \\|r_{\\text{opt}} - \\hat{r}\\|_2^2$，锁定整体手物亲疏度；\n  3. **旋转先验正则** $\\mathcal{L}_{\\text{reg}} = \\sum_{j=1}^J \\|\\boldsymbol{\\theta}_{\\text{opt}}^j - \\hat{\\boldsymbol{\\theta}}^j\\|_2^2$，锚定扩散先验以维持解剖学自然度；\n  4. **双向容差碰撞损失** $\\mathcal{L}_{\\text{col}}$，分别基于手顶点法向与物体点法向计算双向穿透深度，对超过容差 $\\tau_{\\text{col}}$ 的穿模施加平方惩罚，保护远端未受 $\\mathcal{L}_{\\text{ge}}$ 强约束区域的几何合理性。",
+    "discussion": "### 核心 Takeaway 与可迁移启示\n\n1. **给做 HOI 合成与灵巧手抓取的人：把“交互表征”从全局绝对坐标降维到“执行器中心化的近接触 1D 距离剖面”**。DCGrasp 证明，仅用 5 类单尺度物体训练的模型，凭借手部单侧 Distance Profile + 3 cm 指数衰减权重，就能在 70%–120% 缩放的未见 GRAB 物体上实现 **0% 穿模与 100% 接触**。这一范式可直接迁移至多指灵巧机械手（如 Allegro、Shadow Hand）甚至全身人-物接触，只要在执行器表面重采样接触顶点即可复用同一能量项，实现跨本体（Human-to-Robot）的抓取语义迁移。\n2. **给做“生成 + 优化”混合管线的人：用单模型联合预测“初值 + 优化目标”消灭阶段间失配**。将初始位姿与目标 Distance Profile 放在同一 DiT 里以多模态 CFG 同步去噪，比传统三阶段（位姿生成 → 独立接触预测 → 优化）更简洁且天然自洽；同时保留旋转正则 $\\mathcal{L}_{\\text{reg}}$ 与双向容差碰撞项 $\\mathcal{L}_{\\text{col}}$，是在“贴合几何”与“维持先验多样性”之间取得平衡的标准配方。\n3. **给做具身数据合成的人：可将其作为低成本、高可控的静态/终端抓取生成器**。通过显式调节进近方向向量 $\\boldsymbol{d}$、根距离 $r$ 与手型 $\\boldsymbol{\\beta}$，可针对同一物体批量合成多样化、物理无穿模的抓取标注，补足真实动捕数据在手型与尺度覆盖上的长尾缺口。\n\n### 批判性审视与适用边界\n\nDCGrasp 的核心定位是**静态、单手、刚体物体的几何可行抓取合成**，评测也聚焦于几何穿模、接触率与条件响应精度，并未在物理仿真器（如 Isaac Gym / MuJoCo）中检验抓取受力稳定性（如重力下的抗滑脱仿真位移）。此外，当前系统依赖目标物体完整 3D 点云与准确法向，在仅能获取单视角残缺深度图的真实机器人部署中，需先接入补全或 3D 重建前端。",
+    "arxiv": {
+      "published": "2026-06-29",
+      "revised_at": "2026-10-26（v2）",
+      "primary_category": "cs.CV"
+    },
+    "source_papers": [
+      "content/papers/2606.29924.md"
+    ]
   },
   {
     "id": "arxiv-2609-09119",
@@ -5572,6 +5700,73 @@
     "year": 2026
   },
   {
+    "id": "arxiv-2606-02436",
+    "title": "GIM-World: Geometry-Aware Implicit Memory for Video World Models",
+    "authors": [
+      "Zhengxuan Wei",
+      "Xu Guo",
+      "Xinghui Li",
+      "Xunzhi Xiang",
+      "Min Wei",
+      "Yiran Zhu",
+      "Qiulin Wang",
+      "Xintao Wang",
+      "Pengfei Wan",
+      "Xiangwang Hou",
+      "Qi Fan"
+    ],
+    "year": 2026,
+    "publication": "2026，SIGGRAPH Asia 2026（arXiv 预印本，v1，2026-06-01）",
+    "arxiv_id": "2606.02436",
+    "doi": "10.48550/arXiv.2606.02436",
+    "links": {
+      "paper": "https://arxiv.org/abs/2606.02436",
+      "project": "https://gim-world.github.io/",
+      "alphaxiv": "https://alphaxiv.org/abs/2606.02436"
+    },
+    "tags": [
+      "3D/4D",
+      "世界模型",
+      "视频生成",
+      "长时记忆"
+    ],
+    "figure": {
+      "url": "https://arxiv.org/html/2606.02436v1/framework.png",
+      "alt": "GIM-World Fig. 2：几何感知隐式记忆视频世界模型框架总览",
+      "label": "GIM-World，Fig. 2，包含信息引导历史剪枝、紧凑隐式记忆编码器与训练期相机可查询 VGGT 几何蒸馏头的架构总览。",
+      "paper_title": "GIM-World: Geometry-Aware Implicit Memory for Video World Models",
+      "source_url": "https://arxiv.org/html/2606.02436v1/framework.png"
+    },
+    "summary": "核心 Insight：3D 几何应被视为“被记住的世界状态”的固有属性，而非仅仅是施加在生成器上的附加信号。因此，不应把 3D 特征直接对齐到逐帧索引的生成器潜变量，而应通过“训练期相机可查询几何头”强迫定长隐式记忆回答任意历史视角下的 3D 几何特征查询——同时在推理期彻底丢弃 3D 教师与几何头，零重建开销获得具备 3D 结构感知的轻量隐式世界状态。",
+    "insight": "**核心 Insight：3D 几何应被视为“被记住的世界状态”的固有属性，而非仅仅是施加在生成器上的附加信号。因此，不应把 3D 特征直接对齐到逐帧索引的生成器潜变量，而应通过“训练期相机可查询几何头”强迫定长隐式记忆回答任意历史视角下的 3D 几何特征查询——同时在推理期彻底丢弃 3D 教师与几何头，零重建开销获得具备 3D 结构感知的轻量隐式世界状态。**\n\n这一设计相较替代方案的三重优势在消融中得到了极强验证：\n\n- **相机可查询蒸馏避免隐式记忆退化为帧索引缓存**：由于定长记忆 Token 与变长历史帧之间没有一一对应关系，无法做逐 Token 对齐（强行对齐反而会破坏压缩结构）；改为随机采样历史帧相机生成世界坐标射线查询（ray map）去读取记忆，并与冻结 VGGT 编码器特征做余弦对齐，既保持无偏估计和恒定单步蒸馏开销，又直接逼迫记忆学会用 3D 空间结构组织信息（相比施加在生成器侧的 Geometry Forcing，3D 重投影得分暴涨 **+18.30**）。\n- **信息引导高斯过程剪枝优于均匀采样与最远点采样**：固定记忆大小虽然锁定了 DiT 条件开销，但构建记忆的编码成本仍随历史线性增长。将历史帧选择建模为位姿-时间高斯过程上的子模互信息最大化 $\\arg\\max_S I(S; \\mathcal{H}\\setminus S)$，兼顾“相对已选集合的新信息量”与“对未选历史的代表性”，避免最远点采样（Camera FPS）偏爱离群帧的弊端。\n- **仅压缩注意力分支、保留全分辨率 FFN 实现 10× 加速且不掉点**：在两层记忆编码器中仅对自注意力做 $2\\times 2$ 紧凑池化（Attention Compact $s=2$），而保持 FFN 全分辨率，将记忆编码耗时压至 DiT 解码时间的 **0.26%**，同时几乎无损匹配全注意力质量（甚至 LPIPS 更优）。",
+    "pipeline": {
+      "input": "变长历史观测帧（VAE 潜变量经补丁嵌入后的 Token H= h i,p ）及其对应相机位姿 c i i=1^t，以及未来动作序列 a t+1:t+K。",
+      "process": "先通过基于位姿-时间 RBF 核的高斯过程贪心互信息剪枝规则，将超长历史压缩至预算上限 K=200 帧；再将相机嵌入仅注入历史 Token（保持可学习记忆查询 Q 0 视角无关），送入两层轻量紧凑记忆编码器（Attention Compact s=2 + 全分辨率 FFN）压缩为固定长度的记忆 Token minmathbbR^N m× d（容量等价于 20 个潜帧）；随后将 m 沿时间轴与目标潜变量拼接，连同动作嵌入输入 Wan2.1 DiT 主干进行流匹配自回归生成。 仅在训练阶段 ，每步随机采样一帧历史相机 c i 构造射线查询 q i，经轻量几何头（CrossAttn 读取 m → SelfAttn → FFN）预测冻结 VGGT 特征并与主干流匹配损失单阶段联合端到端优化； 推理阶段彻底丢弃 VGGT 与几何头 。",
+      "output": "长时程（400 至 1,000+ 帧）动作可控、具备跨重访 3D 几何与外观一致性的高分辨率（720p）自回归滚动视频。",
+      "details": "**输入**：变长历史观测帧（VAE 潜变量经补丁嵌入后的 Token $H=\\{h_{i,p}\\}$）及其对应相机位姿 $\\{c_i\\}_{i=1}^t$，以及未来动作序列 $a_{t+1:t+K}$。\n\n**过程**：先通过基于位姿-时间 RBF 核的高斯过程贪心互信息剪枝规则，将超长历史压缩至预算上限 $K=200$ 帧；再将相机嵌入仅注入历史 Token（保持可学习记忆查询 $Q_0$ 视角无关），送入两层轻量紧凑记忆编码器（Attention Compact $s=2$ + 全分辨率 FFN）压缩为固定长度的记忆 Token $m\\in\\mathbb{R}^{N_m\\times d}$（容量等价于 20 个潜帧）；随后将 $m$ 沿时间轴与目标潜变量拼接，连同动作嵌入输入 Wan2.1 DiT 主干进行流匹配自回归生成。**仅在训练阶段**，每步随机采样一帧历史相机 $c_i$ 构造射线查询 $q_i$，经轻量几何头（CrossAttn 读取 $m$ → SelfAttn → FFN）预测冻结 VGGT 特征并与主干流匹配损失单阶段联合端到端优化；**推理阶段彻底丢弃 VGGT 与几何头**。\n\n**输出**：长时程（400 至 1,000+ 帧）动作可控、具备跨重访 3D 几何与外观一致性的高分辨率（720p）自回归滚动视频。\n\n核心公式与机制拆解（[方法：第 3 节](https://arxiv.org/html/2606.02436v1#S3)）：\n\n- **轻量紧凑隐式记忆编码器（Sec. 3.2）**：维持 $N_m$ 个无位姿偏置的可学习查询 $Q_0$，与注入线性相机嵌入的历史 Token 拼接为 $Z_0=[Q_0; \\tilde{H}]$。两层编码块内，自注意力前先以共享线性层 $\\mathrm{Compact}$ 将每 $s\\times s$（$s=2$）块压为单 Token（序列缩减 $4\\times$），注意力后再由 $\\mathrm{Expand}$ 还原，而 FFN 在全分辨率上执行以保留记忆读写容量；查询段与历史段分别施加独立 RoPE 网格。\n- **相机可查询几何监督（Sec. 3.3）**：每步从 $\\mathcal{H}_t$ 均匀采样一帧 $i$，将相机 $c_i$ 转为世界空间每 Patch 射线 $\\rho(c_i)_{u,v}=[o_i, d_{i,u,v}]\\in\\mathbb{R}^6$，经 MLP 与共享 2D 网格位置编码生成查询 $q_i$，由 $\\hat{G}_i = \\mathrm{FFN}(\\mathrm{SelfAttn}(\\mathrm{CrossAttn}(q_i, m)))$ 解码并与冻结 VGGT 特征 $G_i$ 计算逐 Patch 余弦损失 $\\mathcal{L}_{\\text{geo}}$。总目标 $\\mathcal{L}=\\mathcal{L}_{FM} + \\lambda\\mathcal{L}_{\\text{geo}}$（$\\lambda=0.05$），单阶段联合训练 8K 步（lr $10^{-5}$，batch size 32），无需多阶段预训练或后对齐。\n- **子模互信息历史剪枝（Sec. 3.4）**：在历史帧上定义位姿-时间高斯过程核 $k(c_i, c_j) = \\exp\\big(-\\frac{\\|p_i-p_j\\|_2^2}{2\\sigma_p^2} - \\frac{\\angle(\\mathbf{f}_i, \\mathbf{f}_j)^2}{2\\sigma_r^2} - \\frac{(t_i-t_j)^2}{2\\sigma_t^2}\\big)$，每步贪心选取边际互信息增益 $\\frac{1}{2}\\log\\frac{\\sigma^2(h\\mid S_{t-1})}{\\sigma^2(h\\mid \\bar{S}_{t-1}\\setminus\\{h\\})}$ 最大的帧加入保留集 $S$（$|S|\\le 200$），在保证覆盖多样视角的同时抑制离群帧。"
+    },
+    "experiments": "在开放域闭环重访基准 **MIND**（100 段第一视角 + 100 段第三视角 UE5 视频，每段约 3 分钟，前 1/4 为上下文、后 3/4 在 720p 下自回归预测）上评测；FramePack、Context-as-Memory（CaM）与 SSM 均在与 GIM-World 相同的 Wan2.1 底座、相同记忆 Token 预算与训练配置下重训对比。\n\n| 记忆类型与方法 | 第一视角 MSE ↓ / PSNR ↑ / SSIM ↑ / LPIPS ↓ | 第一视角动作误差 Trans ↓ / Rot ↓ | 第一视角 3D Reproj ↑ | 第三视角 MSE ↓ / PSNR ↑ / SSIM ↑ / LPIPS ↓ | 第三视角动作误差 Trans ↓ / Rot ↓ | 第三视角 3D Reproj ↑ |\n| --- | --- | --- | --- | --- | --- | --- |\n| **显式**：Matrix-Game 2.0 | 0.1188 / — / — / — | 0.0265 / 0.6914 | — | 0.1404 / — / — / — | 0.0622 / 0.9031 | — |\n| **显式**：MIND-World | 0.1035 / — / — / — | 0.0384 / 0.5534 | — | 0.1042 / — / — / — | 0.0321 / 0.3328 | — |\n| **显式**：FramePack | 0.0764 / 12.04 / 0.3763 / 0.7062 | 0.0269 / 0.6536 | 73.97 | 0.0735 / 12.23 / 0.3957 / 0.6770 | 0.0145 / 0.2852 | 70.82 |\n| **显式**：Context-as-Memory | 0.0706 / 12.50 / 0.3917 / 0.6953 | **0.0235** / 0.5697 | 66.14 | 0.0671 / 12.81 / 0.4051 / 0.6480 | 0.0241 / 0.4385 | 69.17 |\n| **隐式**：SSM (VideoSSM) | 0.0796 / 11.96 / 0.3953 / 0.7439 | 0.0379 / 0.6702 | 53.95 | 0.0928 / 11.76 / 0.4037 / 0.6830 | 0.0201 / 0.2971 | 61.26 |\n| **隐式**：**GIM-World (Ours)** | **0.0614 / 13.40 / 0.4135 / 0.6304** | 0.0247 / **0.4126** | **81.70** | **0.0605 / 13.58 / 0.4303 / 0.5974** | **0.0106 / 0.1588** | **87.10** |\n\n在 1,000 帧超长第一视角自回归推演（Fig. 5）中，相机相隔超过 600 帧（第 100 帧与第 750 帧）重访同一区域时，场景布局、小型物体相对位置与精细纹理仍保持稳定一致。\n\n**三组消融实验的核心归因（Tables 2–4，第一视角 MIND）**：\n\n1. **直接监督“记忆”远胜监督“生成器”（Table 2）**：无几何监督时 Reproj 仅 **58.80**（Rot RPE 0.5028）；复现 Geometry Forcing 将 VGGT 对齐到生成器中间层仅微升至 **63.40**（Rot 0.4823）；而 GIM-World 的相机可查询记忆监督直接将 Reproj 推升至 **81.70**（+18.30），Rot RPE 降至 **0.4126**，一锤定音证明“几何应固化在记忆状态而非仅挂在生成器上”。\n2. **高斯过程互信息剪枝全面领先启发式采样（Table 3，$K=200$）**：Uniform 时间均匀采样（Reproj 77.05 / LPIPS 0.6582）与 Camera FPS 位姿最远点采样（Reproj 77.52 / LPIPS 0.6553）互有胜负，而 MI Greedy 在全部五项指标上严格胜出（Reproj **81.70** / LPIPS **0.6304** / Rot **0.4126**）。\n3. **FFN 容量是隐式记忆不可压缩的生命线（Table 4）**：全分辨率注意力耗时占 DiT 的 **2.80%**（Reproj 81.85 / LPIPS 0.6512）；若对注意力与 FFN 同时 $2\\times 2$ 池化（Global Compact $s=2$），虽耗时降至 0.20%，但 Reproj 断崖式暴跌至 **62.45**、LPIPS 恶化至 0.6892；而仅池化注意力、保留全分辨率 FFN 的 **Attention Compact ($s=2$)** 仅耗 **0.26%** DiT 时间，便取得 **81.70** Reproj 与全场最优 **0.6304** LPIPS（$s=4$ 则退化至 76.18）。[实验与消融：第 4 节](https://arxiv.org/html/2606.02436v1#S4)。",
+    "evidence_notes": "已核对 arXiv v1 正文、方法公式（第 3 节）、MIND 基准主表（Table 1）与三组核心消融（Tables 2–4），以及官方项目页链接；未运行复现实验。",
+    "code_data_status": "论文已公布官方项目页（[gim-world.github.io](https://gim-world.github.io/)），训练与评测均基于公开的 MIND 基准与开源底座 Wan2.1、VGGT、ViPE 及 Depth Anything 3。正文未列出 GitHub 代码仓库或模型权重链接，开源发布情况需以项目页后续更新为准。",
+    "limitations": "- **评测局限于 UE5 合成游戏域与离散低维动作**：目前仅在 MIND（UE5 渲染，WASD + 方向键）上验证，尚未测试真实世界开放场景、光照剧变或机器人连续 6-DoF 末端控制下的长程记忆稳定性。\n- **依赖已知历史相机位姿输入**：记忆编码器的相机嵌入 $E_c(c_i)$、GP 互信息剪枝核以及训练期射线查询均假设拥有每帧历史相机位姿；在纯 RGB 无位姿或在线 SLAM 漂移严重的场景下，位姿误差会直接污染记忆索引与剪枝质量。\n- **动态场景状态演化与记忆更新冲突**：虽然 GP 核引入了时间项 $(t_i-t_j)^2$，但单靠定长记忆的静态跨视角几何蒸馏（VGGT）尚不足以显式区分“静态永久地标”与“可被交互改变状态的动态物体”，在长程交互式物体重排任务中可能出现旧状态残留。\n- **固定容量上限（$N_m$ 与 $K=200$）的超大规模探索瓶颈**：当智能体持续探索数公里级超大新空间（而非在有限区域内重访）时，等价于 20 个潜帧的固定记忆容量与 200 帧剪枝预算必然面临信息饱和与早期场景遗忘，仍需探索层级化或外挂式可扩展记忆结构。",
+    "comments": "",
+    "source_reports": [],
+    "deleted": false,
+    "updated_at": "2026-11-28",
+    "challenges": "当视频世界模型（Video World Models）的自回归推演（rollout）超出几秒的原生上下文窗口后，能否在数百乃至上千帧后重访旧场景时保持空间布局、地标和小物体一致，完全取决于**记忆机制（Memory）**。现有显式与隐式记忆路线均存在根本性短板：\n\n- **显式帧检索与在线 3D 重建的两难**：帧级检索（如 Context-as-Memory、FramePack）依赖启发式相似度或视锥重叠规则，一旦漏检或错检就会在长程推演中引发不可逆的布局漂移，且相邻历史帧外观高度冗余，严重浪费有限上下文预算；而在线维护显式 3D 重建缓存则需并行运行重型重建管线，既抬高推理延迟，又对动态物体、遮挡和弱纹理极其敏感，重建误差会随滚动推演持续累积。\n- **现有隐式记忆缺乏 3D 几何约束**：基于 SSM（如 VideoSSM）或压缩潜状态的隐式记忆虽能将变长历史压成定长状态，但仅靠未来帧流匹配（Flow Matching）生成损失训练时，压缩状态极易把宝贵容量浪费在只利好短期重建的冗余外观投影上，缺乏跨视角 3D 场景结构约束（第一视角 3D 重投影得分仅 53.95）。\n- **在生成器侧注入几何信号治标不治本**：Geometry Forcing、VideoGPA 等现有几何对齐方法都将 3D 教师特征对齐在视频生成器的中间层或输出端，而未直接约束“被记住的世界状态本身”，在长时程跨窗口重访时依然会出现尺度与视角漂移。",
+    "motivation": "**核心 Insight：3D 几何应被视为“被记住的世界状态”的固有属性，而非仅仅是施加在生成器上的附加信号。因此，不应把 3D 特征直接对齐到逐帧索引的生成器潜变量，而应通过“训练期相机可查询几何头”强迫定长隐式记忆回答任意历史视角下的 3D 几何特征查询——同时在推理期彻底丢弃 3D 教师与几何头，零重建开销获得具备 3D 结构感知的轻量隐式世界状态。**\n\n这一设计相较替代方案的三重优势在消融中得到了极强验证：\n\n- **相机可查询蒸馏避免隐式记忆退化为帧索引缓存**：由于定长记忆 Token 与变长历史帧之间没有一一对应关系，无法做逐 Token 对齐（强行对齐反而会破坏压缩结构）；改为随机采样历史帧相机生成世界坐标射线查询（ray map）去读取记忆，并与冻结 VGGT 编码器特征做余弦对齐，既保持无偏估计和恒定单步蒸馏开销，又直接逼迫记忆学会用 3D 空间结构组织信息（相比施加在生成器侧的 Geometry Forcing，3D 重投影得分暴涨 **+18.30**）。\n- **信息引导高斯过程剪枝优于均匀采样与最远点采样**：固定记忆大小虽然锁定了 DiT 条件开销，但构建记忆的编码成本仍随历史线性增长。将历史帧选择建模为位姿-时间高斯过程上的子模互信息最大化 $\\arg\\max_S I(S; \\mathcal{H}\\setminus S)$，兼顾“相对已选集合的新信息量”与“对未选历史的代表性”，避免最远点采样（Camera FPS）偏爱离群帧的弊端。\n- **仅压缩注意力分支、保留全分辨率 FFN 实现 10× 加速且不掉点**：在两层记忆编码器中仅对自注意力做 $2\\times 2$ 紧凑池化（Attention Compact $s=2$），而保持 FFN 全分辨率，将记忆编码耗时压至 DiT 解码时间的 **0.26%**，同时几乎无损匹配全注意力质量（甚至 LPIPS 更优）。",
+    "technical_approach": "**输入**：变长历史观测帧（VAE 潜变量经补丁嵌入后的 Token $H=\\{h_{i,p}\\}$）及其对应相机位姿 $\\{c_i\\}_{i=1}^t$，以及未来动作序列 $a_{t+1:t+K}$。\n\n**过程**：先通过基于位姿-时间 RBF 核的高斯过程贪心互信息剪枝规则，将超长历史压缩至预算上限 $K=200$ 帧；再将相机嵌入仅注入历史 Token（保持可学习记忆查询 $Q_0$ 视角无关），送入两层轻量紧凑记忆编码器（Attention Compact $s=2$ + 全分辨率 FFN）压缩为固定长度的记忆 Token $m\\in\\mathbb{R}^{N_m\\times d}$（容量等价于 20 个潜帧）；随后将 $m$ 沿时间轴与目标潜变量拼接，连同动作嵌入输入 Wan2.1 DiT 主干进行流匹配自回归生成。**仅在训练阶段**，每步随机采样一帧历史相机 $c_i$ 构造射线查询 $q_i$，经轻量几何头（CrossAttn 读取 $m$ → SelfAttn → FFN）预测冻结 VGGT 特征并与主干流匹配损失单阶段联合端到端优化；**推理阶段彻底丢弃 VGGT 与几何头**。\n\n**输出**：长时程（400 至 1,000+ 帧）动作可控、具备跨重访 3D 几何与外观一致性的高分辨率（720p）自回归滚动视频。\n\n核心公式与机制拆解（[方法：第 3 节](https://arxiv.org/html/2606.02436v1#S3)）：\n\n- **轻量紧凑隐式记忆编码器（Sec. 3.2）**：维持 $N_m$ 个无位姿偏置的可学习查询 $Q_0$，与注入线性相机嵌入的历史 Token 拼接为 $Z_0=[Q_0; \\tilde{H}]$。两层编码块内，自注意力前先以共享线性层 $\\mathrm{Compact}$ 将每 $s\\times s$（$s=2$）块压为单 Token（序列缩减 $4\\times$），注意力后再由 $\\mathrm{Expand}$ 还原，而 FFN 在全分辨率上执行以保留记忆读写容量；查询段与历史段分别施加独立 RoPE 网格。\n- **相机可查询几何监督（Sec. 3.3）**：每步从 $\\mathcal{H}_t$ 均匀采样一帧 $i$，将相机 $c_i$ 转为世界空间每 Patch 射线 $\\rho(c_i)_{u,v}=[o_i, d_{i,u,v}]\\in\\mathbb{R}^6$，经 MLP 与共享 2D 网格位置编码生成查询 $q_i$，由 $\\hat{G}_i = \\mathrm{FFN}(\\mathrm{SelfAttn}(\\mathrm{CrossAttn}(q_i, m)))$ 解码并与冻结 VGGT 特征 $G_i$ 计算逐 Patch 余弦损失 $\\mathcal{L}_{\\text{geo}}$。总目标 $\\mathcal{L}=\\mathcal{L}_{FM} + \\lambda\\mathcal{L}_{\\text{geo}}$（$\\lambda=0.05$），单阶段联合训练 8K 步（lr $10^{-5}$，batch size 32），无需多阶段预训练或后对齐。\n- **子模互信息历史剪枝（Sec. 3.4）**：在历史帧上定义位姿-时间高斯过程核 $k(c_i, c_j) = \\exp\\big(-\\frac{\\|p_i-p_j\\|_2^2}{2\\sigma_p^2} - \\frac{\\angle(\\mathbf{f}_i, \\mathbf{f}_j)^2}{2\\sigma_r^2} - \\frac{(t_i-t_j)^2}{2\\sigma_t^2}\\big)$，每步贪心选取边际互信息增益 $\\frac{1}{2}\\log\\frac{\\sigma^2(h\\mid S_{t-1})}{\\sigma^2(h\\mid \\bar{S}_{t-1}\\setminus\\{h\\})}$ 最大的帧加入保留集 $S$（$|S|\\le 200$），在保证覆盖多样视角的同时抑制离群帧。",
+    "discussion": "### 核心 Takeaway 与可迁移启示\n\n1. **给做长时程世界模型与具身记忆架构的人：用“训练期相机可查询 3D 特征蒸馏 + 推理期零开销卸载”赋予隐式记忆 3D 空间结构**。相比在线维护易累积误差的显式 3DGS/点云缓存，或仅靠生成损失盲压缩的 SSM，GIM-World 用不足 **0.3%** 的 DiT 推理开销就换来 **+18.3 到 +27.8** 的重投影一致性跃升，且全程单阶段联合训练，极易插入任何基于 DiT 的视频/动作世界模型。\n2. **给做视觉 Token 压缩与轻量记忆编码器的人：压缩注意力的空间分辨率，但绝不要压缩 FFN 的容量**。Table 4 的对比给出了极清晰的系统设计规律——Global Compact 池化 FFN 让 Reproj 直降近 20 点，而仅池化 Attention（$s=2$）实现 >10× 加速却几乎零损，说明跨视角检索可以在粗粒度空间完成，但记忆信息的非线性整合与存储高度依赖全分辨率 FFN。\n3. **给做长程具身探索与历史关键帧选择的人：用“位姿-时间高斯过程互信息最大化”替代纯时间均匀采样或纯空间 FPS**。该规则无需重型视觉特征比对，仅凭相机位姿与时间戳即可滤除原地滞留与微小抖动带来的冗余帧，同时避免 FPS 过度偏爱极端离群帧。\n\n### 批判性审视与适用边界\n\nGIM-World 的设计极为干净优雅，但当前验证边界也十分明确：所有定量与定性实验均局限于 **MIND 基准（UE5 合成环境，8 键离散平面移动/旋转动作，静态背景为主）**，尚未在真实世界视频、复杂 6-DoF 机械臂操作或高动态多物体交互（如物体被移走、开门、流体变化）场景中检验其记忆更新与遗忘机制。尤其值得注意的是，其 GP 互信息剪枝与相机可查询 VGGT 监督均默认已知历史相机位姿 $c_i$，且静态几何先验在“同一地点发生动态状态改变（out-of-sight dynamics）”时，可能与旧记忆产生冲突。",
+    "arxiv": {
+      "published": "2026-06-01",
+      "revised_at": "2026-06-01（v1）",
+      "primary_category": "cs.CV"
+    },
+    "source_papers": [
+      "content/papers/2606.02436.md"
+    ]
+  },
+  {
     "id": "arxiv-2609-14561",
     "title": "GLAM: Training a Latent World Model over Global Spatiotemporal Memory for Active Exploration and Navigation",
     "authors": [
@@ -6262,6 +6457,70 @@
     "updated_at": "2026-08-23",
     "year": 2026,
     "discussion": "- 适合作为出发点和 baseline。\n- 但它更偏 **hand-controlled video generation**，不是完整 HOI simulator。\n- 可扩展方向：加入 **object-centric 3D/4D state、contact dynamics、persistent world memory**。\n\n---"
+  },
+  {
+    "id": "arxiv-2607-17097",
+    "title": "HarmoHOI: Harmonizing Appearance and 3D Motion for Multi-view Hand-Object Interaction Synthesis",
+    "authors": [
+      "Lingwei Dang",
+      "Juntong Li",
+      "Zonghan Li",
+      "Hongwen Zhang",
+      "Liang An",
+      "Wei Min",
+      "Yebin Liu",
+      "Qingyao Wu"
+    ],
+    "year": 2026,
+    "publication": "2026，SIGGRAPH Asia 2026（arXiv 预印本，v2，2026-08-20；ACM TOG）",
+    "arxiv_id": "2607.17097",
+    "doi": "10.48550/arXiv.2607.17097",
+    "links": {
+      "paper": "https://arxiv.org/abs/2607.17097",
+      "project": "https://droliven.github.io/HarmoHOI_project",
+      "alphaxiv": "https://alphaxiv.org/abs/2607.17097"
+    },
+    "tags": [
+      "3D/4D",
+      "HOI",
+      "扩散与流匹配",
+      "视频生成"
+    ],
+    "figure": {
+      "url": "https://arxiv.org/html/2607.17097v2/pipeline2.png",
+      "alt": "HarmoHOI Fig. 2：M2DiT 与 GloMAD 闭环互促多视角 HOI 联合生成框架",
+      "label": "HarmoHOI，Fig. 2，由双分支多视角扩散 Transformer（M^2DiT）与全局运动对齐扩散（GloMAD）构成的闭环互促多视角 HOI 联合生成框架总览。",
+      "paper_title": "HarmoHOI: Harmonizing Appearance and 3D Motion for Multi-view Hand-Object Interaction Synthesis",
+      "source_url": "https://arxiv.org/html/2607.17097v2/pipeline2.png"
+    },
+    "summary": "核心 Insight：2D 多视角视频本质上是同一 3D 物理世界在不同相机下的投影快照——多视角 HOI 同步一致性的根因不在于像素级外观拼接，而在于去噪过程中让 2D 外观与“全局度量对齐的 3D 点轨迹”实时共生、闭环互促。",
+    "insight": "**核心 Insight：2D 多视角视频本质上是同一 3D 物理世界在不同相机下的投影快照——多视角 HOI 同步一致性的根因不在于像素级外观拼接，而在于去噪过程中让 2D 外观与“全局度量对齐的 3D 点轨迹”实时共生、闭环互促。**\n\n这一思想落地的三个关键支点形成了严密闭环：\n\n- **将 3D 点轨迹编码为“运动伪视频”以零鸿沟复用视频基础模型**：把多视角归一化深度点轨迹映射为伪彩色视频，用与视频 VAE 同构的运动 VAE 压入对齐潜空间，让预训练视频 DiT（WAN 2.1）的时空先验从训练第一步就能直接迁移到 3D 运动建模，并辅以可学习全局尺度 Token 找回归一化丢弃的度量尺度。\n- **用 3D 点云扩散（GloMAD）修正像素级反投影的跨视角分层错位**：仅靠视频 VAE 解码伪视频再反投影得到的粗 3D 轨迹会因 VAE 压缩损毁与像素级误差而漂移；引入基于 Point Transformer V3 的 GloMAD 在 3D 空间联合对齐多视角点轨迹，并在每步去噪中将对齐后的 3D 点重投影回潜空间反哺 $M^2$DiT，形成“外观引导几何、几何纠偏外观”的在线闭环。\n- **混合数据渐进课程学习破解多视角稀缺**：先在百万级单视角野外 HOI 视频（HOIGen1M + Depth Anything 3 伪深度）学通用外观-几何对应，再在 UE5 多视角合成数据（SynCamVideo）学极线视角同步，最后在实验室真值多视角 HOI 数据（TACO）学精确 3D 交互对齐，既保住预训练泛化能力又注入严格多视角几何约束。",
+    "pipeline": {
+      "input": "单张参考图 boldsymbolI ref（及可选参考深度，野外场景由 Depth Anything 3 估计）、文本交互指令 boldsymbolP、以及 V 个目标视角相机位姿 boldsymbolPi= boldsymbolpi v v=1^V（实验中 V=6）。",
+      "process": "先通过深度感知极线渲染（Alg. 1）将参考图与深度重投影到各目标视角，构造多视角参考 RGB、深度伪图与相对 Plücker 射线图条件；推理期由双分支 M^2DiT 与 3D 稀疏点云扩散 GloMAD 在 Rectified Flow 迭代去噪中交替执行闭环互促——M^2DiT 联合去噪多视角 RGB 潜变量、运动伪视频潜变量及全局度量尺度 hatboldsymbols，反投影出粗 3D 轨迹送入 GloMAD 对齐，GloMAD 输出的全局一致 3D 点轨迹再投影编码回潜空间注入下一步 M^2DiT。",
+      "output": "时空同步的 6 视角 HOI RGB 视频 boldsymbolVinmathbbR^V× T× H× W× 3（49× 256× 384）与全局度量对齐的稠密 3D 点轨迹序列 boldsymbolMinmathbbR^V× T× K× 3。",
+      "details": "**输入**：单张参考图 $\\boldsymbol{I}_{\\text{ref}}$（及可选参考深度，野外场景由 Depth Anything 3 估计）、文本交互指令 $\\boldsymbol{P}$、以及 $V$ 个目标视角相机位姿 $\\boldsymbol{\\Pi}=\\{\\boldsymbol{\\pi}_v\\}_{v=1}^V$（实验中 $V=6$）。\n\n**过程**：先通过深度感知极线渲染（Alg. 1）将参考图与深度重投影到各目标视角，构造多视角参考 RGB、深度伪图与相对 Plücker 射线图条件；推理期由双分支 **$M^2$DiT** 与 3D 稀疏点云扩散 **GloMAD** 在 Rectified Flow 迭代去噪中交替执行闭环互促——$M^2$DiT 联合去噪多视角 RGB 潜变量、运动伪视频潜变量及全局度量尺度 $\\hat{\\boldsymbol{s}}$，反投影出粗 3D 轨迹送入 GloMAD 对齐，GloMAD 输出的全局一致 3D 点轨迹再投影编码回潜空间注入下一步 $M^2$DiT。\n\n**输出**：时空同步的 6 视角 HOI RGB 视频 $\\boldsymbol{V}\\in\\mathbb{R}^{V\\times T\\times H\\times W\\times 3}$（$49\\times 256\\times 384$）与全局度量对齐的稠密 3D 点轨迹序列 $\\boldsymbol{M}\\in\\mathbb{R}^{V\\times T\\times K\\times 3}$。\n\n核心架构与训练配方拆解（[方法：第 3 节](https://arxiv.org/html/2607.17097v2#S3)）：\n\n- **双分支多视角混合 DiT（$M^2$DiT，Sec. 3.3）**：基于 WAN 2.1-1.3B-T2V（30 层 DiT，全系统 2.68B 参数，训练显存 42.3 GB）构建 RGB 与运动伪视频双分支。每层依次执行**视角内时空注意力**（STAttn）、**跨视角几何注意力**（GAttn，按时间步聚合全视角 Token 与相机/尺度 Token）、**跨分支双向调制**（$\\text{Mod}_{M2V}$ 与 $\\text{Mod}_{V2M}$ 残差互调）及文本交叉注意力；额外引入 2 个可学习尺度 Token $\\boldsymbol{f}_s$ 回归全局度量尺度，以 Rectified Flow 速度场损失联合优化视频、伪视频与尺度。\n- **全局运动对齐扩散与闭环互促（GloMAD，Sec. 3.4–3.5）**：以 Point Transformer V3 稀疏卷积为骨架，堆叠视角内时序注意力与相机条件跨视角几何注意力，将 $M^2$DiT 解码反投影的粗轨迹 $\\hat{\\boldsymbol{M}}_{\\text{coarse}}$ 精修为全局一致 3D 点轨迹（MSE 速度损失 + Chamfer 距离损失）。去噪循环中（Alg. 2），每步先以无梯度 GloMAD 产出修正轨迹并投影回潜空间叠加至 $\\boldsymbol{z}_t^{M_{sv}}$ 指导 $M^2$DiT，再将 $M^2$DiT 更新后的粗轨迹送入 GloMAD 更新 $\\boldsymbol{M}_{t-1}$。\n- **四阶段混合数据渐进课程（Table 1，Sec. 3.6）**：Warm-up（10% HOIGen1M，5K 步，基础 I2V 预热）→ Stage 1（全量 HOIGen1M + DA3 深度，10K 步，启用双分支 MoT）→ Stage 2（40% HOIGen1M + 全量 SynCamVideo 34K UE5 多视角，10K 步，启用跨视角几何注意力）→ Stage 3（10% HOIGen1M + 20% SynCamVideo + TACO 25K 12 视角真值，30K 步，全模型联合精调）。"
+    },
+    "experiments": "在 TACO 留出验证集及跨数据集未见 OOD 测试集（TACO/DexYCB/OakInk2 混合 90 例）上，所有视频基线均在相同数据上微调后对比；3D 运动基线因无法单图生成，采用“视频重建 + ICP 多视角配准”作为强参考。\n\n| 评测任务与基线方法 | 单视角主体一致 ↑ | 动态幅度 ↑ | 多视角匹配像素 (Mat. Pix.) ↑ | CLIP-Views ↑ | 3D 单视角 RPE ↓ / PI ↑ | 3D 多视角 RPE ↓ / PI ↑ | 穿模率 ↓ / 非接触率 ↓ |\n| --- | --- | --- | --- | --- | --- | --- | --- |\n| **视频基线**：WAN 2.1 (SV) | 0.5408 | 0.9785 | 246.3 | 71.84 | — | — | — |\n| **视频基线**：SViMo (SV) | 0.8872 | 0.9634 | 383.2 | 82.45 | — | — | — |\n| **视频基线**：DaS (NV) | 0.9151 | 0.9713 | 484.7 | 83.01 | — | — | — |\n| **视频基线**：SV4D 2.0 (MV) | 0.8024 | **0.9931** | 446.8 | 81.33 | — | — | — |\n| **视频基线**：SynCamMaster (MV) | 0.8657 | 0.8592 | 410.4 | 78.97 | — | — | — |\n| **3D 基线**：Geo4D (+ICP) | — | — | — | — | 21.9 / 64.8% | 79.7 / 2.89% | 0.1275 / 0.19 |\n| **3D 基线**：GeoCrafter (+ICP) | — | — | — | — | 18.4 / 78.5% | 68.2 / 5.64% | 0.1064 / 0.15 |\n| **3D 基线**：Depth Anything 3 (+ICP) | — | — | — | — | 16.7 / 87.4% | 61.9 / 11.05% | 0.0847 / 0.16 |\n| **HarmoHOI (Ours)** | **0.9342** | 0.9846 | **535.8** | **83.18** | **14.8 / 98.6%** | **34.7 / 34.24%** | **0.0571 / 0.12** |\n\n此外，在 90 例跨数据集未见 OOD 样本上，HarmoHOI 仍取得 **527.3** 匹配像素与 **37.1** 多视角 RPE；37 名受试者的用户调研中，3D 运动偏好率达 **97.57%**（DA 3 仅 2.43%），多视角 RGB 偏好率达 **94.86%**（SV4D 2.0 为 4.05%）。\n\n**Table 4 消融实验的四条关键归因**：\n\n1. **同步多视角联合建模是跨视角一致性的前提**：退化为逐视角单目生成后，Mat. Pix. 从 **535.8** 暴跌至 **335.1**，多视角 RPE 从 **34.6** 恶化至 **73.8**；\n2. **外观-运动联合扩散（$M^2$DiT）显著抑制纯视频畸变**：去掉运动分支的纯多视角视频模型 Mat. Pix. 仅 **438.4**（降 97.4 点），画面明显模糊形变；\n3. **GloMAD 是消灭伪视频 VAE 损毁与跨视角错位的决定性模块**：去掉 GloMAD 仅靠伪视频反投影，多视角 RPE 从 **34.6** 退化至 **47.6**，同时视频匹配像素也掉至 **503.7**，直接印证闭环反馈对 2D 外观的反哺增益；\n4. **混合数据课程有效提升泛化**：仅用 TACO 训练（无三阶段混合课程）使 Mat. Pix. 降至 **522.5**、MV RPE 升至 **38.4**，且削弱野外开放词汇泛化能力。[实验与消融：第 4 节](https://arxiv.org/html/2607.17097v2#S4)。",
+    "evidence_notes": "已核对 arXiv v2 正文与附录 A–D、全部定量主表（Tables 1–4）及补充表（Tables 5–8）、失败模式与局限章节，以及官方项目页链接；未运行复现实验。",
+    "code_data_status": "论文摘要声明项目主页与代码入口为 [droliven.github.io/HarmoHOI_project](https://droliven.github.io/HarmoHOI_project)。训练完全基于公开学术数据集组合（HOIGen1M、SynCamVideo、TACO）及开源底座 WAN 2.1-1.3B-T2V、Depth Anything 3、Qwen 3 与 Point Transformer V3；具体代码仓库与权重开放进度及许可证以项目页发布为准。",
+    "limitations": "- **大分布偏移下的跨视角“分层错位（layer-wise offset）”**：仅 Stage 3 的 TACO 提供成对多视角视频与真值 3D 运动，面对远超 TACO 分布的野外场景时，多视角度量尺度估计误差仍会导致不同视角反投影出的 3D 点云出现层状错位。\n- **训练视角稀疏与视角覆盖受限**：即便作为最核心真值数据源的 TACO 也仅提供 12 个固定视角，限制了模型在更密集或任意极端仰俯角下的泛化；作者指出未来需构建更密集的多视角 HOI 数据并向 4D Gaussian 任意视角渲染演进。\n- **低分辨率与短时程瓶颈**：当前受限于 6 视角联合时空注意力开销，输出锁定在 $49\\times 256\\times 384$，长时程多步骤连续操作与高清手指细节（如指甲、细小工具）仍有明显提升空间。\n- **单视角参考深度误差的级联影响**：野外推理依赖 Depth Anything 3 对单张参考图做全图深度估计以执行极线渲染（Alg. 1），若初始参考图深度在遮挡边缘估计严重失真，将直接污染初始多视角几何条件。",
+    "comments": "",
+    "source_reports": [],
+    "deleted": false,
+    "updated_at": "2026-11-28",
+    "challenges": "仅从单张参考图、文本指令与目标多视角相机位姿出发，同步生成**多视角几何一致的手物交互（HOI）视频与全局对齐的 3D 运动轨迹**，现有三类视频生成范式均存在难以逾越的缺陷：\n\n- **单轨迹新视角生成与单目 4D 重建无法胜任高不确定性 HOI 合成**：以 DaS、Uni3C 为代表的相机控制渲染本质上是单路径生成，无法校验同一动态手物交互在不同视角下是否自洽；以 SV4D 2.0、MV-Performer 为代表的单目视频重建依赖源视频提供完整时序动态，难以从单张静态参考图发散出合理的新交互。\n- **纯外观同步多视角扩散缺乏 3D 几何锚点**：SynCamMaster、CAT4D 等方法仅靠数据驱动对齐多视角 2D 外观，面对 HOI 特有的精细手指运动、高频自遮挡/互遮挡与局部形变时，极易产生跨视角物体畸变、幻觉和手物穿模。\n- **2D–3D 域鸿沟与多视角 HOI 标注稀缺**：从零训练 3D 点轨迹生成模型受限于多视角 3D HOI 数据极度匮乏（如 TACO 仅 12 视角）；若直接把预训练视频 DiT 拿来微调原生 3D 坐标，又会因表征域差异导致训练坍塌；而逐视角事后跑 3D 重建（如 Depth Anything 3、Geo4D）则不可避免地产生跨视角“分层错位（layer-wise offset）”。",
+    "motivation": "**核心 Insight：2D 多视角视频本质上是同一 3D 物理世界在不同相机下的投影快照——多视角 HOI 同步一致性的根因不在于像素级外观拼接，而在于去噪过程中让 2D 外观与“全局度量对齐的 3D 点轨迹”实时共生、闭环互促。**\n\n这一思想落地的三个关键支点形成了严密闭环：\n\n- **将 3D 点轨迹编码为“运动伪视频”以零鸿沟复用视频基础模型**：把多视角归一化深度点轨迹映射为伪彩色视频，用与视频 VAE 同构的运动 VAE 压入对齐潜空间，让预训练视频 DiT（WAN 2.1）的时空先验从训练第一步就能直接迁移到 3D 运动建模，并辅以可学习全局尺度 Token 找回归一化丢弃的度量尺度。\n- **用 3D 点云扩散（GloMAD）修正像素级反投影的跨视角分层错位**：仅靠视频 VAE 解码伪视频再反投影得到的粗 3D 轨迹会因 VAE 压缩损毁与像素级误差而漂移；引入基于 Point Transformer V3 的 GloMAD 在 3D 空间联合对齐多视角点轨迹，并在每步去噪中将对齐后的 3D 点重投影回潜空间反哺 $M^2$DiT，形成“外观引导几何、几何纠偏外观”的在线闭环。\n- **混合数据渐进课程学习破解多视角稀缺**：先在百万级单视角野外 HOI 视频（HOIGen1M + Depth Anything 3 伪深度）学通用外观-几何对应，再在 UE5 多视角合成数据（SynCamVideo）学极线视角同步，最后在实验室真值多视角 HOI 数据（TACO）学精确 3D 交互对齐，既保住预训练泛化能力又注入严格多视角几何约束。",
+    "technical_approach": "**输入**：单张参考图 $\\boldsymbol{I}_{\\text{ref}}$（及可选参考深度，野外场景由 Depth Anything 3 估计）、文本交互指令 $\\boldsymbol{P}$、以及 $V$ 个目标视角相机位姿 $\\boldsymbol{\\Pi}=\\{\\boldsymbol{\\pi}_v\\}_{v=1}^V$（实验中 $V=6$）。\n\n**过程**：先通过深度感知极线渲染（Alg. 1）将参考图与深度重投影到各目标视角，构造多视角参考 RGB、深度伪图与相对 Plücker 射线图条件；推理期由双分支 **$M^2$DiT** 与 3D 稀疏点云扩散 **GloMAD** 在 Rectified Flow 迭代去噪中交替执行闭环互促——$M^2$DiT 联合去噪多视角 RGB 潜变量、运动伪视频潜变量及全局度量尺度 $\\hat{\\boldsymbol{s}}$，反投影出粗 3D 轨迹送入 GloMAD 对齐，GloMAD 输出的全局一致 3D 点轨迹再投影编码回潜空间注入下一步 $M^2$DiT。\n\n**输出**：时空同步的 6 视角 HOI RGB 视频 $\\boldsymbol{V}\\in\\mathbb{R}^{V\\times T\\times H\\times W\\times 3}$（$49\\times 256\\times 384$）与全局度量对齐的稠密 3D 点轨迹序列 $\\boldsymbol{M}\\in\\mathbb{R}^{V\\times T\\times K\\times 3}$。\n\n核心架构与训练配方拆解（[方法：第 3 节](https://arxiv.org/html/2607.17097v2#S3)）：\n\n- **双分支多视角混合 DiT（$M^2$DiT，Sec. 3.3）**：基于 WAN 2.1-1.3B-T2V（30 层 DiT，全系统 2.68B 参数，训练显存 42.3 GB）构建 RGB 与运动伪视频双分支。每层依次执行**视角内时空注意力**（STAttn）、**跨视角几何注意力**（GAttn，按时间步聚合全视角 Token 与相机/尺度 Token）、**跨分支双向调制**（$\\text{Mod}_{M2V}$ 与 $\\text{Mod}_{V2M}$ 残差互调）及文本交叉注意力；额外引入 2 个可学习尺度 Token $\\boldsymbol{f}_s$ 回归全局度量尺度，以 Rectified Flow 速度场损失联合优化视频、伪视频与尺度。\n- **全局运动对齐扩散与闭环互促（GloMAD，Sec. 3.4–3.5）**：以 Point Transformer V3 稀疏卷积为骨架，堆叠视角内时序注意力与相机条件跨视角几何注意力，将 $M^2$DiT 解码反投影的粗轨迹 $\\hat{\\boldsymbol{M}}_{\\text{coarse}}$ 精修为全局一致 3D 点轨迹（MSE 速度损失 + Chamfer 距离损失）。去噪循环中（Alg. 2），每步先以无梯度 GloMAD 产出修正轨迹并投影回潜空间叠加至 $\\boldsymbol{z}_t^{M_{sv}}$ 指导 $M^2$DiT，再将 $M^2$DiT 更新后的粗轨迹送入 GloMAD 更新 $\\boldsymbol{M}_{t-1}$。\n- **四阶段混合数据渐进课程（Table 1，Sec. 3.6）**：Warm-up（10% HOIGen1M，5K 步，基础 I2V 预热）→ Stage 1（全量 HOIGen1M + DA3 深度，10K 步，启用双分支 MoT）→ Stage 2（40% HOIGen1M + 全量 SynCamVideo 34K UE5 多视角，10K 步，启用跨视角几何注意力）→ Stage 3（10% HOIGen1M + 20% SynCamVideo + TACO 25K 12 视角真值，30K 步，全模型联合精调）。",
+    "discussion": "### 核心 Takeaway 与可迁移启示\n\n1. **给做多模态 4D 视频生成的团队：“伪视频对齐潜空间 + 独立 3D 空间精修扩散 + 推理期闭环互喂”是复用 2D 视频大模型的黄金范式**。直接让视频 DiT 输出原始 3D 坐标极难收敛，而只靠伪彩色深度视频又逃不开 VAE 压缩误差和尺度丢失；HarmoHOI 通过“伪视频复用先验 + 尺度 Token + Point Transformer V3 空间精修”的两层分工，用仅 2.68B 参数就在多视角 3D 内点率（PI）上把 Depth Anything 3 + ICP 甩开 3 倍以上（34.24% vs. 11.05%）。\n2. **给做具身智能数据工厂与世界模型的人：混合数据渐进课程是破解“真值多视角稀缺”的通用解法**。按“百万级单视角野外伪标签（学交互语义与基础几何）→ UE5 合成多视角（学极线视角同步）→ 少量实验室真值多视角（学精确 3D 度量对齐）”三步渐进，既避免小数据集过拟合，又完整保留了视频基础模型的开放世界泛化（如“切红辣椒”“锤子敲枪”等未见组合）。\n3. **跨视角一致性的有效度量需警惕单一指标陷阱**：正文指出 DaS 在单视角主体一致性上拿了第二（0.9151），实际原因是其相机控制失效、新视角退化成了源视角复制；因此评测多视角视频世界模型必须同时挂钩极线像素匹配（GIM）与跨视角 3D 重投影 RPE。\n\n### 批判性审视与适用边界\n\nHarmoHOI 证明了“外观与 3D 轨迹闭环共演化”在 6 视角 HOI 合成上的显著优势，但受限于计算预算，目前生成分辨率仅 **$256\\times 384$（49 帧）**，尚不足以直接支撑高清影视资产或高精细手指接触渲染；且单步去噪内嵌 GloMAD 反复编解码（VAE 编码 + 解码 + 3D 点云去噪），推理延迟必然高于单分支视频扩散（论文未报告端到端推理耗时）。同时，其 3D 输出为稠密点轨迹而非带法向/材质的可渲染 4D 高斯或参数化 MANO 网格，下游若需物理交互或任意视角自由漫游仍需二次表面重建。",
+    "arxiv": {
+      "published": "2026-07-19",
+      "revised_at": "2026-08-20（v2）",
+      "primary_category": "cs.CV"
+    },
+    "source_papers": [
+      "content/papers/2607.17097.md"
+    ]
   },
   {
     "id": "arxiv-2609-09941",
@@ -7049,6 +7308,131 @@
     "title": "InfiniteDance: Scalable 3D Dance Generation Towards in-the-wild Generalization",
     "updated_at": "2026-08-20",
     "year": 2026
+  },
+  {
+    "id": "arxiv-2609-09821",
+    "title": "InstantMimic: A High Performance System for Learning Physics-based Skills in Seconds",
+    "authors": [
+      "Ikjun Choi",
+      "Geonho Leem",
+      "Jungdam Won"
+    ],
+    "year": 2026,
+    "publication": "2026，SIGGRAPH Asia 2026（arXiv 预印本，v1，2026-09-09）",
+    "arxiv_id": "2609.09821",
+    "doi": "10.1145/3829340.3842170",
+    "links": {
+      "paper": "https://arxiv.org/abs/2609.09821",
+      "project": "https://scripter36.github.io/projects/instantmimic/",
+      "code": "https://github.com/Scripter36/InstantMimic",
+      "alphaxiv": "https://alphaxiv.org/abs/2609.09821"
+    },
+    "tags": [
+      "Agent与可执行世界",
+      "强化与模仿学习",
+      "机器人学习",
+      "物理建模与仿真"
+    ],
+    "figure": {
+      "url": "https://arxiv.org/html/2609.09821v1/instantmimic_teaser_v3_nopadding.png",
+      "alt": "InstantMimic Fig. 1：行走、旋风踢与后空翻技能秒级学习进度",
+      "label": "InstantMimic，Fig. 1，行走、旋风踢与后空翻三种物理控制技能在 1.5–2.6 秒内完成训练的学习进度可视化。",
+      "paper_title": "InstantMimic: A High Performance System for Learning Physics-based Skills in Seconds",
+      "source_url": "https://arxiv.org/html/2609.09821v1/instantmimic_teaser_v3_nopadding.png"
+    },
+    "summary": "核心 Insight：现代 GPU RL 物理控制的真正瓶颈不在物理引擎而在其外围训练管线；通过 MuJoCo Warp 零拷贝 GPU 状态数组 + 显式 Warp 融合核/CUDA Graph + 无条件掩码重置，把整个 PPO 训练闭环彻底做成 GPU-Native，可将单步 rollout 压缩近 5 倍（14.878 ms → 3.033 ms，物理占比升至 91.3%）；一旦单次训练跌入秒级，人工调参反成新瓶颈，从而解锁“LLM Agent 机器速度闭环超参搜索”的全新工作流。",
+    "insight": "**核心 Insight：现代 GPU RL 物理控制的真正瓶颈不在物理引擎而在其外围训练管线；通过 MuJoCo Warp 零拷贝 GPU 状态数组 + 显式 Warp 融合核/CUDA Graph + 无条件掩码重置，把整个 PPO 训练闭环彻底做成 GPU-Native，可将单步 rollout 压缩近 5 倍（14.878 ms → 3.033 ms，物理占比升至 91.3%）；一旦单次训练跌入秒级，人工调参反成新瓶颈，从而解锁“LLM Agent 机器速度闭环超参搜索”的全新工作流。**\n\n这一系统级思路与现有方案的本质差异：\n\n- **比仅做 GPU 仿真器（Isaac Lab / mjlab）或仅做环境框架（Madrona）更彻底**：Madrona 面向游戏类环境且将策略推理与更新留在外部框架；InstantMimic 面向高自由度三维铰接人形物理模仿，把**仿真、观测构建、奖励计算、无条件重置、策略推理与 `torch.compile` PPO 更新**全部收拢进零 CPU 同步的单一 GPU-Native 执行流。\n- **比黑盒贝叶斯优化（BO）更擅长高维非平稳 RL 超参搜索**：秒级试验成本让 LLM Agent（`plan → propose → experiment`）能在 80 轮内动态重塑搜索空间——当某类超参收敛停滞时跨类切换、当最优值顶到边界时主动外扩 30× 上界、当子指标退化时推断机制根因并调整耦合参数，这些均是固定搜索空间的 BO 或网格脚本无法做到的。",
+    "pipeline": {
+      "input": "参考运动片段（单技能如行走、奔跑、旋风踢、后空翻、侧手翻，或 37.4 小时 AMASS 动作库）与人形物理模型配置；超参搜索阶段额外输入基准评测协议与停止准则。",
+      "process": "以 MuJoCo Warp 为 GPU 原生刚体物理后端，直接暴露仿真状态为 GPU 数组以消除 CPU–GPU 拷贝；将后物理阶段（奖励、终止判定、观测构建、存储写入）重写为显式 NVIDIA Warp 单核融合函数，将条件重置改为“无条件执行重置核 + GPU 侧终止掩码过滤”，并将 PPO 更新交给 torch.compile 编译融合；在此秒级训练底座上，构建三阶段闭环 LLM Agent（ plan 改写自然语言策略 → propose 输出单参数 JSON 候选 → Python experiment 多随机种子实测并更新状态）自动搜索高吞吐收敛配置。",
+      "output": "单张 RTX 5090 上 1.5–4.5 秒收敛的高保真物理动作模仿策略、30 分钟完成预训练的 AMASS 潜空间通用控制器，以及经多轮自动化验证的优胜超参配置。",
+      "details": "**输入**：参考运动片段（单技能如行走、奔跑、旋风踢、后空翻、侧手翻，或 37.4 小时 AMASS 动作库）与人形物理模型配置；超参搜索阶段额外输入基准评测协议与停止准则。\n\n**过程**：以 MuJoCo Warp 为 GPU 原生刚体物理后端，直接暴露仿真状态为 GPU 数组以消除 CPU–GPU 拷贝；将后物理阶段（奖励、终止判定、观测构建、存储写入）重写为显式 NVIDIA Warp 单核融合函数，将条件重置改为“无条件执行重置核 + GPU 侧终止掩码过滤”，并将 PPO 更新交给 `torch.compile` 编译融合；在此秒级训练底座上，构建三阶段闭环 LLM Agent（`plan` 改写自然语言策略 → `propose` 输出单参数 JSON 候选 → Python `experiment` 多随机种子实测并更新状态）自动搜索高吞吐收敛配置。\n\n**输出**：单张 RTX 5090 上 1.5–4.5 秒收敛的高保真物理动作模仿策略、30 分钟完成预训练的 AMASS 潜空间通用控制器，以及经多轮自动化验证的优胜超参配置。\n\n关键系统优化与工程细节（[第 4–5 节](https://arxiv.org/html/2609.09821v1#S4)）：\n\n- **奖励计算去碎片化四级量化对比（Fig. 5）**：在相同 DeepMimic 奖励与终止逻辑上，Vanilla PyTorch 耗时 **281 μs** → PyTorch JIT 部分融合降至 **112 μs（2.5×）** → CUDA Graph 消除核启动间隙降至 **29 μs（9.7×）** → 单一 NVIDIA Warp 融合核同时消除中间张量与启动间隙，直降至 **3.14 μs（89.7×）**。\n- **消除关键路径 CPU 同步的两处硬改造**：（1）所有后物理 Warp 核直接零拷贝读取 MuJoCo Warp GPU 状态数组，彻底移除 `get_coms().to(device)` 类拷贝；（2）消除 `terminated.any().item()` 的 CPU 分支判断，改为每步无条件派发 GPU 重置核，在核内凭 `done_mask` 仅更新终止环境，使完整 rollout 可被稳定捕获与高利用率连续执行。\n- **策略与仿真设置**：单张 NVIDIA RTX 5090，乘性 DeepMimic 模仿奖励 $r=\\prod_k \\exp(-w_k e_k)$（覆盖关节位姿、速度、质心、末端位姿），PHC 风格航向系 6D 旋转观测 + 未来参考末端帧 + 上一步动作，归一化 PD 目标动作 + PPO（含早停与自适应初始状态采样）。\n- **LLM Agent 三阶段持久化闭环**：维护四类跨轮状态——自然语言策略文档、历史候选与结果日志、当前基准配置（incumbent）、全局最优配置。以“3 个随机种子达到 90% 成功率的中位有效训练时间”为目标，辅以平均位姿误差（APE）、MPJPE 与末端误差作为诊断指标。"
+    },
+    "experiments": "| 评测维度 | InstantMimic 表现 | 关键基线/对照 | 提升幅度与归因 |\n| --- | --- | --- | --- |\n| **端到端训练吞吐**（Table 2，单 RTX 5090 后空翻） | **0.613 Mfps**（单步 rollout **3.033 ms**，物理占 **91.3%**） | Isaac Lab (PhysX)：0.105 Mfps（单步 14.878 ms）；mjlab (MuJoCo Warp)：0.157 Mfps | 较 Isaac Lab 快 **5.85×**，较同后端 mjlab 快 **3.91×**；证明收益核心来自外围 GPU-Native 重构而非单纯换仿真器 |\n| **LLM Agent 自动超参搜索**（Table 2，后空翻 80 轮） | 达到 90% 成功率时间：**2.17 s**（第 65 轮发现） | 初始 Isaac Lab 移植超参：**18.77 s** | 仅靠超参自动化再提速 **8.6×**（其中将 `kl_threshold` 从 0.008 外扩至 0.12、`rollout_steps` 从 32 压至 8、`ratio_clip` 调至 0.32） |\n| **五类代表技能秒级收敛**（Fig. 1/8/9） | Walk **1.5 s**、Run **~1.5 s**、Spinkick **1.9 s**、Backflip **2.6 s**、Cartwheel **4.5 s** | 覆盖平地移动与腾空翻转/手脚交替接触杂技动作 | 全套技能从传统分钟/小时级压缩至 **1.5–4.5 秒** |\n| **跨 LLM 独立搜索稳健性**（Table 4，5 次独立 80 轮） | GPT-5.5-high：中位 **2.291 s**（IQR 0.095 s，范围 2.031–2.449 s） | 开源权重 GLM-5.2-high：中位 **2.530 s**（IQR 0.571 s，最快单次 **1.748 s**） | 搜索协议不绑定闭源单一模型，开源 LLM 同样能发现 2 秒级优胜配置 |\n| **大规模动作预训练与下游迁移**（Sec. 6.4，AMASS 37.4h） | VAE 潜空间控制器 **29.1 分钟**达 **98.6%** 成功率；冻结解码器训下游目标追踪 **60 秒**达 **8.2 个目标 / 10 s** | PHC 基准成功率 98.9% | 将大规模通用运动先验预训练从天级压至半小时级 |\n\n**LLM 搜索机制分析的三条典型行为（Table 1）**：\n1. **边界外扩（Ratcheting）**：第 7–20 轮发现优胜值持续顶到 `kl_threshold` 上界后，Agent 主动将上界逐轮拉宽 30 倍（$0.004 \\to 0.12$）。\n2. **耦合诊断（Mechanism Inference）**：第 21 轮高 KL 导致成功率维持 1.0 但 APE 与末端误差变差，Agent 主动选择与步长强耦合的 `ratio_clip` 稳定追踪质量。\n3. **跨类转向（Class Pivot）**：第 38–46 轮六项 PPO/探索参数均卡在 2.656 s 平台期，Agent 果断跳出 PPO 类转向奖励权重扫描，在第 47 轮凭 `com_reward_weight` 刷新至 2.449 s。",
+    "evidence_notes": "已核对 arXiv v1 正文及附录 A，涵盖 Isaac Lab 性能剖析（Fig. 2/4/5）、吞吐与技能收敛表（Table 2）、LLM Agent 超参搜索轨迹与跨模型复现（Table 1/3/4）及 AMASS 37.4h 大规模预训练曲线；未运行复现实验。",
+    "code_data_status": "作者已在 GitHub 开源训练框架代码与数据（[github.com/Scripter36/InstantMimic](https://github.com/Scripter36/InstantMimic)），并附官方项目页（[scripter36.github.io/projects/instantmimic](https://scripter36.github.io/projects/instantmimic/)）；论文 arXiv 许可标注为 CC BY-NC-ND 4.0，代码仓库具体开源协议需以 GitHub 仓库内 LICENSE 为准。",
+    "limitations": "- **单指标 HPO 存在“唯速度论”偏差**：当前候选排序仅看“达到 90% 成功率的训练时间”，APE 与末端误差只作诊断参考而不直接参与排序，导致搜索可能选中收敛更快但动作精度略逊的配置，未来需引入多目标或带精度约束的排序准则。\n- **高难度杂技动作仍需人工/针对性调权**：五项动作中侧手翻（含倒立全身旋转与手脚接触切换）耗时最长（4.5 s vs 行走 1.5 s），且杂技类动作仍需调低部分奖励权重以容忍训练初期较大误差。\n- **未涵盖视觉观测与复杂场景接触**：系统验证限于纯本体状态观测与平地运动追踪/目标追踪，引入多物体交互、地形感知或图像渲染后，瓶颈分布与核融合策略需重新设计。\n- **未验证真机 Sim-to-Real 迁移**：极速收敛的高 KL / 大 clip 配置在仿真中表现优异，但是否满足真机人形机器人的关节力矩限制、动力学随机化鲁棒性与安全性尚未评估。",
+    "comments": "",
+    "source_reports": [],
+    "deleted": false,
+    "updated_at": "2026-11-28",
+    "challenges": "尽管 GPU 并行物理仿真器（Isaac Gym/Lab、Brax、MuJoCo Warp）已将人形物理模仿学习的仿真步搬上 GPU，端到端深度强化学习（Deep RL）训练在实际工程中仍需数分钟至数小时。作者对标准 Isaac Lab DeepMimic 训练循环做了细粒度 GPU 时间线剖析，揭示出两个被高层 Python 抽象掩盖的系统级真凶：\n\n- **物理求解之外的 GPU 核碎片化（Kernel Fragmentation）吞噬了绝大多数时间**：在一个 14.878 ms 的 Isaac Lab rollout 步中，物理求解器本身仅占 **22.3%** 的墙钟时间，而奖励、重置、观测构建与存储写入等后物理阶段高达 **64%**（且物理阶段内 `apply_action` 又吃掉 29%）。这些逻辑用 Python/PyTorch 逐算子派发大量极短小核，CPU 启动开销大于核执行时间，导致物理求解之外 GPU 平均利用率仅 **7.3%**，整步 **77%** 时间处于停顿或低利用状态。\n- **关键路径上的隐式 CPU 内存访问引发全流水线停顿**：Python 张量接口隐藏了两类致命跨端同步——（1）如 `body_com_pose_b` 这类状态读取器每步从 CPU 仿真缓存拷贝到 GPU，单项即造成约 **15.9%** 的 GPU 停顿；（2）重置分支中看似无害的一句 `if terminated.any().item():` 把标量读回 CPU，强制触发全 GPU 同步屏障。\n- **慢迭代锁死了超参优化与算法探索范式**：单次训练动辄数十分钟，使得高维 RL 超参空间只能靠人工试错或极窄网格搜索，无法支撑大规模自动化闭环实验。",
+    "motivation": "**核心 Insight：现代 GPU RL 物理控制的真正瓶颈不在物理引擎而在其外围训练管线；通过 MuJoCo Warp 零拷贝 GPU 状态数组 + 显式 Warp 融合核/CUDA Graph + 无条件掩码重置，把整个 PPO 训练闭环彻底做成 GPU-Native，可将单步 rollout 压缩近 5 倍（14.878 ms → 3.033 ms，物理占比升至 91.3%）；一旦单次训练跌入秒级，人工调参反成新瓶颈，从而解锁“LLM Agent 机器速度闭环超参搜索”的全新工作流。**\n\n这一系统级思路与现有方案的本质差异：\n\n- **比仅做 GPU 仿真器（Isaac Lab / mjlab）或仅做环境框架（Madrona）更彻底**：Madrona 面向游戏类环境且将策略推理与更新留在外部框架；InstantMimic 面向高自由度三维铰接人形物理模仿，把**仿真、观测构建、奖励计算、无条件重置、策略推理与 `torch.compile` PPO 更新**全部收拢进零 CPU 同步的单一 GPU-Native 执行流。\n- **比黑盒贝叶斯优化（BO）更擅长高维非平稳 RL 超参搜索**：秒级试验成本让 LLM Agent（`plan → propose → experiment`）能在 80 轮内动态重塑搜索空间——当某类超参收敛停滞时跨类切换、当最优值顶到边界时主动外扩 30× 上界、当子指标退化时推断机制根因并调整耦合参数，这些均是固定搜索空间的 BO 或网格脚本无法做到的。",
+    "technical_approach": "**输入**：参考运动片段（单技能如行走、奔跑、旋风踢、后空翻、侧手翻，或 37.4 小时 AMASS 动作库）与人形物理模型配置；超参搜索阶段额外输入基准评测协议与停止准则。\n\n**过程**：以 MuJoCo Warp 为 GPU 原生刚体物理后端，直接暴露仿真状态为 GPU 数组以消除 CPU–GPU 拷贝；将后物理阶段（奖励、终止判定、观测构建、存储写入）重写为显式 NVIDIA Warp 单核融合函数，将条件重置改为“无条件执行重置核 + GPU 侧终止掩码过滤”，并将 PPO 更新交给 `torch.compile` 编译融合；在此秒级训练底座上，构建三阶段闭环 LLM Agent（`plan` 改写自然语言策略 → `propose` 输出单参数 JSON 候选 → Python `experiment` 多随机种子实测并更新状态）自动搜索高吞吐收敛配置。\n\n**输出**：单张 RTX 5090 上 1.5–4.5 秒收敛的高保真物理动作模仿策略、30 分钟完成预训练的 AMASS 潜空间通用控制器，以及经多轮自动化验证的优胜超参配置。\n\n关键系统优化与工程细节（[第 4–5 节](https://arxiv.org/html/2609.09821v1#S4)）：\n\n- **奖励计算去碎片化四级量化对比（Fig. 5）**：在相同 DeepMimic 奖励与终止逻辑上，Vanilla PyTorch 耗时 **281 μs** → PyTorch JIT 部分融合降至 **112 μs（2.5×）** → CUDA Graph 消除核启动间隙降至 **29 μs（9.7×）** → 单一 NVIDIA Warp 融合核同时消除中间张量与启动间隙，直降至 **3.14 μs（89.7×）**。\n- **消除关键路径 CPU 同步的两处硬改造**：（1）所有后物理 Warp 核直接零拷贝读取 MuJoCo Warp GPU 状态数组，彻底移除 `get_coms().to(device)` 类拷贝；（2）消除 `terminated.any().item()` 的 CPU 分支判断，改为每步无条件派发 GPU 重置核，在核内凭 `done_mask` 仅更新终止环境，使完整 rollout 可被稳定捕获与高利用率连续执行。\n- **策略与仿真设置**：单张 NVIDIA RTX 5090，乘性 DeepMimic 模仿奖励 $r=\\prod_k \\exp(-w_k e_k)$（覆盖关节位姿、速度、质心、末端位姿），PHC 风格航向系 6D 旋转观测 + 未来参考末端帧 + 上一步动作，归一化 PD 目标动作 + PPO（含早停与自适应初始状态采样）。\n- **LLM Agent 三阶段持久化闭环**：维护四类跨轮状态——自然语言策略文档、历史候选与结果日志、当前基准配置（incumbent）、全局最优配置。以“3 个随机种子达到 90% 成功率的中位有效训练时间”为目标，辅以平均位姿误差（APE）、MPJPE 与末端误差作为诊断指标。",
+    "discussion": "### 核心 Takeaway 与可迁移启示\n\n1. **给做人形物理控制与 RL 基础设施的工程师：做算法调优前先跑一次 Nsight/GPU Timeline Profiling**。InstantMimic 的剖析极具普遍性——即便用了最先进的 GPU 仿真器（如 mjlab 同用 MuJoCo Warp），只要外围逻辑还散落在零碎 PyTorch 算子和 `.item()` CPU 同步里，就会白白浪费 **3.9×–5.8×** 吞吐。用 Warp 单核融合后物理计算 + 无条件掩码重置，是所有 GPU RL 训练器（包括 VLA/WAM 在线 RL 后训练，如 SCRIPT 的 Stage II）都可直接照搬的系统加速模板。\n2. **给具身智能研究范式的启示：当单次 RL 训练压到秒级，实验本身就变成了 LLM Agent 的高频工具调用**。这不仅能把 37.4h AMASS 预训练压缩到 30 分钟，更重要的是把“奖励塑形、探索调度、课程参数”这类极耗人力的黑魔法变成了可审计、可复现、可无人值守的自动科学发现循环。\n3. **与生成式策略（如 SCRIPT）的天然互补**：SCRIPT 的 Stage II RLHR 后训练在单张 A100 上跑 128 个 Isaac Gym 环境需要 4 天；若将 InstantMimic 的 GPU-Native 无同步训练流与大规模并行仿真引入扩散策略 RL 后训练，将把闭环对齐的迭代成本降低一个数量级。\n\n### 批判性审视与适用边界\n\nInstantMimic 的惊人速度（1.5–4.5 s）建立在**本体状态观测（无视觉渲染）+ 刚体地面接触 + 单目标时间优化**之上：一旦任务引入高分辨率视觉输入、复杂柔性体/流体仿真或稀疏奖励长程操作，GPU 瓶颈会重新转移到渲染或探索采样效率；此外，作者坦诚指出当前 HPO 仅按“达到 90% 成功率的墙钟时间”单一指标排序，导致搜索天然偏向“极速收敛”而可能牺牲部分追踪精度（如 Cycle 21 现象），在严肃的机器人 Sim-to-Real 部署中必须引入多目标帕累托约束（如力矩平滑度、能量与精度下界）。",
+    "arxiv": {
+      "published": "2026-09-09",
+      "revised_at": "2026-09-09",
+      "primary_category": "cs.GR"
+    },
+    "source_papers": [
+      "content/papers/2609.09821.md"
+    ]
+  },
+  {
+    "id": "arxiv-2609-18504",
+    "title": "InterMASH: A Unified Geometric Representation for Grasp Synthesis",
+    "authors": [
+      "Xuanze Yang",
+      "Yumeng Liu",
+      "Haiyang Xin",
+      "Changhao Li",
+      "Haowei Shen",
+      "Kai Xu",
+      "Ligang Liu",
+      "Ruizhen Hu"
+    ],
+    "year": 2026,
+    "publication": "2026，SIGGRAPH Asia 2026（SA Conference Papers ’26；arXiv 预印本 v1，2026-09-16）",
+    "arxiv_id": "2609.18504",
+    "doi": "10.1145/3829340.3842336",
+    "links": {
+      "paper": "https://arxiv.org/abs/2609.18504",
+      "project": "https://inter-mash.github.io/",
+      "alphaxiv": "https://alphaxiv.org/abs/2609.18504"
+    },
+    "tags": [
+      "3D/4D",
+      "HOI",
+      "扩散与流匹配",
+      "触觉与灵巧操作",
+      "跨本体迁移"
+    ],
+    "figure": {
+      "url": "https://arxiv.org/html/2609.18504v1/overview_v3_cropped.png",
+      "alt": "InterMASH Fig. 2：球面固定锚点局部球谐函数表征与条件 DiT 跨本体抓取生成框架",
+      "label": "InterMASH，Fig. 2，球面固定锚点统一几何表征（InterMASH）与条件 Diffusion Transformer 抓取生成框架总览。",
+      "paper_title": "InterMASH: A Unified Geometric Representation for Grasp Synthesis",
+      "source_url": "https://arxiv.org/html/2609.18504v1/overview_v3_cropped.png"
+    },
+    "summary": "核心 Insight：把 BPS 的“物体中心球面固定锚点索引”与 MASH 的“低阶球谐函数（SH）+ 视角掩码局部面片编码”合二为一，并通过基于骨骼测地距离签名的 MANO 锚点对齐（LAP），在共享的 128 锚点 Token 空间中同时显式编码局部手部几何、物体几何与接触场——从而让不同自由度的机械手与可形变人手说同一种“几何语言”，并由条件 DiT 一步联合生成手部几何与接触。",
+    "insight": "**核心 Insight：把 BPS 的“物体中心球面固定锚点索引”与 MASH 的“低阶球谐函数（SH）+ 视角掩码局部面片编码”合二为一，并通过基于骨骼测地距离签名的 MANO 锚点对齐（LAP），在共享的 128 锚点 Token 空间中同时显式编码局部手部几何、物体几何与接触场——从而让不同自由度的机械手与可形变人手说同一种“几何语言”，并由条件 DiT 一步联合生成手部几何与接触。**\n\n这套表征设计有三处关键精妙点：\n\n- **紧凑性与局部高保真兼得**：每个球面固定锚点不再是 BPS 的 1 个标量距离，而是通过低阶球谐系数（$d_{\\max}=2$）与各向异性视角掩码编码一整块连续局部表面（支持任意分辨率采样），同时用仅 **4 个一阶 SH 系数**紧凑近似局部物体接触强度场，天然形成极低维、可直接喂给 DiT 的显式 Token 序列。\n- **一次性模板对齐解决跨本体语义错位**：先将 MANO 模板面片通过线性指派问题（LAP）绑定到球面固定锚点建立参考序；再为每种机械手（ShadowHand、Barrett、Allegro）定义同源关键点，计算每个面片中心沿手部骨骼的归一化距离签名，求解最优置换将机械手面片对齐到 MANO 参考序，并经重心插值迁移到全部抓取实例。由此，同一锚点索引在所有人手与机械手上都指向语义对应的手部区域。\n- **几何与接触在统一 Token 空间联合生成 + 物理引导采样**：不再像传统管线那样先预测接触图再离线优化手姿，而是在同一 DiT 中联合去噪手部 MASH 参数与物体接触描述子，并利用 $\\hat{f}_0$ 估计在去噪低噪期引入可微物理能量梯度（防穿透、防自碰、促接触），显著改善形-触一致性。",
+    "pipeline": {
+      "input": "目标物体 3D 网格 O 与指定目标手型 tau 的模板手几何 H tau（如 MANO、ShadowHand、Barrett 或 Allegro），经球面固定锚点编码为条件 Token 序列 c= v i^o, mathcalC i^o, mathcalV i^o, v i^tau, mathcalC i^tau, mathcalV i^tau i=1^n。",
+      "process": "条件 Diffusion Transformer（cDiT）结合锚点位置 RoPE 与基于手/物面片 k-NN 图构造的 邻域增强注意力（Neighborhood-Enhanced Attention） ，在 InterMASH Token 空间内联合去噪生成抓取手部几何参数与物体接触描述子 f 0= v i^h, mathcalC i^h, mathcalV i^h, mathcalK i i=1^n，并在训练与采样阶段施加可微物理引导 mathcalL phys；最后重建面片级点集，经闭式 Umeyama 全局初对齐与保留锚点语义的 面片级逆运动学（Patch-wise IK） 恢复精确关节角与全局位姿。",
+      "output": "物理可行、低穿透且适配目标手型 tau 的关节抓取姿态 (theta, R, p)。",
+      "details": "**输入**：目标物体 3D 网格 $O$ 与指定目标手型 $\\tau$ 的模板手几何 $H_\\tau$（如 MANO、ShadowHand、Barrett 或 Allegro），经球面固定锚点编码为条件 Token 序列 $\\mathbf{c}=\\{v_i^o, \\mathcal{C}_i^o, \\mathcal{V}_i^o, v_i^\\tau, \\mathcal{C}_i^\\tau, \\mathcal{V}_i^\\tau\\}_{i=1}^n$。\n\n**过程**：条件 Diffusion Transformer（cDiT）结合锚点位置 RoPE 与基于手/物面片 $k$-NN 图构造的**邻域增强注意力（Neighborhood-Enhanced Attention）**，在 InterMASH Token 空间内联合去噪生成抓取手部几何参数与物体接触描述子 $f_0=\\{v_i^h, \\mathcal{C}_i^h, \\mathcal{V}_i^h, \\mathcal{K}_i\\}_{i=1}^n$，并在训练与采样阶段施加可微物理引导 $\\mathcal{L}_{\\mathrm{phys}}$；最后重建面片级点集，经闭式 Umeyama 全局初对齐与保留锚点语义的**面片级逆运动学（Patch-wise IK）**恢复精确关节角与全局位姿。\n\n**输出**：物理可行、低穿透且适配目标手型 $\\tau$ 的关节抓取姿态 $(\\theta, R, \\mathbf{p})$。\n\n核心模块与工程细节拆解（[方法：第 4 节](https://arxiv.org/html/2609.18504v1#S4)）：\n\n- **InterMASH 统一锚点表征**：以物体为中心、半径 $r=0.2$ 的球面上通过斐波那契采样固定 $n=128$ 个锚点（包络所有手与物体）。SH 拟合采用**分阶段由粗到细优化**（从 $d_{\\mathrm{sh}}=0$ 稳定后逐步升至 $d_{\\max}=2$）避免高频项早期震荡。接触描述子 $\\mathcal{K}_i$ 以一阶 SH（仅 4 系数）拟合 Sigmoid 接触强度场，训练期作辅助监督、推理期无需外部输入。\n- **邻域增强注意力（N.E.A.）与物理引导采样**：在 DiT 注意力 logits 上叠加由模板手与物体面片 $k$-NN 图诱导的稀疏结构偏置 $s_{ij}$，兼顾局部结构邻接与全局手-物长程推理。训练使用 Muon 优化器（8×RTX 4090）；采样期在每步从噪声状态 $f_t$ 估计干净 Token $\\hat{f}_0(f_t,t)$，重建点云评估 $\\mathcal{L}_{\\mathrm{phys}}(\\hat{f}_0)$，将 DDPM 后验均值沿负梯度平移 $\\widetilde{\\mu}_\\phi = \\mu_\\phi - s\\Sigma_t \\nabla_{f_t}\\mathcal{L}_{\\mathrm{phys}}(\\hat{f}_0)$。\n- **高精高速的面片级 IK 解码**：利用已建立的锚点-面片语义对应，先用 Umeyama 算法闭式求解全局旋转与平移 $(R, \\mathbf{p})$，再按对应面片拟合关节角 $\\theta$，消除全局表面点云配准的歧义。在 CMapDataset ShadowHand 样本上，平均总 $\\ell_1$ Chamfer 误差仅 **0.0125 m**，成功率 **99.5%**（$\\mathcal{L}_{\\mathrm{CD}}^{\\mathrm{total}}<0.1\\text{ m}$），单样本解码仅需 **0.39 秒**。"
+    },
+    "experiments": "| 评测任务 / 数据集 | InterMASH (Ours) | 核心基线对比 | 关键结论与归因 |\n| --- | --- | --- | --- |\n| **单手灵巧抓取**（DexGraspNet / ShadowHand，Table 1） | Suc.6 53.5 / Suc.1 **91.9** / Pen. **16.2** / Div. 0.14 | DGA（Suc.6 **53.6**, Suc.1 90.4, Pen. 21.5, Div. **0.22**）；$\\mathcal{D}(\\mathcal{R},\\mathcal{O})$（46.9 / 89.7 / 17.5 / 0.20） | 单向扰动成功率与最大穿深全第 1，Suc.6 紧贴最优 DGA，呈现出高物理可靠性 vs. 略低多样性的权衡 |\n| **跨本体混合训练**（CMapDataset，Table 2） | Barrett Suc. **90.30%** / Shadow Suc. 64.15%（单训 Shadow 仅 57.62%） | $\\mathcal{D}(\\mathcal{R},\\mathcal{O})$（Barrett 87.30%, Shadow **83.00%**）；DFC（86.30% / 58.80%） | 单模型在 Barrett 拿第 1；混入 Barrett 数据使 Shadow 成功率提升 **+6.53%**，验证跨本体正迁移 |\n| **人类先验迁移至机器人**（DexGRAB + MANO GRAB 1:1 微调，Table 3） | Suc.6 **29.0** / Suc.1 **65.9** / Pen. 18.6 / Div. **0.500** | 仅 DexGRAB 训练（Suc.6 25.8 / Suc.1 64.2 / Pen. **14.9** / Div. 0.450） | 直接混入人类 MANO 抓取数据可无需重定向同步提升机械手成功率（+3.2 / +1.7）与多样性（+0.050） |\n\n**最具价值的两组消融归因（Table 4–5）**：\n1. **统一表征本身带来压倒性优势**（Table 4，禁用所有物理引导与 N.E.A.，统一 128 锚点/面片 + 相同 DiT 与 IK）：\n   - **Basis Point Set (BPS)** 几乎完全失效（Barrett 4.50% / Allegro 3.90% / Shadow 5.40%），证明标量距离远不足以编码抓取几何；\n   - **Patch Emb. + Soft-Intro VAE**（33.20% / 11.10% / 14.30%）与 **In-house VAE**（24.80% / 11.10% / 10.40%）均显著落后于 **InterMASH**（**52.70% / 15.90% / 20.00%**），证明显式低阶 SH 局部几何 + 锚点接触在紧凑性与表达力上全面胜出。\n2. **三大模块逐层贡献清晰可查**（Table 5，CMapDataset 混合训练）：\n   - 裸基线（全关）：Barrett `80.17%` / Shadow `51.06%`；\n   - `+ Phys. Train`：大幅跃升至 `86.10%` / `59.50%`（单步贡献最大）；\n   - `+ Phys. Samp.`：Shadow 进一步涨至 `61.20%`（Barrett 微调至 `85.20%`）；\n   - `+ N.E.A.`（完整版）：双双登顶 **90.30%** / **64.15%**，伴随多样性从 `0.498/0.430` 温和收紧至 `0.480/0.396`。",
+    "evidence_notes": "已核对 arXiv v1 正文，覆盖 DexGraspNet 单手主表（Table 1）、CMapDataset 跨本体混合训练表（Table 2）、DexGRAB+GRAB 人类先验迁移表（Table 3）以及表征与模块消融表（Table 4–5）与局限分析；未运行复现实验。",
+    "code_data_status": "官方项目页 [inter-mash.github.io](https://inter-mash.github.io/) 已上线，论文遵循 CC BY-NC-ND 4.0 许可；实验均基于公开基准 DexGraspNet、filtered CMapDataset、DexGRAB 与 GRAB，代码与预训练权重释放及具体许可协议以项目页为准。",
+    "limitations": "- **小样本高自由度机械手数据效率偏低**：在样本较少、自由度较高的 CMapDataset ShadowHand 子集上，InterMASH（64.15%）明显落后于内置强对应归纳偏置的 $\\mathcal{D}(\\mathcal{R},\\mathcal{O})$（83.00%），需在通用性与高 DoF 手型归纳偏置间寻求更好平衡。\n- **质量与多样性的明显权衡**：在 DexGraspNet 上，物理约束与邻域注意力虽将穿透压至最低（16.2 mm）且 Suc.1 夺冠（91.9%），但多样性（0.14）明显低于 DGA（0.22）和 $\\mathcal{D}(\\mathcal{R},\\mathcal{O})$（0.20）。\n- **跨本体迁移受源数据物理瑕疵污染**：混入 MANO 人类数据（GRAB）微调时，源数据本身较高的穿模水平（24.6 mm）直接传导至机器人输出（穿透 14.9 → 18.6 mm），未来需引入数据质量过滤或解耦物理清洗。\n- **左右手镜像混训的手性歧义（Handedness Ambiguity）**：作者在局限中提及，混合左右手机械手训练时会产生手性混淆问题（细节见补充材料），跨手性统一建模仍待完善。\n- **仅限静态抓取合成且依赖无遮挡完整物体网格**：当前管线未涉及动态接近/在手操作，且编码阶段假设已知完整 3D 物体几何，面对真机单视角残缺深度点云的鲁棒性尚未验证。",
+    "comments": "",
+    "source_reports": [],
+    "deleted": false,
+    "updated_at": "2026-11-28",
+    "challenges": "要在同一套生成框架里同时支持人类可形变手（MANO）与形态各异的机械灵巧手（Barrett 3 指、Allegro 4 指、ShadowHand 5 指），并实现人类抓取先验向机器人的直接迁移，现有交互表征陷入两难：\n\n- **物体中心接触图（Contact Map）缺失手部几何，引发严重运动学歧义**：只预测物体表面哪里该接触，不显式编码手部局部表面形态，下游逆运动学/优化必须盲搜可行手姿，且无法跨不同自由度的手型共享表征。\n- **稠密隐式/点对点交互表征冗余昂贵，且难以兼容可形变人手**：如 $\\mathcal{D}(\\mathcal{R},\\mathcal{O})$ 的点对点距离矩阵维度高、重建出的手部点云噪声大且分辨率受限；体素/骨骼距离场显存开销大且丢失精细指尖几何；而 $\\mathcal{T}(\\mathcal{R},\\mathcal{O})$ 仅面向刚体连杆图，无法建模连续可形变的人类手部表面，天然阻断了人类数据与机器人数据的联合训练。\n- **直接复用现成局部几何表征（如 BPS / MASH）缺乏跨本体语义对齐**：BPS 每个基点只存单一标量距离，表达力不足以支撑高自由度抓取；原始 MASH 为每个单物体独立优化锚点位置，跨实例、跨手型时同一锚点索引对应完全无关的解剖区域，无法直接作为 Transformer 的语义一致 Token。",
+    "motivation": "**核心 Insight：把 BPS 的“物体中心球面固定锚点索引”与 MASH 的“低阶球谐函数（SH）+ 视角掩码局部面片编码”合二为一，并通过基于骨骼测地距离签名的 MANO 锚点对齐（LAP），在共享的 128 锚点 Token 空间中同时显式编码局部手部几何、物体几何与接触场——从而让不同自由度的机械手与可形变人手说同一种“几何语言”，并由条件 DiT 一步联合生成手部几何与接触。**\n\n这套表征设计有三处关键精妙点：\n\n- **紧凑性与局部高保真兼得**：每个球面固定锚点不再是 BPS 的 1 个标量距离，而是通过低阶球谐系数（$d_{\\max}=2$）与各向异性视角掩码编码一整块连续局部表面（支持任意分辨率采样），同时用仅 **4 个一阶 SH 系数**紧凑近似局部物体接触强度场，天然形成极低维、可直接喂给 DiT 的显式 Token 序列。\n- **一次性模板对齐解决跨本体语义错位**：先将 MANO 模板面片通过线性指派问题（LAP）绑定到球面固定锚点建立参考序；再为每种机械手（ShadowHand、Barrett、Allegro）定义同源关键点，计算每个面片中心沿手部骨骼的归一化距离签名，求解最优置换将机械手面片对齐到 MANO 参考序，并经重心插值迁移到全部抓取实例。由此，同一锚点索引在所有人手与机械手上都指向语义对应的手部区域。\n- **几何与接触在统一 Token 空间联合生成 + 物理引导采样**：不再像传统管线那样先预测接触图再离线优化手姿，而是在同一 DiT 中联合去噪手部 MASH 参数与物体接触描述子，并利用 $\\hat{f}_0$ 估计在去噪低噪期引入可微物理能量梯度（防穿透、防自碰、促接触），显著改善形-触一致性。",
+    "technical_approach": "**输入**：目标物体 3D 网格 $O$ 与指定目标手型 $\\tau$ 的模板手几何 $H_\\tau$（如 MANO、ShadowHand、Barrett 或 Allegro），经球面固定锚点编码为条件 Token 序列 $\\mathbf{c}=\\{v_i^o, \\mathcal{C}_i^o, \\mathcal{V}_i^o, v_i^\\tau, \\mathcal{C}_i^\\tau, \\mathcal{V}_i^\\tau\\}_{i=1}^n$。\n\n**过程**：条件 Diffusion Transformer（cDiT）结合锚点位置 RoPE 与基于手/物面片 $k$-NN 图构造的**邻域增强注意力（Neighborhood-Enhanced Attention）**，在 InterMASH Token 空间内联合去噪生成抓取手部几何参数与物体接触描述子 $f_0=\\{v_i^h, \\mathcal{C}_i^h, \\mathcal{V}_i^h, \\mathcal{K}_i\\}_{i=1}^n$，并在训练与采样阶段施加可微物理引导 $\\mathcal{L}_{\\mathrm{phys}}$；最后重建面片级点集，经闭式 Umeyama 全局初对齐与保留锚点语义的**面片级逆运动学（Patch-wise IK）**恢复精确关节角与全局位姿。\n\n**输出**：物理可行、低穿透且适配目标手型 $\\tau$ 的关节抓取姿态 $(\\theta, R, \\mathbf{p})$。\n\n核心模块与工程细节拆解（[方法：第 4 节](https://arxiv.org/html/2609.18504v1#S4)）：\n\n- **InterMASH 统一锚点表征**：以物体为中心、半径 $r=0.2$ 的球面上通过斐波那契采样固定 $n=128$ 个锚点（包络所有手与物体）。SH 拟合采用**分阶段由粗到细优化**（从 $d_{\\mathrm{sh}}=0$ 稳定后逐步升至 $d_{\\max}=2$）避免高频项早期震荡。接触描述子 $\\mathcal{K}_i$ 以一阶 SH（仅 4 系数）拟合 Sigmoid 接触强度场，训练期作辅助监督、推理期无需外部输入。\n- **邻域增强注意力（N.E.A.）与物理引导采样**：在 DiT 注意力 logits 上叠加由模板手与物体面片 $k$-NN 图诱导的稀疏结构偏置 $s_{ij}$，兼顾局部结构邻接与全局手-物长程推理。训练使用 Muon 优化器（8×RTX 4090）；采样期在每步从噪声状态 $f_t$ 估计干净 Token $\\hat{f}_0(f_t,t)$，重建点云评估 $\\mathcal{L}_{\\mathrm{phys}}(\\hat{f}_0)$，将 DDPM 后验均值沿负梯度平移 $\\widetilde{\\mu}_\\phi = \\mu_\\phi - s\\Sigma_t \\nabla_{f_t}\\mathcal{L}_{\\mathrm{phys}}(\\hat{f}_0)$。\n- **高精高速的面片级 IK 解码**：利用已建立的锚点-面片语义对应，先用 Umeyama 算法闭式求解全局旋转与平移 $(R, \\mathbf{p})$，再按对应面片拟合关节角 $\\theta$，消除全局表面点云配准的歧义。在 CMapDataset ShadowHand 样本上，平均总 $\\ell_1$ Chamfer 误差仅 **0.0125 m**，成功率 **99.5%**（$\\mathcal{L}_{\\mathrm{CD}}^{\\mathrm{total}}<0.1\\text{ m}$），单样本解码仅需 **0.39 秒**。",
+    "discussion": "### 核心 Takeaway 与可迁移启示\n\n1. **给跨本体灵巧手抓取与人-机数据融合：“固定空间锚点 + 显式局部谱几何（SH）+ 骨骼测地 LAP 对齐”是一条打通人手（可形变）与多款机械手（刚体连杆）的通用表征范式**。它绕开了传统流程中昂贵且针对单一机械手定制的 Human-to-Robot 重定向步骤，直接让 MANO 人类数据集（如 GRAB）以原生形态参与机器人模型微调并产生正向增益。\n2. **给 3D 交互生成模型架构：显式几何 Token 配合稀疏邻接注意力偏置（N.E.A.）远比黑盒 VAE 潜变量更适合强物理约束任务**。显式 SH 参数不仅让解码出的局部面片连续可微、无固定点云分辨率限制，还使得推理期基于 $\\hat{f}_0$ 的可微物理梯度引导成为可能。\n3. **给数据质量与迁移的实务提醒**：Table 3 揭示了一个非常现实的规律——GRAB 人类数据虽然提升了机械手成功率与多样性，但也把穿透深度从 `14.9 mm` 拉高到 `18.6 mm`，原因正是源数据 GRAB 本身的平均穿透高于 DexGRAB（`24.6 mm` vs. `11.34 mm`）。跨本体融合时必须严格审计源数据的几何洁净度。\n\n### 批判性审视与适用边界\n\nInterMASH 在大规模单手数据（DexGraspNet）与低自由度机械手（8-DoF Barrett）上表现极强，但在**小样本高自由度机械手（如 CMapDataset 中的 ShadowHand，64.15% vs. $\\mathcal{D}(\\mathcal{R},\\mathcal{O})$ 的 83.00%）上明显暴露了数据效率短板**。根因正如作者坦承：通用锚点 Token 缺少针对特定机械手运动学的强归纳偏置，在数据稀疏时不如强绑定手-物对应先验的方法容易收敛；此外，当前仅解决静态抓取姿态合成，尚未扩展至动态抓握操作与在手重定位（in-hand manipulation）。",
+    "arxiv": {
+      "published": "2026-09-16",
+      "revised_at": "2026-09-16",
+      "primary_category": "cs.RO"
+    },
+    "source_papers": [
+      "content/papers/2609.18504.md"
+    ]
   },
   {
     "arxiv": {
@@ -9991,6 +10375,70 @@
     }
   },
   {
+    "id": "arxiv-2609-17521",
+    "title": "PhysStream: Streaming Physics-Grounded Video Generation with Structured Scene Memory and Fine-Grained Motion Control",
+    "authors": [
+      "Chuhao Chen",
+      "Peter Wonka",
+      "Chaoyang Wang",
+      "Chen Wang",
+      "Qiao Feng",
+      "Sergey Tulyakov",
+      "Lingjie Liu"
+    ],
+    "year": 2026,
+    "publication": "2026，SIGGRAPH Asia 2026（arXiv 预印本，v2，2026-09-21）",
+    "arxiv_id": "2609.17521",
+    "doi": "10.1145/3829340.3842176",
+    "links": {
+      "paper": "https://arxiv.org/abs/2609.17521",
+      "project": "https://czzzzh.github.io/PhysStream",
+      "alphaxiv": "https://alphaxiv.org/abs/2609.17521"
+    },
+    "tags": [
+      "世界模型",
+      "流式与自回归",
+      "物理建模与仿真",
+      "视频生成",
+      "长时记忆"
+    ],
+    "figure": {
+      "url": "https://arxiv.org/html/2609.17521v2/pipeline.png",
+      "alt": "PhysStream Fig. 2：融合结构化场景记忆与稀疏速度增量控制的自回归推理管线",
+      "label": "PhysStream，Fig. 2，融合稀疏速度增量控制与在线结构化场景记忆（位置图 + 目标跟踪图）的自回归流式物理视频生成闭环架构。",
+      "paper_title": "PhysStream: Streaming Physics-Grounded Video Generation with Structured Scene Memory and Fine-Grained Motion Control",
+      "source_url": "https://arxiv.org/html/2609.17521v2/pipeline.png"
+    },
+    "summary": "核心 Insight：抛弃外挂仿真器，直接把“在线估计的结构化场景记忆（3D 位置图 + SAM2 目标跟踪图）”接入因果自回归视频扩散的闭环反馈，并用“首帧掩码锚定 + 移位通道拼接 + 先双向学控制、再因果学记忆”的两阶段配方，在完全不泄露未来信息的前提下，让视频模型自己维持 3D 几何与多物体身份一致性。",
+    "insight": "**核心 Insight：抛弃外挂仿真器，直接把“在线估计的结构化场景记忆（3D 位置图 + SAM2 目标跟踪图）”接入因果自回归视频扩散的闭环反馈，并用“首帧掩码锚定 + 移位通道拼接 + 先双向学控制、再因果学记忆”的两阶段配方，在完全不泄露未来信息的前提下，让视频模型自己维持 3D 几何与多物体身份一致性。**\n\n这套设计解决了四个容易踩坑的隐蔽矛盾：\n\n- **为何用“首帧掩码”而非“当前帧掩码”涂画速度增量**：看似当前帧掩码更精准，但 Appendix C（Table 11）定量证实，双向阶段使用逐帧掩码会泄露物体未来位置，导致 Stage 1 虚高（ADE 30.8 vs 46.3），可一旦转入无法看未来的 Stage 2 因果模型，性能反而骤降（ADE 恶化至 47.8）；而首帧掩码锚定消除了泄露路径，Stage 2 稳定反超（ADE 43.1）。推理时用户仍可直接点选当前帧物体，系统内部自动映射回首帧掩码。\n- **为何分两阶段且仅在 Stage 2 引入场景记忆**：从双向预训练骨干（Wan2.2-TI2V-5B）迁移需跨越“速度控制 + 场景记忆 + 因果注意力”三重分布偏移；且场景记忆在双向注意力下会直接泄露未来状态。先在 Stage 1 纯学速度增量动力学，再在 Stage 2 切到因果 Teacher-Forcing 并零初始化接入位置图与跟踪图，每步过渡最小且零泄露。\n- **恒定单步开销的在线记忆闭环**：每生成 1 个潜在帧（解码为 4 个像素帧），仅对最近 $L=4$ 帧跑 Depth-Anything-3（并用首帧极值 $\\rho$ 统一归一化，仅 0.90% 像素裁剪、0.42% 尺度偏差）+ SAM2 内部记忆库增量传播跟踪掩码，已提交帧的 KV Cache 永不改写，实现与视频总长度无关的 $O(1)$ 单步记忆更新。",
+    "pipeline": {
+      "input": "单张静态相机首帧图像 x 0 in mathbbR^H× W× 3、可选文本提示 y，以及用户在任意时刻 t j 对指定物体 o j 施加的稀疏 3D 速度增量事件 mathcalU= (t j, o j, Deltav j) 。",
+      "process": "基于 Wan2.2-TI2V-5B，Stage 1 双向全参差异学习率微调学习首帧掩码涂画的归一化速度增量图 c^Delta v；Stage 2 冻结速度分支并切换为单潜在帧块因果注意力（Teacher-Forcing），零初始化接入经单帧前向移位（Shift）通道拼接的在线结构化场景记忆——Depth-Anything-3 相机系归一化 3D 位置图 c^pos 与 SAM2 十色调色板目标跟踪图 c^track；推理时逐潜在帧去噪、解码、在线更新记忆并回喂下一步。",
+      "output": "物理连贯、支持中途动态多物体干预的流式 RGB 视频（训练 49 帧、推理可扩展至 301 帧以上，分辨率 832× 480）。",
+      "details": "**输入**：单张静态相机首帧图像 $x_0 \\in \\mathbb{R}^{H\\times W\\times 3}$、可选文本提示 $y$，以及用户在任意时刻 $t_j$ 对指定物体 $o_j$ 施加的稀疏 3D 速度增量事件 $\\mathcal{U}=\\{(t_j, o_j, \\Delta\\mathbf{v}_j)\\}$。\n\n**过程**：基于 Wan2.2-TI2V-5B，Stage 1 双向全参差异学习率微调学习首帧掩码涂画的归一化速度增量图 $c^{\\Delta v}$；Stage 2 冻结速度分支并切换为单潜在帧块因果注意力（Teacher-Forcing），零初始化接入经单帧前向移位（Shift）通道拼接的在线结构化场景记忆——Depth-Anything-3 相机系归一化 3D 位置图 $c^{\\text{pos}}$ 与 SAM2 十色调色板目标跟踪图 $c^{\\text{track}}$；推理时逐潜在帧去噪、解码、在线更新记忆并回喂下一步。\n\n**输出**：物理连贯、支持中途动态多物体干预的流式 RGB 视频（训练 49 帧、推理可扩展至 301 帧以上，分辨率 $832\\times 480$）。\n\n核心机制与工程细节（[方法：第 3 节](https://arxiv.org/html/2609.17521v2#S3)）：\n\n- **稀疏速度增量表征**：将相机坐标系下的 3D 速度增量 $\\Delta\\mathbf{v}_j \\in [-V_{\\max}, V_{\\max}]^3$ 线性映射到 $[0,1]^3$（中性值 $0.5$ 表示无外加脉冲），涂画在目标物体的首帧实例掩码 $M^{(o_j)}$ 上形成 $c_t^{\\Delta v}$；多帧叠加脉冲按物理语义累加（$\\mathbf{v}_{\\text{new}} = \\mathbf{v}_{\\text{current}} + \\Delta\\mathbf{v}$），自然激发碰撞、摩擦与翻滚。\n- **移位通道拼接（Shifted Channel Concatenation）**：将三路条件经 Wan VAE 编码后沿时间轴前向移位 1 个潜在帧（首槽补零），再与噪声潜在通道拼接：$\\tilde{z} = \\mathrm{Concat}(z^{\\text{noisy}}, \\mathrm{Shift}(z^{\\Delta v}), \\mathrm{Shift}(z^{\\text{pos}}), \\mathrm{Shift}(z^{\\text{track}}))$。配合块因果注意力掩码，从数学上保证第 $\\ell$ 潜帧只能看到 $\\le \\ell-1$ 帧的条件与历史，彻底杜绝帧内泄露；新增条件分支 patch-embedding 采用零初始化，确保微调起点与预训练骨干数值等价。\n- **100K 多物体刚体交互数据集**：基于 SAGE（10k 3D-Front 室内场景）构建，桌面筛选最多 10 个物体，经 PyBullet 多体物理仿真（49 帧内 12 个时间节点随机施加水平/斜上速度脉冲，满足视锥内且 $\\ge 80\\%$ 可见）+ Blender Cycles 渲染（8 spp + OIDN），同步导出 RGB、实例掩码、速度画布、位置图、跟踪图与逆深度。两阶段均在 8×H100 上各训练约 30 小时。"
+    },
+    "experiments": "| 评测维度与基准 | PhysStream 表现 | 关键基线对比 | 归因与结论 |\n| --- | --- | --- | --- |\n| **合成多物体交互**（Table 2-ii，64 视频） | FVD **413.7** / FVMD **787.0** / Traj-ADE **40.24** / ADE-M **32.00** / Fail **43.15%** | RealWonder（FVMD 1183, ADE 60.91）；Tora*（FVMD 1463, ADE 66.79）；FlashMotion*（FVMD 3751, ADE 45.67）；DragStream（FVMD 2662, ADE 70.27） | 比最强基线 **FVMD 降 33.5%、Traj-ADE 降 11.9%**；作者同时揭露 VBench 一致性指标会被 DragStream 这类“几乎不动”的退化视频刷高 |\n| **合成单物体首帧控制**（Table 2-i，64 视频） | FVD **492.9** / FVMD **846.0** / Traj-ADE **49.37** / Fail **48.11%** | Force Prompting（FVD 606.6, FVMD 2142, ADE 105.3）；PhysCtrl（FVD 626.8, FVMD 3344, ADE 104.9） | 物理运动分布误差与轨迹误差全面减半以上 |\n| **野外多物体交互与人类偏好**（Table 3，20 场景） | VideoPhy SA **5.00** / PC **4.15**；人类胜率 Phys **91.8%** / Motn **88.4%** / Vis **91.2%** | FlashMotion（SA 4.85, PC 3.65, 人类胜率 4.6%–7.0%）；RealWonder（PC 3.25, 人类胜率 1.2%–1.8%） | 野外泛化下三项人类偏好胜率均超 **88%**（摘要口径 >85%） |\n| **真实采集与非刚体扩展**（Table 6/7） | OCID SA **5.00**/PC **4.06**；Physics-IQ 固体子集 **47.86**；弹性球 SA/PC **4.20/4.20**、布料 **5.00/5.00** | 仅需 10k 合成视频×5k 步微调（冻结条件分支）即可迁移至 MPM 弹性体与弹簧质点布料 | 速度增量 + 结构化场景记忆范式不限于刚体，主要受数据覆盖决定 |\n| **301 帧超长视频控制**（Table 8，6×训练窗） | 1–100 / 101–200 / 201–300 帧响应率 **100% / 92.5% / 87.7%**，控制准确率 **95.2% / 87.1% / 73.7%** | 外观一致性随长度缓降（95.53 → 87.18），但后期控制响应仍保持高位 | 证明在线场景记忆有效解耦了外观漂移与控制失效 |\n\n**最具价值的四条消融结论（Table 4/5/13/14）**：\n1. **因果自回归天然优于双向模型建模物理**：即使只用速度条件，Stage 2 因果模型（b）在全部指标上大幅反超已收敛的 Stage 1 双向模型（a）（FVMD 941.3 vs 1015，ADE 43.75 vs 48.78，PhotoC 78.76 vs 65.81），印证物理因果律与因果注意力的结构契合。\n2. **位置图专治大深度位移**：Table 5 按真值深度变化分组显示，位置图在全集上仅带来 +2.1% Traj-ADE 收益，但在深度变化最大的 Top-20% / Top-10% 物体上收益飙升至 **+11.5% / +15.5%**。\n3. **跟踪图是远距离大拐弯与长程控制的关键**：Fig. 9 的 Z 字形撞花瓶测试中，无跟踪图的变体在物体远离首帧掩码后全部在最后一次转弯卡死；Table 13 证实推理期去掉跟踪图会使 101+ 帧控制响应率从 **90.3% 降至 85.0%**，且中途丢失表现为平滑降级而非崩溃。\n4. **Teacher-Forcing 在引入新条件分支时胜过 Diffusion-Forcing 与 Self-Forcing**：同算力预算下（Table 14），Teacher-Forcing 在 5/8 指标占优；Self-Forcing 因无法在训练 rollout 中实时运行在线估计器且 4 步蒸馏损失分布保真度，光度一致性骤降至 75.40（vs 81.72）。",
+    "evidence_notes": "已核对 arXiv v2 正文及附录 A–G，涵盖合成主表（Table 2）、野外与真机评测（Table 3/6/7）、301 帧长视频评测（Table 8）、组件与训练范式消融（Table 4/5/11–14）及推理耗时拆解（Table 9/10）；未运行复现实验。",
+    "code_data_status": "论文给出了官方项目主页（[czzzzh.github.io/PhysStream](https://czzzzh.github.io/PhysStream)），正文未列出 GitHub 代码仓库地址，100K 合成桌面刚体数据集及权重开源状态以项目页发布为准。",
+    "limitations": "- **尚未达到实时交互帧率**：即便叠加 4 步 DMD 蒸馏与轻量深度模型，单张 B6000 上吞吐为 2.54 FPS（19.3 s / 49 帧），瓶颈转向 VAE 逐帧编解码往返，需结合无 VAE 或高效流式解码器进一步压缩延迟。\n- **静态相机假设限制了可探索世界建模**：首帧极值归一化（$\\rho$）与单帧深度窗（$L=4$）高度依赖静态机位；一旦引入相机大范围移动，归一化锚点与背景 3D 坐标系均需重新设计。\n- **极端三维旋转与翻滚（tumbling）物理保真度不足**：作者明确指出模型在复杂翻滚与剧烈非平面碰撞下仍易出现形变或速度偏差（Physics-IQ 中主要剩余误差为物体运动速率）。\n- **多材质泛化仍需分材质额外微调**：当前主模型仅在刚体上验证，弹性球与布料需各自构建 10k 合成数据微调，尚缺乏统一处理刚体—柔体—流体耦合交互的通用动力学先验。\n- **在线估计器依赖与外观长程漂移**：虽在 301 帧测试中证明跟踪丢失仅平滑降级，但强遮挡、快速运动模糊导致的深度/跟踪误差以及自回归累积的外观漂移仍是超长时域的开放难题。",
+    "comments": "",
+    "source_reports": [],
+    "deleted": false,
+    "updated_at": "2026-11-28",
+    "challenges": "要在多物体真实场景中实现“稀疏输入、物理驱动、帧间实时干预、对象级精准控制”四者兼得的交互式视频世界模型，现有方法在三个层面存在根本缺陷：\n\n- **非因果全序列生成阻断了中途交互**：Force Prompting、PhysCtrl、KineMask、Tora、FlashMotion 等主流可控视频模型采用双向扩散，要求开跑前写死整段控制脚本，用户无法根据已生成画面动态追加或修正动作；而支持流式交互的 DragStream、MotionStream 又停留在像素级拖拽/轨迹控制，直接“钦定”物体去哪，而非输入物理量让模型推演碰撞与摩擦动力学。\n- **外部物理引擎中介存在状态漂移鸿沟**：同期工作 RealWonder 虽尝试通过“3D 重建 + 外部物理仿真器”桥接交互与物理，但仿真器内部场景状态与实际生成的视频帧会逐步脱节，且未建模的背景物体无法参与真实碰撞。\n- **纯像素自回归缺乏显式 3D 与身份记忆，长程控制必然失灵**：现有自回归视频模型只靠像素/潜在历史外推，既看不到物体的 3D 深度位置，也容易在物体大幅位移或遮挡后丢失“哪个控制信号对应哪个物体”的身份绑定；同时，若直接在双向预训练阶段引入逐帧掩码或场景记忆，会导致未来轨迹信息泄露，在切换到因果自回归时引发严重的分布断层。",
+    "motivation": "**核心 Insight：抛弃外挂仿真器，直接把“在线估计的结构化场景记忆（3D 位置图 + SAM2 目标跟踪图）”接入因果自回归视频扩散的闭环反馈，并用“首帧掩码锚定 + 移位通道拼接 + 先双向学控制、再因果学记忆”的两阶段配方，在完全不泄露未来信息的前提下，让视频模型自己维持 3D 几何与多物体身份一致性。**\n\n这套设计解决了四个容易踩坑的隐蔽矛盾：\n\n- **为何用“首帧掩码”而非“当前帧掩码”涂画速度增量**：看似当前帧掩码更精准，但 Appendix C（Table 11）定量证实，双向阶段使用逐帧掩码会泄露物体未来位置，导致 Stage 1 虚高（ADE 30.8 vs 46.3），可一旦转入无法看未来的 Stage 2 因果模型，性能反而骤降（ADE 恶化至 47.8）；而首帧掩码锚定消除了泄露路径，Stage 2 稳定反超（ADE 43.1）。推理时用户仍可直接点选当前帧物体，系统内部自动映射回首帧掩码。\n- **为何分两阶段且仅在 Stage 2 引入场景记忆**：从双向预训练骨干（Wan2.2-TI2V-5B）迁移需跨越“速度控制 + 场景记忆 + 因果注意力”三重分布偏移；且场景记忆在双向注意力下会直接泄露未来状态。先在 Stage 1 纯学速度增量动力学，再在 Stage 2 切到因果 Teacher-Forcing 并零初始化接入位置图与跟踪图，每步过渡最小且零泄露。\n- **恒定单步开销的在线记忆闭环**：每生成 1 个潜在帧（解码为 4 个像素帧），仅对最近 $L=4$ 帧跑 Depth-Anything-3（并用首帧极值 $\\rho$ 统一归一化，仅 0.90% 像素裁剪、0.42% 尺度偏差）+ SAM2 内部记忆库增量传播跟踪掩码，已提交帧的 KV Cache 永不改写，实现与视频总长度无关的 $O(1)$ 单步记忆更新。",
+    "technical_approach": "**输入**：单张静态相机首帧图像 $x_0 \\in \\mathbb{R}^{H\\times W\\times 3}$、可选文本提示 $y$，以及用户在任意时刻 $t_j$ 对指定物体 $o_j$ 施加的稀疏 3D 速度增量事件 $\\mathcal{U}=\\{(t_j, o_j, \\Delta\\mathbf{v}_j)\\}$。\n\n**过程**：基于 Wan2.2-TI2V-5B，Stage 1 双向全参差异学习率微调学习首帧掩码涂画的归一化速度增量图 $c^{\\Delta v}$；Stage 2 冻结速度分支并切换为单潜在帧块因果注意力（Teacher-Forcing），零初始化接入经单帧前向移位（Shift）通道拼接的在线结构化场景记忆——Depth-Anything-3 相机系归一化 3D 位置图 $c^{\\text{pos}}$ 与 SAM2 十色调色板目标跟踪图 $c^{\\text{track}}$；推理时逐潜在帧去噪、解码、在线更新记忆并回喂下一步。\n\n**输出**：物理连贯、支持中途动态多物体干预的流式 RGB 视频（训练 49 帧、推理可扩展至 301 帧以上，分辨率 $832\\times 480$）。\n\n核心机制与工程细节（[方法：第 3 节](https://arxiv.org/html/2609.17521v2#S3)）：\n\n- **稀疏速度增量表征**：将相机坐标系下的 3D 速度增量 $\\Delta\\mathbf{v}_j \\in [-V_{\\max}, V_{\\max}]^3$ 线性映射到 $[0,1]^3$（中性值 $0.5$ 表示无外加脉冲），涂画在目标物体的首帧实例掩码 $M^{(o_j)}$ 上形成 $c_t^{\\Delta v}$；多帧叠加脉冲按物理语义累加（$\\mathbf{v}_{\\text{new}} = \\mathbf{v}_{\\text{current}} + \\Delta\\mathbf{v}$），自然激发碰撞、摩擦与翻滚。\n- **移位通道拼接（Shifted Channel Concatenation）**：将三路条件经 Wan VAE 编码后沿时间轴前向移位 1 个潜在帧（首槽补零），再与噪声潜在通道拼接：$\\tilde{z} = \\mathrm{Concat}(z^{\\text{noisy}}, \\mathrm{Shift}(z^{\\Delta v}), \\mathrm{Shift}(z^{\\text{pos}}), \\mathrm{Shift}(z^{\\text{track}}))$。配合块因果注意力掩码，从数学上保证第 $\\ell$ 潜帧只能看到 $\\le \\ell-1$ 帧的条件与历史，彻底杜绝帧内泄露；新增条件分支 patch-embedding 采用零初始化，确保微调起点与预训练骨干数值等价。\n- **100K 多物体刚体交互数据集**：基于 SAGE（10k 3D-Front 室内场景）构建，桌面筛选最多 10 个物体，经 PyBullet 多体物理仿真（49 帧内 12 个时间节点随机施加水平/斜上速度脉冲，满足视锥内且 $\\ge 80\\%$ 可见）+ Blender Cycles 渲染（8 spp + OIDN），同步导出 RGB、实例掩码、速度画布、位置图、跟踪图与逆深度。两阶段均在 8×H100 上各训练约 30 小时。",
+    "discussion": "### 核心 Takeaway 与可迁移启示\n\n1. **给流式物理世界模型的核心范式：把“感知估计器”编进生成器的自回归状态闭环**。与其强求视频 DiT 在隐空间里独自维持 3D 深度与多物体 ID，不如像 PhysStream 一样，每提交一个潜帧就增量运行轻量深度估计 + 跟踪器，把显式 3D 位置图与身份图通过移位通道拼接喂回下一帧——既免去外挂物理引擎的“仿真—像素脱节”，又能把长程控制响应率稳在 87%+。\n2. **给“双向转因果”微调的避坑指南：严防条件通道的未来信息泄露**。任何随物体移动而变化的条件（如当前帧掩码、逐帧位置图）在双向阶段都会成为“作弊捷径”，导致转入因果阶段时出现断崖式退化；采用“首帧锚定 + 阶段隔离 + 移位拼接”是通用的防泄露模板。\n3. **给评测体系的警示：纯外观/光流一致性指标（VBench、PhotoC）存在“静止作弊”漏洞**。物理世界模型评测必须把运动分布（FVMD）、密集点轨迹误差（CoTracker3 Traj-ADE）与真实物理基准（Physics-IQ）绑在一起看。\n\n### 批判性审视与适用边界\n\nPhysStream 当前仍处于**静态相机 + 桌面多刚体 + 非实时推理**边界内：未加速全系统在单张 B6000 上生成 49 帧需 **66.3 s（0.74 FPS，56.8 GB 显存）**，其中 50 步去噪占 68.1%、DA3 占 19.2%、VAE 往返占 8.3%、SAM2 占 4.4%；即便结合 4 步 DMD 蒸馏（指标降幅 <1%）与 4× 轻量深度模型，仍为 **19.3 s（2.54 FPS）**，距离真正实时交互尚有距离，且速度控制语义聚焦在桌面平移/碰撞，对高速翻滚等极端三维旋转仍力不从心。",
+    "arxiv": {
+      "published": "2026-09-15",
+      "revised_at": "2026-09-21",
+      "primary_category": "cs.CV"
+    },
+    "source_papers": [
+      "content/papers/2609.17521.md"
+    ]
+  },
+  {
     "id": "arxiv-2607-05373",
     "title": "PixWorld: Unifying 3D Scene Generation and Reconstruction in Pixel Space",
     "authors": [
@@ -11869,6 +12317,72 @@
     ]
   },
   {
+    "id": "arxiv-2605-22894",
+    "title": "SCRIPT: Scalable Diffusion Policy with Multi-stage Training for Language-driven Physics-Based Humanoid Control",
+    "authors": [
+      "Jingyan Zhang",
+      "Han Liang",
+      "Ruichi Zhang",
+      "Bin Li",
+      "Juze Zhang",
+      "Xin Chen",
+      "Jingya Wang",
+      "Lan Xu",
+      "Jingyi Yu"
+    ],
+    "year": 2026,
+    "publication": "2026，SIGGRAPH Asia 2026（arXiv 预印本，v3，2026-09-04）",
+    "arxiv_id": "2605.22894",
+    "doi": "10.1145/3829340.3842344",
+    "links": {
+      "paper": "https://arxiv.org/abs/2605.22894",
+      "project": "https://zhanglele12138.github.io/SCRIPT/",
+      "alphaxiv": "https://alphaxiv.org/abs/2605.22894"
+    },
+    "tags": [
+      "强化与模仿学习",
+      "扩散与流匹配",
+      "机器人学习",
+      "物理建模与仿真",
+      "长时记忆"
+    ],
+    "figure": {
+      "url": "https://arxiv.org/html/2605.22894v3/pipeline.png",
+      "alt": "SCRIPT Fig. 2：JAST-DiT 多阶段训练框架与三流联合注意力架构",
+      "label": "SCRIPT，Fig. 2，包含 Stage I 行为克隆流匹配预训练、Stage II 混合奖励在线 RL 后训练与 JAST-DiT 三流联合注意力模块的整体架构。",
+      "paper_title": "SCRIPT: Scalable Diffusion Policy with Multi-stage Training for Language-driven Physics-Based Humanoid Control",
+      "source_url": "https://arxiv.org/html/2605.22894v3/pipeline.png"
+    },
+    "summary": "核心 Insight：把大规模语言驱动人形物理控制做成像多模态大模型一样可扩展的端到端流匹配策略——（1）用三流联合注意力 JAST-DiT（Action + State + CLIP 次末层词元级 Text）建立语言细节与闭环动力学的稠密交互；（2）用符合遗忘曲线的“近密远疏非线性历史分层交叉注意力”平衡瞬时动力学与长程记忆；（3）在 Stage II 用“动作子空间可学习噪声注入 + 物理追踪与轨迹级文本对比混合奖励 + 速度场 BC 锚定”的 RLHR 在线 PPO 后训练，在不产生生存偏差的前提下同步提升抗冲击鲁棒性与语义忠实度。",
+    "insight": "**核心 Insight：把大规模语言驱动人形物理控制做成像多模态大模型一样可扩展的端到端流匹配策略——（1）用三流联合注意力 JAST-DiT（Action + State + CLIP 次末层词元级 Text）建立语言细节与闭环动力学的稠密交互；（2）用符合遗忘曲线的“近密远疏非线性历史分层交叉注意力”平衡瞬时动力学与长程记忆；（3）在 Stage II 用“动作子空间可学习噪声注入 + 物理追踪与轨迹级文本对比混合奖励 + 速度场 BC 锚定”的 RLHR 在线 PPO 后训练，在不产生生存偏差的前提下同步提升抗冲击鲁棒性与语义忠实度。**\n\n这一多阶段架构的精妙之处在于逐个击破上述矛盾：\n\n- **显式三流（而非单动作流或仅池化文本）各司其职**：Action 流承载可执行 PD 控制、State 流锚定未来物理状态预测以稳定闭环、Text 流保留 CLIP 次末层词元特征并通过联合自注意力与状态/动作逐词交互，避免词元语义被最终投影抹平。\n- **非线性历史采样与分层交叉注意力**：全量历史冗余且算力爆炸，均匀采样又会稀释决定当前动量与接触转换的近期帧；按指数衰减对远期历史稀疏采样、近期历史稠密保留，并先查远期语境再查近期动力学，显著优于均匀采样与盲目拉长窗口。\n- **混合奖励精准对抗 RL 生存偏差**：Table 5 消融清晰揭示——去掉 $r_{\\text{phys}}$ 会导致语义对但高频抖动/早摔（Duration 跌至 93.62%）；去掉 $r_{\\text{text}}$ 虽然物理指标“虚高”（Duration 98.74%），但 R-Precision Top-3 骤降至 0.649、FID 恶化超一倍（0.430 vs 0.164），暴露出保守求生倾向；两者结合并配以速度场 BC 锚定（$\\mathcal{L}_{\\text{BC}}$）才实现双赢。",
+    "pipeline": {
+      "input": "自然语言指令 c（经冻结 CLIP 编码为池化向量 c pool 与次末层词元特征 c txt）及过去长度为 L max 的本体状态缓存 mathcalB t（每帧 s t in mathbbR^358，含根高度、24 部位局部位置、6D 旋转、线速度与角速度）。",
+      "process": "先通过“追踪前伪影过滤 + 多专家 PHC 并行追踪 + 追踪后跌倒/误差过滤”从 MotionMillion 等数据提纯出 550K 条（近 1200 小时）物理可执行状态—动作轨迹；Stage I 用流匹配损失在 Isaac Gym 专家演示上预训练 JAST-DiT（支持 0.2B/0.5B/1.2B 三档扩展），结合非线性历史分层交叉注意力预测未来 H=4 步状态—动作块并滚动执行首步；Stage II 在 128 并行 Isaac Gym 环境中，仅向欧拉采样的动作子空间注入轻量网络预测的可学习高斯噪声 sigma phi in [0.03,0.08]，将确定性流采样化为可算精确对数似然与闭式高斯熵的马尔可夫链，以 PPO 联合优化稠密物理奖励、回合末冻结双塔状态—文本对比奖励及速度场 BC 锚定损失。",
+      "output": "Isaac Gym 中 23 自由度人形机器人的闭环目标关节角 PD 控制动作 a t in mathbbR^69 与物理连贯的长时程运动。",
+      "details": "**输入**：自然语言指令 $c$（经冻结 CLIP 编码为池化向量 $\\mathbf{c}_{\\text{pool}}$ 与次末层词元特征 $\\mathbf{c}_{\\text{txt}}$）及过去长度为 $L_{\\max}$ 的本体状态缓存 $\\mathcal{B}_t$（每帧 $\\mathbf{s}_t \\in \\mathbb{R}^{358}$，含根高度、24 部位局部位置、6D 旋转、线速度与角速度）。\n\n**过程**：先通过“追踪前伪影过滤 + 多专家 PHC 并行追踪 + 追踪后跌倒/误差过滤”从 MotionMillion 等数据提纯出 550K 条（近 1200 小时）物理可执行状态—动作轨迹；Stage I 用流匹配损失在 Isaac Gym 专家演示上预训练 JAST-DiT（支持 0.2B/0.5B/1.2B 三档扩展），结合非线性历史分层交叉注意力预测未来 $H=4$ 步状态—动作块并滚动执行首步；Stage II 在 128 并行 Isaac Gym 环境中，仅向欧拉采样的动作子空间注入轻量网络预测的可学习高斯噪声 $\\sigma_\\phi \\in [0.03,0.08]$，将确定性流采样化为可算精确对数似然与闭式高斯熵的马尔可夫链，以 PPO 联合优化稠密物理奖励、回合末冻结双塔状态—文本对比奖励及速度场 BC 锚定损失。\n\n**输出**：Isaac Gym 中 23 自由度人形机器人的闭环目标关节角 PD 控制动作 $\\mathbf{a}_t \\in \\mathbb{R}^{69}$ 与物理连贯的长时程运动。\n\n核心模块与训练细节（[方法：第 4 节](https://arxiv.org/html/2605.22894v3#S4) 与 [附录 B–E](https://arxiv.org/html/2605.22894v3#A2)）：\n\n- **JAST-DiT 与三档规模（Table 1）**：每层用 $\\mathbf{e}=\\mathrm{Cond}(\\tau, \\mathbf{c}_{\\text{pool}})$ 经 AdaLN-Zero 独立调制三流，施加 QK-Norm 后拼接 $[\\mathbf{Q}_a;\\mathbf{Q}_s;\\mathbf{Q}_c]$ 做双向联合自注意力，再分流输出。固定 $d_{\\text{head}}=128$，构建 **Base（8L/512d，206.31M）**、**Large（10L/768d，577.97M）**、**Huge（12L/1024d，1231.39M）**三档模型；HumanML3D 主模型用 Large（$L_{\\max}=154$，8×A100 训 110K 步约 30 小时），MotionMillion 扩展实验拉长历史至 $L_{\\max}=604$（8×A100 训 560K 步）。\n- **非线性历史采样与两级交叉注意力**：保留最近 $N_s$ 帧稠密状态 $\\mathbf{H}_{\\text{rec}}$，对更远 $L_{\\text{distant}}$ 帧按指数衰减分布 $I_i = \\lfloor L_{\\text{distant}}(1 + \\frac{\\ln(1-u_i(1-e^{-\\alpha}))}{\\alpha})\\rfloor$ 稀疏采样 $N_l$ 帧 $\\mathbf{H}_{\\text{dist}}$；动作与状态流先对 $\\mathbf{H}_{\\text{dist}}$ 做交叉注意力获取长程意图，再对 $\\mathbf{H}_{\\text{rec}}$ 做交叉注意力捕捉瞬时动力学。\n- **RLHR 在线后训练公式与配置**：在每个欧拉步仅对动作维注入噪声：$\\mathbf{x}_{k+1} = \\mathbf{x}_k + v_\\theta(\\mathbf{x}_k,\\tau_k,\\mathbf{y})\\Delta\\tau + \\mathbf{M}_a \\odot \\sigma_\\phi(\\tau_k,\\mathcal{H}_t) \\odot \\boldsymbol{\\epsilon}_k$。复合目标 $\\mathcal{L}_{\\text{RL}} = \\mathcal{L}_{\\text{PPO}} + \\alpha_v\\mathcal{L}_{\\text{value}} - \\alpha_e\\mathcal{H}_{\\text{entropy}} + \\alpha_{\\text{BC}}\\mathcal{L}_{\\text{BC}}$，其中物理奖励权重 1.0、回合末 InfoNCE 对比文本奖励权重 20、BC 锚定权重 1.0（在独立重采样流匹配三元组上约束 $v_\\theta$ 贴近冻结 $v_{\\theta_0}$）。单张 A100 上 128 并行环境跑 160 轮 PPO 约需 4 天。"
+    },
+    "experiments": "| 评测维度 | SCRIPT 表现 | 关键基线对比 | 核心结论与归因 |\n| --- | --- | --- | --- |\n| **HumanML3D 物理控制主表**（Table 2） | Stage II：R-Prec Top-1/2/3 **0.435 / 0.599 / 0.693**；FID **0.164**；Floating **17.61**；Jerk **1.706**；Duration **98.08%** | CLoSD（Top-1 0.370, FID 0.728, Dur 94.81%）；UniPhys（Top-1 0.143, FID 0.487, Dur 92.55%）；PDP（Top-1 0.206, FID 1.536, Dur 89.54%） | 全面刷新物理人形文本控制 SOTA，FID 比最强物理扩散基线 UniPhys 降 **66.3%**，比级联 CLoSD 降 **77.5%**；Stage II 较 Stage I（FID 0.203, Dur 97.67%）全维增益 |\n| **MotionMillion 1200h 扩展律**（Table 3，Base → Large → Huge） | Top-1：**0.396 → 0.437 → 0.464**；Top-3：**0.633 → 0.680 → 0.701**；FID：**1.057 → 0.776 → 0.645**；MM-Dist：**3.738 → 3.625 → 3.554** | 0.2B → 0.58B → 1.23B 参数跨度内全部 6 项指标单调提升无饱和 | 首次在千小时级物理可执行人形数据上验证扩散控制策略的 DiT 规模扩展律 |\n| **骨盆外力推击鲁棒性**（Table 6，0.2 s 水平冲击） | 600 N：Fall@2s **9.48%**（vs Stage I 10.42%），FID **0.727**（vs 0.858）；800 N：Fall@2s **25.15%**（vs 27.36%），Duration **86.95%**（vs 84.84%），Top-1 **0.244**（vs 0.237） | 推力越大，Stage II 相对 Stage I 的抗跌倒与语义保持优势越明显 | 证实 RLHR 后训练并非保守站桩，而是学会了受扰后主动恢复并继续执行原指令 |\n\n**Table 4 & Table 5 消融实验的三条硬核归因**：\n1. **三流缺一不可**：去掉 Text 流（w/o Text）导致 Top-1 从 **0.429 暴跌至 0.307**、FID 恶化近 5 倍（0.967）；去掉 State 流（w/o State）导致 Duration 跌至 **94.57%**、FID 升至 0.307；仅留 Action 流则全线崩塌（FID 0.485）。\n2. **非线性历史采样精准拿捏长短平衡**：无历史（w/o History）直接崩溃（Top-1 **0.117**、FID **4.063**、Duration **76.68%**）；等长窗口下改用均匀采样，Top-1 降至 0.419、FID 恶化至 0.302；盲目拉长历史（Longer history）虽微降 FID（0.166），但让策略过度依赖惯性而弱化指令响应（Top-1 跌至 0.395）。\n3. **混合奖励消除生存偏差**：去掉 $r_{\\text{phys}}$ 使 Duration 跌至 **93.62%**、Jerk 升至 2.254；去掉 $r_{\\text{text}}$ 触发保守求生偏差，Duration 虚高至 98.74% 但 Top-3 跌至 **0.649**、FID 恶化至 **0.430**。",
+    "evidence_notes": "已核对 arXiv v3 正文及附录 A–G，涵盖 HumanML3D 主表（Table 2）、MotionMillion 0.2B–1.2B 扩展律（Table 1/3）、模态/历史/奖励三组消融（Table 4/5）、外力推击鲁棒性（Table 6）与推理耗时/局限；未运行复现实验。",
+    "code_data_status": "论文摘要声明代码与数据将通过官方项目页（[zhanglele12138.github.io/SCRIPT](https://zhanglele12138.github.io/SCRIPT/)）公开发布；正文未提供独立 GitHub 仓库链接或具体开源协议，550K 提纯物理轨迹数据集与 0.2B–1.2B 权重的实际开放范围以项目页发布为准。",
+    "limitations": "- **推理延迟达动作时长的 2.5 倍，尚未满足实时闭环**：SCRIPT-Large 单次 $H=4$ 块预测（10 步 + CFG = 20 NFE）在单 A100 上需 333 ms，需引入策略蒸馏、少步采样或优化噪声调度以达到高频实时控制。\n- **局限于平地全身控制，缺乏手部精细操作与场景交互**：当前采用 24 部位 SMPL 人形模型，不支持灵巧手抓取、人形移动操作（loco-manipulation）及杂乱环境中的场景感知交互。\n- **严格数据过滤引入分布偏差**：仅保留通过多专家 PHC 追踪与平滑/误差过滤的轨迹，虽然保证了训练物理有效性，却可能低估高难度但物理可行的动作，使 OOD 复杂指令易出现失衡或伪影。\n- **物理不可行指令的本体上限**：对超出刚体动力学与当前本体能力的提示（如“像飞机一样持续悬空飞行”），策略无法可靠实现。\n- **Stage II RLHR 训练算力与吞吐瓶颈**：单 A100 上 128 并行 Isaac Gym 环境训练 160 轮 PPO 耗时约 4 天，且受限于流策略多步采样与外部环境交互开销，亟需结合 GPU-Native 仿真与高并行加速。",
+    "comments": "",
+    "source_reports": [],
+    "deleted": false,
+    "updated_at": "2026-11-28",
+    "challenges": "从自然语言指令直接驱动物理仿真中的人形角色，长期受困于“语义表达力”与“物理闭环稳定性”之间的撕裂，三类主流范式各有硬伤：\n\n- **级联“规划器—追踪器”（CLoSD 等）存在运动学—动力学断层**：上游运动学扩散模型不了解刚体接触、平衡与力矩上限，生成的参考动作常含穿模、浮空或不可行急转；下游物理追踪器被迫在“跟住指令”与“不摔倒”之间妥协，微小参考瑕疵在闭环中不断放大直至跌倒。\n- **单策略蒸馏与粗粒度文本条件导致模式平均与指令坍缩**：将海量技能压缩进紧凑策略会引发模式平均；而现有端到端物理扩散策略（PDP、UniPhys）仅把 CLIP 句级池化向量当作全局条件，抹平了动作动词、身体部位和方向修饰词（如“顺时针行走”）等词元级语义，导致生成退化为泛化动作模板。\n- **纯监督行为克隆（BC）难以抵御闭环暴露偏差与外力扰动**：流匹配模仿学习只拟合专家离线分布，一旦闭环执行出现微小状态偏移或外部冲击就会偏离训练流形；而若仅用物理追踪奖励做在线 RL 微调，策略又会迅速滑向“为了不摔倒而做保守静止动作”的**生存偏差（Survival Bias）**，彻底丢弃语言指令。",
+    "motivation": "**核心 Insight：把大规模语言驱动人形物理控制做成像多模态大模型一样可扩展的端到端流匹配策略——（1）用三流联合注意力 JAST-DiT（Action + State + CLIP 次末层词元级 Text）建立语言细节与闭环动力学的稠密交互；（2）用符合遗忘曲线的“近密远疏非线性历史分层交叉注意力”平衡瞬时动力学与长程记忆；（3）在 Stage II 用“动作子空间可学习噪声注入 + 物理追踪与轨迹级文本对比混合奖励 + 速度场 BC 锚定”的 RLHR 在线 PPO 后训练，在不产生生存偏差的前提下同步提升抗冲击鲁棒性与语义忠实度。**\n\n这一多阶段架构的精妙之处在于逐个击破上述矛盾：\n\n- **显式三流（而非单动作流或仅池化文本）各司其职**：Action 流承载可执行 PD 控制、State 流锚定未来物理状态预测以稳定闭环、Text 流保留 CLIP 次末层词元特征并通过联合自注意力与状态/动作逐词交互，避免词元语义被最终投影抹平。\n- **非线性历史采样与分层交叉注意力**：全量历史冗余且算力爆炸，均匀采样又会稀释决定当前动量与接触转换的近期帧；按指数衰减对远期历史稀疏采样、近期历史稠密保留，并先查远期语境再查近期动力学，显著优于均匀采样与盲目拉长窗口。\n- **混合奖励精准对抗 RL 生存偏差**：Table 5 消融清晰揭示——去掉 $r_{\\text{phys}}$ 会导致语义对但高频抖动/早摔（Duration 跌至 93.62%）；去掉 $r_{\\text{text}}$ 虽然物理指标“虚高”（Duration 98.74%），但 R-Precision Top-3 骤降至 0.649、FID 恶化超一倍（0.430 vs 0.164），暴露出保守求生倾向；两者结合并配以速度场 BC 锚定（$\\mathcal{L}_{\\text{BC}}$）才实现双赢。",
+    "technical_approach": "**输入**：自然语言指令 $c$（经冻结 CLIP 编码为池化向量 $\\mathbf{c}_{\\text{pool}}$ 与次末层词元特征 $\\mathbf{c}_{\\text{txt}}$）及过去长度为 $L_{\\max}$ 的本体状态缓存 $\\mathcal{B}_t$（每帧 $\\mathbf{s}_t \\in \\mathbb{R}^{358}$，含根高度、24 部位局部位置、6D 旋转、线速度与角速度）。\n\n**过程**：先通过“追踪前伪影过滤 + 多专家 PHC 并行追踪 + 追踪后跌倒/误差过滤”从 MotionMillion 等数据提纯出 550K 条（近 1200 小时）物理可执行状态—动作轨迹；Stage I 用流匹配损失在 Isaac Gym 专家演示上预训练 JAST-DiT（支持 0.2B/0.5B/1.2B 三档扩展），结合非线性历史分层交叉注意力预测未来 $H=4$ 步状态—动作块并滚动执行首步；Stage II 在 128 并行 Isaac Gym 环境中，仅向欧拉采样的动作子空间注入轻量网络预测的可学习高斯噪声 $\\sigma_\\phi \\in [0.03,0.08]$，将确定性流采样化为可算精确对数似然与闭式高斯熵的马尔可夫链，以 PPO 联合优化稠密物理奖励、回合末冻结双塔状态—文本对比奖励及速度场 BC 锚定损失。\n\n**输出**：Isaac Gym 中 23 自由度人形机器人的闭环目标关节角 PD 控制动作 $\\mathbf{a}_t \\in \\mathbb{R}^{69}$ 与物理连贯的长时程运动。\n\n核心模块与训练细节（[方法：第 4 节](https://arxiv.org/html/2605.22894v3#S4) 与 [附录 B–E](https://arxiv.org/html/2605.22894v3#A2)）：\n\n- **JAST-DiT 与三档规模（Table 1）**：每层用 $\\mathbf{e}=\\mathrm{Cond}(\\tau, \\mathbf{c}_{\\text{pool}})$ 经 AdaLN-Zero 独立调制三流，施加 QK-Norm 后拼接 $[\\mathbf{Q}_a;\\mathbf{Q}_s;\\mathbf{Q}_c]$ 做双向联合自注意力，再分流输出。固定 $d_{\\text{head}}=128$，构建 **Base（8L/512d，206.31M）**、**Large（10L/768d，577.97M）**、**Huge（12L/1024d，1231.39M）**三档模型；HumanML3D 主模型用 Large（$L_{\\max}=154$，8×A100 训 110K 步约 30 小时），MotionMillion 扩展实验拉长历史至 $L_{\\max}=604$（8×A100 训 560K 步）。\n- **非线性历史采样与两级交叉注意力**：保留最近 $N_s$ 帧稠密状态 $\\mathbf{H}_{\\text{rec}}$，对更远 $L_{\\text{distant}}$ 帧按指数衰减分布 $I_i = \\lfloor L_{\\text{distant}}(1 + \\frac{\\ln(1-u_i(1-e^{-\\alpha}))}{\\alpha})\\rfloor$ 稀疏采样 $N_l$ 帧 $\\mathbf{H}_{\\text{dist}}$；动作与状态流先对 $\\mathbf{H}_{\\text{dist}}$ 做交叉注意力获取长程意图，再对 $\\mathbf{H}_{\\text{rec}}$ 做交叉注意力捕捉瞬时动力学。\n- **RLHR 在线后训练公式与配置**：在每个欧拉步仅对动作维注入噪声：$\\mathbf{x}_{k+1} = \\mathbf{x}_k + v_\\theta(\\mathbf{x}_k,\\tau_k,\\mathbf{y})\\Delta\\tau + \\mathbf{M}_a \\odot \\sigma_\\phi(\\tau_k,\\mathcal{H}_t) \\odot \\boldsymbol{\\epsilon}_k$。复合目标 $\\mathcal{L}_{\\text{RL}} = \\mathcal{L}_{\\text{PPO}} + \\alpha_v\\mathcal{L}_{\\text{value}} - \\alpha_e\\mathcal{H}_{\\text{entropy}} + \\alpha_{\\text{BC}}\\mathcal{L}_{\\text{BC}}$，其中物理奖励权重 1.0、回合末 InfoNCE 对比文本奖励权重 20、BC 锚定权重 1.0（在独立重采样流匹配三元组上约束 $v_\\theta$ 贴近冻结 $v_{\\theta_0}$）。单张 A100 上 128 并行环境跑 160 轮 PPO 约需 4 天。",
+    "discussion": "### 核心 Takeaway 与可迁移启示\n\n1. **给大模型化的具身策略 / VLA 与人形控制：用“三流 MMDiT（Action-State-Text）+ 物理过滤大规模预训练”打破控制策略难扩展的魔咒**。SCRIPT 把 Stable Diffusion 3 式的 MMDiT 多流联合注意力与次末层词元语义引入闭环物理控制，并在 1200h 物理提纯数据上跑出了 0.2B → 1.2B 的单调扩展律——关键前提是**先用 PHC 多专家把运动学数据清洗成物理可执行的 (s, a) 轨迹**，再预测联合状态—动作块以锚定动力学。\n2. **给扩散/流匹配策略在线 RL 后训练的标准范式（RLHR）**：只对动作维注入可学习高斯噪声（保留状态流确定性预测）、用闭式高斯熵稳定探索、用“稠密物理 + 稀疏轨迹级语义对齐”防止生存偏差，并用独立重采样的**速度场 BC 锚定**而非生硬动作约束防遗忘——这套配方对任何流匹配机器人策略（VLA/WAM）的闭环对齐都具备极高的直接迁移价值。\n3. **给长时程闭环控制器的记忆设计**：“近密远疏非线性采样 + 先远后近分层交叉注意力”以极低 Token 预算同时保住了瞬时平衡动力学与长程动作语境，可作为长时域人形与移动操作策略的默认历史编码器。\n\n### 批判性审视与适用边界\n\nSCRIPT 在离线精度与物理稳定性上实现了突破，但存在两处现实工程瓶颈：（1）**推理速度尚未达标高频率实时闭环**——SCRIPT-Large 在单张 A100 上生成 $H=4$ 帧动作块需 **333 ms**（10 步去噪 × CFG 双次前向 = 20 NFE），约为动作块本身物理时长的 **2.5 倍**，尚需结合少步蒸馏或 CFG 蒸馏才能跑进高频实时控制；（2）**能力边界限于平地无交互全身动作**，尚未涉及灵巧手抓取、人—物交互（HOI）与复杂杂乱场景导航。",
+    "arxiv": {
+      "published": "2026-05-21",
+      "revised_at": "2026-09-04",
+      "primary_category": "cs.GR"
+    },
+    "source_papers": [
+      "content/papers/2605.22894.md"
+    ]
+  },
+  {
     "id": "arxiv-2609-01276",
     "title": "Seeing the World and the Self from Egocentric Video",
     "authors": [
@@ -12566,6 +13080,74 @@
     }
   },
   {
+    "id": "arxiv-2608-27073",
+    "title": "SpatialCrafter: Single-Image World Modeling with Generative 3D Proxies",
+    "authors": [
+      "Chuan Fang",
+      "Lingteng Qiu",
+      "Yixun Liang",
+      "Rui Chen",
+      "Kunming Luo",
+      "Zhaohua Zheng",
+      "Tongyuan Bai",
+      "Feipeng Tian",
+      "Zilong Dong",
+      "Zihan Zhou",
+      "Ping Tan"
+    ],
+    "year": 2026,
+    "publication": "2026，SIGGRAPH Asia 2026（arXiv 预印本，v2，2026-08-28）",
+    "arxiv_id": "2608.27073",
+    "doi": "10.1145/3829340.3842158",
+    "links": {
+      "paper": "https://arxiv.org/abs/2608.27073",
+      "project": "https://fangchuan.github.io/SpatialCrafter/",
+      "alphaxiv": "https://alphaxiv.org/abs/2608.27073"
+    },
+    "tags": [
+      "3D/4D",
+      "世界模型",
+      "扩散与流匹配",
+      "数据与评测",
+      "视频生成"
+    ],
+    "figure": {
+      "url": "https://arxiv.org/html/2608.27073v2/pipeline.png",
+      "alt": "SpatialCrafter Fig. 3：全局生成式 3D 代理与生成式延迟精修器架构",
+      "label": "SpatialCrafter，Fig. 3，基于点锚定稀疏结构流匹配（PaSS-Flow）与生成式延迟精修器（Generative Deferred Refiner）的两阶段单图世界建模框架总览。",
+      "paper_title": "SpatialCrafter: Single-Image World Modeling with Generative 3D Proxies",
+      "source_url": "https://arxiv.org/html/2608.27073v2/pipeline.png"
+    },
+    "summary": "核心 Insight：与其让视频扩散模型一边猜测被遮挡的 3D 结构一边画像素，不如彻底拆分成“一次性生成全局对齐的 3D 代理 + 图形学延迟渲染式的视频扩散精修”——用原生 3D 生成器在视频生成之前先锁定全局几何拓扑，再把 VDM 降维成只负责补高频纹理与修补代理瑕疵的 Generative Deferred Refiner。",
+    "insight": "**核心 Insight：与其让视频扩散模型一边猜测被遮挡的 3D 结构一边画像素，不如彻底拆分成“一次性生成全局对齐的 3D 代理 + 图形学延迟渲染式的视频扩散精修”——用原生 3D 生成器在视频生成之前先锁定全局几何拓扑，再把 VDM 降维成只负责补高频纹理与修补代理瑕疵的 Generative Deferred Refiner。**\n\n这一范式相较于重建式代理与全景图代理有三层不可替代的优势：\n\n- **从“无约束 3D 生成”变为“点锚定稀疏体素补全”（PaSS-Flow）**：将首帧 RGB 与预测深度反投影并体素化，作为显式几何锚点 $\\mathcal{V}_{\\text{cond}}$ 通道拼接进稀疏结构流匹配，强迫原生 3D 生成器在参考视角坐标系下精准生长出不可见区域，从源头消灭场景级 3D–2D 空间错位。\n- **比全景图代理（Matrix-3D、One2Scene）多出真实视差与遮挡推理**：全景图本质上仍锁定在单一光心，大平移下无法表达前后景遮挡关系；原生 3D SLAT/3DGS 全局代理直接建立在体素化的 3D 空间中，天然支持任意 $SE(3)$ 轨迹下的真实视差与重访闭环。\n- **“数据剥离对照”证明收益来自架构而非单纯堆数据**：作者用自建 115K 数据重训了增量式代理代表 Voyager（记为 Voyager†），尽管其 FVD/PSNR 显著提升，但在大运动下的几何一致性（RPE/RVE）仍远远落后于 SpatialCrafter，直接证实“一次性全局生成式代理”才是压制长程漂移的决定性机制。",
+    "pipeline": {
+      "input": "单张参考 RGB 图像 I 0 in mathbbR^3× H× W 及任意长度为 N 的 SE(3) 相机轨迹 mathcalT= P i i=0^N-1。",
+      "process": "第一阶段先将首帧反投影体素化为结构锚点，经基于 TRELLIS 改造的 PaSS-Flow 与 SLAT Flow 生成全局 3D 高斯代理 mathcalX scene 并沿轨迹渲染粗糙 RGB-D 序列；第二阶段将粗糙 RGB 与深度经因果视频 VAE 编码后沿宽度拼合，通过并行几何注入（Parallel Geometry Injection）与代理感知退化（Proxy-Aware Corruption, PAC）微调冻结底座 Wan2.1-Fun-Control 的 LoRA，联合精修出高保真 RGB-D 视频。",
+      "output": "沿目标相机轨迹时空一致、高保真且具备几何一致性的 81 帧 RGB-D 视频序列 hatV= hatI i,hatD i i=1^N-1。",
+      "details": "**输入**：单张参考 RGB 图像 $\\mathbf{I}_0 \\in \\mathbb{R}^{3\\times H\\times W}$ 及任意长度为 $N$ 的 $SE(3)$ 相机轨迹 $\\mathcal{T}=\\{\\mathbf{P}_i\\}_{i=0}^{N-1}$。\n\n**过程**：第一阶段先将首帧反投影体素化为结构锚点，经基于 TRELLIS 改造的 PaSS-Flow 与 SLAT Flow 生成全局 3D 高斯代理 $\\mathcal{X}_{\\text{scene}}$ 并沿轨迹渲染粗糙 RGB-D 序列；第二阶段将粗糙 RGB 与深度经因果视频 VAE 编码后沿宽度拼合，通过并行几何注入（Parallel Geometry Injection）与代理感知退化（Proxy-Aware Corruption, PAC）微调冻结底座 Wan2.1-Fun-Control 的 LoRA，联合精修出高保真 RGB-D 视频。\n\n**输出**：沿目标相机轨迹时空一致、高保真且具备几何一致性的 81 帧 RGB-D 视频序列 $\\hat{\\mathbf{V}}=\\{\\hat{\\mathbf{I}}_i,\\hat{\\mathbf{D}}_i\\}_{i=1}^{N-1}$。\n\n核心模块与数据工程拆解（[方法：第 4 节](https://arxiv.org/html/2608.27073v2#S4)）：\n\n- **点锚定稀疏结构流匹配（PaSS-Flow）**：基于 TRELLIS 的两阶段 SLAT 架构（稀疏体素结构 + 每体素潜在特征 → 3DGS 解码器 $\\mathcal{D}_{\\text{3D}}$）。将 $\\mathbf{I}_0$ 与深度反投影并按 $\\mathbf{P}_0$ 变换体素化得到条件体素 $\\mathcal{V}_{\\text{cond}}$，与噪声状态 $\\mathcal{V}_t$ 在 DiT 输入端通道拼接，以流匹配目标 $\\mathcal{L}_{\\text{PaSS}}$ 完成稀疏体素补全，再经 SLAT Flow 解码出全局 3DGS 代理。Stage 1 在 16×H20 上分阶段微调（RE10K+DL3DV 10K 步 → SpatialGen 10K 步，batch size 128）。\n- **并行几何注入（Parallel Geometry Injection）**：对 3DGS 渲染出的粗糙 RGB-D 序列分别用 Wan 因果 VAE 编码为 $\\mathbf{z}_{\\text{rgb}}$ 与 $\\mathbf{z}_{\\text{depth}}$，沿宽度维度并排拼接构成联合几何潜在 $\\mathbf{z}_{\\text{geo}}$，与噪声潜在 $\\mathbf{z}_t$ 通道拼接，再与参考图潜在 $\\mathbf{z}_{\\text{ref}}$ 沿 Token 维度拼接；**冻结全部预训练 VDM 权重、仅优化 DiT 内的 LoRA**，在注入强拓扑约束的同时不破坏预训练生成流形。Stage 2 在 32×H20 上按 $256^2$（12K 步）→ $512^2$（4K 步）渐进训练（81 帧，batch size 32）。\n- **代理感知退化（Proxy-Aware Corruption, PAC）**：推理时生成的 3D 代理必然存在过度平滑、浮空伪影与未观测空洞（黑洞）。训练期对条件对 $(\\mathbf{I}_i^{\\text{cond}}, \\mathbf{D}_i^{\\text{cond}})$ 随机施加三种退化——自适应高斯模糊、分块噪声、局部深度擦除——迫使精修器学会“哪里该锚定代理几何、哪里该调用视频先验主动修复与补全”。\n- **115K 混合场景数据引擎**：融合合成室内数据 SpatialGen（重渲染 2.2K 高质量场景×10 轨迹得 22,421 条连续 RGB-D 视频）与真实视频 RealEstate10K（65,683 条）和 DL3DV（10,510 条，用 ViPE + Depth-Anything-v3 估计一致深度并严格过滤），经 TRELLIS 管线统一构建粗 3DGS 代理与配对渲染，并以 Gemini 3 生成文本描述，最终得到 **115,295 组图生场景对**与 **87,115 组可控视频对**。"
+    },
+    "experiments": "所有方法在统一的 81 帧单图长轨迹评测协议下对比（Table 1；重投影误差 RPE 与闭环重访误差 RVE 直接基于参考帧真值 RGB-D 与相机轨迹计算，排除 SLAM 估计器干扰）：\n\n| 评测基准 | SpatialCrafter | 次优/关键基线对比 | 核心结论与归因 |\n| --- | --- | --- | --- |\n| **SpatialGen-Video**（104 闭环场景） | FVD **193.54** / PSNR **14.775** / SSIM **0.579** / LPIPS **0.416** / RPE **0.093** / RVE **38.69** | ViewCrafter（FVD 339.04, RPE 0.125）；Voyager†（FVD 363.39, RPE 0.192, RVE 250.98）；GEN3C（RVE 26.60, FVD 525.23） | 5/6 指标第 1，FVD 比次优直降 **42.9%**；即便同数据重训 Voyager†，RVE 仍高达 250.98 |\n| **RealEstate10K**（100 真实测试场景） | FVD **148.71** / PSNR **17.185** / SSIM **0.659** / LPIPS **0.266** / RPE **0.078** | GeometryForcing（FVD 190.41, PSNR 16.46, RPE 0.093）；GEN3C（FVD 199.57, RPE 0.118） | 全部 5 项指标断层第 1，证明合成+真实混合代理引擎具备强真实场景迁移力 |\n| **DL3DV**（标准测试集，大范围运动） | FVD **242.30** / PSNR **13.356** / SSIM **0.356** / LPIPS **0.453** / RPE **0.149** | GEN3C（FVD 369.99, RPE 0.189）；ViewCrafter（FVD 470.05, RPE **0.147**）；Voyager†（FVD 708.42, RPE 0.211） | 视觉质量全面第 1（FVD 降 **34.5%**），几何误差 RPE 与 ViewCrafter 持平并大幅领先其余基线 |\n\n**Table 2 消融实验的三条硬核归因（SpatialGen-Video）**：\n1. **PaSS-Flow 是全局代理可用性的生死线**：去掉 PaSS-Flow 后，3D 代理与输入视角失配，FVD 从 **193.54 暴涨至 472.07**，RPE 从 **0.093 恶化至 0.169**，RVE 从 **38.69 飙升至 153.47**（约 4 倍）。\n2. **粗 RGB-D 代理远胜纯相机参数控制**：在真值粗代理消融中，纯相机控制（Camera-only）FVD 为 178.47 / PSNR 14.50 / RPE 0.107；加入粗 RGB 渲染后 PSNR 跃升至 **19.47**、RPE 降至 **0.066**；再加入粗深度（RGB-D）FVD 进一步降至 **114.13**、RVE 降至 **32.17**。\n3. **PAC 有效消除训练—推理代理保真度鸿沟**：开启 Proxy-Aware Corruption 后，Full 模型 FVD 再降至 **107.03**、PSNR 升至 **20.39**、RPE 降至 **0.057**、RVE 降至 **30.96**；定性对比显示无 PAC 时精修器会忠实保留粗代理的黑洞伪影，开启 PAC 后能自主识别并逼真补全缺失区域。",
+    "evidence_notes": "已核对 arXiv v2 正文、Table 1 三数据集主实验（含 Voyager† 同数据重训对照）、Table 2 两阶段消融与 115K 混合数据引擎流程；未运行复现实验。",
+    "code_data_status": "论文公布了官方项目页（[fangchuan.github.io/SpatialCrafter](https://fangchuan.github.io/SpatialCrafter/)），摘要与正文未给出 GitHub 代码仓库链接或 115K 混合数据集的具体下载/许可协议，代码与权重开放状态以项目页后续更新为准。",
+    "limitations": "- **仅覆盖静态世界建模，缺乏动态物体与物理交互**：一次性静态 3DGS 代理无法表达移动主体或外力驱动的场景演化，向动态 4D 世界模型扩展需要引入时变代理或与物理动力学模块耦合。\n- **两阶段流水线的延迟与非流式瓶颈**：先生成全局 3D 代理再进行 81 帧视频扩散精修，难以直接满足实时交互式具身仿真或在线控制闭环的延迟预算。\n- **单图全局补全的固有不确定性与代理容量上限**：TRELLIS SLAT 稀疏体素分辨率有限，在极其开阔或结构复杂的室外大场景中，远景细节与多房间连通布局仍可能受限于代理的体素覆盖范围。\n- **依赖前置单目深度与位姿估计质量**：PaSS-Flow 的点锚定严格依赖输入图深度估计精度；若输入视图存在强反光、透明材质或极端畸变导致深度失真，锚点误差会直接传导至全局代理与精修结果。",
+    "comments": "",
+    "source_reports": [],
+    "deleted": false,
+    "updated_at": "2026-11-28",
+    "challenges": "从单张参考图沿任意相机轨迹生成可探索、几何一致的 3D 场景视频，现有视频世界模型（VDM）主要卡在两类记忆范式的结构性失效上：\n\n- **2D 图像记忆（DFoT、Context-as-Memory 等）缺乏显式三维拓扑**：把历史帧当作外部记忆库虽能维持短时连贯，但面对大范围平移、急转弯或闭环重访时，没有显式 3D 遮挡与视差约束，极易出现尺度漂移、透视畸变与闭环错位；在剧烈相机运动下甚至退化为近乎静止的画面。\n- **重建式 3D 代理（ViewCrafter、GEN3C、Voyager）陷入“不完整—幻觉—自污染”死循环**：静态点云代理只包含首帧可见区域，未观测区域永远欠约束，迫使 VDM 随机脑补；而增量式点云代理（如 Voyager）将 VDM 新生成的帧反复反投影回点云，结果代理本身的完整性反过来受制于 VDM 脆弱的 3D 感知力——一旦某帧出现幻觉或光照漂移，就会固化进 3D 代理并持续毒害后续帧。\n- **单图原生 3D 场景生成的坐标系失配与数据真空**：直接借用物体级原生 3D 生成器（如 TRELLIS）生成场景，缺乏视图坐标系对齐监督，微小位姿偏移在场景尺度下被急剧放大，导致代理渲染与参考图错位并误导下游 VDM；同时社区缺乏兼具室内外多样性与精准几何标注的大规模单图场景数据集。",
+    "motivation": "**核心 Insight：与其让视频扩散模型一边猜测被遮挡的 3D 结构一边画像素，不如彻底拆分成“一次性生成全局对齐的 3D 代理 + 图形学延迟渲染式的视频扩散精修”——用原生 3D 生成器在视频生成之前先锁定全局几何拓扑，再把 VDM 降维成只负责补高频纹理与修补代理瑕疵的 Generative Deferred Refiner。**\n\n这一范式相较于重建式代理与全景图代理有三层不可替代的优势：\n\n- **从“无约束 3D 生成”变为“点锚定稀疏体素补全”（PaSS-Flow）**：将首帧 RGB 与预测深度反投影并体素化，作为显式几何锚点 $\\mathcal{V}_{\\text{cond}}$ 通道拼接进稀疏结构流匹配，强迫原生 3D 生成器在参考视角坐标系下精准生长出不可见区域，从源头消灭场景级 3D–2D 空间错位。\n- **比全景图代理（Matrix-3D、One2Scene）多出真实视差与遮挡推理**：全景图本质上仍锁定在单一光心，大平移下无法表达前后景遮挡关系；原生 3D SLAT/3DGS 全局代理直接建立在体素化的 3D 空间中，天然支持任意 $SE(3)$ 轨迹下的真实视差与重访闭环。\n- **“数据剥离对照”证明收益来自架构而非单纯堆数据**：作者用自建 115K 数据重训了增量式代理代表 Voyager（记为 Voyager†），尽管其 FVD/PSNR 显著提升，但在大运动下的几何一致性（RPE/RVE）仍远远落后于 SpatialCrafter，直接证实“一次性全局生成式代理”才是压制长程漂移的决定性机制。",
+    "technical_approach": "**输入**：单张参考 RGB 图像 $\\mathbf{I}_0 \\in \\mathbb{R}^{3\\times H\\times W}$ 及任意长度为 $N$ 的 $SE(3)$ 相机轨迹 $\\mathcal{T}=\\{\\mathbf{P}_i\\}_{i=0}^{N-1}$。\n\n**过程**：第一阶段先将首帧反投影体素化为结构锚点，经基于 TRELLIS 改造的 PaSS-Flow 与 SLAT Flow 生成全局 3D 高斯代理 $\\mathcal{X}_{\\text{scene}}$ 并沿轨迹渲染粗糙 RGB-D 序列；第二阶段将粗糙 RGB 与深度经因果视频 VAE 编码后沿宽度拼合，通过并行几何注入（Parallel Geometry Injection）与代理感知退化（Proxy-Aware Corruption, PAC）微调冻结底座 Wan2.1-Fun-Control 的 LoRA，联合精修出高保真 RGB-D 视频。\n\n**输出**：沿目标相机轨迹时空一致、高保真且具备几何一致性的 81 帧 RGB-D 视频序列 $\\hat{\\mathbf{V}}=\\{\\hat{\\mathbf{I}}_i,\\hat{\\mathbf{D}}_i\\}_{i=1}^{N-1}$。\n\n核心模块与数据工程拆解（[方法：第 4 节](https://arxiv.org/html/2608.27073v2#S4)）：\n\n- **点锚定稀疏结构流匹配（PaSS-Flow）**：基于 TRELLIS 的两阶段 SLAT 架构（稀疏体素结构 + 每体素潜在特征 → 3DGS 解码器 $\\mathcal{D}_{\\text{3D}}$）。将 $\\mathbf{I}_0$ 与深度反投影并按 $\\mathbf{P}_0$ 变换体素化得到条件体素 $\\mathcal{V}_{\\text{cond}}$，与噪声状态 $\\mathcal{V}_t$ 在 DiT 输入端通道拼接，以流匹配目标 $\\mathcal{L}_{\\text{PaSS}}$ 完成稀疏体素补全，再经 SLAT Flow 解码出全局 3DGS 代理。Stage 1 在 16×H20 上分阶段微调（RE10K+DL3DV 10K 步 → SpatialGen 10K 步，batch size 128）。\n- **并行几何注入（Parallel Geometry Injection）**：对 3DGS 渲染出的粗糙 RGB-D 序列分别用 Wan 因果 VAE 编码为 $\\mathbf{z}_{\\text{rgb}}$ 与 $\\mathbf{z}_{\\text{depth}}$，沿宽度维度并排拼接构成联合几何潜在 $\\mathbf{z}_{\\text{geo}}$，与噪声潜在 $\\mathbf{z}_t$ 通道拼接，再与参考图潜在 $\\mathbf{z}_{\\text{ref}}$ 沿 Token 维度拼接；**冻结全部预训练 VDM 权重、仅优化 DiT 内的 LoRA**，在注入强拓扑约束的同时不破坏预训练生成流形。Stage 2 在 32×H20 上按 $256^2$（12K 步）→ $512^2$（4K 步）渐进训练（81 帧，batch size 32）。\n- **代理感知退化（Proxy-Aware Corruption, PAC）**：推理时生成的 3D 代理必然存在过度平滑、浮空伪影与未观测空洞（黑洞）。训练期对条件对 $(\\mathbf{I}_i^{\\text{cond}}, \\mathbf{D}_i^{\\text{cond}})$ 随机施加三种退化——自适应高斯模糊、分块噪声、局部深度擦除——迫使精修器学会“哪里该锚定代理几何、哪里该调用视频先验主动修复与补全”。\n- **115K 混合场景数据引擎**：融合合成室内数据 SpatialGen（重渲染 2.2K 高质量场景×10 轨迹得 22,421 条连续 RGB-D 视频）与真实视频 RealEstate10K（65,683 条）和 DL3DV（10,510 条，用 ViPE + Depth-Anything-v3 估计一致深度并严格过滤），经 TRELLIS 管线统一构建粗 3DGS 代理与配对渲染，并以 Gemini 3 生成文本描述，最终得到 **115,295 组图生场景对**与 **87,115 组可控视频对**。",
+    "discussion": "### 核心 Takeaway 与可迁移启示\n\n1. **给几何增强 World Action Model（WAM）的设计启示：用“生成式 3D 代理 + 延迟精修”替代“在线自回归重建缓存”**。机器人导航与操作常需预测大视角/遮挡后的场景演化，增量式点云缓存（如 Voyager）在长轨迹下必然遭遇误差自放大；先用轻量原生 3D 模型做一次性点锚定全局结构补全，再用冻结 VDM + LoRA 做视觉外观与深度精修，是兼顾 3D 拓扑刚性与视觉高保真的极佳解耦架构。\n2. **给多模态条件注入的工程范式：宽度拼接 + 冻结底座 LoRA + 条件退化（PAC）**。当外部几何条件（粗渲染、深度图、点云投影）存在不可避免的推理期噪声时，直接用干净真值训练会让扩散模型“盲信”条件而复制伪影；PAC 这类针对性条件退化训练（模糊/块噪声/局部擦除）几乎零推理开销，却能教会模型在“锚定几何”与“调用生成先验修复”之间动态权衡。\n3. **数据引擎的混合配方可复用**：合成全景室内（精准几何、可重渲染连续轨迹）+ 真实视频（ViPE/DAv3 一致深度 + 严格过滤）+ 统一 SLAT 粗代理构造，为需要配对“粗 3D—精视频”监督的世界模型提供了一条可扩展的数据生产线。\n\n### 批判性审视与适用边界\n\nSpatialCrafter 的核心假设是**静态 3D 场景**——全局 3D 代理在生成视频前一次性确定且不再随时间演化，因此它擅长相机探索与大视角新视角合成，但无法直接建模场景内物体的物理运动、交互碰撞或非刚体变形；同时，两阶段串行结构（TRELLIS 3D 生成 + 81 帧双向视频 DiT 精修）面向离线/分块场景探索，尚未具备逐帧流式低延迟交互能力。",
+    "arxiv": {
+      "published": "2026-08-27",
+      "revised_at": "2026-08-28",
+      "primary_category": "cs.CV"
+    },
+    "source_papers": [
+      "content/papers/2608.27073.md"
+    ]
+  },
+  {
     "id": "arxiv-2610-12457",
     "title": "SpatialHarness: Test-Time Spatial Scaffolding for Fine Robotic Manipulation",
     "authors": [
@@ -12882,6 +13464,69 @@
     }
   },
   {
+    "id": "arxiv-2606-07508",
+    "title": "Streaming Video Generation with Streaming Force Control",
+    "authors": [
+      "Hanhui Wang",
+      "Yiming Xie",
+      "Haiwen Feng",
+      "Zhaoyang Lv",
+      "Shenlong Wang",
+      "Huaizu Jiang"
+    ],
+    "year": 2026,
+    "publication": "2026，SIGGRAPH Asia 2026（arXiv 预印本，v1，2026-06-05）",
+    "arxiv_id": "2606.07508",
+    "doi": "10.48550/arXiv.2606.07508",
+    "links": {
+      "paper": "https://arxiv.org/abs/2606.07508",
+      "project": "https://neu-vi.github.io/StreamForce/",
+      "alphaxiv": "https://alphaxiv.org/abs/2606.07508"
+    },
+    "tags": [
+      "世界模型",
+      "动作表征",
+      "流式与自回归",
+      "物理建模与仿真",
+      "视频生成"
+    ],
+    "figure": {
+      "url": "https://arxiv.org/html/2606.07508v1/pipeline_figure.png",
+      "alt": "StreamForce Fig. 2：统一力表征与力感知因果蒸馏两阶段训练架构",
+      "label": "StreamForce，Fig. 2，统一力场表征双向教师训练与双源 ODE 初始化 + Self-Forcing DMD 因果蒸馏管线总览。",
+      "paper_title": "Streaming Video Generation with Streaming Force Control",
+      "source_url": "https://arxiv.org/html/2606.07508v1/pipeline_figure.png"
+    },
+    "summary": "核心 Insight：遵循“先控后因（Control-before-Causality）”范式——先用像素对齐的 4 通道统一掩码力场表征 + 时变力合成数据，在冻结骨干的 ControlNet 双向教师中统一学好全局/局部与时变力动力学；再在因果蒸馏阶段引入“合成力数据 + 90K 真实开放域图像-力配对（Pexels）+ 无泄露文本描述”的双源 ODE 初始化与 Self-Forcing DMD，在 16.6 FPS 实时流式生成中同时保住力响应精度与开放域直觉物理。",
+    "insight": "**核心 Insight：遵循“先控后因（Control-before-Causality）”范式——先用像素对齐的 4 通道统一掩码力场表征 + 时变力合成数据，在冻结骨干的 ControlNet 双向教师中统一学好全局/局部与时变力动力学；再在因果蒸馏阶段引入“合成力数据 + 90K 真实开放域图像-力配对（Pexels）+ 无泄露文本描述”的双源 ODE 初始化与 Self-Forcing DMD，在 16.6 FPS 实时流式生成中同时保住力响应精度与开放域直觉物理。**\n\n这一方案相较替代路线的关键优势在于：\n\n- **统一力表征不仅省一半模型，还带来跨力型正向迁移**：把全局力（全图掩码为 1）与局部力（半径 $r$ 圆形区域掩码为 1）统一成像素对齐的 4 通道张量，消融显示联合训练的单一教师在全局与局部两项 Physics-IQ 上反而同时超越分开训练的专用模型（42.13/49.99 vs 41.79/47.38）。\n- **双源蒸馏是保住开放域泛化的真正命门**：论文发现一个极关键的现象——双向教师仅靠合成数据训练仍能保持较好泛化，但一旦蒸馏为少步因果学生，去掉真实多样数据（w/o Diverse）会让 Physics-IQ 从 **40.99/46.31 暴跌至 27.82/20.50**。这是因为因果自回归压缩了上下文与采样步数，必须靠大规模真实图像-力 ODE 轨迹撑住开放域流形。\n- **反泄露文本标注纪律**：用 Qwen3-VL 为 90K Pexels 图像生成描述时，明确禁止文本透露风向、力度、推力方向与物体坐标，强制学生模型从力通道而非文本捷径读取控制信号。",
+    "pipeline": {
+      "input": "单张首帧图像、文本描述，以及随时间连续可变的 2D 物理力场序列 f in mathbbR^T× 4× H× W（支持全局风力与局部接触力，可在流式生成中途任意修改方向与大小）。",
+      "process": "基于 Wan2.2-TI2V-5B，Stage 1 冻结骨干、仅微调复制自骨干前半层的 ControlNet 分支，在 60K 合成视频（30K 恒定力 + 30K 时变力）上学习统一力控双向教师；Stage 2 用教师在“合成 + 90K Pexels 多样图像-力对（1:2 采样）”上生成分块异噪声 ODE 轨迹，联合微调骨干与 ControlNet 完成因果学生初始化，再经 1:5 生成器/判别器更新比的 Self-Forcing DMD 蒸馏为少步因果流式模型；长视频推理结合 Rolling-Forcing 滚动窗口与“局部时序 + 全局首帧锚点”双 KV Cache。",
+      "output": "在单张 H200 GPU 上以 16.6 FPS、0.6 秒首包延迟 实时流式输出 832× 480 分辨率的物理连贯视频。",
+      "details": "**输入**：单张首帧图像、文本描述，以及随时间连续可变的 2D 物理力场序列 $\\mathbf{f} \\in \\mathbb{R}^{T\\times 4\\times H\\times W}$（支持全局风力与局部接触力，可在流式生成中途任意修改方向与大小）。\n\n**过程**：基于 Wan2.2-TI2V-5B，Stage 1 冻结骨干、仅微调复制自骨干前半层的 ControlNet 分支，在 60K 合成视频（30K 恒定力 + 30K 时变力）上学习统一力控双向教师；Stage 2 用教师在“合成 + 90K Pexels 多样图像-力对（1:2 采样）”上生成分块异噪声 ODE 轨迹，联合微调骨干与 ControlNet 完成因果学生初始化，再经 1:5 生成器/判别器更新比的 Self-Forcing DMD 蒸馏为少步因果流式模型；长视频推理结合 Rolling-Forcing 滚动窗口与“局部时序 + 全局首帧锚点”双 KV Cache。\n\n**输出**：在单张 H200 GPU 上以 **16.6 FPS、0.6 秒首包延迟**实时流式输出 $832\\times 480$ 分辨率的物理连贯视频。\n\n核心公式与训练配置拆解（[方法：第 3 节](https://arxiv.org/html/2606.07508v1#S3) 与 [附录 C–E](https://arxiv.org/html/2606.07508v1#A3)）：\n\n- **4 通道像素对齐统一力表征**：时刻 $t$ 的力由大小 $F_t \\in [0,1]$、方向 $\\theta_t \\in [0,2\\pi)$ 与空间掩码 $\\mathbf{M}_t(u,v) \\in \\{0,1\\}$（全局力全 1，局部力为以 $(x,y)$ 为圆心、半径 $r$ 的圆盘）构成：\n  $$\\mathbf{f}_t(u,v)=\\bigl(-1+2\\mathbf{M}_t(u,v),\\;-1+2F_t,\\;\\cos\\theta_t,\\;\\sin\\theta_t\\bigr)$$\n  这一设计天然兼容同一物体不同部位同时施加多个局部力（如机器人经典 T-pushing 双点协同推挤旋转）。\n- **两阶段三步训练配方**：\n  1. *双向教师*：8×H200、$416\\times 240$（21 潜帧 = 81 帧）、10K 步、仅训 ControlNet（lr $10^{-6}$），数据为 30K Force-Prompting 合成 + 30K Blender 时变力合成（风向/风力突变、小球二次换向推击）；\n  2. *双源 ODE 初始化*：教师在 `[1000, 750, 500, 250, 0]` 时间步生成合成与 Pexels 多样图（经 Qwen3-VL 过滤静态样本）的 ODE 解对，16×H200 上以 $832\\times 480$、全局 batch 128 联合优化骨干与 ControlNet 10K 步（lr $2\\times 10^{-6}$），不同潜在块独立采样噪声级别以对齐流式推理；\n  3. *Self-Forcing DMD 蒸馏*：8×H200 上 3,000 步（生成器 lr $2\\times 10^{-6}$、判别器 $4\\times 10^{-7}$，更新比 1:5，200 步后启用 EMA），对自回归 rollout 全序列施加逆 KL 散度梯度匹配。"
+    },
+    "experiments": "| 评测维度 | StreamForce（流式 ✓） | Force-Prompting（离线 ✗，Wan2.2 重训） | Kling 1.5 Motion Brush（离线 ✗） | Wan2.2 TI2V（离线 ✗） |\n| --- | --- | --- | --- | --- |\n| **恒定全局力感知**（Table 1，力遵循 / 物理 / 画质） | 64.2% / **65.8%** / **68.5%** | **74.2%** / 47.3% / 38.8% | — | 20.8% / 31.2% / 40.4% |\n| **恒定局部力感知**（Table 1，力遵循 / 物理 / 画质） | **81.9%** / **71.9%** / **69.2%** | 48.8% / 32.3% / 30.8% | 44.2% / 45.8% / 52.3% | 15.0% / 17.7% / 17.7% |\n| **时变全局力感知**（Table 1，力遵循 / 物理 / 画质） | **86.5%** / **77.3%** / **76.9%** | 32.7% / 38.5% / 33.1% | — | 7.3% / 28.1% / 35.4% |\n| **时变局部力感知**（Table 1，力遵循 / 物理 / 画质） | **80.4%** / **64.6%** / **62.7%** | 6.2% / 25.0% / 19.2% | 34.2% / 35.8% / 43.1% | 4.2% / 12.3% / 13.1% |\n| **实拍 Physics-IQ 总分**（Table 2，40 实拍视频） | 全局 **40.99**（S.T. IoU **0.532**） / 局部 **46.31**（S.T. IoU **0.542**） | 全局 40.87（0.496） / 局部 44.29（0.373） | — | 全局 37.92 / 局部 35.21 |\n| **力度敏感度感知**（Table A1，大小力对比） | 全局 **88.9%** / 局部 **78.0%** | 全局 16.7% / 局部 20.0% | — | 全局 0% / 局部 0% |\n\n**四组消融实验的核心归因（Fig. 4 & Fig. 5）**：\n1. **统一表征 + 联合训练双赢**：相较 Force-Prompting 表征（40.87 / 44.29），统一表征分训（Separate）升至 41.79 / 47.38，而统一联训教师（Ours-teacher）达 **42.13 / 49.99**，表明全局与局部力共享底层动力学先验。\n2. **多样真实数据是因果蒸馏的必需品**：蒸馏阶段去掉 Pexels 多样图像-力对（w/o Diverse）后，学生模型 Physics-IQ 从 **40.99 / 46.31 断崖式暴跌至 27.82 / 20.50**。\n3. **时变力监督不可缺省**：去掉时变力训练数据（w/o Change Data）后，推理期改力的感知响应率在全局力上从 **71.7% 跌至 15.2%**，在局部力上从 **88.6% 直接归零（0%）**——模型会完全无视中途的新力输入。\n4. **涌现的直觉物理**：尽管未显式监督质量、摩擦或重力，模型展现出牛奶满杯比空杯难推、粗糙表面滑行更短、推过桌沿自动下落，以及 T 型物体双点协同推转等定性直觉物理行为（Sec. 5）。",
+    "evidence_notes": "已核对 arXiv v1 正文及附录 A–F，涵盖感知评测（Table 1/A1）、真实拍摄 Physics-IQ 评测（Table 2）、四组核心消融（Fig. 4/5）与训练/局限细节；未运行复现实验。",
+    "code_data_status": "论文公布了官方项目页（[neu-vi.github.io/StreamForce](https://neu-vi.github.io/StreamForce/)），正文与附录未提供公开 GitHub 仓库链接，60K 合成时变力数据、90K Pexels 力标注数据及模型权重开源状态以项目页后续发布为准。",
+    "limitations": "- **仅支持 2D 图像平面力，缺乏深度方向 3D 力建模**：当前力向量用 $(\\cos\\theta_t, \\sin\\theta_t)$ 编码在像平面内，无法表达指向或远离相机的推拉与完整三维力学交互。\n- **局部力材质覆盖局限于刚体与关节物体**：局部力训练数据主要面向刚体/关节体（如推杯子、拉抽屉），对流体（水花、烟雾）、弹性变形体（布料、橡胶）及颗粒介质施加局部力时，往往退化为僵硬的刚体平移。\n- **复杂多物体连锁交互建模不足**：框架聚焦单物体对外力的响应，对多物体连续碰撞、堆叠坍塌等连锁动力学缺乏显式物理先验或仿真监督。\n- **力类型与多接触点泛化受限**：仅覆盖牛顿机械接触力与风场，不含磁力、浮力、静电力等非接触场；虽然 T-pushing 展示了双点协同潜力，但训练期局部力以单点为主，尚未系统泛化到任意物体和任意多接触点组合。",
+    "comments": "",
+    "source_reports": [],
+    "deleted": false,
+    "updated_at": "2026-11-28",
+    "challenges": "让视频世界模型在实时流式生成中响应连续、时变的物理外力（如风场变化或中途推挤纠偏），现有方法存在三重结构性短板：\n\n- **轨迹控制规定“结果”而非“原因”，丢失对象物理属性**：MotionStream 等实时轨迹模型要求用户预先指定像素路径，既难以表达风吹布料/流体等全局场效应，也无法体现“同样推力作用在重物体与轻物体上加速度不同”的因果动力学。\n- **现有力控制模型（Force-Prompting）割裂、静态且离线**：它将全局力（风）与局部力（推）拆成两套表征和两个独立模型，成本翻倍且无法共享动力学先验；训练数据中力全程恒定，导致推理时中途改力几乎毫无反应；且依赖双向全序列扩散，无法实现“边看生成结果、边实时施力纠偏”的交互闭环。\n- **朴素因果蒸馏会丢失开放域视觉泛化与力响应**：直接把合成数据训练出的力控双向教师蒸馏为少步因果学生时，若仅用合成力数据做蒸馏，因果自回归的额外约束会急剧放大过拟合，导致开放域场景下的运动模式坍缩与物理一致性崩盘（Physics-IQ 暴跌超一半）。",
+    "motivation": "**核心 Insight：遵循“先控后因（Control-before-Causality）”范式——先用像素对齐的 4 通道统一掩码力场表征 + 时变力合成数据，在冻结骨干的 ControlNet 双向教师中统一学好全局/局部与时变力动力学；再在因果蒸馏阶段引入“合成力数据 + 90K 真实开放域图像-力配对（Pexels）+ 无泄露文本描述”的双源 ODE 初始化与 Self-Forcing DMD，在 16.6 FPS 实时流式生成中同时保住力响应精度与开放域直觉物理。**\n\n这一方案相较替代路线的关键优势在于：\n\n- **统一力表征不仅省一半模型，还带来跨力型正向迁移**：把全局力（全图掩码为 1）与局部力（半径 $r$ 圆形区域掩码为 1）统一成像素对齐的 4 通道张量，消融显示联合训练的单一教师在全局与局部两项 Physics-IQ 上反而同时超越分开训练的专用模型（42.13/49.99 vs 41.79/47.38）。\n- **双源蒸馏是保住开放域泛化的真正命门**：论文发现一个极关键的现象——双向教师仅靠合成数据训练仍能保持较好泛化，但一旦蒸馏为少步因果学生，去掉真实多样数据（w/o Diverse）会让 Physics-IQ 从 **40.99/46.31 暴跌至 27.82/20.50**。这是因为因果自回归压缩了上下文与采样步数，必须靠大规模真实图像-力 ODE 轨迹撑住开放域流形。\n- **反泄露文本标注纪律**：用 Qwen3-VL 为 90K Pexels 图像生成描述时，明确禁止文本透露风向、力度、推力方向与物体坐标，强制学生模型从力通道而非文本捷径读取控制信号。",
+    "technical_approach": "**输入**：单张首帧图像、文本描述，以及随时间连续可变的 2D 物理力场序列 $\\mathbf{f} \\in \\mathbb{R}^{T\\times 4\\times H\\times W}$（支持全局风力与局部接触力，可在流式生成中途任意修改方向与大小）。\n\n**过程**：基于 Wan2.2-TI2V-5B，Stage 1 冻结骨干、仅微调复制自骨干前半层的 ControlNet 分支，在 60K 合成视频（30K 恒定力 + 30K 时变力）上学习统一力控双向教师；Stage 2 用教师在“合成 + 90K Pexels 多样图像-力对（1:2 采样）”上生成分块异噪声 ODE 轨迹，联合微调骨干与 ControlNet 完成因果学生初始化，再经 1:5 生成器/判别器更新比的 Self-Forcing DMD 蒸馏为少步因果流式模型；长视频推理结合 Rolling-Forcing 滚动窗口与“局部时序 + 全局首帧锚点”双 KV Cache。\n\n**输出**：在单张 H200 GPU 上以 **16.6 FPS、0.6 秒首包延迟**实时流式输出 $832\\times 480$ 分辨率的物理连贯视频。\n\n核心公式与训练配置拆解（[方法：第 3 节](https://arxiv.org/html/2606.07508v1#S3) 与 [附录 C–E](https://arxiv.org/html/2606.07508v1#A3)）：\n\n- **4 通道像素对齐统一力表征**：时刻 $t$ 的力由大小 $F_t \\in [0,1]$、方向 $\\theta_t \\in [0,2\\pi)$ 与空间掩码 $\\mathbf{M}_t(u,v) \\in \\{0,1\\}$（全局力全 1，局部力为以 $(x,y)$ 为圆心、半径 $r$ 的圆盘）构成：\n  $$\\mathbf{f}_t(u,v)=\\bigl(-1+2\\mathbf{M}_t(u,v),\\;-1+2F_t,\\;\\cos\\theta_t,\\;\\sin\\theta_t\\bigr)$$\n  这一设计天然兼容同一物体不同部位同时施加多个局部力（如机器人经典 T-pushing 双点协同推挤旋转）。\n- **两阶段三步训练配方**：\n  1. *双向教师*：8×H200、$416\\times 240$（21 潜帧 = 81 帧）、10K 步、仅训 ControlNet（lr $10^{-6}$），数据为 30K Force-Prompting 合成 + 30K Blender 时变力合成（风向/风力突变、小球二次换向推击）；\n  2. *双源 ODE 初始化*：教师在 `[1000, 750, 500, 250, 0]` 时间步生成合成与 Pexels 多样图（经 Qwen3-VL 过滤静态样本）的 ODE 解对，16×H200 上以 $832\\times 480$、全局 batch 128 联合优化骨干与 ControlNet 10K 步（lr $2\\times 10^{-6}$），不同潜在块独立采样噪声级别以对齐流式推理；\n  3. *Self-Forcing DMD 蒸馏*：8×H200 上 3,000 步（生成器 lr $2\\times 10^{-6}$、判别器 $4\\times 10^{-7}$，更新比 1:5，200 步后启用 EMA），对自回归 rollout 全序列施加逆 KL 散度梯度匹配。",
+    "discussion": "### 核心 Takeaway 与可迁移启示\n\n1. **给实时流式 WAM / 物理世界模型：用“合成教师 + 开放域无泄露双源蒸馏”跨越 Sim-to-Real 与因果化双重鸿沟**。StreamForce 证明了一个高复用价值的现象：双向教师在合成数据上就能保留不错的开放域先验，但因果少步蒸馏极易塌缩到合成域；只要在 ODE 初始化与 Self-Forcing DMD 阶段混入大规模真实图像+合成控制对（并严格禁止文本泄露控制量），就能以 **16.6 FPS、0.6 s 延迟**把物理可控性无损迁移到实时流式生成器。\n2. **给具身操作动作接口的启示：用“统一掩码力场”统一全局环境扰动与局部多点接触**。相比像素轨迹或单一末端位姿，像素对齐的掩码力场天然兼容多接触点协同（如双指/双手 T-pushing）与环境力场，且把质量/摩擦响应交给预训练视频先验隐式推断，是一类极具潜力的低维物理动作接口。\n3. **与 PhysStream 的互补视角**：StreamForce 胜在 **16.6 FPS 真实时流式**、支持全局风场与多点力输入，但仅限 2D 平面力且缺乏显式 3D 记忆；PhysStream 则用在线 3D 位置图+跟踪图换取了更强的 3D 多物体碰撞精度。二者路线正交，将 StreamForce 的双源 Self-Forcing 蒸馏与轻量 3D 场景记忆结合是极具想象力的下一代流式物理世界模型方向。\n\n### 批判性审视与适用边界\n\nStreamForce 的“涌现直觉物理”如作者坦诚所言仍属**定性视觉线索而非定量精确物理**：实拍 Physics-IQ 上其像素级 Spatial IoU（0.091 / 0.168）甚至低于离线 Force-Prompting（0.118 / 0.217），优势主要体现在时空轨迹连贯性（S.T. IoU）与实时响应；同时，2D 平面力编码无法表达沿深度轴推拉，且多物体连锁碰撞、非刚体局部受力尚未覆盖。",
+    "arxiv": {
+      "published": "2026-06-05",
+      "revised_at": "2026-06-05",
+      "primary_category": "cs.CV"
+    },
+    "source_papers": [
+      "content/papers/2606.07508.md"
+    ]
+  },
+  {
     "id": "arxiv-2609-00610",
     "title": "Streaming4D: Accelerate 4D World Models via Block-wise Video Generation and Incremental Reconstruction",
     "authors": [
@@ -12941,6 +13586,70 @@
       "revised_at": "2026-09-01T02:49:45Z",
       "primary_category": "cs.CV"
     }
+  },
+  {
+    "id": "arxiv-2608-03158",
+    "title": "Surface Keypoint Representation for Multi-Object and Articulated Human-Object Interaction Generation",
+    "authors": [
+      "Xiaogang Peng",
+      "Zeyu Han",
+      "Zichong Meng",
+      "Yiming Xie",
+      "Jihua Zhu",
+      "Gang Hua",
+      "Huaizu Jiang"
+    ],
+    "year": 2026,
+    "publication": "2026，SIGGRAPH Asia 2026（ACM TOG；arXiv 预印本 v1，2026-08-04）",
+    "arxiv_id": "2608.03158",
+    "doi": "10.48550/arXiv.2608.03158",
+    "links": {
+      "paper": "https://arxiv.org/abs/2608.03158",
+      "project": "https://neu-vi.github.io/SK-HOI",
+      "alphaxiv": "https://alphaxiv.org/abs/2608.03158"
+    },
+    "tags": [
+      "3D/4D",
+      "HOI",
+      "动作表征",
+      "扩散与流匹配",
+      "触觉与灵巧操作"
+    ],
+    "figure": {
+      "url": "https://arxiv.org/html/2608.03158v1/framework_v4.1.png",
+      "alt": "SK-HOI Fig. 3：物体表面关键点轨迹生成、时空接触距离场预测与接触优化全身动作合成三阶段框架",
+      "label": "SK-HOI，Fig. 3，基于表面关键点轨迹与时空接触距离场的三阶段解耦 HOI 生成框架总览。",
+      "paper_title": "Surface Keypoint Representation for Multi-Object and Articulated Human-Object Interaction Generation",
+      "source_url": "https://arxiv.org/html/2608.03158v1/framework_v4.1.png"
+    },
+    "summary": "核心 Insight：把场景中所有独立刚体与关节物体的可动部件统一拆解为“刚性组件（Rigid Components）”，并用每组件 K 个（最小 K=3）非共线表面关键点的纯欧氏 3D 轨迹取代 SE(3) 与显式关节参数；再以人体表面 Marker 到物体稠密表面点的 Sigmoid 归一化时空接触距离场为桥梁，将复杂 HOI 解耦为“物体运动 to 接触场 to 接触优化全身动作”三阶段生成。",
+    "insight": "**核心 Insight：把场景中所有独立刚体与关节物体的可动部件统一拆解为“刚性组件（Rigid Components）”，并用每组件 $K$ 个（最小 $K=3$）非共线表面关键点的纯欧氏 3D 轨迹取代 $SE(3)$ 与显式关节参数；再以人体表面 Marker 到物体稠密表面点的 Sigmoid 归一化时空接触距离场为桥梁，将复杂 HOI 解耦为“物体运动 $\\to$ 接触场 $\\to$ 接触优化全身动作”三阶段生成。**\n\n这一设计在数学与工程上直击要害：\n\n- **欧氏点轨迹天然无损且关节类型无关**：几何上 3 个非共线点即可通过 Kabsch 算法闭式无损恢复任意刚体 $SE(3)$ 位姿；更重要的是，旋转关节呈现绕固定轴的圆弧点迹、平移关节呈现直线点迹、螺旋关节呈现旋转平移耦合点迹——生成模型无需任何先验关节类型定义，直接从数据分布学会全部运动学机制，同时把人（138 表面 Marker）和物完全统一到同一欧氏空间。\n- **固定容量零填充 + 掩码实现单模型可变物体数**：按最大组件容量 $N$ 分配槽位、未用槽位零填充并掩码，配合训练时随机打乱槽位顺序，让单个模型无需改结构即可同时处理单物体、2–3 物体以及多部件关节物体，且对槽位排列近似严格不变。\n- **Sigmoid 归一化表面接触距离场优于二值/原始欧氏距离/SDF**：用 $\\mathbf{D}_t = \\sigma((\\tau - \\text{dist}(\\mathbf{H}_t^c, \\mathbf{S}_t))/\\alpha) \\in (0,1)$ 编码人体交互表面 Marker 到每组件 384 个表面点的时空邻近度，既避免了二值标签的梯度消失，又消除了原始欧氏距离的尺度敏感性，并作为独立中间模态显式指导 Stage III 的扩散噪声优化（DNO），使人体在保持流形自然度的前提下精准贴合多物体接触。",
+    "pipeline": {
+      "input": "文本指令或稀疏物体路点 e、各刚性组件的规范姿态 BPS 几何特征 b、以及起始 L init=4 帧的人体表面 Marker H init 与物体关键点 O init。",
+      "process": "全部三阶段均基于 Transformer 条件 Flow Matching（在冻结因果自编码器潜在空间中最小化速度场 MSE）。Stage I 展平时间与组件维度生成所有组件表面关键点轨迹 hatO 1:T；Stage II 条件于物体轨迹预测时空接触距离场 hatD 1:T；Stage III 生成全身 138 表面 Marker 轨迹 hatH 1:T，并在推理期通过扩散噪声优化（DNO）沿接触与物体 SDF 穿透损失反传更新初始噪声 bmepsilon^h；最后经 Kabsch 算法恢复各物体组件位姿、经轻量 10 层 ResNet + 400 步测试时优化将 Marker 拟合回 SMPL-X 网格。",
+      "output": "运动平滑、接触精准且支持多物体与多类型关节的完整 SMPL-X 全身动作及物体网格序列。",
+      "details": "**输入**：文本指令或稀疏物体路点 $\\mathbf{e}$、各刚性组件的规范姿态 BPS 几何特征 $\\mathbf{b}$、以及起始 $L_{\\mathrm{init}}=4$ 帧的人体表面 Marker $\\mathbf{H}_{\\mathrm{init}}$ 与物体关键点 $\\mathbf{O}_{\\mathrm{init}}$。\n\n**过程**：全部三阶段均基于 Transformer 条件 Flow Matching（在冻结因果自编码器潜在空间中最小化速度场 MSE）。Stage I 展平时间与组件维度生成所有组件表面关键点轨迹 $\\hat{\\mathbf{O}}_{1:T}$；Stage II 条件于物体轨迹预测时空接触距离场 $\\hat{\\mathbf{D}}_{1:T}$；Stage III 生成全身 138 表面 Marker 轨迹 $\\hat{\\mathbf{H}}_{1:T}$，并在推理期通过扩散噪声优化（DNO）沿接触与物体 SDF 穿透损失反传更新初始噪声 $\\bm{\\epsilon}^h$；最后经 Kabsch 算法恢复各物体组件位姿、经轻量 10 层 ResNet + 400 步测试时优化将 Marker 拟合回 SMPL-X 网格。\n\n**输出**：运动平滑、接触精准且支持多物体与多类型关节的完整 SMPL-X 全身动作及物体网格序列。\n\n核心模块与关键机制拆解（[方法：第 3 节](https://arxiv.org/html/2608.03158v1#S3) & [附录 D–E](https://arxiv.org/html/2608.03158v1#A4)）：\n\n- **表面关键点物体表征与 Kabsch 恢复**：对每个刚性组件（独立物体或关节部件）用最远点采样（FPS）取 $K=3$ 个非共线表面点（对细长近共线物体如刀、笔可无缝增至 $K>3$ 以防奇异）。全场景物体状态为 $\\mathbf{O}_t \\in \\mathbb{R}^{N \\times 3K}$；推理后对每组件用带反射处理的 Kabsch SVD 闭式求 $(\\mathbf{R}_t^i, \\mathbf{t}_t^i)$。若下游已知物理铰链轴，还支持免重训的投影后修正（`Ours + Correction`）。\n- **全身上表面 Marker 与时空接触距离场**：人体采用 SMPL-X 上含密集手掌点的 $M=138$ 表面 Marker，选交互高频子集 $M_c$ 与每组件 $Q=384$ 表面点计算 Sigmoid 接触场 $\\mathbf{D}_t \\in \\mathbb{R}^{M_c \\times NQ}$。冻结因果自编码器对该接触场的重建 MAE 仅 `0.0073`（接触格 F1 `0.927`），确保潜在扩散不丢失稀疏接触细节。\n- **Stage III 扩散噪声优化（DNO）**：直接优化输出 Marker 会偏离人体动作流形产生畸变，因此将 5 步 ODE 采样的 Flow Matching 解码器视为可微函数，执行 **200 次噪声空间梯度更新**（余弦学习率 0.05），最小化 $\\mathcal{L}_{\\text{contact}} + \\lambda_{\\text{pen}}\\mathcal{L}_{\\text{pen}}$（$\\lambda_{\\text{pen}}=0.001$）。推理速度（单张 A6000，124 帧）：Stage I 仅 **0.22s**、Stage II **0.59s**、Stage III 含 DNO 约 **4.21 分钟**（仍快于 CoDA 的约 14 分钟且支持批处理；追求速度时可跳过 DNO 换取轻微接触退化）。"
+    },
+    "experiments": "| 评测基准 / 设定 | SK-HOI (Ours) | 核心基线对比 | 关键结论与归因 |\n| --- | --- | --- | --- |\n| **ParaHome 2 物体/组件**（Table 1） | FID **4.49** / $R_{prec}$ **0.707** / FS **0.0035** / $\\text{Jerk}_{obj}$ **0.72** / $C_{acc}^{tem}$ **0.669** / $C_{acc}^{body}$ **0.896** / Pene **0.536** | HIMO-Gen（FID 14.83, $R_{prec}$ 0.580, FS 0.3258, $\\text{Jerk}_{obj}$ 8.15, $C_{acc}^{tem}$ 0.534） | 全部指标大幅领先，脚滑降近百倍，物体抖动降超 11 倍 |\n| **ParaHome 3 物体/组件**（Table 1） | FID **6.09** / $R_{prec}$ **0.598** / FS **0.0017** / $\\text{Jerk}_{obj}$ **0.40** / $C_{acc}^{tem}$ **0.680** / $C_{acc}^{body}$ **0.906** / Pene **0.776** | HIMO-Gen（FID 21.61, $R_{prec}$ 0.509, FS 0.4437, $\\text{Jerk}_{obj}$ 7.13, $C_{acc}^{tem}$ 0.634） | 组件数增多时优势进一步扩大，FID 降幅达 **71.8%** |\n| **HIMO 多物体**（Table 1） | 2-Obj FID **6.572** / $C_{acc}^{body}$ **0.912**；3-Obj FID **2.273** / $C_{acc}^{tem}$ **0.751** | HIMO-Gen（分别训练 2-Obj/3-Obj 专模型：FID 8.019 / 4.467, $C_{acc}^{body}$ 0.698 / 0.712） | 单模型通吃 2/3 物体并全面反超专训基线 |\n| **ARCTIC 关节物体**（Table 2） | FID 2.331 / $R_{prec}$ **0.495** / Div **7.892** / ID **11.98** / CR **0.089** | CoDA（FID **2.178**, $R_{prec}$ 0.479, ID 12.87, CR 0.086）；HIMO-Gen（FID 3.064） | 无需硬编码铰链轴即在文本对齐、穿深与接触率上反超专做旋转关节的 CoDA |\n| **OMOMO 单物体**（Table 3） | FID 3.46 / $R_{prec}$ **0.529** / FS **0.0004** / $\\text{Jerk}_{obj}$ **2.95** / $C_{acc}^{tem}$ **0.886** | ROG（FID **3.27**, $\\text{Jerk}_{obj}$ 16.05, $C_{acc}^{tem}$ 0.719）；HOIDiNi（FID 4.87, $C_{acc}^{tem}$ 0.698） | 单物体依然保持顶尖水准，时序接触精度大幅领先 ROG 与 HOIDiNi |\n| **ParaHome 未见物体组合**（Appendix Table 9） | 2-Obj FID **7.81** / $\\text{Jerk}_{obj}$ **0.59** / $C_{acc}^{body}$ **0.863**；3-Obj FID **8.32** | HIMO-Gen（2-Obj FID 12.37, $\\text{Jerk}_{obj}$ 4.89, $C_{acc}^{body}$ 0.623；3-Obj FID 10.87） | 在训练未见的多物体新组合上，基线物体抖动飙升近 10 倍，SK-HOI 仍稳定 |\n\n**最具价值的四组消融与机制验证（Table 4–5 & Appendix Table 1, 3, 6–8, 10）**：\n1. **表面关键点全面击败 $SE(3)$ 旋转+平移**（Table 4，OMOMO 相同架构）：路点条件下关键点将 $\\text{Jerk}_{obj}$ 压低至 **2.86**（6D rot 为 4.02，9D matrix 为 4.58），平移误差 $T_{obj}$ 降至 **7.51**（vs. 10.13 / 9.78），朝向误差 $O_{obj}$ 降至 **0.97**（vs. 1.11 / 1.05）。\n2. **Sigmoid 接触距离场全面击败三类替代接触表征**（Table 5）：在 ParaHome 2/3 物体与 OMOMO 上均全线第一（如 OMOMO $C_{acc}^{tem}/C_{acc}^{body}$ 为 **0.893 / 0.902**，显著高于原始欧氏距离 0.848/0.858、Contact Pairs 0.808/0.815 与二值标签 0.795/0.804）。\n3. **免关节先验也能保持极高运动学合法性**（Appendix Table 3, 6）：在 ParaHome 282 对关节组件上，不加任何硬约束时轴偏 $>10^\\circ$ 仅占 **1.46%**、超关节限位仅 **0.02%**、装配枢轴漂移 $>2\\text{ cm}$ 仅 **5.20%**（中位漂移 0.00 cm）；且覆盖平移/螺旋/旋转三类关节（CoDA 对平移/螺旋为 N/A）。\n4. **关键点数 $K=3$ 是最优权衡点，且模型对槽位顺序近似不变**（Appendix Table 8, 10）：增加到 $K=6/9$ 反而因过度约束局部几何导致 FID 和接触精度轻微下降（仅对细长近共线物体需要 $K>3$ 抗噪）；随机置换组件槽位顺序时 FID 仅波动 `±0.02`、接触精度波动 `±0.002`。",
+    "evidence_notes": "已核对 arXiv v1 正文与附录（Appendix D–G），覆盖 ParaHome/HIMO/ARCTIC/OMOMO 主结果（Table 1–3）、表征与接触消融（Table 4–5）、铰链合规性与运动学合法性（Appendix Table 3, 6）、Kabsch 鲁棒性与槽位排列不变性（Appendix Table 7–10）及耗时/失败案例；未运行复现实验。",
+    "code_data_status": "官方项目页 [SK-HOI](https://neu-vi.github.io/SK-HOI) 已公开，实验基于公开数据集 ParaHome、HIMO、ARCTIC 与 OMOMO 评测；正文中未直接列出 GitHub 仓库链接与开源许可协议，代码与权重释放状态以项目页更新为准。",
+    "limitations": "- **Stage III 噪声优化耗时严重限制实时性**：200 步 DNO 需反复穿越 5 步 ODE 去噪反传，单条 124 帧序列耗时约 4.21 分钟（A6000），亟需蒸馏或前馈接触精修器替代。\n- **Marker-to-SMPL-X 拟合误差导致脚部悬空**：Appendix G 显示，当回归+优化拟合器估计出偏小的人体身高/体形参数时，会直接引发明显的脚部悬空（foot floating）伪影。\n- **细长物体的 Kabsch 共线退化**：当组件几何高度狭长导致 3 个采样点接近共线（$\\sigma_2/\\sigma_1 < 0.1$）时，微小点噪会急剧放大旋转恢复误差，需单独切换过定点集（$k>3$）。\n- **接触距离场时序不一致导致漏接触**：若 Stage II 预测的时空距离场在时间维出现断层或抖动，Stage III 即使做 DNO 也会错过关键接触窗口（Appendix G Fig. 8 右）。\n- **缺少真实物理动力学约束**：当前仍存在轻微穿模、浮脚及约 5.2% 帧的关节装配漂移，复杂强接触交互仍需结合物理仿真器或闭环物理控制器。",
+    "comments": "",
+    "source_reports": [],
+    "deleted": false,
+    "updated_at": "2026-11-28",
+    "challenges": "现有全身人-物交互（HOI）生成模型在走向真实居家多物体与多样化关节物体（抽屉、笔记本、旋钮、门等）时，遭遇两个底层表征瓶颈：\n\n- **非欧 $SE(3)$ 物体表征的“几何错配”与“关节类型锁死”**：主流方法用全局 6D/9D 旋转 + 3D 平移描述物体，而人体动作位于欧氏空间，二者存在天然流形错配，导致扩散模型难以对齐接触。更致命的是，扩展到关节物体时，现有做法（如 CoDA）需在 6-DoF 上硬编码 1D 铰链角，不仅只能处理单一旋转关节（Revolute），根本无法无痛泛化到平移关节（Prismatic，如抽屉）、螺旋关节（Screw，如旋盖）或可变数量的多物体组合。\n- **现有接触表征在“稀疏度、空间精度与多物体可扩展性”上顾此失彼**：二值接触标签极度稀疏、梯度微弱，难以学习接触切换；静态可供性不随时间演化；仅手部局部传感器无法覆及全身（如坐、靠、抱）；而 ROG 提出的交互距离场仅限单物体且从稀疏内部骨骼关节计算距离，而非真正发生物理接触的人体表面，且原始未归一化欧氏距离动态范围过大、对物体尺寸高度敏感。",
+    "motivation": "**核心 Insight：把场景中所有独立刚体与关节物体的可动部件统一拆解为“刚性组件（Rigid Components）”，并用每组件 $K$ 个（最小 $K=3$）非共线表面关键点的纯欧氏 3D 轨迹取代 $SE(3)$ 与显式关节参数；再以人体表面 Marker 到物体稠密表面点的 Sigmoid 归一化时空接触距离场为桥梁，将复杂 HOI 解耦为“物体运动 $\\to$ 接触场 $\\to$ 接触优化全身动作”三阶段生成。**\n\n这一设计在数学与工程上直击要害：\n\n- **欧氏点轨迹天然无损且关节类型无关**：几何上 3 个非共线点即可通过 Kabsch 算法闭式无损恢复任意刚体 $SE(3)$ 位姿；更重要的是，旋转关节呈现绕固定轴的圆弧点迹、平移关节呈现直线点迹、螺旋关节呈现旋转平移耦合点迹——生成模型无需任何先验关节类型定义，直接从数据分布学会全部运动学机制，同时把人（138 表面 Marker）和物完全统一到同一欧氏空间。\n- **固定容量零填充 + 掩码实现单模型可变物体数**：按最大组件容量 $N$ 分配槽位、未用槽位零填充并掩码，配合训练时随机打乱槽位顺序，让单个模型无需改结构即可同时处理单物体、2–3 物体以及多部件关节物体，且对槽位排列近似严格不变。\n- **Sigmoid 归一化表面接触距离场优于二值/原始欧氏距离/SDF**：用 $\\mathbf{D}_t = \\sigma((\\tau - \\text{dist}(\\mathbf{H}_t^c, \\mathbf{S}_t))/\\alpha) \\in (0,1)$ 编码人体交互表面 Marker 到每组件 384 个表面点的时空邻近度，既避免了二值标签的梯度消失，又消除了原始欧氏距离的尺度敏感性，并作为独立中间模态显式指导 Stage III 的扩散噪声优化（DNO），使人体在保持流形自然度的前提下精准贴合多物体接触。",
+    "technical_approach": "**输入**：文本指令或稀疏物体路点 $\\mathbf{e}$、各刚性组件的规范姿态 BPS 几何特征 $\\mathbf{b}$、以及起始 $L_{\\mathrm{init}}=4$ 帧的人体表面 Marker $\\mathbf{H}_{\\mathrm{init}}$ 与物体关键点 $\\mathbf{O}_{\\mathrm{init}}$。\n\n**过程**：全部三阶段均基于 Transformer 条件 Flow Matching（在冻结因果自编码器潜在空间中最小化速度场 MSE）。Stage I 展平时间与组件维度生成所有组件表面关键点轨迹 $\\hat{\\mathbf{O}}_{1:T}$；Stage II 条件于物体轨迹预测时空接触距离场 $\\hat{\\mathbf{D}}_{1:T}$；Stage III 生成全身 138 表面 Marker 轨迹 $\\hat{\\mathbf{H}}_{1:T}$，并在推理期通过扩散噪声优化（DNO）沿接触与物体 SDF 穿透损失反传更新初始噪声 $\\bm{\\epsilon}^h$；最后经 Kabsch 算法恢复各物体组件位姿、经轻量 10 层 ResNet + 400 步测试时优化将 Marker 拟合回 SMPL-X 网格。\n\n**输出**：运动平滑、接触精准且支持多物体与多类型关节的完整 SMPL-X 全身动作及物体网格序列。\n\n核心模块与关键机制拆解（[方法：第 3 节](https://arxiv.org/html/2608.03158v1#S3) & [附录 D–E](https://arxiv.org/html/2608.03158v1#A4)）：\n\n- **表面关键点物体表征与 Kabsch 恢复**：对每个刚性组件（独立物体或关节部件）用最远点采样（FPS）取 $K=3$ 个非共线表面点（对细长近共线物体如刀、笔可无缝增至 $K>3$ 以防奇异）。全场景物体状态为 $\\mathbf{O}_t \\in \\mathbb{R}^{N \\times 3K}$；推理后对每组件用带反射处理的 Kabsch SVD 闭式求 $(\\mathbf{R}_t^i, \\mathbf{t}_t^i)$。若下游已知物理铰链轴，还支持免重训的投影后修正（`Ours + Correction`）。\n- **全身上表面 Marker 与时空接触距离场**：人体采用 SMPL-X 上含密集手掌点的 $M=138$ 表面 Marker，选交互高频子集 $M_c$ 与每组件 $Q=384$ 表面点计算 Sigmoid 接触场 $\\mathbf{D}_t \\in \\mathbb{R}^{M_c \\times NQ}$。冻结因果自编码器对该接触场的重建 MAE 仅 `0.0073`（接触格 F1 `0.927`），确保潜在扩散不丢失稀疏接触细节。\n- **Stage III 扩散噪声优化（DNO）**：直接优化输出 Marker 会偏离人体动作流形产生畸变，因此将 5 步 ODE 采样的 Flow Matching 解码器视为可微函数，执行 **200 次噪声空间梯度更新**（余弦学习率 0.05），最小化 $\\mathcal{L}_{\\text{contact}} + \\lambda_{\\text{pen}}\\mathcal{L}_{\\text{pen}}$（$\\lambda_{\\text{pen}}=0.001$）。推理速度（单张 A6000，124 帧）：Stage I 仅 **0.22s**、Stage II **0.59s**、Stage III 含 DNO 约 **4.21 分钟**（仍快于 CoDA 的约 14 分钟且支持批处理；追求速度时可跳过 DNO 换取轻微接触退化）。",
+    "discussion": "### 核心 Takeaway 与可迁移启示\n\n1. **给 3D/4D 物体动作建模与关节物体操作：用“刚性组件 + $K$ 点欧氏表面轨迹 + Kabsch 闭式求解”替代 $SE(3)$ + 显式 URDF 关节参数**。这套表征彻底消灭了扩散/流匹配在 $SO(3)$ 流形上的优化痛点，并且让单套网络天然兼容刚体、多物体和任意未知关节机制（旋转/平移/螺旋），极易迁移到具身操作策略的物体目标轨迹表征中。\n2. **给接触引导生成：在表面（而非内部骨骼）构建 Sigmoid 归一化距离场，并作为显式中间模态解耦预测**。这一设计把“何时何地接触”的离散组合难题转化为稠密、有界、尺度平稳的连续场，比二值接触和未归一化欧氏距离更容易被扩散模型学准。\n3. **给多阶段生成管线的效率/质量权衡**：Stage I + II 前向总共不到 1 秒，真正耗时的是 Stage III 的 200 步 DNO（4.21 分钟）；从 Appendix Table 1 看，即使去掉 DNO（`w/o Contact Optimization`），HIMO 2/3 物体 FID（6.893 / 2.345）和接触精度依然显著优于端到端单阶段与 HIMO-Gen，说明三阶段解耦本身已经拿下了大部分收益，DNO 是锦上添花的离线精修手段。\n\n### 批判性审视与适用边界\n\nSK-HOI 最大的实用瓶颈在于**推理耗时与二次拟合开销**：4.21 分钟/124 帧的 DNO + 400 步 SMPL-X Marker 拟合使其目前只适合离线动画制作与合成数据生成，无法直接在线部署；同时，纯点迹建模对极度细长、采样点接近共线（$\\sigma_2/\\sigma_1 < 0.1$，如刀、笔）的物体存在 Kabsch 旋转病态放大风险（$k=3$ 时约 $1.3^\\circ/\\text{mm}$ 敏感度），虽可通过增至 $k>3$ 缓解，但仍需针对几何各向异性做自适应采样。",
+    "arxiv": {
+      "published": "2026-08-04",
+      "revised_at": "2026-08-04",
+      "primary_category": "cs.CV"
+    },
+    "source_papers": [
+      "content/papers/2608.03158.md"
+    ]
   },
   {
     "id": "arxiv-2608-25798",
@@ -13131,6 +13840,65 @@
     },
     "source_papers": [
       "content/papers/2611.23143.md"
+    ]
+  },
+  {
+    "id": "arxiv-2609-15032",
+    "title": "Tele360: Real-Time Feed-Forward Human Reconstruction from Sparse Unposed Cameras",
+    "authors": [
+      "Hanzhang Tu",
+      "Zhanfeng Liao",
+      "Wei Min",
+      "Jiajun Zhang",
+      "Yebin Liu"
+    ],
+    "year": 2026,
+    "publication": "2026，SIGGRAPH Asia 2026（arXiv 预印本，v1，2026-09-14）",
+    "arxiv_id": "2609.15032",
+    "doi": "10.48550/arXiv.2609.15032",
+    "links": {
+      "paper": "https://arxiv.org/abs/2609.15032",
+      "alphaxiv": "https://alphaxiv.org/abs/2609.15032"
+    },
+    "tags": [
+      "3D/4D",
+      "多模态感知与提示",
+      "流式与自回归"
+    ],
+    "figure": {
+      "url": "https://arxiv.org/html/2609.15032v1/method.png",
+      "alt": "Tele360 Fig. 2：稀疏无标定相机实时人体重建流水线总览",
+      "label": "Tele360，Fig. 2，融合混合特征提取、前景稀疏多视角 Transformer、轻量高斯解码器与可微相机 BA 层的实时无标定人体重建流水线总览。",
+      "paper_title": "Tele360: Real-Time Feed-Forward Human Reconstruction from Sparse Unposed Cameras",
+      "source_url": "https://arxiv.org/html/2609.15032v1/method.png"
+    },
+    "summary": "核心 Insight：面向人体重建的 2K 实时无标定系统不应把算力浪费在 90% 的静态背景和重型卷积上采样上——通过“低清 DINO + 2K 轻量 CNN 混合特征”解耦几何与纹理分辨率，用“前景 Token 稀疏化 + 共享全局场景 Token”把 Transformer 算力砍掉近九成，再以“端到端可微 Levenberg-Marquardt 仅相机 BA 层”在线消除多视角重影，并把像素对齐高斯图拆分高低字节直接喂给标准 H.265 硬件编码器。",
+    "insight": "**核心 Insight：面向人体重建的 2K 实时无标定系统不应把算力浪费在 90% 的静态背景和重型卷积上采样上——通过“低清 DINO + 2K 轻量 CNN 混合特征”解耦几何与纹理分辨率，用“前景 Token 稀疏化 + 共享全局场景 Token”把 Transformer 算力砍掉近九成，再以“端到端可微 Levenberg-Marquardt 仅相机 BA 层”在线消除多视角重影，并把像素对齐高斯图拆分高低字节直接喂给标准 H.265 硬件编码器。**\n\n四处核心设计相较常规方案的优势非常清晰：\n\n- **混合 ViT–CNN 特征优于硬拉 ViT 分辨率**：实测直接把 DINO 输入分辨率翻倍不仅推理变慢（35 ms → 43 ms），PSNR 反而暴跌 **2.10 dB**（30.36 → 28.26 dB），说明高频外观细节应由 2K 轻量 CNN（EdgeNeXt-xxs）多尺度金字塔供给，而非硬扛高分辨率 ViT。\n- **纯稀疏 Transformer 解码器优于 DPT 卷积解码器**：避免卷积上采样在人体轮廓深度突变处引发的过度平滑与边界飞点，同时保持全链路 Token 级稀疏（前景仅占约 10% Token），且实验证明主干已充分完成跨视角交互，解码器保持视角独立（SA-SA-CA）即可达最优几何精度与最快速度。\n- **轻量仅相机可微 BA（6N 维）打通前馈与实例级优化**：在 4–6 视角下仅优化 $6N$ 维相机外参（4 步展开 LM，2048 锚点/视角），额外开销不足 **0.5 ms**，却能把前馈初值与当前帧特征/深度几何严格对齐，且全程可微使得训练期特征头主动学会适配局部匹配。\n- **VGGT 关系蒸馏（Gram Loss）优于逐通道特征蒸馏**：学生模型与 VGGT 教师在分辨率、结构与任务域（人体专用）均不同，改用帧内 Patch-to-Patch 相似度 Gram 矩阵对齐，既继承强大多视角几何先验，又保留精细人体特化自由度。",
+    "pipeline": {
+      "input": "4–6 路同步未标定 2K RGB 视频流 mathcalI t= I t^(i) i=1^N（亦可选配已标定相机参数以旁路相机解码与 BA），配合 Robust Video Matting（RVM）实时提取的前景掩码 S^(i)。",
+      "process": "每帧独立在线前向——先由冻结 DINOv3（ViT-B，512 输入）与轻量 EdgeNeXt-xxs CNN（2K 输入）提取混合多尺度特征，按前景掩码筛选约 10% 前景 Token，拼接每视角相机 Token 与跨视角共享场景 Token t s 送入 24 层稀疏多视角 Transformer 主干（训练期施加 VGGT Gram 矩阵蒸馏）；再经 12 层视角独立稀疏解码器（4 阶段 SA-SA-CA，由粗到细融合主干第 5/11/17/23 层与 4 级 CNN 金字塔）预测 1K 像素对齐深度与高斯属性图；随后经 4 步展开可微 LM 相机 BA 层（基于 r=3 窗口 soft-argmax 特征匹配，联合最小化重投影与深度一致性残差）精修相机位姿，反投影生成 3D 高斯位置；最后将坐标量化为 uint16 并拆分为无损 MSB 灰度流与 QP=28 LSB+属性 RGB 流，经 NVENC H.265 + WebRTC 实时推流至远程 WebGPU 客户端。",
+      "output": "每帧实时相机参数 Pi t 与 1K 像素对齐 3D 高斯图 mathcalM t（4 视角约 400–600K 高斯、6 视角约 600–900K 高斯），支持单消费级 GPU（RTX 5090） 25 FPS （~35.36 ms/帧）端到端 2K 自由视角渲染与多端 30 FPS 远程交互观看。",
+      "details": "**输入**：4–6 路同步未标定 2K RGB 视频流 $\\mathcal{I}_t=\\{I_t^{(i)}\\}_{i=1}^N$（亦可选配已标定相机参数以旁路相机解码与 BA），配合 Robust Video Matting（RVM）实时提取的前景掩码 $S^{(i)}$。\n\n**过程**：每帧独立在线前向——先由冻结 DINOv3（ViT-B，512 输入）与轻量 EdgeNeXt-xxs CNN（2K 输入）提取混合多尺度特征，按前景掩码筛选约 10% 前景 Token，拼接每视角相机 Token 与跨视角共享场景 Token $t_s$ 送入 24 层稀疏多视角 Transformer 主干（训练期施加 VGGT Gram 矩阵蒸馏）；再经 12 层视角独立稀疏解码器（4 阶段 SA-SA-CA，由粗到细融合主干第 5/11/17/23 层与 4 级 CNN 金字塔）预测 1K 像素对齐深度与高斯属性图；随后经 4 步展开可微 LM 相机 BA 层（基于 $r=3$ 窗口 soft-argmax 特征匹配，联合最小化重投影与深度一致性残差）精修相机位姿，反投影生成 3D 高斯位置；最后将坐标量化为 uint16 并拆分为无损 MSB 灰度流与 QP=28 LSB+属性 RGB 流，经 NVENC H.265 + WebRTC 实时推流至远程 WebGPU 客户端。\n\n**输出**：每帧实时相机参数 $\\Pi_t$ 与 1K 像素对齐 3D 高斯图 $\\mathcal{M}_t$（4 视角约 400–600K 高斯、6 视角约 600–900K 高斯），支持单消费级 GPU（RTX 5090）**>25 FPS**（~35.36 ms/帧）端到端 2K 自由视角渲染与多端 30 FPS 远程交互观看。\n\n关键模块与工程实现细节（[方法与系统：第 3–4 节](https://arxiv.org/html/2609.15032v1#S3)）：\n\n- **稀疏多视角主干与共享场景 Token（Sec. 3.2.2）**：24 层（12 帧内 + 12 帧间交替，1024 维，16 头，RoPE + QKNorm + LayerScale）。仅保留前景 Token 会丢失背景全局结构导致相机估计不稳，为此在帧间注意力序列 $[t_s, t_c^{(1)}, \\tilde{H}^{(1)}, \\dots, t_c^{(N)}, \\tilde{H}^{(N)}]$ 中引入跨视角共享的可学习场景 Token $t_s$ 聚合全局上下文。\n- **可微 LM 相机自标定层（Sec. 3.2.4 & 3.3.2）**：每视角采样 2048 个前景锚点，基于 $\\ell_2$ 归一化融合特征（DINO + CNN $F_{c,2}$）在 $r=3$ 窗口内做可微 soft-argmax 亚像素匹配，以解析雅可比与鲁棒核 $\\rho(\\cdot)$ 求解 $6N\\times 6N$ 阻尼正规方程并经 $SE(3)$ 指数映射右乘更新相机位姿（4 步展开）；训练期叠加各步 $SE(3)$ 位姿监督 $\\mathcal{L}_{\\text{BA}}$ 与高斯软目标特征一致性损失 $\\mathcal{L}_{\\text{GFC}}$。\n- **高低字节拆分（Split-Byte）视频编解码流式传输（Sec. 4.2）**：为兼容 8-bit 硬件 H.265 编码器且不损毁 3D 坐标精度，将 float32 XYZ 量化为 uint16 并拆分为高字节（MSB）与低字节（LSB）。MSB 拼成 $6K\\times 3K$ 单通道灰度画布**无损编码**（作者实测 MSB 有损编码会导致 PSNR 骤降 $\\ge 5$ dB），LSB 与尺度、四元数、颜色、不透明度拼成 $6K\\times 5K$ RGB 画布以 QP=28 编码；总带宽约 80–100 Mbit/s，部署系统总显存约 20 GB，动作到显示端到端延迟约 500 ms（MacBook Pro）/ 650 ms（iPad Pro）。"
+    },
+    "experiments": "训练融合 3,126 个静态人体扫描与约 1,000 段 DNA-Rendering 多视角视频（60 视角，NeuS2 提取几何真值），在 DNA-Rendering 与 ActorsHQ 上以 $2048\\times 2048$ 分辨率评测（单卡 RTX 5090 测速）。\n\n| 评测基准与方法 | 需标定 | 视角数 | 评测期对齐 | PSNR ↑ | SSIM ↑ | LPIPS ↓ | 推理耗时 ↓ |\n| --- | --- | --- | --- | --- | --- | --- | --- |\n| **DNA-Rendering**：NoPoSplat | 否 | 6 | 是 | 22.17 | 0.8574 | 0.1433 | ~600 ms |\n| **DNA-Rendering**：AnySplat | 否 | 6 | 是 | 24.99 | 0.9163 | 0.0781 | ~150 ms |\n| **DNA-Rendering**：Depth Anything 3 | 否 | 6 | 否 | 21.11 | 0.9115 | 0.0926 | ~300 ms |\n| **DNA-Rendering**：GPS-Gaussian | 是 | 8 | 否 | 22.40 | 0.8675 | 0.1312 | ~300 ms |\n| **DNA-Rendering**：GHG | 是 | 6 | 否 | 26.27 | 0.9458 | 0.0534 | ~150 ms |\n| **DNA-Rendering**：DoubleField | 是 | 6 | 否 | 29.47 | 0.9596 | 0.0523 | $\\gg$ 1 s |\n| **DNA-Rendering**：NeuS2（优化式） | 是 | 6 | 否 | 30.61 | 0.9683 | 0.0336 | $\\gg$ 1 s |\n| **DNA-Rendering**：**Tele360 (Ours)** | **否** | **6** | **否** | **32.15** | **0.9689** | **0.0286** | **~35 ms** |\n| **ActorsHQ**：DoubleField / GHG / GPS-Gaussian | 是 | — | 否 | 28.18 / 25.52 / 23.62 | 0.9479 / 0.9249 / 0.9527 | 0.0386 / 0.0672 / 0.0521 | — |\n| **ActorsHQ**：**Tele360 (Ours)** | **否** | — | **否** | **30.72** | **0.9573** | **0.0346** | **~35 ms** |\n\n相机位姿评测（Table 2）中，Tele360 (w/ BA) 取得 AUC@5/10/30 **69.31 / 84.49 / 94.83** 与全场最低 Mean RTE **1.07°**（优于 DA 3 的 67.86 / 1.47° 与 VGGT 的 63.82 / 1.74°，COLMAP 在超 40% 稀疏环拍场景中注册失败）；固定新视角时序一致性（Table 4）Motion Smoothness 达 **0.99820**、Temp. Flicker 达 **0.99669**，序列内相机抖动仅 $0.27^\\circ$ 旋转。\n\n**最具工程价值的五条消融与系统分析（Tables 5–12）**：\n\n1. **混合特征既提质又提速（Table 5）**：加入 2K EdgeNeXt 金字塔比翻倍 DINO 分辨率 PSNR 高 **+2.10 dB**（30.36 vs. 28.26 dB），同时推理更快（35 ms vs. 43 ms）；\n2. **可微 BA 精准补齐多视角几何对齐（Table 2 & Table 7）**：开启 BA 将 AUC@5 从 66.74 推升至 **69.31**、Mean RRE 从 1.73° 降至 **1.55°**；即使直接喂入真值相机旁路 BA，PSNR 也仅微增 0.44 dB（32.15 → 32.59 dB），说明无标定残余位姿误差已几乎不影响渲染；\n3. **前景占比翻倍仍保高效（Table 10）**：6 视角 2K 分解耗时为 DINO 5.15 ms + CNN 2.85 ms + Backbone 12.15 ms + Decoder 6.07 ms + Heads 9.14 ms = **35.36 ms**；当前景 Token 占比从 10% 增至 20% 时，4 视角仅 37.3 ms、6 视角 55.8 ms；\n4. **对前景抠图质量高度敏感（Table 8）**：THuman 子集上，真值掩码（27.34 dB / 0.886° 旋转误差）与 MatAnyone 2（27.23 dB / 0.916°）、RVM-R50（27.12 dB / 1.013°）非常接近，但换用较粗糙的 SAM 3 掩码（IoU 0.9796）会导致旋转误差飙升至 **2.993°**、PSNR 跌至 26.67 dB；\n5. **高低字节分离编码是保几何的关键（Tables 11–12）**：从 Raw（32.65 dB）到 uint16 量化（31.10 dB）再到“MSB 无损 + LSB QP=28”（80 Mbps，30.57 dB）画质衰减可控；若对 MSB 启用有损压缩，PSNR 将骤降 **$\\ge$ 5 dB**。[实验与分析：第 5 节](https://arxiv.org/html/2609.15032v1#S5)。",
+    "evidence_notes": "已核对 arXiv v1 正文、网络结构与可微 BA 推导（第 3–4 节）、全部定量主表、消融与码率-失真/耗时分析（Tables 1–12）及局限章节（第 6 节）；未运行复现实验。",
+    "code_data_status": "论文基于公开数据集 DNA-Rendering、THuman、ActorsHQ、Twindom 等静态扫描与多视角视频训练评测，并开源组合了 DINOv3、EdgeNeXt、Robust Video Matting（RVM）、TensorRT、FlashAttention、Triton 与 WebRTC/WebGPU 工程栈。正文未披露官方 GitHub 仓库或预训练权重链接，开源状态以作者后续发布为准。",
+    "limitations": "- **强依赖外部前景抠图精度**：不准确或跨视角不一致的掩码不仅引入高斯边界抖动和伪影，在严重情况下会直接导致相机位姿估计崩塌（Fig. 12 与 Table 8 中 SAM 3 掩码旋转误差放大 3 倍以上）；未来需将前景分割与 3D 重建联合端到端预测。\n- **逐帧独立推理缺乏显式时序融合**：尽管整体 VBench 平滑度得分较高，但在快速剧烈运动、运动模糊或瞬时抠图/位姿抖动时仍会出现局部帧间闪烁，尚未引入跨帧时序聚合或持久化时空状态。\n- **未建模视角相关外观效应**：当前高斯颜色属性缺乏显式高阶视角相关建模（如高光/反射），在丝绸、漆皮等镜面材质衣物的新视角渲染中易出现高光不一致与伪影。\n- **重度遮挡区域几何缺失**：重建仅覆盖输入 4–6 视角可见表面，面对肢体严重自遮挡或宽松衣物折叠死角时，缺乏生成式遮挡先验进行完整补全。\n- **系统流水线吞吐与延迟权衡**：为维持 25–30 FPS 稳态吞吐采用了多阶段帧级重叠流水线，导致动作到远程客户端显示的端到端延迟达 500 ms（MacBook Pro）至 650 ms（iPad Pro），且带宽需求约 80–100 Mbit/s，面向广域网低带宽实时互动仍需进一步压缩。",
+    "comments": "",
+    "source_reports": [],
+    "deleted": false,
+    "updated_at": "2026-11-28",
+    "challenges": "面向远程全息通信（Telepresence）与沉浸式交互的实时 $360^\\circ$ 动态人体自由视角可视化，要求在**仅 4–6 台无预标定普通 RGB 相机**下实现 **2K 高清、实时（>25 FPS）重建与网络流式传输**，现有三条路线各有死结：\n\n- **优化式 4D 重建与标定依赖无法实时部署**：基于 NeRF/3DGS 的逐序列或逐帧优化方法（如 NeuS2）虽画质较高，但单帧耗时远超 1 秒且强依赖离线精密相机标定；即便 GPS-Gaussian、GHG 等人体专用前馈模型，也要求精确标定参数，且在 6 视角大视差下立体校正极易失效（GPS-Gaussian 在 6 视角下失败，评测被迫给到 8 视角）。\n- **通用无标定视觉几何基础模型过重且低清**：VGGT、Depth Anything 3、AnySplat、NoPoSplat 等虽摆脱了相机标定，但稠密 ViT 计算量随分辨率爆炸，通常被迫将输入压至 $512\\times 512$，且单次前向需 150–600 ms；直接迁移到稀疏 6 视角人体环拍时，既无力保留 2K 面部/衣褶高频细节，又因微小位姿误差导致跨视角重影、肢体断裂与边界飞点。\n- **非结构化 3DGS 点云难以低延迟流式传输**：现有体视频压缩方案多假设离线重建完成，再对无序高斯集合做序列化与聚类压缩，无法与实时在线重建、硬件视频编码器（H.265/NVENC）和 WebRTC 端到端无缝衔接。",
+    "motivation": "**核心 Insight：面向人体重建的 2K 实时无标定系统不应把算力浪费在 90% 的静态背景和重型卷积上采样上——通过“低清 DINO + 2K 轻量 CNN 混合特征”解耦几何与纹理分辨率，用“前景 Token 稀疏化 + 共享全局场景 Token”把 Transformer 算力砍掉近九成，再以“端到端可微 Levenberg-Marquardt 仅相机 BA 层”在线消除多视角重影，并把像素对齐高斯图拆分高低字节直接喂给标准 H.265 硬件编码器。**\n\n四处核心设计相较常规方案的优势非常清晰：\n\n- **混合 ViT–CNN 特征优于硬拉 ViT 分辨率**：实测直接把 DINO 输入分辨率翻倍不仅推理变慢（35 ms → 43 ms），PSNR 反而暴跌 **2.10 dB**（30.36 → 28.26 dB），说明高频外观细节应由 2K 轻量 CNN（EdgeNeXt-xxs）多尺度金字塔供给，而非硬扛高分辨率 ViT。\n- **纯稀疏 Transformer 解码器优于 DPT 卷积解码器**：避免卷积上采样在人体轮廓深度突变处引发的过度平滑与边界飞点，同时保持全链路 Token 级稀疏（前景仅占约 10% Token），且实验证明主干已充分完成跨视角交互，解码器保持视角独立（SA-SA-CA）即可达最优几何精度与最快速度。\n- **轻量仅相机可微 BA（6N 维）打通前馈与实例级优化**：在 4–6 视角下仅优化 $6N$ 维相机外参（4 步展开 LM，2048 锚点/视角），额外开销不足 **0.5 ms**，却能把前馈初值与当前帧特征/深度几何严格对齐，且全程可微使得训练期特征头主动学会适配局部匹配。\n- **VGGT 关系蒸馏（Gram Loss）优于逐通道特征蒸馏**：学生模型与 VGGT 教师在分辨率、结构与任务域（人体专用）均不同，改用帧内 Patch-to-Patch 相似度 Gram 矩阵对齐，既继承强大多视角几何先验，又保留精细人体特化自由度。",
+    "technical_approach": "**输入**：4–6 路同步未标定 2K RGB 视频流 $\\mathcal{I}_t=\\{I_t^{(i)}\\}_{i=1}^N$（亦可选配已标定相机参数以旁路相机解码与 BA），配合 Robust Video Matting（RVM）实时提取的前景掩码 $S^{(i)}$。\n\n**过程**：每帧独立在线前向——先由冻结 DINOv3（ViT-B，512 输入）与轻量 EdgeNeXt-xxs CNN（2K 输入）提取混合多尺度特征，按前景掩码筛选约 10% 前景 Token，拼接每视角相机 Token 与跨视角共享场景 Token $t_s$ 送入 24 层稀疏多视角 Transformer 主干（训练期施加 VGGT Gram 矩阵蒸馏）；再经 12 层视角独立稀疏解码器（4 阶段 SA-SA-CA，由粗到细融合主干第 5/11/17/23 层与 4 级 CNN 金字塔）预测 1K 像素对齐深度与高斯属性图；随后经 4 步展开可微 LM 相机 BA 层（基于 $r=3$ 窗口 soft-argmax 特征匹配，联合最小化重投影与深度一致性残差）精修相机位姿，反投影生成 3D 高斯位置；最后将坐标量化为 uint16 并拆分为无损 MSB 灰度流与 QP=28 LSB+属性 RGB 流，经 NVENC H.265 + WebRTC 实时推流至远程 WebGPU 客户端。\n\n**输出**：每帧实时相机参数 $\\Pi_t$ 与 1K 像素对齐 3D 高斯图 $\\mathcal{M}_t$（4 视角约 400–600K 高斯、6 视角约 600–900K 高斯），支持单消费级 GPU（RTX 5090）**>25 FPS**（~35.36 ms/帧）端到端 2K 自由视角渲染与多端 30 FPS 远程交互观看。\n\n关键模块与工程实现细节（[方法与系统：第 3–4 节](https://arxiv.org/html/2609.15032v1#S3)）：\n\n- **稀疏多视角主干与共享场景 Token（Sec. 3.2.2）**：24 层（12 帧内 + 12 帧间交替，1024 维，16 头，RoPE + QKNorm + LayerScale）。仅保留前景 Token 会丢失背景全局结构导致相机估计不稳，为此在帧间注意力序列 $[t_s, t_c^{(1)}, \\tilde{H}^{(1)}, \\dots, t_c^{(N)}, \\tilde{H}^{(N)}]$ 中引入跨视角共享的可学习场景 Token $t_s$ 聚合全局上下文。\n- **可微 LM 相机自标定层（Sec. 3.2.4 & 3.3.2）**：每视角采样 2048 个前景锚点，基于 $\\ell_2$ 归一化融合特征（DINO + CNN $F_{c,2}$）在 $r=3$ 窗口内做可微 soft-argmax 亚像素匹配，以解析雅可比与鲁棒核 $\\rho(\\cdot)$ 求解 $6N\\times 6N$ 阻尼正规方程并经 $SE(3)$ 指数映射右乘更新相机位姿（4 步展开）；训练期叠加各步 $SE(3)$ 位姿监督 $\\mathcal{L}_{\\text{BA}}$ 与高斯软目标特征一致性损失 $\\mathcal{L}_{\\text{GFC}}$。\n- **高低字节拆分（Split-Byte）视频编解码流式传输（Sec. 4.2）**：为兼容 8-bit 硬件 H.265 编码器且不损毁 3D 坐标精度，将 float32 XYZ 量化为 uint16 并拆分为高字节（MSB）与低字节（LSB）。MSB 拼成 $6K\\times 3K$ 单通道灰度画布**无损编码**（作者实测 MSB 有损编码会导致 PSNR 骤降 $\\ge 5$ dB），LSB 与尺度、四元数、颜色、不透明度拼成 $6K\\times 5K$ RGB 画布以 QP=28 编码；总带宽约 80–100 Mbit/s，部署系统总显存约 20 GB，动作到显示端到端延迟约 500 ms（MacBook Pro）/ 650 ms（iPad Pro）。",
+    "discussion": "### 核心 Takeaway 与可迁移启示\n\n1. **给做实时高分辨率 3D/4D 前馈重建的人：“低清基础视觉模型（保几何/语义）+ 高清轻量 CNN 金字塔（供高频纹理）+ 前景 Token 稀疏化”是突破 ViT 分辨率墙的最优架构范式**。直接硬提 ViT 输入分辨率得不偿失，而把高分辨率细节留给轻量 CNN 并在稀疏 Transformer 解码器里由粗到细交叉注入，能在 35 ms 内跑出超越离线标定 NeuS2（32.15 vs. 30.61 dB）的 2K 渲染画质。\n2. **给做无标定多视角几何系统的人：在神经网络末端挂接展开式 $SE(3)$ 仅相机可微 BA 层，几乎零成本换取跨视角硬对齐**。对于稀疏 4–6 视角系统，固定深度仅优化 $6N$ 维位姿的正规方程极小（<0.5 ms），将其保留在训练计算图中还能反过来倒逼前端特征具备亚像素局部匹配区分度。\n3. **给做 3DGS 体视频流式传输的工程团队：像素对齐 2D 高斯图 + 16-bit 坐标 MSB/LSB 拆分编码是复用现成硬件编解码生态的绝佳捷径**。无需定制点云熵编码器，只要保证高字节坐标通道无损、低字节与外观属性走标准 H.265，就能在 80–100 Mbps 常规局域网/专线带宽下跑通多端 WebRTC + WebGPU 30 FPS 互动。\n\n### 批判性审视与适用边界\n\nTele360 是目前稀疏无标定实时人体重建与推流结合得最完整的系统级工作，但其核心提速杠杆——**前景 Token 稀疏化（假设仅约 10% 前景占比）**——天然强绑定于“干净单人/局部前景 + 外部高质量实时抠图（RVM）”的前提。一旦进入杂乱真实背景、多人交互或大面积前景占据画面的场景，不仅抠图误差会直接级联摧毁相机位姿估计（Table 8），Token 数量膨胀也会让 25 FPS 实时性迅速承压。此外，评测和实测依赖单卡 RTX 5090 与 20 GB 显存，且 500–650 ms 的流水线端到端延迟在强双向实时对话场景中仍有可感知滞后。",
+    "arxiv": {
+      "published": "2026-09-14",
+      "revised_at": "2026-09-14（v1）",
+      "primary_category": "cs.CV"
+    },
+    "source_papers": [
+      "content/papers/2609.15032.md"
     ]
   },
   {
@@ -13655,6 +14423,68 @@
     },
     "source_papers": [
       "content/papers/2609.22966.md"
+    ]
+  },
+  {
+    "id": "arxiv-2610-39745",
+    "title": "UniffordInteractor: Reasoning the Unified Affordance for Human and Multi-Object Interaction",
+    "authors": [
+      "Chen Su",
+      "Xingqun Qi",
+      "Xurui Hu",
+      "Bingkun Yang",
+      "Muyi Sun",
+      "Man Zhang",
+      "Zhenan Sun"
+    ],
+    "year": 2026,
+    "publication": "2026，SIGGRAPH Asia 2026（ACM TOG 45(6)；arXiv 预印本 v1，2026-10-29）",
+    "arxiv_id": "2610.39745",
+    "doi": "10.1145/3842530",
+    "links": {
+      "paper": "https://arxiv.org/abs/2610.39745",
+      "alphaxiv": "https://alphaxiv.org/abs/2610.39745"
+    },
+    "tags": [
+      "HOI",
+      "多模态感知与提示",
+      "对象与可供性",
+      "流式与自回归"
+    ],
+    "figure": {
+      "url": "https://arxiv.org/html/2610.39745v1/fig1.png",
+      "alt": "UniffordInteractor Fig. 1：基于统一可供性推理的“先推理、后交互”多物体人机交互生成框架",
+      "label": "UniffordInteractor，Fig. 1，Reasoning-then-Interacting 框架总览与人-物（红）/物-物（蓝）统一可供性建模示意。",
+      "paper_title": "UniffordInteractor: Reasoning the Unified Affordance for Human and Multi-Object Interaction",
+      "source_url": "https://arxiv.org/html/2610.39745v1/fig1.png"
+    },
+    "summary": "核心 Insight：多物体交互的几何一致性不应指望动作生成器“盲猜”出来，而应拆分为“先推理、后交互（Reasoning-then-Interacting）”——先用 3D-MLLM 在统一空间格式下同时推理出人-物与物-物成对可供性（Unified Affordance, Unifford），再以该结构化空间先验为前缀，通过帧内由粗到细的分层解耦自回归（Root to Body to Hand to Objects）逐级合成动作。",
+    "insight": "**核心 Insight：多物体交互的几何一致性不应指望动作生成器“盲猜”出来，而应拆分为“先推理、后交互（Reasoning-then-Interacting）”——先用 3D-MLLM 在统一空间格式下同时推理出人-物与物-物成对可供性（Unified Affordance, Unifford），再以该结构化空间先验为前缀，通过帧内由粗到细的分层解耦自回归（Root $\\to$ Body $\\to$ Hand $\\to$ Objects）逐级合成动作。**\n\n相比端到端扩散或级联分阶段生成的替代方案，这一设计有三层清晰优势：\n\n- **用有向“源—目标”统一格式消融人-物与物-物壁垒**：将源物体表面上对应特定交互对象的功能区统一定义为 Unifford（人-物交互时物体为源、人为目标；物-物交互时主动发起者为源、被作用者为目标），使 3D-MLLM 能输出交错的“目标身份 + 可供性 Token”序列，在同一次推理中锁定全局多实体几何对应。\n- **分层解耦量化 + FSQ 防治尺度淹没与码本坍塌**：将人体按 Root / Body / Hand 拆入三个独立码本，物体按实例级融合几何特征独立量化，并采用 Finite Scalar Quantization（FSQ）构造隐式组合码本，从表征层根治“大动作吃掉小手部”以及传统 VQ-VAE 的码本利用率低问题。\n- **帧内分层自回归优于“跨全序列级联”**：相比先生成整段躯干再生成整段手部、最后生成物体的级联管线（cascaded generation），在每一帧内部按 `Root → Body → Hand → Objects` 顺序自回归既保留了全局驱动局部的因果流，又能让手部与物体的精细接触反馈及时影响下一帧的全身协调。",
+    "pipeline": {
+      "input": "自然语言动作指令 mathcalI 及场景中 N 个 3D 物体的采样点云 mathcalG= G 1,dots,G N （每个物体 P in mathbbR^2048× 3）。",
+      "process": "阶段一由基于 ShapeLLM-7B 微调的统一可供性推理器（UAR）联合上下文物体几何，输出交错的交互目标与 3D 稠密可供性热图；阶段二由分层交互生成器（HIG）先通过双流 FSQ 分层解耦量化器离散化人体（Root/Body/Hand）与物体运动，再经物体中心交互适配器（OCIA）将 Unifford 先验与有向关系编码为前缀条件，驱动 775M LLaMA 架构自回归 Transformer 在每帧内按 Root → Body → Hand → Objects 顺序生成多实体离散 Token 并解码为连续运动。",
+      "output": "运动学连贯且时序同步的 52 关节 SMPL-X 人体动作序列 mathcalH 与多物体 6D 旋转、3D 平移（及可选 2D 关节参数）序列 mathcalO= O 1,dots,O N 。",
+      "details": "**输入**：自然语言动作指令 $\\mathcal{I}$ 及场景中 $N$ 个 3D 物体的采样点云 $\\mathcal{G}=\\{G_1,\\dots,G_N\\}$（每个物体 $P \\in \\mathbb{R}^{2048\\times 3}$）。\n\n**过程**：阶段一由基于 ShapeLLM-7B 微调的统一可供性推理器（UAR）联合上下文物体几何，输出交错的交互目标与 3D 稠密可供性热图；阶段二由分层交互生成器（HIG）先通过双流 FSQ 分层解耦量化器离散化人体（Root/Body/Hand）与物体运动，再经物体中心交互适配器（OCIA）将 Unifford 先验与有向关系编码为前缀条件，驱动 775M LLaMA 架构自回归 Transformer 在每帧内按 `Root → Body → Hand → Objects` 顺序生成多实体离散 Token 并解码为连续运动。\n\n**输出**：运动学连贯且时序同步的 52 关节 SMPL-X 人体动作序列 $\\mathcal{H}$ 与多物体 6D 旋转、3D 平移（及可选 2D 关节参数）序列 $\\mathcal{O}=\\{O_1,\\dots,O_N\\}$。\n\n核心模块与关键机制拆解（[方法：第 3 节](https://arxiv.org/html/2610.39745v1#S3)）：\n\n- **统一可供性推理器（UAR）与 InterAfford 数据集**：以 ShapeLLM-7B（冻结 ReCon++ 3D 视觉编码器 + LoRA 微调 LLaMA，$r=8, \\alpha=16$）为底座，扩充 `<AFF>` 词元生成交错序列 $\\mathcal{Y}=\\langle I_1, \\texttt{<AFF>}_1, I_2, \\texttt{<AFF>}_2, \\dots \\rangle$。`<AFF>` 作为语义查询进入 Object-Aware Fusion 模块，与源物体交叉注意并按相关性聚合其余上下文物体特征 $f_{agg}$，再由 Affordance Decoder 结合 $\\mathcal{L}_{\\mathrm{ce}}+\\mathcal{L}_{\\mathrm{bce}}+\\mathcal{L}_{\\mathrm{dice}}$ 输出上下文相关的 3D 可供性掩码。采用**两阶段课程微调**（先单物体可供性对齐几何，再在自建 13,719 对含人-物与物-物关系的 **InterAfford** 数据集上微调；接触类按 $<2\\text{ cm}$ 帧频率统计，非接触类如倾倒由 LASO 生成伪标签并人工精修）。\n- **分层解耦量化（HDQ）**：人体运动拆为 Root（128 维，码本 512）、Body（512 维，码本 4096）、Hand（512 维，码本 4096）；物体流用 PointNet++ 提取几何关键点并加高频空间编码，与刚体运动融合后量化（128 维，码本 4096）。全部采用 FSQ 隐式标量量化，训练损失除重建项外显式加入物-物相对顶点对齐 $\\mathcal{L}_{sa}$、手-物距离矩阵 $\\mathcal{L}_{dist}$ 与穿透惩罚 $\\mathcal{L}_{pen}$（权重 `{1.0, 1.0, 0.5}`）。\n- **物体中心交互适配器（OCIA）与帧内分层自回归**：每帧构建固定槽位序列 $[z_t^{root}, z_t^{body}, z_t^{hand}, z_t^{obj_1}, \\dots, z_t^{obj_K}]$（实验设 $K=3$，空槽填 `<PAD>`，超过 3 物体按时序拆分子序列自回归），并为每个槽位注入唯一 **Entity ID** 区分部位与物体实例。OCIA 将有向源—目标实体嵌入拼接过 MLP 得到关系特征 $\\mathbf{r}_{i,j}$，与物体几何+Unifford 特征融合后经可学习查询交叉注意压缩为前缀条件 Token。775M LLaMA 生成器配合冻结 T5-XL 文本编码器，在训练中采用余弦退火的 Token 级 Scheduled Sampling（$\\epsilon: 0.0 \\to 1.0$）缓解暴露偏差；全流程单样本推理约 **8.27 秒**（4×A100 环境）。"
+    },
+    "experiments": "| 评测基准 / 维度 | UniffordInteractor (Ours) | 最强/核心基线对比 | 关键结论与归因 |\n| --- | --- | --- | --- |\n| **HIMO 统一多物体**（Table 1） | FID **1.199** / R-Pre@3 **0.789** / MM-Dist **4.015** / C% **0.348** / Coll% **0.181** | HOIDiNi（FID 1.790, R-Pre@3 0.650, C% 0.306）；HIMO-Gen（FID 7.642, R-Pre@3 0.511） | 6 项指标全第 1，FID 较次优降 **33.0%**，同时实现最高接触率与最低穿透率 |\n| **ParaHome 居家多物体**（Table 1） | FID **0.536** / R-Pre@3 **0.866** / MM-Dist **2.161** / C% 0.192 / Coll% 0.049 | HOIDiNi（FID 0.612, R-Pre@3 0.797, C% **0.205**, Coll% 0.077）；HOI-Diff（Coll% **0.036** 但 C% 仅 0.117） | 运动质量与文本对齐全第 1；在接触与碰撞间取得最佳权衡 |\n| **HIMO 专模型对比**（Table 2） | 2-Obj FID **0.969**；3-Obj FID **2.422** / R-Pre@3 **0.613** / C% **0.307** | HIMO-2o（FID 1.340）；HIMO-3o（FID 4.706, R-Pre@3 0.463, C% 0.155） | 单一统一模型反超 HIMO-Gen 专训模型；3 物体场景 FID 降幅近 **50%**，接触率翻倍 |\n| **物-物交互质量**（HIMO，Table 3） | OO-C% **0.238** / OO-Coll% 0.133 | HOIDiNi（0.235 / 0.156）；HOI-Diff（0.146 / **0.108**） | 最高物-物接触率且碰撞受控；基线低碰撞多源于未完成预期物-物交互 |\n| **可供性推理**（InterAfford，Table 4） | AUC **0.8223** / SIM **0.5170** / IOU 0.2036 | 3D-AffordanceLLM（0.8008 / 0.5053 / **0.2078**）；SeqAfford（0.8040 / 0.4847 / 0.1861） | 融合上下文物体后分布一致性与排序精度最优 |\n| **未见物体 OOD 泛化**（HIMO 42→11，Table 5） | FID 4.587 / R-Pre@3 0.541 / MM-Dist 4.067 / C% 0.314 | In-distribution（1.316 / 0.760 / 3.712 / 0.346） | 运动分布质量下降，但接触率（0.346→0.314）与语义对齐保留较好 |\n\n**最具价值的四组消融归因（Table 6–8）**：\n1. **去掉物-物可供性（w/o Unifford）暴露“盲目凑接触”陷阱**：在 Table 6 中，移除物-物可供性后接触率 `C%` 反而从 `0.348` 微升到 `0.366`，但碰撞率 `Coll%` 恶化到 `0.201` 且 FID 从 `1.199` 飙升至 `1.618`、R-Pre@3 从 `0.789` 跌至 `0.682`（图 8 可见垃圾桶黏手、倒茶对象错位），说明缺失物-物先验时模型只能以牺牲几何一致性为代价硬凑接触。\n2. **帧内分层自回归是协调性的生命线**：换成扁平 next-token 预测（`w/o hierarchical autoregressive`），FID 崩塌至 **11.860**、接触率暴跌至 **0.066**；换成跨全序列的 `cascaded generation`，FID 也退化至 **3.380**、C% 降至 **0.256**，证明帧内逐步因果依赖远优于全序列硬级联。\n3. **两阶段课程微调对 3D-MLLM 不可或缺**：直接零样本（AUC 0.4813）或仅单阶段微调（IOU $\\le 0.1134$）均无法同时学好局部几何接地与多物体关系推理；两阶段微调将 AUC 拉升至 **0.8223**、IOU 翻倍至 **0.2036**（Table 7）。\n4. **量化器必须人-物解耦且按部位分层**：联合量化人-物（`w/o decoupled`）重建 FID 恶化 21 倍（`0.213 → 4.625`），去掉 Root/Body/Hand 分层 FID 恶化至 `0.591`、碰撞升至 `0.216`（Table 8）。",
+    "evidence_notes": "已核对 arXiv v1 正文、HIMO/ParaHome 主结果表（Table 1–2）、物-物交互与可供性评测（Table 3–4）、OOD 泛化评测（Table 5）、完整消融表（Table 6–8）与用户研究（第 4.3 节）；未运行复现实验。",
+    "code_data_status": "论文摘要声明项目页已上线，代码与自建 **InterAfford** 数据集（13,719 对人-物与物-物统一可供性标注，源自 HIMO 与 ParaHome）将在正式发表后开源；arXiv v1 HTML 正文中项目页锚文本未附具体 URL，需待正式发布后核查仓库与许可协议。",
+    "limitations": "- **固定槽位上限与超长程切分依赖**：模型单次仅支持 $K=3$ 个物体槽位，面对包含更多物体的长时序家庭活动，需预先按时间切分为原子子序列再串联，跨子序列的全局状态一致性与过渡自然度尚未在端到端长场景中充分验证。\n- **未见物体几何的运动质量退化**：在 HIMO 42 见→11 未见物体 OOD 测试中（Table 5），FID 从 `1.316` 升至 `4.587`，碰撞率从 `0.177` 升至 `0.231`，说明生成器的运动学先验对新几何拓扑仍有明显过拟合。\n- **两阶段错误传播且推理延迟较高**：HIG 在训练与推理时均依赖 UAR 预测的 Unifford；若 3D-MLLM 在复杂指令下误判交互目标或可供性区域，下游自回归无法自我纠错，且 8.27 秒/样本的耗时限制了实时交互应用。\n- **缺少物理动力学与大场景环境约束**：目前只处理局部交互物体集合（最多 3 个），未纳入静态环境障碍物（墙面、桌椅碰撞）及重力/摩擦等物理动力学，正如作者在结论中所指，长时程多物体与复杂人-场景交互仍是开放方向。",
+    "comments": "",
+    "source_reports": [],
+    "deleted": false,
+    "updated_at": "2026-11-28",
+    "challenges": "将人-物交互（HOI）生成从单物体推进到复杂多物体长时序场景，现有方法卡在两重难以靠单纯扩参或加扩散步数解决的根因上：\n\n- **只建模人-物接触、遗漏物-物功能对齐导致的“局部合理、全局错位”**：现有多物体方法（如 HIMO-Gen、SyncDiff）主要在运动学层面通过距离或轨迹同步隐式约束多实体，缺少由交互语义决定的显式接触先验；而单物体可供性（Affordance）方法只标注人手抓握区域。在“拿起水壶往杯子里倒水”或“将中号方块叠在大号方块上再放圆柱”这类场景中，同一物体对不同交互对象暴露完全不同的功能区（壶柄对人手、壶嘴对杯口）。孤立预测人-物接触会让模型为了凑接触率而把物体黏在手上或倒向错误目标。\n- **多尺度运动耦合与扁平自回归破坏全身—手部—物体因果链**：把人体根节点大幅位移、躯干姿态、精细手指操作和多个刚体/关节物体运动打包进统一潜在空间或扁平序列预测时，高幅度的全局根节点运动会直接淹没毫米级手部接触信号；同时，缺乏“先整体躯干、再精细手部、再驱动物体”的帧内因果约束，极易出现手物悬空、严重穿模或跨物体时序脱节。",
+    "motivation": "**核心 Insight：多物体交互的几何一致性不应指望动作生成器“盲猜”出来，而应拆分为“先推理、后交互（Reasoning-then-Interacting）”——先用 3D-MLLM 在统一空间格式下同时推理出人-物与物-物成对可供性（Unified Affordance, Unifford），再以该结构化空间先验为前缀，通过帧内由粗到细的分层解耦自回归（Root $\\to$ Body $\\to$ Hand $\\to$ Objects）逐级合成动作。**\n\n相比端到端扩散或级联分阶段生成的替代方案，这一设计有三层清晰优势：\n\n- **用有向“源—目标”统一格式消融人-物与物-物壁垒**：将源物体表面上对应特定交互对象的功能区统一定义为 Unifford（人-物交互时物体为源、人为目标；物-物交互时主动发起者为源、被作用者为目标），使 3D-MLLM 能输出交错的“目标身份 + 可供性 Token”序列，在同一次推理中锁定全局多实体几何对应。\n- **分层解耦量化 + FSQ 防治尺度淹没与码本坍塌**：将人体按 Root / Body / Hand 拆入三个独立码本，物体按实例级融合几何特征独立量化，并采用 Finite Scalar Quantization（FSQ）构造隐式组合码本，从表征层根治“大动作吃掉小手部”以及传统 VQ-VAE 的码本利用率低问题。\n- **帧内分层自回归优于“跨全序列级联”**：相比先生成整段躯干再生成整段手部、最后生成物体的级联管线（cascaded generation），在每一帧内部按 `Root → Body → Hand → Objects` 顺序自回归既保留了全局驱动局部的因果流，又能让手部与物体的精细接触反馈及时影响下一帧的全身协调。",
+    "technical_approach": "**输入**：自然语言动作指令 $\\mathcal{I}$ 及场景中 $N$ 个 3D 物体的采样点云 $\\mathcal{G}=\\{G_1,\\dots,G_N\\}$（每个物体 $P \\in \\mathbb{R}^{2048\\times 3}$）。\n\n**过程**：阶段一由基于 ShapeLLM-7B 微调的统一可供性推理器（UAR）联合上下文物体几何，输出交错的交互目标与 3D 稠密可供性热图；阶段二由分层交互生成器（HIG）先通过双流 FSQ 分层解耦量化器离散化人体（Root/Body/Hand）与物体运动，再经物体中心交互适配器（OCIA）将 Unifford 先验与有向关系编码为前缀条件，驱动 775M LLaMA 架构自回归 Transformer 在每帧内按 `Root → Body → Hand → Objects` 顺序生成多实体离散 Token 并解码为连续运动。\n\n**输出**：运动学连贯且时序同步的 52 关节 SMPL-X 人体动作序列 $\\mathcal{H}$ 与多物体 6D 旋转、3D 平移（及可选 2D 关节参数）序列 $\\mathcal{O}=\\{O_1,\\dots,O_N\\}$。\n\n核心模块与关键机制拆解（[方法：第 3 节](https://arxiv.org/html/2610.39745v1#S3)）：\n\n- **统一可供性推理器（UAR）与 InterAfford 数据集**：以 ShapeLLM-7B（冻结 ReCon++ 3D 视觉编码器 + LoRA 微调 LLaMA，$r=8, \\alpha=16$）为底座，扩充 `<AFF>` 词元生成交错序列 $\\mathcal{Y}=\\langle I_1, \\texttt{<AFF>}_1, I_2, \\texttt{<AFF>}_2, \\dots \\rangle$。`<AFF>` 作为语义查询进入 Object-Aware Fusion 模块，与源物体交叉注意并按相关性聚合其余上下文物体特征 $f_{agg}$，再由 Affordance Decoder 结合 $\\mathcal{L}_{\\mathrm{ce}}+\\mathcal{L}_{\\mathrm{bce}}+\\mathcal{L}_{\\mathrm{dice}}$ 输出上下文相关的 3D 可供性掩码。采用**两阶段课程微调**（先单物体可供性对齐几何，再在自建 13,719 对含人-物与物-物关系的 **InterAfford** 数据集上微调；接触类按 $<2\\text{ cm}$ 帧频率统计，非接触类如倾倒由 LASO 生成伪标签并人工精修）。\n- **分层解耦量化（HDQ）**：人体运动拆为 Root（128 维，码本 512）、Body（512 维，码本 4096）、Hand（512 维，码本 4096）；物体流用 PointNet++ 提取几何关键点并加高频空间编码，与刚体运动融合后量化（128 维，码本 4096）。全部采用 FSQ 隐式标量量化，训练损失除重建项外显式加入物-物相对顶点对齐 $\\mathcal{L}_{sa}$、手-物距离矩阵 $\\mathcal{L}_{dist}$ 与穿透惩罚 $\\mathcal{L}_{pen}$（权重 `{1.0, 1.0, 0.5}`）。\n- **物体中心交互适配器（OCIA）与帧内分层自回归**：每帧构建固定槽位序列 $[z_t^{root}, z_t^{body}, z_t^{hand}, z_t^{obj_1}, \\dots, z_t^{obj_K}]$（实验设 $K=3$，空槽填 `<PAD>`，超过 3 物体按时序拆分子序列自回归），并为每个槽位注入唯一 **Entity ID** 区分部位与物体实例。OCIA 将有向源—目标实体嵌入拼接过 MLP 得到关系特征 $\\mathbf{r}_{i,j}$，与物体几何+Unifford 特征融合后经可学习查询交叉注意压缩为前缀条件 Token。775M LLaMA 生成器配合冻结 T5-XL 文本编码器，在训练中采用余弦退火的 Token 级 Scheduled Sampling（$\\epsilon: 0.0 \\to 1.0$）缓解暴露偏差；全流程单样本推理约 **8.27 秒**（4×A100 环境）。",
+    "discussion": "### 核心 Takeaway 与可迁移启示\n\n1. **给多物体 HOI 与具身操作规划：必须把“物-物功能对齐”提升到与“人-物抓握”同等的一等公民地位**。单靠手物接触无法保证工具使用、容器倾倒、积木堆叠等任务的物理合法性；将两类关系统一进有向 `<Source, Target, Affordance>` 3D 热图格式，可直接作为 VLA 或机器人技能规划器（如工具操作、装配）的显式空间接口。\n2. **给全身/灵巧动作自回归生成：用“FSQ 分层解耦码本 + 帧内粗到细因果顺序”替代扁平 Token 化与跨序列级联**。FSQ 避免了多码本联合训练的坍塌难题，而帧内 `Root → Body → Hand → Objects` 在保持全局驱动局部的同时避免了级联误差不可逆累积，非常适合迁移到人形机器人全身移动操作（WBC + 灵巧手）的动作 Tokenizer 设计。\n3. **给 3D-MLLM 空间推理：单物体几何接地 + 多物体关系推理的两阶段课程微调是高性价比范式**。直接用多物体小数据微调 3D-MLLM 难以收敛出精确的逐点掩码，先借单物体数据建立空间接地能力再迁移到多实体关系，可显著提升 IOU 与分布一致性。\n\n### 批判性审视与适用边界\n\nUniffordInteractor 本质上仍是**纯运动学、无物理仿真闭环的生成模型**：虽然 Unifford 和量化期穿透损失大幅降低了碰撞，但在 3 物体场景与 OOD 物体上 `Coll%` 仍分别达到 `0.227` 和 `0.231`；同时推理链条依赖 7B 3D-MLLM + 775M LLaMA 两套大模型（单样本 8.27s），且硬编码了 $K=3$ 的槽位上限（更长多物体任务需外部切分为子序列）。若用于真机或物理仿真角色控制，后端仍需接入物理追踪控制器或接触后优化。",
+    "arxiv": {
+      "published": "2026-10-29",
+      "revised_at": "2026-10-29",
+      "primary_category": "cs.GR"
+    },
+    "source_papers": [
+      "content/papers/2610.39745.md"
     ]
   },
   {

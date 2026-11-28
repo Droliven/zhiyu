@@ -36,13 +36,13 @@ const state = {
   selectedTags: new Set(),
   tagMode: "all",
   query: "",
-  sort: "newest",
+  sort: "updated",
   group: "none",
   showHidden: false,
-  view: "readme",
+  view: "reports",
   reportFilter: {
     query: "",
-    sort: "curated",
+    sort: "newest",
     tags: new Set(),
     tagMode: "all",
     includeArchived: false,
@@ -75,6 +75,9 @@ document.addEventListener("DOMContentLoaded", init);
 async function init() {
   cacheElements();
   bindEvents();
+  elements.sortSelect.value = state.sort;
+  elements.reportSort.value = state.reportFilter.sort;
+  switchView(state.view);
   state.hidden = new Set(readStorage(STORAGE.hidden, []));
   state.comments = readStorage(STORAGE.comments, {});
   state.feed.read = new Set(readStorage(STORAGE.feedRead, []));
@@ -535,7 +538,13 @@ function sortPapers(a, b) {
   if (state.sort === "oldest") return (a.year || 0) - (b.year || 0) || collator.compare(a.title, b.title);
   if (state.sort === "title-asc") return collator.compare(a.title, b.title);
   if (state.sort === "title-desc") return collator.compare(b.title, a.title);
-  if (state.sort === "updated") return String(b.updated_at || "").localeCompare(String(a.updated_at || ""));
+  if (state.sort === "updated") {
+    return (
+      String(b.updated_at || "").localeCompare(String(a.updated_at || "")) ||
+      (b.year || 0) - (a.year || 0) ||
+      collator.compare(a.title, b.title)
+    );
+  }
   return (b.year || 0) - (a.year || 0) || collator.compare(a.title, b.title);
 }
 

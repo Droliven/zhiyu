@@ -127,6 +127,13 @@ R2M-Bench提供检验记忆的关键对照：首访与重访相似，可能只�
 
 阅读顺序：DMD/DMD2建立分布匹配概念，CausVid→Self Forcing理解因果学生与自生成历史，再读Causal Forcing/CF++的初始化；LongLive/LongLive-2.0理解长期缓存与系统实现；minWM/4DStreamCtrl接入控制；最后以Stream4D、Matrix-Game 3.5和R2M-Bench审查几何与记忆。MAGI-1作为原生块级AR对照，Streaming4D作为生成—重建流水线对照。
 
+## 10. SIGGRAPH Asia 2026 前沿增补：从几何控制走向流式物理与外力控制（2026-11-28）
+
+上文指出“在线几何控制不等于力学模拟”。SIGGRAPH Asia 2026 的两篇代表作直接补齐了流式自回归视频生成的**物理动力学与外力响应**缺口：
+
+- **[PhysStream](../../index.html#paper=arxiv-2609-17521)**：面向多物体物理交互，将在线结构化场景记忆（位置与物体跟踪图）与稀疏速度增量控制接入自回归视频生成，使中途注入的细粒度运动干预在长程滚动中保持物理与身份一致。
+- **[StreamForce](../../index.html#paper=arxiv-2606-07508)**：提出统一局部/全局外力表征，并结合双源 ODE 初始化与 Self-Forcing DMD 蒸馏，使因果流式生成器能够实时、连贯地响应连续时变外力。
+
 ## 参考文献与馆藏入口
 
 15篇馆藏按首次出现顺序列出。恢复后的报告沿用原报告ID，已有分享链接继续有效。
@@ -160,3 +167,7 @@ R2M-Bench提供检验记忆的关键对照：首访与重访相似，可能只�
 14. [R2M-Bench: Evaluating Revisit Memory via Relative Consistency in Interactive Video World Models](https://arxiv.org/abs/2608.27328) · [馆藏卡片](../../index.html#paper=arxiv-2608-27328)
 
 15. [Streaming4D: Accelerate 4D World Models via Block-wise Video Generation and Incremental Reconstruction](https://arxiv.org/abs/2609.00610) · [馆藏卡片](../../index.html#paper=arxiv-2609-00610)
+
+16. [PhysStream: Streaming Physics-Grounded Video Generation with Structured Scene Memory and Fine-Grained Motion Control](https://arxiv.org/abs/2609.17521) · [馆藏卡片](../../index.html#paper=arxiv-2609-17521)
+
+17. [Streaming Video Generation with Streaming Force Control（StreamForce）](https://arxiv.org/abs/2606.07508) · [馆藏卡片](../../index.html#paper=arxiv-2606-07508)

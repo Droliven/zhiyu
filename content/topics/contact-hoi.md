@@ -210,7 +210,16 @@ Dexterous World Models用场景渲染保留背景与视角结构，再用手动�
 
 ## 参考文献与详细论文卡片
 
-以下按正文首次出现顺序列出25篇既有馆藏。每篇的原始论文与详细卡片分别可打开；本报告中的综合分析不写回单篇论文事实字段。
+### SIGGRAPH Asia 2026 前沿增补（2026-11-28）
+
+SIGGRAPH Asia 2026 的 **Human-object contacts（Session #9）** 集中推进了“统一接触/抓取表征 → 多物体与铰接交互生成 → 外观与 3D 运动协同 → 人手到机械夹爪迁移”四条主线：
+
+- **统一抓取与接触表征**：[InterMASH](../../index.html#paper=arxiv-2609-18504) 提出统一几何交互表征打通灵巧手单手、跨本体混合训练与人类先验迁移；[DCGrasp](../../index.html#paper=arxiv-2606-29924) 引入距离感知可控抓取生成，让细粒度接触区域与空间距离显式可调。
+- **多物体与铰接交互生成**：[UniffordInteractor](../../index.html#paper=arxiv-2610-39745) 以统一可供性推理打通人—多物体与物—物交互；[SK-HOI](../../index.html#paper=arxiv-2608-03158) 用表面关键点表征替代传统全局 $SE(3)$ 回归，在多物体与铰接交互上显著提升接触贴合与未见组合泛化。
+- **多视角外观与 3D 运动协同合成**：[HarmoHOI](../../index.html#paper=arxiv-2607-17097) 在多视角手物交互合成中联合协调像素级外观与 3D 运动一致性，避免外观生成与几何轨迹脱节。
+- **人手到机械夹爪的复杂空间迁移**：[CosmoH2G](../../index.html#paper=arxiv-2609-07498) 构建 6,189 条配对轨迹数据集与三关键点姿态生成+位置后优化基线，并在真机 Galaxea R1 Lite 上验证复杂空间操作迁移。
+
+以下按正文首次出现顺序列出既有馆藏与本轮增补的 6 篇 SIGGRAPH Asia 2026 论文。每篇的原始论文与详细卡片分别可打开；本报告中的综合分析不写回单篇论文事实字段。
 
 1. [DreamHand: Repurposing Video Diffusion Models for Occlusion-Robust Egocentric 3D Hand Motion Recovery](https://arxiv.org/abs/2608.20308) · [馆藏卡片](../../index.html#paper=arxiv-2608-20308)
 
@@ -261,3 +270,15 @@ Dexterous World Models用场景渲染保留背景与视角结构，再用手动�
 24. [DexTouch-WM: Learning Action-Conditioned Tactile World Models from Human Touch for Dexterous Robot Manipulation](https://arxiv.org/abs/2609.20649) · [馆藏卡片](../../index.html#paper=arxiv-2609-20649)
 
 25. [TACIT: Tactile Contact Supervision for Spatial Attention in Dexterous Manipulation](https://arxiv.org/abs/2609.24507) · [馆藏卡片](../../index.html#paper=arxiv-2609-24507)
+
+26. [UniffordInteractor: Reasoning the Unified Affordance for Human and Multi-Object Interaction](https://arxiv.org/abs/2610.39745) · [馆藏卡片](../../index.html#paper=arxiv-2610-39745)
+
+27. [Surface Keypoint Representation for Multi-Object and Articulated Human-Object Interaction Generation（SK-HOI）](https://arxiv.org/abs/2608.03158) · [馆藏卡片](../../index.html#paper=arxiv-2608-03158)
+
+28. [HarmoHOI: Harmonizing Appearance and 3D Motion for Multi-view Hand-Object Interaction Synthesis](https://arxiv.org/abs/2607.17097) · [馆藏卡片](../../index.html#paper=arxiv-2607-17097)
+
+29. [CosmoH2G: A Hand-to-Gripper Transfer Dataset and Baseline Method for Object Manipulation with Complex Spatial Movements](https://arxiv.org/abs/2609.07498) · [馆藏卡片](../../index.html#paper=arxiv-2609-07498)
+
+30. [InterMASH: A Unified Geometric Representation for Grasp Synthesis](https://arxiv.org/abs/2609.18504) · [馆藏卡片](../../index.html#paper=arxiv-2609-18504)
+
+31. [DCGrasp: Distance-aware Controllable Grasp Generation](https://arxiv.org/abs/2606.29924) · [馆藏卡片](../../index.html#paper=arxiv-2606-29924)
